@@ -4,8 +4,8 @@ include(":tools4a-activity-ktx")
 include(":tools4a-args")
 include(":tools4a-args-ktx")
 
-//include(":tools4a-clipboard")
-//include(":tools4a-clipboard-ktx")
+include(":tools4a-clipboard")
+include(":tools4a-clipboard-ktx")
 
 include(":tools4a-dialog")
 include(":tools4a-dialog-ktx")
