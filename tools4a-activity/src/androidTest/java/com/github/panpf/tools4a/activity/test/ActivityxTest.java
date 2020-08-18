@@ -33,6 +33,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.activity.Activityx;
+import com.github.panpf.tools4a.run.Runx;
 import com.github.panpf.tools4j.lang.Throwablex;
 import com.github.panpf.tools4j.premise.Premisex;
 
@@ -95,7 +96,7 @@ public class ActivityxTest {
             e.printStackTrace();
         }
 
-        boolean result = TestUtils.waitRunInUIResult(() -> Activityx.convertToTranslucentCompat(activity));
+        boolean result = Runx.waitRunInUIResult(() -> Activityx.convertToTranslucentCompat(activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result);
         } else {
@@ -108,7 +109,7 @@ public class ActivityxTest {
             e.printStackTrace();
         }
 
-        result = TestUtils.waitRunInUIResult(() -> Activityx.convertFromTranslucentCompat(activity));
+        result = Runx.waitRunInUIResult(() -> Activityx.convertFromTranslucentCompat(activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result);
         } else {

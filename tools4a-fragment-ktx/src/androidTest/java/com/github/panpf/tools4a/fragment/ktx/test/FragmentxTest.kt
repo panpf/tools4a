@@ -27,6 +27,8 @@ import androidx.fragment.app.Fragment
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.fragment.ktx.*
+import com.github.panpf.tools4a.run.ktx.waitRunInUI
+import com.github.panpf.tools4a.run.ktx.waitRunInUIResult
 import com.github.panpf.tools4j.premise.ktx.requireNotNull
 import org.junit.Assert
 import org.junit.Rule
@@ -78,11 +80,11 @@ class FragmentxTest {
 
         Assert.assertEquals(supportFragment.getChildFragment().getImplFromParent(ImplTestInterface::class.java).requireNotNull()::class.java, TestImplSupportFragment::class.java)
 
-        TestUtils.waitRunInUI {
+        waitRunInUI {
             activityTestRule.activity.convertChildFragment()
         }
 
-        val supportFragment2 = TestUtils.waitRunInUIResult { activityTestRule.activity.getSupportFragment() as TestImplSupportFragment2 }
+        val supportFragment2 = waitRunInUIResult { activityTestRule.activity.getSupportFragment() as TestImplSupportFragment2 }
 
         Assert.assertEquals(supportFragment2.getImplFromParent(ImplTestInterface::class.java).requireNotNull()::class.java, TestActivity::class.java)
 

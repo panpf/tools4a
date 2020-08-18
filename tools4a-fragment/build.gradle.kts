@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-premise:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-lang:${property("TOOLS4J")}")
+    androidTestImplementation(project(":tools4a-run"))
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->

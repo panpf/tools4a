@@ -9,6 +9,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.dialog.Dialogx;
+import com.github.panpf.tools4a.run.Runx;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -24,7 +25,7 @@ public class DialogxTest {
 
     @Test
     public void testSetClickButtonClosable() {
-        TestUtils.waitRunInUI(() -> {
+        Runx.waitRunInUI(() -> {
             TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), true));
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), false));
@@ -33,7 +34,7 @@ public class DialogxTest {
 
     @Test
     public void testShowProgressDialog() {
-        TestUtils.waitRunInUI(() -> {
+        Runx.waitRunInUI(() -> {
             TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
             androidx.fragment.app.Fragment supportFragment = mFragmentActivityTestRule.getActivity()
                     .getSupportFragmentManager()

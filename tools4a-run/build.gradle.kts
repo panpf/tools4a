@@ -37,13 +37,12 @@ android {
 }
 
 dependencies {
-    api("androidx.fragment:fragment:${property("ANDROIDX_FRAGMENT")}")
+    api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")
     androidTestImplementation("androidx.test:rules:${property("TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
-    androidTestImplementation(project(":tools4a-run"))
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->
@@ -51,9 +50,9 @@ Properties().apply { project.file("local.properties").takeIf { it.exists() }?.in
 
     configure<PublishExtension> {
         groupId = "com.github.panpf.tools4a"
-        artifactId = "tools4a-dialog"
+        artifactId = "tools4a-run"
         publishVersion = property("VERSION_NAME").toString()
-        desc = "Android, Tools, Dialog"
+        desc = "Android, Tools, Run"
         website = "https://github.com/panpf/tools4a"
         userOrg = localProperties.getProperty("bintray.userOrg")
         bintrayUser = localProperties.getProperty("bintray.user")

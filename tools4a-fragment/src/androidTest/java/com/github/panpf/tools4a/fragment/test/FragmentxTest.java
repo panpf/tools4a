@@ -32,6 +32,7 @@ import androidx.test.runner.AndroidJUnit4;
 import androidx.viewpager.widget.ViewPager;
 
 import com.github.panpf.tools4a.fragment.Fragmentx;
+import com.github.panpf.tools4a.run.Runx;
 import com.github.panpf.tools4j.lang.Stringx;
 import com.github.panpf.tools4j.premise.Premisex;
 
@@ -96,9 +97,9 @@ public class FragmentxTest {
 
         Assert.assertEquals(Premisex.requireNotNull(Fragmentx.getImplFromParent(supportFragment.getChildFragment(), ImplTestInterface.class)).getClass(), TestImplSupportFragment.class);
 
-        TestUtils.waitRunInUI(() -> activityTestRule.getActivity().convertChildFragment());
+        Runx.waitRunInUI(() -> activityTestRule.getActivity().convertChildFragment());
 
-        TestImplSupportFragment2 supportFragment2 = TestUtils.waitRunInUIResult(() -> (TestImplSupportFragment2) activityTestRule.getActivity().getSupportFragment());
+        TestImplSupportFragment2 supportFragment2 = Runx.waitRunInUIResult(() -> (TestImplSupportFragment2) activityTestRule.getActivity().getSupportFragment());
 
         Assert.assertEquals(Premisex.requireNotNull(Fragmentx.getImplFromParent(supportFragment2, ImplTestInterface.class)).getClass(), TestActivity.class);
 
