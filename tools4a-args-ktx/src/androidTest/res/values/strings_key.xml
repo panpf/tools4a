@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="not_exist_key">key_not_exist</string>
+
+    <string name="byte_required">byte_required</string>
+    <string name="byte_optional">byte_optional</string>
+    <string name="byte_array_required">byte_array_required</string>
+    <string name="byte_array_optional">byte_array_optional</string>
+    <string name="byte_array_or_default">byte_array_or_default</string>
+
+
+    <string name="short_required">short_required</string>
+    <string name="short_optional">short_optional</string>
+    <string name="short_array_required">short_array_required</string>
+    <string name="short_array_optional">short_array_optional</string>
+    <string name="short_array_or_default">short_array_or_default</string>
+
+    <string name="int_required">int_required</string>
+    <string name="int_optional">int_optional</string>
+    <string name="int_array_required">int_array_required</string>
+    <string name="int_array_optional">int_array_optional</string>
+    <string name="int_array_or_default">int_array_or_default</string>
+    <string name="int_array_list_required">int_array_list_required</string>
+    <string name="int_array_list_optional">int_array_list_optional</string>
+    <string name="int_array_list_or_default">int_array_list_or_default</string>
+
+    <string name="long_required">long_required</string>
+    <string name="long_optional">long_optional</string>
+    <string name="long_array_required">long_array_required</string>
+    <string name="long_array_optional">long_array_optional</string>
+    <string name="long_array_or_default">long_array_or_default</string>
+
+    <string name="float_required">float_required</string>
+    <string name="float_optional">float_optional</string>
+    <string name="float_array_required">float_array_required</string>
+    <string name="float_array_optional">float_array_optional</string>
+    <string name="float_array_or_default">float_array_or_default</string>
+
+    <string name="double_required">double_required</string>
+    <string name="double_optional">double_optional</string>
+    <string name="double_array_required">double_array_required</string>
+    <string name="double_array_optional">double_array_optional</string>
+    <string name="double_array_or_default">double_array_or_default</string>
+
+    <string name="boolean_required">boolean_required</string>
+    <string name="boolean_optional">boolean_optional</string>
+    <string name="boolean_array_required">boolean_array_required</string>
+    <string name="boolean_array_optional">boolean_array_optional</string>
+    <string name="boolean_array_or_default">boolean_array_or_default</string>
+
+    <string name="char_required">char_required</string>
+    <string name="char_optional">char_optional</string>
+    <string name="char_array_required">char_array_required</string>
+    <string name="char_array_optional">char_array_optional</string>
+    <string name="char_array_or_default">char_array_or_default</string>
+
+    <string name="char_sequence_required">char_sequence_required</string>
+    <string name="char_sequence_optional">char_sequence_optional</string>
+    <string name="char_sequence_or_default">char_sequence_or_default</string>
+    <string name="char_sequence_array_required">char_sequence_array_required</string>
+    <string name="char_sequence_array_optional">char_sequence_array_optional</string>
+    <string name="char_sequence_array_or_default">char_sequence_array_or_default</string>
+    <string name="char_sequence_array_list_required">char_sequence_array_list_required</string>
+    <string name="char_sequence_array_list_optional">char_sequence_array_list_optional</string>
+    <string name="char_sequence_array_list_or_default">char_sequence_array_list_or_default</string>
+
+    <string name="string_required">string_required</string>
+    <string name="string_optional">string_optional</string>
+    <string name="string_or_default">string_or_default</string>
+    <string name="string_array_required">string_array_required</string>
+    <string name="string_array_optional">string_array_optional</string>
+    <string name="string_array_or_default">string_array_or_default</string>
+    <string name="string_array_list_required">string_array_list_required</string>
+    <string name="string_array_list_optional">string_array_list_optional</string>
+    <string name="string_array_list_or_default">string_array_list_or_default</string>
+
+    <string name="parcelable_required">parcelable_required</string>
+    <string name="parcelable_optional">parcelable_optional</string>
+    <string name="parcelable_or_default">parcelable_or_default</string>
+    <string name="parcelable_array_required">parcelable_array_required</string>
+    <string name="parcelable_array_optional">parcelable_array_optional</string>
+    <string name="parcelable_array_or_default">parcelable_array_or_default</string>
+    <string name="parcelable_array_list_required">parcelable_array_list_required</string>
+    <string name="parcelable_array_list_optional">parcelable_array_list_optional</string>
+    <string name="parcelable_array_list_or_default">parcelable_array_list_or_default</string>
+
+    <string name="serializable_required">serializable_required</string>
+    <string name="serializable_optional">serializable_optional</string>
+    <string name="serializable_or_default">serializable_or_default</string>
+
+    <string name="bundle_required">bundleRequired</string>
+    <string name="bundle_optional">bundleOptional</string>
+    <string name="bundle_or_default">bundleOrDefault</string>
+
+    <string name="sparse_parcelable_array_required">sparseParcelableArrayRequired</string>
+    <string name="sparse_parcelable_array_optional">sparseParcelableArrayOptional</string>
+    <string name="sparse_parcelable_array_or_default">sparseParcelableArrayOrDefault</string>
+
+    <string name="binder_required">binderRequired</string>
+    <string name="binder_optional">binderOptional</string>
+    <string name="binder_or_default">binderOrDefault</string>
+
+    <string name="size_required">sizeRequired</string>
+    <string name="size_optional">sizeOptional</string>
+    <string name="size_or_default">sizeOrDefault</string>
+
+    <string name="sizeF_required">sizeFRequired</string>
+    <string name="sizeF_optional">sizeFOptional</string>
+    <string name="sizeF_or_default">sizeFOrDefault</string>
+
+    <string name="byte_uri_required">byteUriRequired</string>
+    <string name="byte_uri_optional">byteUriOptional</string>
+    <string name="byte_uri_or_default">byteUriOrDefault</string>
+
+    <string name="short_uri_required">shortUriRequired</string>
+    <string name="short_uri_optional">shortUriOptional</string>
+    <string name="short_uri_or_default">shortUriOrDefault</string>
+
+    <string name="int_uri_required">intUriRequired</string>
+    <string name="int_uri_optional">intUriOptional</string>
+    <string name="int_uri_or_default">intUriOrDefault</string>
+
+    <string name="long_uri_required">longUriRequired</string>
+    <string name="long_uri_optional">longUriOptional</string>
+    <string name="long_uri_or_default">longUriOrDefault</string>
+
+    <string name="float_uri_required">floatUriRequired</string>
+    <string name="float_uri_optional">floatUriOptional</string>
+    <string name="float_uri_or_default">floatUriOrDefault</string>
+
+    <string name="double_uri_required">doubleUriRequired</string>
+    <string name="double_uri_optional">doubleUriOptional</string>
+    <string name="double_uri_or_default">doubleUriOrDefault</string>
+
+    <string name="boolean_uri_required">booleanUriRequired</string>
+    <string name="boolean_uri_optional">booleanUriOptional</string>
+    <string name="boolean_uri_or_default">booleanUriOrDefault</string>
+
+    <string name="string_uri_required">stringUriRequired</string>
+    <string name="string_uri_optional">stringUriOptional</string>
+    <string name="string_uri_or_default">stringUriOrDefault</string>
+
+    <string name="byte_intent_uri_or_default">byteIntentUriOrDefault</string>
+    <string name="short_intent_uri_or_default">shortIntentUriOrDefault</string>
+    <string name="int_intent_uri_or_default">intIntentUriOrDefault</string>
+    <string name="long_intent_uri_or_default">longIntentUriOrDefault</string>
+    <string name="float_intent_uri_or_default">floatIntentUriOrDefault</string>
+    <string name="double_intent_uri_or_default">doubleIntentUriOrDefault</string>
+    <string name="boolean_intent_uri_or_default">booleanIntentUriOrDefault</string>
+
+    <string name="string_intent_uri_required">stringIntentUriRequired</string>
+    <string name="string_intent_uri_optional">stringIntentUriOptional</string>
+    <string name="string_intent_uri_or_default">stringIntentUriOrDefault</string>
+
+    <string name="byte_uri_intent_or_default">byteUriIntentOrDefault</string>
+    <string name="short_uri_intent_or_default">shortUriIntentOrDefault</string>
+    <string name="int_uri_intent_or_default">intUriIntentOrDefault</string>
+    <string name="long_uri_intent_or_default">longUriIntentOrDefault</string>
+    <string name="float_uri_intent_or_default">floatUriIntentOrDefault</string>
+    <string name="double_uri_intent_or_default">doubleUriIntentOrDefault</string>
+    <string name="boolean_uri_intent_or_default">booleanUriIntentOrDefault</string>
+
+    <string name="string_uri_intent_required">stringUriIntentRequired</string>
+    <string name="string_uri_intent_optional">stringUriIntentOptional</string>
+    <string name="string_uri_intent_or_default">stringUriIntentOrDefault</string>
+</resources>
