@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
+    api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")

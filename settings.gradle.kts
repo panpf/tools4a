@@ -7,6 +7,9 @@
 //include(":tools4a-dialog")
 //include(":tools4a-dialog-ktx")
 
+include(":tools4a-fileprovider")
+include(":tools4a-fileprovider-ktx")
+
 //include(":tools4a-fragment")
 //include(":tools4a-fragment-ktx")
 
