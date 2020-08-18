@@ -56,7 +56,7 @@ Properties().apply { project.file("local.properties").takeIf { it.exists() }?.in
         artifactId = "tools4a-args-ktx"
         publishVersion = property("VERSION_NAME").toString()
         desc = "Android, Tools, Args, Ktx"
-        website = "https://github.com/panpf/androidx"
+        website = "https://github.com/panpf/tools4a"
         userOrg = localProperties.getProperty("bintray.userOrg")
         bintrayUser = localProperties.getProperty("bintray.user")
         bintrayKey = localProperties.getProperty("bintray.apikey")
