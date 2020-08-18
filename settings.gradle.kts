@@ -12,3 +12,6 @@
 
 include(":tools4a-permission")
 include(":tools4a-permission-ktx")
+
+include(":tools4a-service")
+include(":tools4a-service-ktx")
