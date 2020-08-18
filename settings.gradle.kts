@@ -9,3 +9,6 @@
 
 //include(":tools4a-fragment")
 //include(":tools4a-fragment-ktx")
+
+include(":tools4a-permission")
+include(":tools4a-permission-ktx")
