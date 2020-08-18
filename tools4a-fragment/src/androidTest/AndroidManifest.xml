@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.panpf.tools4a.fragment.test">
+
+    <application>
+        <activity android:name=".FragmentxTest$TestActivity"/>
+        <activity android:name=".FragmentxTest$TestFindUserVisibleChildActivity"/>
+    </application>
+</manifest>
