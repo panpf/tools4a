@@ -27,3 +27,6 @@ include(":tools4a-run-ktx")
 
 include(":tools4a-service")
 include(":tools4a-service-ktx")
+
+include(":tools4a-storage")
+include(":tools4a-storage-ktx")
