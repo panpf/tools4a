@@ -7,14 +7,17 @@
 //include(":tools4a-dialog")
 //include(":tools4a-dialog-ktx")
 
-include(":tools4a-fileprovider")
-include(":tools4a-fileprovider-ktx")
+//include(":tools4a-fileprovider")
+//include(":tools4a-fileprovider-ktx")
 
 //include(":tools4a-fragment")
 //include(":tools4a-fragment-ktx")
 
-include(":tools4a-permission")
-include(":tools4a-permission-ktx")
+//include(":tools4a-packages")
+//include(":tools4a-packages-ktx")
 
-include(":tools4a-service")
-include(":tools4a-service-ktx")
+//include(":tools4a-permission")
+//include(":tools4a-permission-ktx")
+
+//include(":tools4a-service")
+//include(":tools4a-service-ktx")

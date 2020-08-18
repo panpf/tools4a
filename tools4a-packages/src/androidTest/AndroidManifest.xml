@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.panpf.tools4a.packages.test">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission android:name="com.github.panpf.tools4a.packages.test.share" />
+
+    <application>
+        <activity android:name=".PackageInfoxTest$TestActivity" />
+        <service android:name=".TestService" />
+        <receiver android:name=".TestReceiver" />
+        <provider
+            android:name=".TestProvider"
+            android:authorities="com.github.panpf.tools4a.packages.test.provider" />
+
+        <meta-data
+            android:name="meta_test_name"
+            android:value="meta_test_value" />
+    </application>
+</manifest>
