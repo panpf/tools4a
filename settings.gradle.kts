@@ -22,6 +22,8 @@ include(":tools4a-packages-ktx")
 include(":tools4a-permission")
 include(":tools4a-permission-ktx")
 
+include(":tools4a-rom")
+
 include(":tools4a-run")
 include(":tools4a-run-ktx")
 
@@ -30,3 +32,5 @@ include(":tools4a-service-ktx")
 
 include(":tools4a-storage")
 include(":tools4a-storage-ktx")
+
+include(":tools4a-systemproperties")
