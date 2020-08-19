@@ -39,18 +39,12 @@ android {
 
 dependencies {
     api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${property("KOTLIN_VERSION")}")
-    api(project(":tools4a-graphics"))
+    api(project(":tools4a-utils"))
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")
     androidTestImplementation("androidx.test:rules:${property("TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-premise-ktx:${property("TOOLS4J")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-io-ktx:${property("TOOLS4J")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-collections-ktx:${property("TOOLS4J")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-math-ktx:${property("TOOLS4J")}")
-    androidTestImplementation(project(":tools4a-storage-ktx"))
-    androidTestImplementation(project(":tools4a-dimen-ktx"))
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->
@@ -58,9 +52,9 @@ Properties().apply { project.file("local.properties").takeIf { it.exists() }?.in
 
     configure<PublishExtension> {
         groupId = "com.github.panpf.tools4a"
-        artifactId = "tools4a-graphics-ktx"
+        artifactId = "tools4a-utils-ktx"
         publishVersion = property("VERSION_NAME").toString()
-        desc = "Android, Tools, Graphics, Ktx"
+        desc = "Android, Tools, Utils, Ktx"
         website = "https://github.com/panpf/tools4a"
         userOrg = localProperties.getProperty("bintray.userOrg")
         bintrayUser = localProperties.getProperty("bintray.user")

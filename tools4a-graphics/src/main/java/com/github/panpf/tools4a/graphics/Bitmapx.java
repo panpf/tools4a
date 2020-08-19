@@ -406,4 +406,72 @@ public class Bitmapx {
     public static int calculateSamplingSizeForRegion(int size, int inSampleSize) {
         return (int) Math.floor(size / (float) inSampleSize);
     }
+
+
+    /* ************************************** textToBitmap ******************************************  */
+
+
+    /**
+     * Text to Bitmap
+     *
+     * @param compact If true, use FontMetrics.descent - ascent to calculate the bitmap height, otherwise use FontMetrics.bottom - top
+     */
+    @NonNull
+    public static Bitmap textToBitmap(@NonNull String text, int textColor, float textSize, boolean compact, @Nullable Bitmap leftIcon) {
+        Paint paint = new Paint();
+        paint.setColor(textColor);
+        paint.setTextSize(textSize);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+
+        float textWidth = Paintx.getTextWidth(paint, text);
+        float textHeight = compact ? Paintx.getTextHeightCompact(paint) : Paintx.getTextHeight(paint);
+
+        int newBitmapWidth = textWidth % 1 == 0 ? (int) textWidth : (int) textWidth + 1;
+        int newBitmapHeight = textHeight % 1 == 0 ? (int) textHeight : (int) textHeight + 1;
+
+        if (leftIcon != null) {
+            newBitmapWidth += leftIcon.getWidth();
+            newBitmapHeight = Math.max(leftIcon.getHeight(), newBitmapHeight);
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(newBitmapWidth, newBitmapHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        float y = compact ? Paintx.getDrawTextVerticalCenterBaseLineCompact(paint, 0, newBitmapHeight) : Paintx.getDrawTextVerticalCenterBaseLine(paint, 0, newBitmapHeight);
+        if (leftIcon != null) {
+            canvas.drawBitmap(leftIcon, 0, (newBitmapHeight - leftIcon.getHeight()) / 2, paint);
+            canvas.drawText(text, leftIcon.getWidth(), y, paint);
+        } else {
+            canvas.drawText(text, 0, y, paint);
+        }
+        canvas.save();
+
+        return bitmap;
+    }
+
+    /**
+     * Text to Bitmap
+     *
+     * @param compact If true, use FontMetrics.descent - ascent to calculate the bitmap height, otherwise use FontMetrics.bottom - top
+     */
+    @NonNull
+    public static Bitmap textToBitmap(@NonNull String text, int textColor, float textSize, boolean compact) {
+        return textToBitmap(text, textColor, textSize, compact, null);
+    }
+
+    /**
+     * Text to Bitmap
+     */
+    @NonNull
+    public static Bitmap textToBitmap(@NonNull String text, int textColor, float textSize, @Nullable Bitmap leftIcon) {
+        return textToBitmap(text, textColor, textSize, false, leftIcon);
+    }
+
+    /**
+     * Text to Bitmap
+     */
+    @NonNull
+    public static Bitmap textToBitmap(@NonNull String text, int textColor, float textSize) {
+        return textToBitmap(text, textColor, textSize, false, null);
+    }
 }

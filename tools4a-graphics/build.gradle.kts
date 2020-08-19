@@ -48,6 +48,7 @@ dependencies {
     androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-math:${property("TOOLS4J")}")
     androidTestImplementation(project(":tools4a-storage"))
+    androidTestImplementation(project(":tools4a-dimen"))
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->

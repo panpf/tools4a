@@ -213,3 +213,35 @@ inline fun <R> Bitmap.use(block: (Bitmap) -> R): R {
         this@use.recycle()
     }
 }
+
+
+/* ************************************** textToBitmap ******************************************  */
+
+
+/**
+ * Text to Bitmap
+ *
+ * @param compact If true, use FontMetrics.descent - ascent to calculate the bitmap height, otherwise use FontMetrics.bottom - top
+ */
+inline fun String.textToBitmap(textColor: Int, textSize: Float, compact: Boolean, leftBitmap: Bitmap? = null): Bitmap =
+        Bitmapx.textToBitmap(this, textColor, textSize, compact, leftBitmap)
+
+/**
+ * Text to Bitmap
+ *
+ * @param compact If true, use FontMetrics.descent - ascent to calculate the bitmap height, otherwise use FontMetrics.bottom - top
+ */
+inline fun String.textToBitmap(textColor: Int, textSize: Float, compact: Boolean): Bitmap =
+        Bitmapx.textToBitmap(this, textColor, textSize, compact)
+
+/**
+ * Text to Bitmap
+ */
+inline fun String.textToBitmap(textColor: Int, textSize: Float, leftBitmap: Bitmap? = null): Bitmap =
+        Bitmapx.textToBitmap(this, textColor, textSize, leftBitmap)
+
+/**
+ * Text to Bitmap
+ */
+inline fun String.textToBitmap(textColor: Int, textSize: Float): Bitmap =
+        Bitmapx.textToBitmap(this, textColor, textSize)

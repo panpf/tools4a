@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.panpf.tools4a.utils.test">
+
+    <application>
+        <activity android:name=".WeakAsyncTaskTest$TestActivity"/>
+        <activity android:name=".LifecycleBroadcastReceiverTest$TestFragmentActivity"/>
+    </application>
+</manifest>

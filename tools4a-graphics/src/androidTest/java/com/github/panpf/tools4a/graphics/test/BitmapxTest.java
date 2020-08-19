@@ -28,6 +28,7 @@ import android.os.Build;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.github.panpf.tools4a.dimen.Dimenx;
 import com.github.panpf.tools4a.graphics.Bitmapx;
 import com.github.panpf.tools4a.graphics.Colorx;
 import com.github.panpf.tools4a.storage.Storagex;
@@ -393,5 +394,46 @@ public class BitmapxTest {
                         + ", expected bitmap size is " + expectedBitmapWidth + "x" + expectedBitmapHeight
                         + ", actual bitmap size is " + finalBitmapWidth + "x" + finalBitmapHeight,
                 finalBitmapWidth == expectedBitmapWidth && finalBitmapHeight == expectedBitmapHeight);
+    }
+    @Test
+    public void testTextToBitmap() {
+        Context context = InstrumentationRegistry.getContext();
+        Bitmap bitmap = null;
+        Bitmap bitmapCompact = null;
+        Bitmap icon = null;
+        Bitmap bitmapIcon = null;
+        Bitmap bitmapIconCompact = null;
+        try {
+            bitmap = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14));
+            Assert.assertFalse(bitmap.isRecycled());
+
+            bitmapCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), true);
+            Assert.assertFalse(bitmapCompact.isRecycled());
+
+            icon = Bitmapx.readBitmap(context.getResources(), R.drawable.ic_opera);
+            bitmapIcon = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), icon);
+            Assert.assertFalse(bitmapIcon.isRecycled());
+
+            bitmapIconCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), true, icon);
+            Assert.assertFalse(bitmapIconCompact.isRecycled());
+
+            Assert.assertTrue(bitmap.getHeight() > bitmapCompact.getHeight());
+        } finally {
+            if (bitmap != null) {
+                bitmap.recycle();
+            }
+            if (bitmapCompact != null) {
+                bitmapCompact.recycle();
+            }
+            if (icon != null) {
+                icon.recycle();
+            }
+            if (bitmapIcon != null) {
+                bitmapIcon.recycle();
+            }
+            if (bitmapIconCompact != null) {
+                bitmapIconCompact.recycle();
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ import android.graphics.Color
 import android.graphics.Rect
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import com.github.panpf.tools4a.dimen.ktx.dp2px
 import com.github.panpf.tools4a.graphics.Bitmapx
 import com.github.panpf.tools4a.graphics.Colorx
 import com.github.panpf.tools4a.graphics.ktx.*
@@ -296,5 +297,37 @@ class BitmapxTest {
         centerCrop1Bitmap.recycle()
 
         operaBitmap.recycle()
+    }
+
+    @Test
+    fun testTextToBitmap() {
+        val context = InstrumentationRegistry.getContext()
+        var bitmap: Bitmap? = null
+        var bitmapCompact: Bitmap? = null
+        var icon: Bitmap? = null
+        var bitmapIcon: Bitmap? = null
+        var bitmapIconCompact: Bitmap? = null
+        try {
+            bitmap = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat())
+            Assert.assertFalse(bitmap.isRecycled)
+
+            bitmapCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), true)
+            Assert.assertFalse(bitmapCompact.isRecycled)
+
+            icon = Bitmapx.readBitmap(context.resources, R.drawable.ic_opera)
+            bitmapIcon = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), icon)
+            Assert.assertFalse(bitmapIcon.isRecycled)
+
+            bitmapIconCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), true, icon)
+            Assert.assertFalse(bitmapIconCompact.isRecycled)
+
+            Assert.assertTrue(bitmap.height > bitmapCompact.height)
+        } finally {
+            bitmap?.recycle()
+            bitmapCompact?.recycle()
+            icon?.recycle()
+            bitmapIcon?.recycle()
+            bitmapIconCompact?.recycle()
+        }
     }
 }
