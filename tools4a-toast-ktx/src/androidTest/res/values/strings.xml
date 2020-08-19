@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_test">今天是2018年10月18号(Res)</string>
+    <string name="toast_test_tp">今天是%d年%d月%d号(Res-TP)</string>
+</resources>

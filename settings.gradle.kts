@@ -53,5 +53,8 @@ include(":tools4a-storage-ktx")
 
 include(":tools4a-systemproperties")
 
+include(":tools4a-toast")
+include(":tools4a-toast-ktx")
+
 include(":tools4a-utils")
 include(":tools4a-utils-ktx")
