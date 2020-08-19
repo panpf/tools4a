@@ -13,8 +13,14 @@ include(":tools4a-device-ktx")
 include(":tools4a-dialog")
 include(":tools4a-dialog-ktx")
 
+include(":tools4a-display")
+include(":tools4a-display-ktx")
+
 include(":tools4a-fileprovider")
 include(":tools4a-fileprovider-ktx")
+
+include(":tools4a-fragment")
+include(":tools4a-fragment-ktx")
 
 include(":tools4a-graphics")
 include(":tools4a-graphics-ktx")
