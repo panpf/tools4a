@@ -13,6 +13,9 @@ include(":tools4a-device-ktx")
 include(":tools4a-dialog")
 include(":tools4a-dialog-ktx")
 
+include(":tools4a-dimen")
+include(":tools4a-dimen-ktx")
+
 include(":tools4a-display")
 include(":tools4a-display-ktx")
 
