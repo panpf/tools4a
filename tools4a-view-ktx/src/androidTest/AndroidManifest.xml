@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.panpf.tools4a.view.ktx.test">
+
+    <application>
+        <activity android:name=".WindowxTest$TestActivity"/>
+        <activity android:name=".ViewAnimxTest$TestActivity"/>
+        <activity android:name=".ViewxTest$TestActivity"/>
+    </application>
+</manifest>
