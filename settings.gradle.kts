@@ -16,6 +16,9 @@ include(":tools4a-dialog-ktx")
 include(":tools4a-fileprovider")
 include(":tools4a-fileprovider-ktx")
 
+include(":tools4a-graphics")
+include(":tools4a-graphics-ktx")
+
 include(":tools4a-fragment")
 include(":tools4a-fragment-ktx")
 
