@@ -25,8 +25,8 @@ include(":tools4a-fragment-ktx")
 include(":tools4a-graphics")
 include(":tools4a-graphics-ktx")
 
-include(":tools4a-fragment")
-include(":tools4a-fragment-ktx")
+include(":tools4a-inputmethod")
+include(":tools4a-inputmethod-ktx")
 
 include(":tools4a-packages")
 include(":tools4a-packages-ktx")
