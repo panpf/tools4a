@@ -16,15 +16,18 @@
 
 package com.github.panpf.tools4a.inputmethod.test;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Selection;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -51,7 +54,7 @@ public class InputMethodxTest {
     @Test
     public void testShowSoftInput() throws InterruptedException {
         final TestActivity activity = activityRule.getActivity();
-        final EditText editTxt = activity.getEditTxt();
+        final EditText originEditText = activity.getSupportFragmentEditTxt();
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
@@ -61,7 +64,7 @@ public class InputMethodxTest {
         }
 
         // show
-        Runx.runInUI(() -> InputMethodx.showSoftInput(editTxt));
+        Runx.runInUI(() -> InputMethodx.showSoftInput(originEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
     }
@@ -69,7 +72,7 @@ public class InputMethodxTest {
     @Test
     public void testDelayShowSoftInput() throws InterruptedException {
         final TestActivity activity = activityRule.getActivity();
-        final EditText editText = activity.getEditTxt();
+        final EditText supportEditText = activity.getSupportFragmentEditTxt();
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
@@ -79,7 +82,7 @@ public class InputMethodxTest {
         }
 
         // show
-        Runx.runInUI(() -> InputMethodx.delayShowSoftInput(editText));
+        Runx.runInUI(() -> InputMethodx.delayShowSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
@@ -89,7 +92,7 @@ public class InputMethodxTest {
         Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
 
         // show
-        Runx.runInUI(() -> InputMethodx.delayShowSoftInput(editText, 500));
+        Runx.runInUI(() -> InputMethodx.delayShowSoftInput(supportEditText, 500));
         Thread.sleep(500 + 500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
     }
@@ -97,7 +100,7 @@ public class InputMethodxTest {
     @Test
     public void testHideSoftInput() throws InterruptedException {
         final TestActivity activity = activityRule.getActivity();
-        final EditText editTxt = activity.getEditTxt();
+        final EditText supportEditText = activity.getSupportFragmentEditTxt();
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
@@ -107,12 +110,22 @@ public class InputMethodxTest {
         }
 
         // show
-        Runx.runInUI(() -> InputMethodx.showSoftInput(editTxt));
+        Runx.runInUI(() -> InputMethodx.showSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
         // hide
-        Runx.runInUI(() -> InputMethodx.hideSoftInput(editTxt));
+        Runx.runInUI(() -> InputMethodx.hideSoftInput(activity.getSupportFragment()));
+        Thread.sleep(500);
+        Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
+
+        // show
+        Runx.runInUI(() -> InputMethodx.showSoftInput(supportEditText));
+        Thread.sleep(500);
+        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+
+        // hide
+        Runx.runInUI(() -> InputMethodx.hideSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
     }
@@ -120,24 +133,22 @@ public class InputMethodxTest {
     @Test
     public void testMoveCursor() throws InterruptedException {
         final TestActivity activity = activityRule.getActivity();
-        final EditText editTxt = activity.getEditTxt();
+        final EditText originEditText = activity.getSupportFragmentEditTxt();
 
-        Runx.runInUI(() -> InputMethodx.moveCursorToEnd(editTxt));
+        Runx.runInUI(() -> InputMethodx.moveCursorToEnd(originEditText));
         Thread.sleep(100);
-        Assert.assertEquals(editTxt.length(), Selection.getSelectionEnd(editTxt.getText()));
+        Assert.assertEquals(originEditText.length(), Selection.getSelectionEnd(originEditText.getText()));
 
-        Runx.runInUI(() -> InputMethodx.moveCursorToStart(editTxt));
+        Runx.runInUI(() -> InputMethodx.moveCursorToStart(originEditText));
         Thread.sleep(100);
-        Assert.assertEquals(0, Selection.getSelectionEnd(editTxt.getText()));
+        Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.getText()));
 
-        Runx.runInUI(() -> InputMethodx.moveCursorTo(editTxt, editTxt.length() / 2));
+        Runx.runInUI(() -> InputMethodx.moveCursorTo(originEditText, originEditText.length() / 2));
         Thread.sleep(100);
-        Assert.assertEquals(editTxt.length() / 2, Selection.getSelectionEnd(editTxt.getText()));
+        Assert.assertEquals(originEditText.length() / 2, Selection.getSelectionEnd(originEditText.getText()));
     }
 
-    public static class TestActivity extends Activity {
-
-        private EditText editText;
+    public static class TestActivity extends FragmentActivity {
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,19 +156,36 @@ public class InputMethodxTest {
 
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-            editText = new EditText(this);
-            editText.setText("0123456789");
-            setContentView(editText);
+            setContentView(R.layout.at_multi_frame);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.multiFrameAt_frame2, new EditSupportFragment())
+                    .commit();
         }
 
         @NonNull
-        public EditText getEditTxt() {
-            return editText;
+        public Fragment getSupportFragment() {
+            return getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2);
         }
 
         @NonNull
+        public EditText getSupportFragmentEditTxt() {
+            //noinspection ConstantConditions
+            return (EditText) getSupportFragment().getView();
+        }
+
         public View getView() {
             return findViewById(android.R.id.content);
+        }
+    }
+
+    public static class EditSupportFragment extends Fragment {
+        @NonNull
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+            EditText editText = new EditText(getActivity());
+            editText.setText("0123456789");
+            return editText;
         }
     }
 }

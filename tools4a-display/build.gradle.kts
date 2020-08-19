@@ -38,6 +38,7 @@ android {
 
 dependencies {
     api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
+    api("androidx.fragment:fragment:${property("ANDROIDX_FRAGMENT")}")
     api(project(":tools4a-systemproperties"))
 
     testImplementation("junit:junit:${property("JUNIT")}")

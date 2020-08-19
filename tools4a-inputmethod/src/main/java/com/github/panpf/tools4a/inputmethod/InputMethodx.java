@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.github.panpf.tools4a.display.Displayx;
 
@@ -106,6 +107,14 @@ public class InputMethodx {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(currentFocusView.getWindowToken(), 0);
         }
+    }
+
+    /**
+     * Hide soft keyboard
+     */
+    public static void hideSoftInput(@NonNull Fragment fragment) {
+        Activity activity = fragment.getActivity();
+        if (activity != null) hideSoftInput(activity);
     }
 
     /**

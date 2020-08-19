@@ -22,7 +22,9 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.Selection
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
@@ -47,7 +49,7 @@ class InputMethodxTest {
     @Throws(InterruptedException::class)
     fun testShowSoftInput() {
         val activity = activityRule.activity
-        val editText = activity.editTxt
+        val originEditText = activity.supportFragmentEditTxt
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
@@ -57,7 +59,7 @@ class InputMethodxTest {
         }
 
         // show
-        runInUI { editText.showSoftInput() }
+        runInUI { originEditText.showSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
     }
@@ -66,7 +68,7 @@ class InputMethodxTest {
     @Throws(InterruptedException::class)
     fun testDelayShowSoftInput() {
         val activity = activityRule.activity
-        val editText = activity.editTxt
+        val supportEditText = activity.supportFragmentEditTxt
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
@@ -76,7 +78,7 @@ class InputMethodxTest {
         }
 
         // show
-        runInUI { editText.delayShowSoftInput() }
+        runInUI { supportEditText.delayShowSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
 
@@ -86,7 +88,7 @@ class InputMethodxTest {
         Assert.assertFalse(activity.isSoftInputShowing())
 
         // show
-        runInUI { editText.delayShowSoftInput(500) }
+        runInUI { supportEditText.delayShowSoftInput(500) }
         Thread.sleep((500 + 500).toLong())
         Assert.assertTrue(activity.isSoftInputShowing())
     }
@@ -95,7 +97,7 @@ class InputMethodxTest {
     @Throws(InterruptedException::class)
     fun testHideSoftInput() {
         val activity = activityRule.activity
-        val editText = activity.editTxt
+        val supportEditText = activity.supportFragmentEditTxt
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
@@ -105,12 +107,22 @@ class InputMethodxTest {
         }
 
         // show
-        runInUI { editText.showSoftInput() }
+        runInUI { supportEditText.showSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
 
         // hide
-        runInUI { editText.hideSoftInput() }
+        runInUI { activity.supportFragment.hideSoftInput() }
+        Thread.sleep(500)
+        Assert.assertFalse(activity.isSoftInputShowing())
+
+        // show
+        runInUI { supportEditText.showSoftInput() }
+        Thread.sleep(500)
+        Assert.assertTrue(activity.isSoftInputShowing())
+
+        // hide
+        runInUI { supportEditText.hideSoftInput() }
         Thread.sleep(500)
         Assert.assertFalse(activity.isSoftInputShowing())
     }
@@ -119,24 +131,28 @@ class InputMethodxTest {
     @Throws(InterruptedException::class)
     fun testMoveCursor() {
         val activity = activityRule.activity
-        val editText = activity.editTxt
+        val originEditText = activity.supportFragmentEditTxt
 
-        runInUI { editText.moveCursorToEnd() }
+        runInUI { originEditText.moveCursorToEnd() }
         Thread.sleep(100)
-        Assert.assertEquals(editText.length().toLong(), Selection.getSelectionEnd(editText.text).toLong())
+        Assert.assertEquals(originEditText.length().toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runInUI { editText.moveCursorToStart() }
+        runInUI { originEditText.moveCursorToStart() }
         Thread.sleep(100)
-        Assert.assertEquals(0, Selection.getSelectionEnd(editText.text).toLong())
+        Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runInUI { editText.moveCursorTo(editText.length() / 2) }
+        runInUI { originEditText.moveCursorTo(originEditText.length() / 2) }
         Thread.sleep(100)
-        Assert.assertEquals((editText.length() / 2).toLong(), Selection.getSelectionEnd(editText.text).toLong())
+        Assert.assertEquals((originEditText.length() / 2).toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
     }
 
-    class TestActivity : Activity() {
+    class TestActivity : androidx.fragment.app.FragmentActivity() {
 
-        lateinit var editTxt: EditText
+        val supportFragment: androidx.fragment.app.Fragment
+            get() = supportFragmentManager.findFragmentById(R.id.multiFrameAt_frame2)!!
+
+        val supportFragmentEditTxt: EditText
+            get() = supportFragment.view as EditText
 
         val view: View
             get() = findViewById(android.R.id.content)
@@ -146,9 +162,19 @@ class InputMethodxTest {
 
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-            editTxt = EditText(this)
-            editTxt.setText("0123456789")
-            setContentView(editTxt)
+            setContentView(R.layout.at_multi_frame)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.multiFrameAt_frame2, EditSupportFragment())
+                    .commit()
+        }
+    }
+
+    class EditSupportFragment : androidx.fragment.app.Fragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+            val editText = EditText(activity)
+            editText.setText("0123456789")
+            return editText
         }
     }
 }

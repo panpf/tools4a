@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.github.panpf.tools4a.display.Displayx
 
 
@@ -75,13 +76,39 @@ inline fun Context.getDisplayRotation(): Int = Displayx.getRotation(this)
 /**
  * Get the screen rotation angle, 0, 90, 180, 270
  */
+inline fun Fragment.getDisplayRotation(): Int = Displayx.getRotation(this)
+
+/**
+ * Get the screen rotation angle, 0, 90, 180, 270
+ */
 inline fun View.getDisplayRotation(): Int = Displayx.getRotation(this)
+
+
+/**
+ * Return current display orientation
+ */
+inline fun Context.getDisplayOrientation(): Int = Displayx.getOrientation(this)
+
+/**
+ * Return current display orientation
+ */
+inline fun Fragment.getDisplayOrientation(): Int = Displayx.getOrientation(this)
+
+/**
+ * Return current display orientation
+ */
+inline fun View.getDisplayOrientation(): Int = Displayx.getOrientation(this)
 
 
 /**
  * Return true if the current screen orientation is portrait
  */
 inline fun Context.isOrientationPortrait(): Boolean = Displayx.isOrientationPortrait(this)
+
+/**
+ * Return true if the current screen orientation is portrait
+ */
+inline fun Fragment.isOrientationPortrait(): Boolean = Displayx.isOrientationPortrait(this)
 
 /**
  * Return true if the current screen orientation is portrait
@@ -97,6 +124,11 @@ inline fun Context.isOrientationLandscape(): Boolean = Displayx.isOrientationLan
 /**
  * Return true if the current screen orientation is landscape
  */
+inline fun Fragment.isOrientationLandscape(): Boolean = Displayx.isOrientationLandscape(this)
+
+/**
+ * Return true if the current screen orientation is landscape
+ */
 inline fun View.isOrientationLandscape(): Boolean = Displayx.isOrientationLandscape(this)
 
 
@@ -104,6 +136,11 @@ inline fun View.isOrientationLandscape(): Boolean = Displayx.isOrientationLandsc
  * Return true if the current screen orientation is undefined
  */
 inline fun Context.isOrientationUndefined(): Boolean = Displayx.isOrientationUndefined(this)
+
+/**
+ * Return true if the current screen orientation is undefined
+ */
+inline fun Fragment.isOrientationUndefined(): Boolean = Displayx.isOrientationUndefined(this)
 
 /**
  * Return true if the current screen orientation is undefined

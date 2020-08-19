@@ -30,6 +30,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.github.panpf.tools4a.systemproperties.SystemPropertiesx;
 
@@ -37,25 +38,6 @@ public class Displayx {
 
     private Displayx() {
 
-    }
-
-    private static final class NavBarOverrideHolder{
-        @Nullable
-        private static final String navBarOverride;
-
-        static {
-            String navBarOverrideTemp;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                try {
-                    navBarOverrideTemp = SystemPropertiesx.get("qemu.hw.mainkeys");
-                } catch (Throwable e) {
-                    navBarOverrideTemp = null;
-                }
-            } else {
-                navBarOverrideTemp = null;
-            }
-            navBarOverride = navBarOverrideTemp;
-        }
     }
 
 
@@ -147,8 +129,37 @@ public class Displayx {
     /**
      * Get the screen rotation angle, 0, 90, 180, 270
      */
+    public static int getRotation(@NonNull androidx.fragment.app.Fragment fragment) {
+        return getRotation(fragment.requireContext());
+    }
+
+    /**
+     * Get the screen rotation angle, 0, 90, 180, 270
+     */
     public static int getRotation(@NonNull View view) {
         return getRotation(view.getContext());
+    }
+
+
+    /**
+     * Return current display orientation
+     */
+    public static int getOrientation(@NonNull Context context) {
+        return context.getResources().getConfiguration().orientation;
+    }
+
+    /**
+     * Return current display orientation
+     */
+    public static int getOrientation(@NonNull Fragment fragment) {
+        return fragment.requireContext().getResources().getConfiguration().orientation;
+    }
+
+    /**
+     * Return current display orientation
+     */
+    public static int getOrientation(@NonNull View view) {
+        return view.getContext().getResources().getConfiguration().orientation;
     }
 
 
@@ -162,8 +173,15 @@ public class Displayx {
     /**
      * Return true if the current screen orientation is portrait
      */
+    public static boolean isOrientationPortrait(@NonNull Fragment fragment) {
+        return fragment.requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    /**
+     * Return true if the current screen orientation is portrait
+     */
     public static boolean isOrientationPortrait(@NonNull View view) {
-        return isOrientationPortrait(view.getContext());
+        return view.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
 
@@ -177,8 +195,15 @@ public class Displayx {
     /**
      * Return true if the current screen orientation is landscape
      */
+    public static boolean isOrientationLandscape(@NonNull Fragment fragment) {
+        return fragment.requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * Return true if the current screen orientation is landscape
+     */
     public static boolean isOrientationLandscape(@NonNull View view) {
-        return isOrientationLandscape(view.getContext());
+        return view.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
 
@@ -192,8 +217,15 @@ public class Displayx {
     /**
      * Return true if the current screen orientation is undefined
      */
+    public static boolean isOrientationUndefined(@NonNull androidx.fragment.app.Fragment fragment) {
+        return fragment.requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_UNDEFINED;
+    }
+
+    /**
+     * Return true if the current screen orientation is undefined
+     */
     public static boolean isOrientationUndefined(@NonNull View view) {
-        return isOrientationUndefined(view.getContext());
+        return view.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_UNDEFINED;
     }
 
 
@@ -280,4 +312,23 @@ public class Displayx {
 //
 //        return logicalSize.y - appSize.y;
 //    }
+
+    private static final class NavBarOverrideHolder {
+        @Nullable
+        private static final String navBarOverride;
+
+        static {
+            String navBarOverrideTemp;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                try {
+                    navBarOverrideTemp = SystemPropertiesx.get("qemu.hw.mainkeys");
+                } catch (Throwable e) {
+                    navBarOverrideTemp = null;
+                }
+            } else {
+                navBarOverrideTemp = null;
+            }
+            navBarOverride = navBarOverrideTemp;
+        }
+    }
 }

@@ -20,6 +20,7 @@ package com.github.panpf.tools4a.inputmethod.ktx
 
 import android.app.Activity
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.github.panpf.tools4a.inputmethod.InputMethodx
 
 /*
@@ -56,6 +57,11 @@ inline fun EditText.delayShowSoftInput() = InputMethodx.delayShowSoftInput(this)
  * Hide soft keyboard
  */
 inline fun Activity.hideSoftInput() = InputMethodx.hideSoftInput(this)
+
+/**
+ * Hide soft keyboard
+ */
+inline fun Fragment.hideSoftInput() = InputMethodx.hideSoftInput(this)
 
 /**
  * Hide soft keyboard

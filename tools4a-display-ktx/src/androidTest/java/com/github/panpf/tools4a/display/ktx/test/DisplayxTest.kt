@@ -18,9 +18,9 @@
 
 package com.github.panpf.tools4a.display.ktx.test
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Bundle
 import android.util.TypedValue
 import android.view.Surface
 import android.view.View
@@ -28,6 +28,7 @@ import android.view.WindowManager
 import androidx.test.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
+import com.github.panpf.tools4a.display.Displayx
 import com.github.panpf.tools4a.display.ktx.*
 import org.junit.Assert
 import org.junit.Rule
@@ -91,11 +92,19 @@ class DisplayxTest {
     fun testGetRotation() {
         val activity = activityRule.activity
         val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
         when (windowManager.defaultDisplay.rotation) {
             Surface.ROTATION_0 -> Assert.assertEquals(0, activity.getDisplayRotation().toLong())
             Surface.ROTATION_90 -> Assert.assertEquals(90, activity.getDisplayRotation().toLong())
             Surface.ROTATION_180 -> Assert.assertEquals(180, activity.getDisplayRotation().toLong())
             Surface.ROTATION_270 -> Assert.assertEquals(270, activity.getDisplayRotation().toLong())
+        }
+
+        when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_0 -> Assert.assertEquals(0, activity.supportFragment.getDisplayRotation().toLong())
+            Surface.ROTATION_90 -> Assert.assertEquals(90, activity.supportFragment.getDisplayRotation().toLong())
+            Surface.ROTATION_180 -> Assert.assertEquals(180, activity.supportFragment.getDisplayRotation().toLong())
+            Surface.ROTATION_270 -> Assert.assertEquals(270, activity.supportFragment.getDisplayRotation().toLong())
         }
 
         when (windowManager.defaultDisplay.rotation) {
@@ -112,27 +121,45 @@ class DisplayxTest {
 
         when (activity.resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> {
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT.toLong(), activity.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT.toLong(), activity.supportFragment.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT.toLong(), activity.view.getDisplayOrientation().toLong())
                 Assert.assertTrue(activity.isOrientationPortrait())
+                Assert.assertTrue(activity.supportFragment.isOrientationPortrait())
                 Assert.assertTrue(activity.view.isOrientationPortrait())
                 Assert.assertFalse(activity.isOrientationLandscape())
+                Assert.assertFalse(activity.supportFragment.isOrientationLandscape())
                 Assert.assertFalse(activity.view.isOrientationLandscape())
                 Assert.assertFalse(activity.isOrientationUndefined())
+                Assert.assertFalse(activity.supportFragment.isOrientationUndefined())
                 Assert.assertFalse(activity.view.isOrientationUndefined())
             }
             Configuration.ORIENTATION_LANDSCAPE -> {
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE.toLong(), activity.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE.toLong(), activity.supportFragment.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE.toLong(), activity.view.getDisplayOrientation().toLong())
                 Assert.assertFalse(activity.isOrientationPortrait())
+                Assert.assertFalse(activity.supportFragment.isOrientationPortrait())
                 Assert.assertFalse(activity.view.isOrientationPortrait())
                 Assert.assertTrue(activity.isOrientationLandscape())
+                Assert.assertTrue(activity.supportFragment.isOrientationLandscape())
                 Assert.assertTrue(activity.view.isOrientationLandscape())
                 Assert.assertFalse(activity.isOrientationUndefined())
+                Assert.assertFalse(activity.supportFragment.isOrientationUndefined())
                 Assert.assertFalse(activity.view.isOrientationUndefined())
             }
             else -> {
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED.toLong(), activity.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED.toLong(), activity.supportFragment.getDisplayOrientation().toLong())
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED.toLong(), activity.view.getDisplayOrientation().toLong())
                 Assert.assertFalse(activity.isOrientationPortrait())
+                Assert.assertFalse(activity.supportFragment.isOrientationPortrait())
                 Assert.assertFalse(activity.view.isOrientationPortrait())
                 Assert.assertFalse(activity.isOrientationLandscape())
+                Assert.assertFalse(activity.supportFragment.isOrientationLandscape())
                 Assert.assertFalse(activity.view.isOrientationLandscape())
                 Assert.assertTrue(activity.isOrientationUndefined())
+                Assert.assertTrue(activity.supportFragment.isOrientationUndefined())
                 Assert.assertTrue(activity.view.isOrientationUndefined())
             }
         }
@@ -159,9 +186,21 @@ class DisplayxTest {
         }
     }
 
-    class TestActivity : Activity() {
+    class TestActivity : androidx.fragment.app.FragmentActivity() {
+
+        val supportFragment: androidx.fragment.app.Fragment
+            get() = supportFragmentManager.findFragmentById(R.id.multiFrameAt_frame2)!!
 
         val view: View
             get() = findViewById(android.R.id.content)
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.at_multi_frame)
+
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.multiFrameAt_frame2, androidx.fragment.app.Fragment())
+                    .commit()
+        }
     }
 }
