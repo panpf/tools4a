@@ -39,6 +39,7 @@ android {
 dependencies {
     api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
     api("androidx.fragment:fragment:${property("ANDROIDX_FRAGMENT")}")
+    api(project(":tools4a-run"))
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")

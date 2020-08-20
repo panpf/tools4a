@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.util.Pair;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -38,9 +39,12 @@ import androidx.collection.ArrayMap;
 import com.github.panpf.tools4a.fileprovider.FileProviderx;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
+// todo 重构 package 对现在的 api 不满意
 public class Packagex {
 
     private Packagex() {
@@ -115,6 +119,7 @@ public class Packagex {
     /**
      * Return true if the app with the specified packageName is installed
      */
+    // todo 支持 flags ，并使用注解 @ApplicationInfoFlags
     public static boolean isInstalled(@NonNull Context context, @NonNull String packageName) {
         try {
             context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
@@ -135,6 +140,7 @@ public class Packagex {
     /**
      * Get the versionCode of the app for the specified packageName, return to defaultValue if not installed
      */
+    // todo 支持 long versionCode
     public static int getVersionCodeOr(@NonNull Context context, @NonNull String packageName, int defaultValue) {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
@@ -149,14 +155,6 @@ public class Packagex {
 
 
     /**
-     * Get the versionName of the app for the specified packageName
-     */
-    @NonNull
-    public static String getVersionName(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        return context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_META_DATA).versionName;
-    }
-
-    /**
      * Get the versionName of the app for the specified packageName, return to defaultValue if not installed
      */
     @NonNull
@@ -168,8 +166,23 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
+        return packageInfo.versionName != null && !packageInfo.versionName.equals("") ? packageInfo.versionName : defaultValue;
+    }
 
-        return packageInfo.versionName;
+    /**
+     * Get the versionName of the app for the specified packageName, return to null if not installed
+     */
+    @NonNull
+    public static String getVersionNameOrEmpty(@NonNull Context context, @NonNull String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo;
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA);
+        } catch (NameNotFoundException e) {
+            return "";
+        }
+
+        return packageInfo.versionName != null && !packageInfo.versionName.equals("") ? packageInfo.versionName : "";
     }
 
     /**
@@ -185,7 +198,7 @@ public class Packagex {
             return null;
         }
 
-        return packageInfo.versionName;
+        return packageInfo.versionName != null && !packageInfo.versionName.equals("") ? packageInfo.versionName : null;
     }
 
 
@@ -218,7 +231,7 @@ public class Packagex {
      * Return true if it is a system APP
      */
     public static boolean isSystemApp(@NonNull ApplicationInfo applicationInfo) {
-        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
     /**
@@ -226,7 +239,7 @@ public class Packagex {
      */
     public static boolean isSystemApp(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
     /**
@@ -240,7 +253,7 @@ public class Packagex {
             e.printStackTrace();
             return defaultValue;
         }
-        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
 
@@ -428,6 +441,7 @@ public class Packagex {
      *
      * @param acceptPackageType Accepted package type, see {@link AcceptPackageType}
      */
+    // todo 提供 Predicate 可自定义筛选条件
     public static int count(@NonNull Context context, @AcceptPackageType int acceptPackageType) {
         PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> packageInfoList = null;
@@ -625,4 +639,45 @@ public class Packagex {
         return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 .setData(Uri.fromParts("package", packageName, null));
     }
+
+    /**
+     * Return true if it is a test APP
+     */
+    // todo Complete test
+    public static boolean isTestApp(@NonNull PackageInfo packageInfo){
+        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+    }
+
+    /**
+     * Return true if it is a test APP
+     */
+    public static boolean isTestApp(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
+        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
+        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+    }
+
+    /**
+     * Return true if it is a test APP
+     */
+    public static boolean isTestAppOr(@NonNull Context context, @NonNull String packageName, boolean defaultValue) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+    }
+
+//    @IntDef(flag = true, value = {
+//            PackageManager.GET_META_DATA,
+//            PackageManager.GET_SHARED_LIBRARY_FILES,
+//            PackageManager.MATCH_UNINSTALLED_PACKAGES,
+//            PackageManager.MATCH_SYSTEM_ONLY,
+//            PackageManager.MATCH_DISABLED_COMPONENTS,
+//            PackageManager.MATCH_DISABLED_UNTIL_USED_COMPONENTS,
+//    })
+//    @Retention(RetentionPolicy.SOURCE)
+//    public @interface ApplicationInfoFlags {}
 }

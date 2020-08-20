@@ -21,6 +21,7 @@ package com.github.panpf.tools4a.storage.ktx
 import android.content.Context
 import android.os.Environment
 import androidx.annotation.WorkerThread
+import com.github.panpf.tools4a.storage.StorageManagerCompat
 import com.github.panpf.tools4a.storage.StorageVolumeCompat
 import com.github.panpf.tools4a.storage.Storagex
 import java.io.File
@@ -28,6 +29,10 @@ import java.io.File
 /*
  * Storage related extension methods or properties
  */
+
+
+inline fun Context.storageManagerCompat(): StorageManagerCompat = Storagex.storageManagerCompat(this)
+
 
 /* ******************************************* Bytes *******************************************/
 

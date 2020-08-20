@@ -46,6 +46,7 @@ public class AppPackage implements Parcelable {
     public long packageLastModifiedTime;
     public boolean systemApp;
     public boolean enabled;
+    // todo 增加 flag 属性，方便后面直接判断其类型
 
     @SuppressWarnings("WeakerAccess")
     public AppPackage(@NonNull String name, @NonNull String packageName, int versionCode, @NonNull String versionName, @NonNull String packageFilePath,

@@ -20,9 +20,10 @@ package com.github.panpf.tools4a.packages.ktx
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Pair
@@ -80,15 +81,14 @@ inline fun Context.getPackageVersionCodeOr(packageName: String, defaultValue: In
 
 
 /**
- * Get the versionName of the app for the specified packageName
- */
-@Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.getPackageVersionName(packageName: String): String = Packagex.getVersionName(this, packageName)
-
-/**
  * Get the versionName of the app for the specified packageName, return to defaultValue if not installed
  */
 inline fun Context.getPackageVersionNameOr(packageName: String, defaultValue: String): String = Packagex.getVersionNameOr(this, packageName, defaultValue)
+
+/**
+ * Get the versionName of the app for the specified packageName, return to "" if not installed
+ */
+inline fun Context.getPackageVersionNameOrEmpty(packageName: String): String = Packagex.getVersionNameOrEmpty(this, packageName)
 
 /**
  * Get the versionName of the app for the specified packageName, return to null if not installed
@@ -214,3 +214,57 @@ inline fun Context.getAppIconDrawable(packageName: String, versionCode: Int): Dr
  * Get the icon Drawable of the specified apk file
  */
 inline fun Context.getApkIconDrawable(apkFilePath: String): Drawable? = Packagex.getApkIconDrawable(this, apkFilePath)
+
+
+/**
+ * Create an Intent that opens the specified app install page
+ *
+ * @receiver APK file uri
+ */
+@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+inline fun Context.createInstallAppIntent(fileUri: Uri): Intent = Packagex.createInstallAppIntent(fileUri)
+
+/**
+ * Create an Intent that opens the specified app install page
+ */
+@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+inline fun Context.createInstallAppIntent(apkFile: File): Intent = Packagex.createInstallAppIntent(this, apkFile)
+
+/**
+ * Create an Intent that opens the specified app uninstall page
+ *
+ * @receiver App package name
+ */
+@RequiresPermission(Manifest.permission.REQUEST_DELETE_PACKAGES)
+inline fun Context.createUninstallAppIntent(packageName: String): Intent = Packagex.createUninstallAppIntent(packageName)
+
+/**
+ * Create an intent that opens the specified app
+ *
+ * @param packageName App package name
+ */
+inline fun Context.createLaunchAppIntent(packageName: String): Intent? = Packagex.createLaunchAppIntent(this, packageName)
+
+/**
+ * Create an Intent that opens the specified app details page
+ *
+ * @receiver App package name
+ */
+inline fun Context.createAppDetailInSystemIntent(packageName: String): Intent = Packagex.createAppDetailInSystemIntent(packageName)
+
+
+/**
+ * Return true if it is a test APP
+ */
+inline fun PackageInfo.isTestApp(): Boolean = Packagex.isTestApp(this)
+
+/**
+ * Return true if it is a test APP
+ */
+@Throws(PackageManager.NameNotFoundException::class)
+inline fun Context.isTestApp(packageName: String): Boolean = Packagex.isTestApp(this, packageName)
+
+/**
+ * Return true if it is a test APP
+ */
+inline fun Context.isTestAppOr(packageName: String, defaultValue: Boolean): Boolean = Packagex.isTestAppOr(this, packageName, defaultValue)

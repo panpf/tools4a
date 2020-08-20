@@ -17,13 +17,18 @@
 package com.github.panpf.tools4a.packages.test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.provider.Settings;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.github.panpf.tools4a.fileprovider.FileProviderx;
 import com.github.panpf.tools4a.packages.AcceptPackageType;
 import com.github.panpf.tools4a.packages.AppPackage;
 import com.github.panpf.tools4a.packages.Packagex;
@@ -57,8 +62,11 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getContext();
 
         AppPackage appPackage = Premisex.requireNotNull(Packagex.getOne(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF));
-
-        Assert.assertTrue("versionCode: " + appPackage.versionCode, appPackage.versionCode > 0);
+        if (Packagex.isTestApp(context, appPackage.packageName)) {
+            Assert.assertEquals("versionCode: " + appPackage.versionCode, 0, appPackage.versionCode);
+        } else {
+            Assert.assertTrue("versionCode: " + appPackage.versionCode, appPackage.versionCode > 0);
+        }
         Assert.assertEquals(appPackage.versionCode, Packagex.getVersionCode(context, appPackage.packageName));
         Assert.assertEquals(-1, Packagex.getVersionCodeOr(context, appPackage.packageName + "_nonono", -1));
     }
@@ -68,9 +76,11 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getContext();
 
         AppPackage appPackage = Premisex.requireNotNull(Packagex.getOne(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF));
-
-        Assert.assertTrue("versionName: " + appPackage.versionName, Stringx.isSafe(appPackage.versionName));
-        Assert.assertEquals(appPackage.versionName, Packagex.getVersionName(context, appPackage.packageName));
+        if (Packagex.isTestApp(context, appPackage.packageName)) {
+            Assert.assertEquals("versionName: " + appPackage.versionName, "", appPackage.versionName);
+        } else {
+            Assert.assertTrue("versionName: " + appPackage.versionName, Stringx.isSafe(appPackage.versionName));
+        }
         Assert.assertEquals("unknown", Packagex.getVersionNameOr(context, appPackage.packageName + "_nonono", "unknown"));
         Assert.assertNull(Packagex.getVersionNameOrNull(context, appPackage.packageName + "_nonono"));
     }
@@ -81,7 +91,7 @@ public class PackagexTest {
 
         AppPackage selfAppPackage = Premisex.requireNotNull(Packagex.get(context, context.getPackageName()));
 
-        Assert.assertEquals(BuildConfig.APPLICATION_ID, selfAppPackage.packageName);
+        Assert.assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage.packageName);
         Assert.assertTrue("name: " + selfAppPackage.name, Stringx.isSafe(selfAppPackage.name));
         Assert.assertNotNull(selfAppPackage.versionName);
         Assert.assertTrue("versionCode: " + selfAppPackage.versionCode, selfAppPackage.versionCode >= 0);
@@ -579,5 +589,111 @@ public class PackagexTest {
 
         Assert.assertNotNull(Packagex.getApkIconDrawable(context, selfApkFilePath));
         Assert.assertNull(Packagex.getApkIconDrawable(context, selfApkFilePath + "_nonono"));
+    }
+
+    @Test
+    public void testCreateInstallAppIntent() throws PackageManager.NameNotFoundException {
+        Context context = InstrumentationRegistry.getContext();
+
+        File file = Packagex.getPackageApkFile(context, context.getPackageName());
+
+        Intent installAppIntent1 = Packagex.createInstallAppIntent(FileProviderx.getShareFileUri(context, file));
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent1.getAction());
+        Assert.assertEquals(Intent.CATEGORY_DEFAULT, Collectionx.find(installAppIntent1.getCategories(), new Predicate<String>() {
+            @Override
+            public boolean accept(@NonNull String s) {
+                return Stringx.equals(s, Intent.CATEGORY_DEFAULT);
+            }
+        }));
+        Assert.assertEquals(FileProviderx.getShareFileUri(context, file).toString(),
+                Premisex.requireNotNull(installAppIntent1.getData()).toString());
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent1.getType());
+        Assert.assertTrue((installAppIntent1.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
+
+        Intent installAppIntent2 = Packagex.createInstallAppIntent(context, file);
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent2.getAction());
+        Assert.assertNotNull(Collectionx.find(installAppIntent2.getCategories(), new Predicate<String>() {
+            @Override
+            public boolean accept(@NonNull String s) {
+                return Stringx.equals(s, Intent.CATEGORY_DEFAULT);
+            }
+        }));
+        Assert.assertEquals(FileProviderx.getShareFileUri(context, file).toString(),
+                Premisex.requireNotNull(installAppIntent2.getData()).toString());
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent2.getType());
+        Assert.assertTrue((installAppIntent2.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
+
+//        Activityx.safeStart(context, installAppIntent2);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Test
+    public void testCreateUninstallAppIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent uninstallAppIntent = Packagex.createUninstallAppIntent(context.getPackageName());
+        Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.getAction());
+        Assert.assertEquals(Uri.fromParts("package", context.getPackageName(), null).toString(),
+                Premisex.requireNotNull(uninstallAppIntent.getData()).toString());
+
+//        Activityx.safeStart(context, uninstallAppIntent);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Test
+    public void testCreateLaunchAppIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
+        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
+        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+
+        Intent launchAppIntent = Premisex.requireNotNull(Packagex.createLaunchAppIntent(context, webBrowserPackageName));
+        Assert.assertEquals(Intent.ACTION_MAIN, launchAppIntent.getAction());
+        Assert.assertNotNull(Collectionx.find(launchAppIntent.getCategories(), new Predicate<String>() {
+            @Override
+            public boolean accept(@NonNull String s) {
+                return Stringx.equals(s, Intent.CATEGORY_LAUNCHER);
+            }
+        }));
+        Assert.assertEquals(webBrowserPackageName, launchAppIntent.getPackage());
+
+//        Activityx.safeStart(context, launchAppIntent);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Test
+    public void testCreateAppDetailInSystemIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
+        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
+        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+
+        Intent appDetailInSystemIntent = Packagex.createAppDetailInSystemIntent(webBrowserPackageName);
+        Assert.assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.getAction());
+        Assert.assertEquals(Uri.fromParts("package", webBrowserPackageName, null).toString(),
+                Premisex.requireNotNull(appDetailInSystemIntent.getData()).toString());
+
+//        Activityx.safeStart(context, appDetailInSystemIntent);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 }

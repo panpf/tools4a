@@ -40,6 +40,7 @@ android {
 dependencies {
     api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${property("KOTLIN_VERSION")}")
     api(project(":tools4a-packages"))
+    api(project(":tools4a-fileprovider-ktx"))
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")

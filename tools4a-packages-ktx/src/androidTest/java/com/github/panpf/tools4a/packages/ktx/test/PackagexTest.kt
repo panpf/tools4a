@@ -16,15 +16,21 @@
 
 package com.github.panpf.tools4a.packages.ktx.test
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.util.Pair
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import com.github.panpf.tools4a.fileprovider.ktx.getShareFileUri
 import com.github.panpf.tools4a.packages.AcceptPackageType
 import com.github.panpf.tools4a.packages.AppPackage
+import com.github.panpf.tools4a.packages.Packagex
 import com.github.panpf.tools4a.packages.ktx.*
 import com.github.panpf.tools4j.collections.Collectionx
 import com.github.panpf.tools4j.common.Predicate
+import com.github.panpf.tools4j.lang.Stringx
 import com.github.panpf.tools4j.lang.ktx.isSafe
 import com.github.panpf.tools4j.premise.ktx.requireNotNull
 import org.junit.Assert
@@ -48,8 +54,11 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val appPackage = context.getOnePackage(AcceptPackageType.ALL_AND_EXCLUDE_SELF).requireNotNull()
-
-        Assert.assertTrue("versionCode: " + appPackage.versionCode, appPackage.versionCode > 0)
+        if (context.isTestApp(appPackage.packageName)) {
+            Assert.assertEquals("versionCode: " + appPackage.versionCode, 0, appPackage.versionCode)
+        } else {
+            Assert.assertTrue("versionCode: " + appPackage.versionCode, appPackage.versionCode > 0)
+        }
         Assert.assertEquals(appPackage.versionCode.toLong(), context.getPackageVersionCode(appPackage.packageName).toLong())
         Assert.assertEquals(-1, context.getPackageVersionCodeOr(appPackage.packageName + "_nonono", -1).toLong())
     }
@@ -61,8 +70,11 @@ class PackagexTest {
 
         val appPackage = context.getOnePackage(AcceptPackageType.ALL_AND_EXCLUDE_SELF).requireNotNull()
 
-        Assert.assertTrue("versionName: " + appPackage.versionName, appPackage.versionName.isSafe())
-        Assert.assertEquals(appPackage.versionName, context.getPackageVersionName(appPackage.packageName))
+        if (Packagex.isTestApp(context, appPackage.packageName)) {
+            Assert.assertEquals("versionName: " + appPackage.versionName, "", appPackage.versionName)
+        } else {
+            Assert.assertTrue("versionName: " + appPackage.versionName, appPackage.versionName.isSafe())
+        }
         Assert.assertEquals("unknown", context.getPackageVersionNameOr(appPackage.packageName + "_nonono", "unknown"))
         Assert.assertNull(context.getPackageVersionNameOrNull(appPackage.packageName + "_nonono"))
     }
@@ -74,7 +86,7 @@ class PackagexTest {
 
         val selfAppPackage = context.getPackage(context.packageName).requireNotNull()
 
-        Assert.assertEquals(BuildConfig.APPLICATION_ID, selfAppPackage.packageName)
+        Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage.packageName)
         Assert.assertTrue("name: " + selfAppPackage.name, selfAppPackage.name.isSafe())
         Assert.assertNotNull(selfAppPackage.versionName)
         Assert.assertTrue("versionCode: " + selfAppPackage.versionCode, selfAppPackage.versionCode >= 0)
@@ -506,5 +518,96 @@ class PackagexTest {
 
         Assert.assertNotNull(context.getApkIconDrawable(selfApkFilePath))
         Assert.assertNull(context.getApkIconDrawable(selfApkFilePath + "_nonono"))
+    }
+
+    @Test
+    fun testCreateInstallAppIntent() {
+        val context = InstrumentationRegistry.getContext()
+
+        val file = context.getPackageApkFile(context.packageName)
+
+        val installAppIntent1 = context.createInstallAppIntent(context.getShareFileUri(file))
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent1.action)
+        Assert.assertEquals(Intent.CATEGORY_DEFAULT, installAppIntent1.categories.find { s -> s == Intent.CATEGORY_DEFAULT })
+        Assert.assertEquals(context.getShareFileUri(file).toString(),
+                installAppIntent1.data.requireNotNull().toString())
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent1.type)
+        Assert.assertTrue(installAppIntent1.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+
+        val installAppIntent2 = context.createInstallAppIntent(file)
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent2.action)
+        Assert.assertNotNull(installAppIntent2.categories.find { s -> s == Intent.CATEGORY_DEFAULT })
+        Assert.assertEquals(context.getShareFileUri(file).toString(),
+                installAppIntent2.data.requireNotNull().toString())
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent2.type)
+        Assert.assertTrue(installAppIntent2.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+
+        //        Activityx.safeStart(context, installAppIntent2);
+        //        try {
+        //            Thread.sleep(5000);
+        //        } catch (InterruptedException e) {
+        //            e.printStackTrace();
+        //        }
+    }
+
+    @Test
+    fun testCreateUninstallAppIntent() {
+        val context = InstrumentationRegistry.getContext()
+
+        val uninstallAppIntent = context.createUninstallAppIntent(context.packageName)
+        Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.action)
+        Assert.assertEquals(Uri.fromParts("package", context.packageName, null).toString(),
+                uninstallAppIntent.data.requireNotNull().toString())
+
+        //        Activityx.safeStart(context, uninstallAppIntent);
+        //        try {
+        //            Thread.sleep(5000);
+        //        } catch (InterruptedException e) {
+        //            e.printStackTrace();
+        //        }
+    }
+
+    @Test
+    fun testCreateLaunchAppIntent() {
+        val context = InstrumentationRegistry.getContext()
+
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
+        val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
+        val resolveInfo = resolveInfos.firstOrNull().requireNotNull()
+        val webBrowserPackageName = resolveInfo.activityInfo.packageName
+
+        val launchAppIntent = context.createLaunchAppIntent(webBrowserPackageName).requireNotNull()
+        Assert.assertEquals(Intent.ACTION_MAIN, launchAppIntent.action)
+        Assert.assertNotNull(launchAppIntent.categories.find { s -> s == Intent.CATEGORY_LAUNCHER })
+        Assert.assertEquals(webBrowserPackageName, launchAppIntent.getPackage())
+
+        //        Activityx.safeStart(context, launchAppIntent);
+        //        try {
+        //            Thread.sleep(5000);
+        //        } catch (InterruptedException e) {
+        //            e.printStackTrace();
+        //        }
+    }
+
+    @Test
+    fun testCreateAppDetailInSystemIntent() {
+        val context = InstrumentationRegistry.getContext()
+
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
+        val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
+        val resolveInfo = resolveInfos.firstOrNull().requireNotNull()
+        val webBrowserPackageName = resolveInfo.activityInfo.packageName
+
+        val appDetailInSystemIntent = context.createAppDetailInSystemIntent(webBrowserPackageName)
+        Assert.assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.action)
+        Assert.assertEquals(Uri.fromParts("package", webBrowserPackageName, null).toString(),
+                appDetailInSystemIntent.data.requireNotNull().toString())
+
+        //        Activityx.safeStart(context, appDetailInSystemIntent);
+        //        try {
+        //            Thread.sleep(5000);
+        //        } catch (InterruptedException e) {
+        //            e.printStackTrace();
+        //        }
     }
 }

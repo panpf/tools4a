@@ -23,17 +23,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.github.panpf.tools4a.run.Runx;
+
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class Clipboardx {
 
@@ -44,7 +43,7 @@ public class Clipboardx {
      * copy
      */
     public static void copy(@NonNull Context context, @NonNull ClipData clipData) {
-        ((ClipboardManager) systemServiceInUI(context, Context.CLIPBOARD_SERVICE)).setPrimaryClip(clipData);
+        getClipboardManager(context).setPrimaryClip(clipData);
     }
 
 
@@ -302,8 +301,7 @@ public class Clipboardx {
      */
     @Nullable
     public static ClipData get(@NonNull Context context) {
-        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        return ((ClipboardManager) systemServiceInUI(context, Context.CLIPBOARD_SERVICE)).getPrimaryClip();
+        return getClipboardManager(context).getPrimaryClip();
     }
 
     /**
@@ -513,14 +511,14 @@ public class Clipboardx {
      * Add primary clip changed listener
      */
     public static void addPrimaryClipChangedListener(@NonNull Context context, @NonNull ClipboardManager.OnPrimaryClipChangedListener listener) {
-        ((ClipboardManager) systemServiceInUI(context, Context.CLIPBOARD_SERVICE)).addPrimaryClipChangedListener(listener);
+        getClipboardManager(context).addPrimaryClipChangedListener(listener);
     }
 
     /**
      * Remove primary clip changed listener
      */
     public static void removePrimaryClipChangedListener(@NonNull Context context, @NonNull ClipboardManager.OnPrimaryClipChangedListener listener) {
-        ((ClipboardManager) systemServiceInUI(context, Context.CLIPBOARD_SERVICE)).removePrimaryClipChangedListener(listener);
+        getClipboardManager(context).removePrimaryClipChangedListener(listener);
     }
 
 
@@ -530,51 +528,22 @@ public class Clipboardx {
     @RequiresApi(Build.VERSION_CODES.P)
     public static void clear(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ((ClipboardManager) systemServiceInUI(context, Context.CLIPBOARD_SERVICE)).clearPrimaryClip();
+            getClipboardManager(context).clearPrimaryClip();
         }
     }
 
     @NonNull
-    private static <T> T systemServiceInUI(@NonNull final Context context, @NonNull final String serviceName) {
-        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
-            //noinspection unchecked
-            T t = (T) context.getSystemService(serviceName);
-            if (t != null) {
-                return t;
+    private static ClipboardManager getClipboardManager(@NonNull final Context context) {
+        final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
+        return Runx.waitRunInUIResult(() -> {
+            Context nowContext = contextWeakReference.get();
+            if (nowContext == null) throw new IllegalStateException("Context has death");
+            ClipboardManager clipboardManager = (ClipboardManager) nowContext.getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                return clipboardManager;
             } else {
-                throw new IllegalArgumentException("Not found service '" + serviceName + "'");
+                throw new IllegalArgumentException("Not found service '" + Context.CLIPBOARD_SERVICE + "'");
             }
-        } else {
-            final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
-            final Object[] results = new Object[1];
-            final CountDownLatch countDownLatch = new CountDownLatch(1);
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Context nowContext = contextWeakReference.get();
-                    if (nowContext == null) throw new IllegalStateException("Context has death");
-                    //noinspection unchecked
-                    T t = (T) nowContext.getSystemService(serviceName);
-                    if (t != null) {
-                        results[0] = t;
-                    } else {
-                        throw new IllegalArgumentException("Not found service '" + serviceName + "'");
-                    }
-                    countDownLatch.countDown();
-                }
-            });
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //noinspection unchecked
-            T result = (T) results[0];
-            if (result != null) {
-                return result;
-            } else {
-                throw new IllegalArgumentException("return result cannot be null");
-            }
-        }
+        });
     }
 }
