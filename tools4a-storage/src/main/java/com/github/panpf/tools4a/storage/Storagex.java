@@ -402,7 +402,7 @@ public class Storagex {
             if (files != null && files.length > 0) {
                 String lowerCaseSuffix = "/Android/data/".toLowerCase();
                 for (File file : files) {
-                    if (file != null) {
+                    if (file != null) {  // There will be null in the File array returned by the system API
                         String lowerCasePath = file.getPath().toLowerCase();
                         int index = lowerCasePath.indexOf(lowerCaseSuffix);
                         if (index != -1) {
@@ -482,7 +482,7 @@ public class Storagex {
         File[] directorys = getExternalStorageDirectorys(context, ignorePrimary);
         List<File> fileList = new LinkedList<>();
         for (File dir : directorys) {
-            if (dir != null) {
+            if (dir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(new File(dir, childPath));
             }
         }
@@ -499,7 +499,7 @@ public class Storagex {
         File[] directorys = getMountedExternalStorageDirectorys(context, ignorePrimary);
         List<File> fileList = new LinkedList<>();
         for (File dir : directorys) {
-            if (dir != null) {
+            if (dir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(new File(dir, childPath));
             }
         }
@@ -565,7 +565,7 @@ public class Storagex {
         if (externalCacheDirs != null && externalCacheDirs.length > 0) {
             List<File> fileList = new LinkedList<>();
             for (File externalCacheDir : externalCacheDirs) {
-                if (externalCacheDir != null) {
+                if (externalCacheDir != null) {  // There will be null in the File array returned by the system API
                     fileList.add(externalCacheDir);
                 }
             }
@@ -585,7 +585,7 @@ public class Storagex {
         File[] directorys = getAppExternalCacheDirs(context);
         List<File> fileList = new LinkedList<>();
         for (File dir : directorys) {
-            if (dir != null) {
+            if (dir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(new File(dir.getPath().replace(context.getPackageName(), packageName)));
             }
         }
@@ -620,7 +620,7 @@ public class Storagex {
         List<File> fileList = new LinkedList<>();
         File[] externalCacheDirs = getAppExternalCacheDirs(context);
         for (File externalCacheDir : externalCacheDirs) {
-            if (externalCacheDir != null) {
+            if (externalCacheDir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(externalCacheDir);
             }
         }
@@ -638,7 +638,7 @@ public class Storagex {
         List<File> fileList = new LinkedList<>();
         File[] externalCacheDirs = getAppExternalCacheDirs(context, packageName);
         for (File externalCacheDir : externalCacheDirs) {
-            if (externalCacheDir != null) {
+            if (externalCacheDir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(externalCacheDir);
             }
         }
@@ -744,7 +744,7 @@ public class Storagex {
         if (externalFilesDirs != null && externalFilesDirs.length > 0) {
             List<File> fileList = new LinkedList<>();
             for (File externalFileDir : externalFilesDirs) {
-                if (externalFileDir != null) {
+                if (externalFileDir != null) {  // There will be null in the File array returned by the system API
                     fileList.add(externalFileDir);
                 }
             }
@@ -764,7 +764,7 @@ public class Storagex {
         File[] directorys = getAppExternalFilesDirs(context);
         List<File> fileList = new LinkedList<>();
         for (File dir : directorys) {
-            if (dir != null) {
+            if (dir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(new File(dir.getPath().replace(context.getPackageName(), packageName)));
             }
         }
@@ -799,7 +799,7 @@ public class Storagex {
         List<File> fileList = new LinkedList<>();
         File[] externalFilesDirs = getAppExternalFilesDirs(context);
         for (File externalFileDir : externalFilesDirs) {
-            if (externalFileDir != null) {
+            if (externalFileDir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(externalFileDir);
             }
         }
@@ -817,7 +817,7 @@ public class Storagex {
         List<File> fileList = new LinkedList<>();
         File[] externalFilesDirs = getAppExternalFilesDirs(context, packageName);
         for (File externalFileDir : externalFilesDirs) {
-            if (externalFileDir != null) {
+            if (externalFileDir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(externalFileDir);
             }
         }
@@ -923,7 +923,7 @@ public class Storagex {
         if (obbDirs != null && obbDirs.length > 0) {
             List<File> fileList = new LinkedList<>();
             for (File obbDir : obbDirs) {
-                if (obbDir != null) {
+                if (obbDir != null) {   // There will be null in the File array returned by the system API
                     fileList.add(obbDir);
                 }
             }
@@ -943,7 +943,7 @@ public class Storagex {
         File[] directorys = getAppObbDirs(context);
         List<File> fileList = new LinkedList<>();
         for (File dir : directorys) {
-            if (dir != null) {
+            if (dir != null) {  // There will be null in the File array returned by the system API
                 fileList.add(new File(dir.getPath().replace(context.getPackageName(), packageName)));
             }
         }
