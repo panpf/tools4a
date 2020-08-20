@@ -68,7 +68,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.animAlpha(view, 1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
@@ -76,7 +76,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -85,7 +85,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -134,7 +134,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, 0, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
@@ -142,7 +142,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -151,7 +151,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -160,7 +160,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -169,7 +169,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -178,7 +178,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -209,7 +209,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view, 10f, 7, 700, true, invisibleListener);
@@ -217,7 +217,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view, invisibleListener);
@@ -225,7 +225,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view, true);
@@ -233,7 +233,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view, 500L);
@@ -241,7 +241,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500L);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view, 15f);
@@ -249,7 +249,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakeLandscape(view);
@@ -279,7 +279,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view, 10f, 7, 700, true, invisibleListener);
@@ -287,7 +287,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view, invisibleListener);
@@ -295,7 +295,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view, true);
@@ -303,7 +303,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view, 500L);
@@ -311,7 +311,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500L);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view, 15f);
@@ -319,7 +319,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(700);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.shakePortrait(view);
@@ -349,7 +349,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test, true, invisibleListener);
@@ -357,7 +357,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(1000);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -366,7 +366,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(1000);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -375,7 +375,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(1000);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -406,7 +406,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.invisibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
@@ -414,7 +414,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -423,7 +423,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -432,7 +432,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -441,7 +441,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -472,7 +472,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.goneByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
@@ -480,7 +480,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -489,7 +489,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -498,7 +498,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -507,7 +507,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -538,7 +538,7 @@ public class ViewAnimxTest {
             }
         };
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 ViewAnimx.visibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
@@ -546,7 +546,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -555,7 +555,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -564,7 +564,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);
@@ -573,7 +573,7 @@ public class ViewAnimxTest {
         });
         Thread.sleep(500);
 
-        Runx.runInUI(new Runnable() {
+        Runx.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 view.setVisibility(View.VISIBLE);

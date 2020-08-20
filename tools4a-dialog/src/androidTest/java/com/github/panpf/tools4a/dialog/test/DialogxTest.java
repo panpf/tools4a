@@ -25,7 +25,7 @@ public class DialogxTest {
 
     @Test
     public void testSetClickButtonClosable() {
-        Runx.waitRunInUI(() -> {
+        Runx.runOnUIThreadAndWait(() -> {
             TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), true));
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), false));
@@ -34,7 +34,7 @@ public class DialogxTest {
 
     @Test
     public void testShowProgressDialog() {
-        Runx.waitRunInUI(() -> {
+        Runx.runOnUIThreadAndWait(() -> {
             TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
             androidx.fragment.app.Fragment supportFragment = mFragmentActivityTestRule.getActivity()
                     .getSupportFragmentManager()

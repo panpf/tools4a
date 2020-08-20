@@ -97,9 +97,9 @@ public class FragmentxTest {
 
         Assert.assertEquals(Premisex.requireNotNull(Fragmentx.getImplFromParent(supportFragment.getChildFragment(), ImplTestInterface.class)).getClass(), TestImplSupportFragment.class);
 
-        Runx.waitRunInUI(() -> activityTestRule.getActivity().convertChildFragment());
+        Runx.runOnUIThreadAndWait(() -> activityTestRule.getActivity().convertChildFragment());
 
-        TestImplSupportFragment2 supportFragment2 = Runx.waitRunInUIResult(() -> (TestImplSupportFragment2) activityTestRule.getActivity().getSupportFragment());
+        TestImplSupportFragment2 supportFragment2 = Runx.runOnUIThreadAndWaitResult(() -> (TestImplSupportFragment2) activityTestRule.getActivity().getSupportFragment());
 
         Assert.assertEquals(Premisex.requireNotNull(Fragmentx.getImplFromParent(supportFragment2, ImplTestInterface.class)).getClass(), TestActivity.class);
 

@@ -43,8 +43,8 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
-    public static void runInUI(@NonNull Runnable block) {
-        if (isMainThread()) {
+    public static void runOnUIThread(@NonNull Runnable block) {
+        if (isOnTheMainThread()) {
             block.run();
         } else {
             getMainHandler().post(block);
@@ -54,9 +54,8 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
-    // todo 考虑改名字，例如 runInUiWait
-    public static void waitRunInUI(@NonNull final Runnable block) {
-        if (isMainThread()) {
+    public static void runOnUIThreadAndWait(@NonNull final Runnable block) {
+        if (isOnTheMainThread()) {
             block.run();
         } else {
             final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -79,8 +78,8 @@ public class Runx {
      * Execute the specified code block in the main thread
      */
     @NonNull
-    public static <T> T waitRunInUIResult(@NonNull final ResultRunnable<T> block) {
-        if (isMainThread()) {
+    public static <T> T runOnUIThreadAndWaitResult(@NonNull final ResultRunnable<T> block) {
+        if (isOnTheMainThread()) {
             return block.run();
         } else {
             final Object[] results = new Object[1];
@@ -111,8 +110,8 @@ public class Runx {
      * Execute the specified code block in the main thread
      */
     @Nullable
-    public static <T> T waitRunInUINullableResult(@NonNull final ResultNullableRunnable<T> block) {
-        if (isMainThread()) {
+    public static <T> T runOnUIThreadAndWaitNullableResult(@NonNull final ResultNullableRunnable<T> block) {
+        if (isOnTheMainThread()) {
             return block.run();
         } else {
             final Object[] results = new Object[1];
@@ -135,17 +134,24 @@ public class Runx {
     }
 
     /**
-     * Is it the main thread?
+     * Is on the main thread?
      */
-    public static boolean isMainThread() {
+    public static boolean isOnTheMainThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
+    }
+
+    /**
+     * Is on the main process?
+     */
+    public static boolean isOnTheMainProcess(@NonNull Context context) {
+        return context.getPackageName().equals(getTheProcessName(context));
     }
 
     /**
      * Get the name of the current process
      */
     @Nullable
-    public static String getInProcessName(@NonNull Context context) {
+    public static String getTheProcessName(@NonNull Context context) {
         final int myPid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> processInfoList = activityManager.getRunningAppProcesses();
@@ -163,19 +169,12 @@ public class Runx {
      * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
      */
     @Nullable
-    public static String getInProcessNameSuffix(@NonNull Context context) {
-        String processName = getInProcessName(context);
+    public static String getTheProcessNameSuffix(@NonNull Context context) {
+        String processName = getTheProcessName(context);
         if (processName == null) return null;
         String packageName = context.getPackageName();
         int lastIndex = processName.lastIndexOf(packageName, 0);
         return lastIndex != -1 ? processName.substring(lastIndex + packageName.length()) : null;
-    }
-
-    /**
-     * Is in the main process?
-     */
-    public static boolean isMainProcess(@NonNull Context context) {
-        return context.getPackageName().equals(getInProcessName(context));
     }
 
     private static class MainHandlerHolder {

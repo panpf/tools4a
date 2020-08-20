@@ -27,9 +27,9 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.display.ktx.getStatusBarHeight
 import com.github.panpf.tools4a.run.ResultRunnable
-import com.github.panpf.tools4a.run.ktx.runInUI
-import com.github.panpf.tools4a.run.ktx.waitRunInUI
-import com.github.panpf.tools4a.run.ktx.waitRunInUIResult
+import com.github.panpf.tools4a.run.ktx.runOnUIThread
+import com.github.panpf.tools4a.run.ktx.runOnUIThreadAndWait
+import com.github.panpf.tools4a.run.ktx.runOnUIThreadAndWaitResult
 import com.github.panpf.tools4a.view.ktx.*
 import org.junit.Assert
 import org.junit.Rule
@@ -54,49 +54,49 @@ class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT.toLong(), view.layoutParams.width.toLong())
-            runInUI { view.setLayoutWidth(100) }
+            runOnUIThread { view.setLayoutWidth(100) }
             Thread.sleep(100)
             Assert.assertEquals(100, view.layoutParams.width.toLong())
         } finally {
-            runInUI { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
+            runOnUIThread { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
             Thread.sleep(100)
         }
 
-        val newView1 = waitRunInUIResult { View(activity) }
+        val newView1 = runOnUIThreadAndWaitResult { View(activity) }
         Assert.assertNull(newView1.layoutParams)
-        runInUI { newView1.setLayoutWidth(100) }
+        runOnUIThread { newView1.setLayoutWidth(100) }
         Thread.sleep(100)
         Assert.assertNull(newView1.layoutParams)
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT.toLong(), view.layoutParams.height.toLong())
-            runInUI { view.setLayoutHeight(300) }
+            runOnUIThread { view.setLayoutHeight(300) }
             Thread.sleep(100)
             Assert.assertEquals(300, view.layoutParams.height.toLong())
         } finally {
-            runInUI { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
+            runOnUIThread { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
             Thread.sleep(100)
         }
 
-        val newView2 = waitRunInUIResult { View(activity) }
+        val newView2 = runOnUIThreadAndWaitResult { View(activity) }
         Assert.assertNull(newView2.layoutParams)
-        runInUI { newView2.setLayoutHeight(300) }
+        runOnUIThread { newView2.setLayoutHeight(300) }
         Thread.sleep(100)
         Assert.assertNull(newView2.layoutParams)
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT.toLong(), view.layoutParams.width.toLong())
-            runInUI { view.setLayoutWidthOrInitSize(200, 600) }
+            runOnUIThread { view.setLayoutWidthOrInitSize(200, 600) }
             Thread.sleep(100)
             Assert.assertEquals(200, view.layoutParams.width.toLong())
         } finally {
-            runInUI { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
+            runOnUIThread { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
             Thread.sleep(100)
         }
 
-        val newView3 = waitRunInUIResult { View(activity) }
+        val newView3 = runOnUIThreadAndWaitResult { View(activity) }
         Assert.assertNull(newView3.layoutParams)
-        runInUI { newView3.setLayoutWidthOrInitSize(200, 600) }
+        runOnUIThread { newView3.setLayoutWidthOrInitSize(200, 600) }
         Thread.sleep(100)
         Assert.assertNotNull(newView3.layoutParams)
         Assert.assertEquals(200, newView3.layoutParams.width.toLong())
@@ -104,24 +104,24 @@ class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT.toLong(), view.layoutParams.height.toLong())
-            runInUI { view.setLayoutHeightOrInitSize(200, 600) }
+            runOnUIThread { view.setLayoutHeightOrInitSize(200, 600) }
             Thread.sleep(100)
             Assert.assertEquals(600, view.layoutParams.height.toLong())
         } finally {
-            runInUI { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
+            runOnUIThread { view.setLayoutSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) }
             Thread.sleep(100)
         }
 
-        val newView4 = waitRunInUIResult { View(activity) }
+        val newView4 = runOnUIThreadAndWaitResult { View(activity) }
         Assert.assertNull(newView4.layoutParams)
-        runInUI { newView4.setLayoutHeightOrInitSize(200, 600) }
+        runOnUIThread { newView4.setLayoutHeightOrInitSize(200, 600) }
         Thread.sleep(100)
         Assert.assertNotNull(newView4.layoutParams)
         Assert.assertEquals(200, newView4.layoutParams.width.toLong())
         Assert.assertEquals(600, newView4.layoutParams.height.toLong())
 
         Assert.assertEquals(0, (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin.toLong())
-        runInUI { view.setLayoutMarginTop(200) }
+        runOnUIThread { view.setLayoutMarginTop(200) }
         Thread.sleep(100)
         Assert.assertEquals(200, (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin.toLong())
     }
@@ -132,12 +132,12 @@ class ViewxTest {
         val activity = activityRule.activity
         val view = activity.view
 
-        runInUI { view.setLayoutSize(100, 300) }
+        runOnUIThread { view.setLayoutSize(100, 300) }
         Thread.sleep(100)
         Assert.assertEquals(100, view.layoutParams.width.toLong())
         Assert.assertEquals(300, view.layoutParams.height.toLong())
 
-        runInUI {
+        runOnUIThread {
             view.addLayoutWidth(100)
             view.addLayoutHeight(100)
         }
@@ -145,16 +145,16 @@ class ViewxTest {
         Assert.assertEquals(200, view.layoutParams.width.toLong())
         Assert.assertEquals(400, view.layoutParams.height.toLong())
 
-        runInUI { view.addLayoutSize(100, 100) }
+        runOnUIThread { view.addLayoutSize(100, 100) }
         Thread.sleep(100)
         Assert.assertEquals(300, view.layoutParams.width.toLong())
         Assert.assertEquals(500, view.layoutParams.height.toLong())
 
         Assert.assertEquals(0, (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin.toLong())
-        runInUI { view.setLayoutMarginTop(200) }
+        runOnUIThread { view.setLayoutMarginTop(200) }
         Thread.sleep(100)
         Assert.assertEquals(200, (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin.toLong())
-        runInUI { view.addLayoutMarginTop(200) }
+        runOnUIThread { view.addLayoutMarginTop(200) }
         Thread.sleep(100)
         Assert.assertEquals(400, (view.layoutParams as ViewGroup.MarginLayoutParams).topMargin.toLong())
     }
@@ -209,14 +209,14 @@ class ViewxTest {
         val contentView = activity.contentView
         val contentViewChildCount = contentView.childCount
 
-        val childView1 = waitRunInUIResult { activity.inflateLayout(R.layout.at_test, contentView) }
+        val childView1 = runOnUIThreadAndWaitResult { activity.inflateLayout(R.layout.at_test, contentView) }
         Thread.sleep(100)
         Assert.assertNotNull(childView1)
         Assert.assertNull(childView1.parent)
         Assert.assertNotNull(childView1.layoutParams)
         Assert.assertEquals(contentViewChildCount.toLong(), contentView.childCount.toLong())
 
-        val childView2 = waitRunInUIResult(ResultRunnable<View> { activity.inflateLayout(R.layout.at_test, contentView, true).findViewById(R.id.testAt_frame) })
+        val childView2 = runOnUIThreadAndWaitResult(ResultRunnable<View> { activity.inflateLayout(R.layout.at_test, contentView, true).findViewById(R.id.testAt_frame) })
         Thread.sleep(100)
         Assert.assertNotNull(childView2)
         Assert.assertNotNull(childView2.parent)
@@ -224,7 +224,7 @@ class ViewxTest {
         Assert.assertEquals(childView2.parent, contentView)
         Assert.assertEquals((contentViewChildCount + 1).toLong(), contentView.childCount.toLong())
 
-        val childView3 = waitRunInUIResult { activity.inflateLayout(R.layout.at_test) }
+        val childView3 = runOnUIThreadAndWaitResult { activity.inflateLayout(R.layout.at_test) }
         Thread.sleep(100)
         Assert.assertNotNull(childView3)
         Assert.assertNull(childView3.parent)
@@ -237,7 +237,7 @@ class ViewxTest {
         val activity = activityRule.activity
         val contentView = activity.contentView
         val oldTopPadding = contentView.paddingTop
-        waitRunInUI { contentView.addPaddingTopByStatusBarHeight() }
+        runOnUIThreadAndWait { contentView.addPaddingTopByStatusBarHeight() }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertEquals((oldTopPadding + activity.getStatusBarHeight()).toLong(), contentView.paddingTop.toLong())
         } else {

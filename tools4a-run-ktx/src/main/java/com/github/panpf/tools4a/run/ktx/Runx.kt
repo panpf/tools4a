@@ -26,59 +26,64 @@ import com.github.panpf.tools4a.run.Runx
 /**
  * Execute the specified code block in the main thread
  */
-inline fun runInUI(block: Runnable) = Runx.runInUI(block)
+inline fun runOnUIThread(block: Runnable) = Runx.runOnUIThread(block)
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun runInUI(noinline block: () -> Unit) = Runx.runInUI(block)
-
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun waitRunInUI(block: Runnable) = Runx.waitRunInUI(block)
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun waitRunInUI(noinline block: () -> Unit) = Runx.waitRunInUI(block)
+inline fun runOnUIThread(noinline block: () -> Unit) = Runx.runOnUIThread(block)
 
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun <T> waitRunInUIResult(block: ResultRunnable<T>): T = Runx.waitRunInUIResult(block)
+inline fun runOnUIThreadAndWait(block: Runnable) = Runx.runOnUIThreadAndWait(block)
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun <T> waitRunInUIResult(noinline block: () -> T): T = Runx.waitRunInUIResult { block() }
-
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun <T> waitRunInUINullableResult(block: ResultNullableRunnable<T>): T? = Runx.waitRunInUINullableResult(block)
+inline fun runOnUIThreadAndWait(noinline block: () -> Unit) = Runx.runOnUIThreadAndWait(block)
 
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun <T> waitRunInUINullableResult(noinline block: () -> T?): T? = Runx.waitRunInUINullableResult { block() }
+inline fun <T> runOnUIThreadAndWaitResult(block: ResultRunnable<T>): T = Runx.runOnUIThreadAndWaitResult(block)
 
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun <T> runOnUIThreadAndWaitResult(noinline block: () -> T): T = Runx.runOnUIThreadAndWaitResult { block() }
+
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun <T> runOnUIThreadAndWaitNullableResult(block: ResultNullableRunnable<T>): T? = Runx.runOnUIThreadAndWaitNullableResult(block)
+
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun <T> runOnUIThreadAndWaitNullableResult(noinline block: () -> T?): T? = Runx.runOnUIThreadAndWaitNullableResult { block() }
+
+
+/**
+ * Is on the main thread?
+ */
+inline fun isOnTheMainThread(): Boolean = Runx.isOnTheMainThread()
+
+/**
+ * Is on the main process?
+ */
+inline fun Context.isOnTheMainProcess(): Boolean = Runx.isOnTheMainProcess(this)
 
 /**
  * Get the name of the current process
  */
-inline fun Context.getInProcessName(): String? = Runx.getInProcessName(this)
+inline fun Context.getTheProcessName(): String? = Runx.getTheProcessName(this)
 
 /**
  * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
  */
-inline fun Context.getInProcessNameSuffix(): String? = Runx.getInProcessNameSuffix(this)
-
-/**
- * Is in the main process?
- */
-inline fun Context.isMainProcess(): Boolean = Runx.isMainProcess(this)
+inline fun Context.getTheProcessNameSuffix(): String? = Runx.getTheProcessNameSuffix(this)

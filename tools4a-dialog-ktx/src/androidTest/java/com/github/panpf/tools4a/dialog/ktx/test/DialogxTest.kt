@@ -9,7 +9,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.dialog.ktx.setClickButtonClosable
 import com.github.panpf.tools4a.dialog.ktx.showProgressDialog
-import com.github.panpf.tools4a.run.ktx.waitRunInUI
+import com.github.panpf.tools4a.run.ktx.runOnUIThreadAndWait
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,7 @@ class DialogxTest {
 
     @Test
     fun testSetClickButtonClosable() {
-        waitRunInUI {
+        runOnUIThreadAndWait {
             val activity = mFragmentActivityTestRule.activity
             Assert.assertTrue(activity.dialog.setClickButtonClosable(true))
             Assert.assertTrue(activity.dialog.setClickButtonClosable(false))
@@ -32,7 +32,7 @@ class DialogxTest {
 
     @Test
     fun testShowProgressDialog() {
-        waitRunInUI {
+        runOnUIThreadAndWait {
             val activity = mFragmentActivityTestRule.activity
             val supportFragment = mFragmentActivityTestRule.activity.supportFragmentManager.findFragmentById(R.id.content)
 
