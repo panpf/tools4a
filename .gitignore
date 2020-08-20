@@ -6,8 +6,5 @@ local.properties
 build/
 captures/
 .externalNativeBuild
-androidx/
-androidx-ktx/
 CHANGELOG.md
 README.md
-sample/

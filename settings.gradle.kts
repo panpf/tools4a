@@ -1,3 +1,6 @@
+include(":other")
+include(":other-ktx")
+
 include(":tools4a-activity")
 include(":tools4a-activity-ktx")
 
