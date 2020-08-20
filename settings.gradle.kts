@@ -43,6 +43,8 @@ include(":tools4a-packages-ktx")
 include(":tools4a-permission")
 include(":tools4a-permission-ktx")
 
+include(":tools4a-prefsdelegate")
+
 include(":tools4a-rom")
 
 include(":tools4a-run")
