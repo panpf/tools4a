@@ -18,682 +18,1013 @@ package com.github.panpf.tools4a.packages.test;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Settings;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.fileprovider.FileProviderx;
-import com.github.panpf.tools4a.packages.AcceptPackageType;
-import com.github.panpf.tools4a.packages.AppPackage;
+import com.github.panpf.tools4a.packages.PackageFilter;
+import com.github.panpf.tools4a.packages.PackageFilterFlags;
 import com.github.panpf.tools4a.packages.Packagex;
+import com.github.panpf.tools4a.packages.SimplePackageInfo;
 import com.github.panpf.tools4j.collections.Collectionx;
-import com.github.panpf.tools4j.common.Predicate;
+import com.github.panpf.tools4j.collections.Mapx;
+import com.github.panpf.tools4j.io.Filex;
 import com.github.panpf.tools4j.lang.Stringx;
 import com.github.panpf.tools4j.premise.Premisex;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class PackagexTest {
 
     @Test
-    public void testIsInstalled() {
+    public void testIsPackageInstalled() {
         Context context = InstrumentationRegistry.getContext();
 
-        Assert.assertTrue(Packagex.isInstalled(context, context.getPackageName()));
-        Assert.assertFalse(Packagex.isInstalled(context, context.getPackageName() + "_nonono"));
+        assertTrue(Packagex.isPackageInstalled(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertFalse(Packagex.isPackageInstalled(context, context.getPackageName() + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES));
+
+        assertTrue(Packagex.isPackageInstalled(context, context.getPackageName()));
+        assertFalse(Packagex.isPackageInstalled(context, context.getPackageName() + "_nonono"));
     }
 
     @Test
-    public void testGetVersionCode() throws PackageManager.NameNotFoundException {
+    public void testIsSystemPackage() {
         Context context = InstrumentationRegistry.getContext();
 
-        AppPackage appPackage = Premisex.requireNotNull(Packagex.getOne(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF));
-        if (Packagex.isTestApp(context, appPackage.packageName)) {
-            Assert.assertEquals("versionCode: " + appPackage.versionCode, 0, appPackage.versionCode);
-        } else {
-            Assert.assertTrue("versionCode: " + appPackage.versionCode, appPackage.versionCode > 0);
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
+        String selfAppPackageName = context.getPackageName();
+
+        try {
+            assertTrue(Packagex.isSystemPackage(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertFalse(Packagex.isSystemPackage(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            fail();
         }
-        Assert.assertEquals(appPackage.versionCode, Packagex.getVersionCode(context, appPackage.packageName));
-        Assert.assertEquals(-1, Packagex.getVersionCodeOr(context, appPackage.packageName + "_nonono", -1));
+        try {
+            Packagex.isSystemPackage(context, systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        try {
+            assertTrue(Packagex.isSystemPackage(context, systemAppPackageName));
+            assertFalse(Packagex.isSystemPackage(context, selfAppPackageName));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            Packagex.isSystemPackage(context, systemAppPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertTrue(Packagex.isSystemPackageOr(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isSystemPackageOr(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isSystemPackageOr(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, true));
+        assertTrue(Packagex.isSystemPackageOr(context, systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true));
+        assertFalse(Packagex.isSystemPackageOr(context, systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+
+        assertTrue(Packagex.isSystemPackageOr(context, systemAppPackageName, false));
+        assertFalse(Packagex.isSystemPackageOr(context, selfAppPackageName, false));
+        assertFalse(Packagex.isSystemPackageOr(context, selfAppPackageName, true));
+        assertTrue(Packagex.isSystemPackageOr(context, systemAppPackageName + "_nonono", true));
+        assertFalse(Packagex.isSystemPackageOr(context, systemAppPackageName + "_nonono", false));
     }
 
     @Test
-    public void testGetVersionName() throws PackageManager.NameNotFoundException {
+    public void testIsDebuggablePackage() {
         Context context = InstrumentationRegistry.getContext();
 
-        AppPackage appPackage = Premisex.requireNotNull(Packagex.getOne(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF));
-        if (Packagex.isTestApp(context, appPackage.packageName)) {
-            Assert.assertEquals("versionName: " + appPackage.versionName, "", appPackage.versionName);
-        } else {
-            Assert.assertTrue("versionName: " + appPackage.versionName, Stringx.isSafe(appPackage.versionName));
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
+        String userAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_DEBUGGABLE)).packageName;
+        String debuggableAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_DEBUGGABLE)).packageName;
+        String selfAppPackageName = context.getPackageName();
+
+        try {
+            assertFalse(Packagex.isDebuggablePackage(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertFalse(Packagex.isDebuggablePackage(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertTrue(Packagex.isDebuggablePackage(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertTrue(Packagex.isDebuggablePackage(context, debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
         }
-        Assert.assertEquals("unknown", Packagex.getVersionNameOr(context, appPackage.packageName + "_nonono", "unknown"));
-        Assert.assertNull(Packagex.getVersionNameOrNull(context, appPackage.packageName + "_nonono"));
+        try {
+            Packagex.isDebuggablePackage(context, systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            assertFalse(Packagex.isDebuggablePackage(context, systemAppPackageName));
+            assertFalse(Packagex.isDebuggablePackage(context, userAppPackageName));
+            assertTrue(Packagex.isDebuggablePackage(context, selfAppPackageName));
+            assertTrue(Packagex.isDebuggablePackage(context, debuggableAppPackageName));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
+        }
+        try {
+            Packagex.isDebuggablePackage(context, systemAppPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        assertFalse(Packagex.isDebuggablePackageOr(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isDebuggablePackageOr(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isDebuggablePackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true));
+
+        assertFalse(Packagex.isDebuggablePackageOr(context, systemAppPackageName, false));
+        assertFalse(Packagex.isDebuggablePackageOr(context, userAppPackageName, false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, selfAppPackageName, false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, debuggableAppPackageName, false));
+        assertFalse(Packagex.isDebuggablePackageOr(context, selfAppPackageName + "_nonono", false));
+        assertTrue(Packagex.isDebuggablePackageOr(context, selfAppPackageName + "_nonono", true));
+    }
+
+    @Test
+    public void testIsJUnitTestPackage() {
+        Context context = InstrumentationRegistry.getContext();
+
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
+        String userAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+        String junitAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST)).packageName;
+        String selfAppPackageName = context.getPackageName();
+
+        try {
+            assertFalse(Packagex.isJunitTestPackage(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertFalse(Packagex.isJunitTestPackage(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertTrue(Packagex.isJunitTestPackage(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertTrue(Packagex.isJunitTestPackage(context, junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
+        }
+        try {
+            Packagex.isJunitTestPackage(context, systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            assertFalse(Packagex.isJunitTestPackage(context, systemAppPackageName));
+            assertFalse(Packagex.isJunitTestPackage(context, userAppPackageName));
+            assertTrue(Packagex.isJunitTestPackage(context, selfAppPackageName));
+            assertTrue(Packagex.isJunitTestPackage(context, junitAppPackageName));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
+        }
+        try {
+            Packagex.isJunitTestPackage(context, systemAppPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        assertFalse(Packagex.isJunitTestPackageOr(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isJunitTestPackageOr(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertFalse(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true));
+
+        assertFalse(Packagex.isJunitTestPackageOr(context, systemAppPackageName, false));
+        assertFalse(Packagex.isJunitTestPackageOr(context, userAppPackageName, false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName, false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, junitAppPackageName, false));
+        assertFalse(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", false));
+        assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", true));
+    }
+
+    @Test
+    public void testCreateInstallPackageIntent() throws PackageManager.NameNotFoundException {
+        Context context = InstrumentationRegistry.getContext();
+
+        File file = Packagex.getPackageApkFile(context, context.getPackageName());
+
+        Intent installAppIntent1 = Packagex.createInstallPackageIntent(FileProviderx.getShareFileUri(context, file));
+        assertEquals(Intent.ACTION_VIEW, installAppIntent1.getAction());
+        assertEquals(Intent.CATEGORY_DEFAULT, Collectionx.find(installAppIntent1.getCategories(), s -> Stringx.equals(s, Intent.CATEGORY_DEFAULT)));
+        assertEquals(
+                FileProviderx.getShareFileUri(context, file).toString(),
+                Premisex.requireNotNull(installAppIntent1.getData()).toString()
+        );
+        assertEquals("application/vnd.android.package-archive", installAppIntent1.getType());
+        assertTrue((installAppIntent1.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
+
+        Intent installAppIntent2 = Packagex.createInstallPackageIntent(context, file);
+        assertEquals(Intent.ACTION_VIEW, installAppIntent2.getAction());
+        assertNotNull(Collectionx.find(installAppIntent2.getCategories(), s -> Stringx.equals(s, Intent.CATEGORY_DEFAULT)));
+        assertEquals(
+                FileProviderx.getShareFileUri(context, file).toString(),
+                Premisex.requireNotNull(installAppIntent2.getData()).toString()
+        );
+        assertEquals("application/vnd.android.package-archive", installAppIntent2.getType());
+        assertTrue((installAppIntent2.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
+    }
+
+    @Test
+    public void testCreateUninstallPackageIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent uninstallAppIntent = Packagex.createUninstallPackageIntent(context.getPackageName());
+        assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.getAction());
+        assertEquals(
+                Uri.fromParts("package", context.getPackageName(), null).toString(),
+                Premisex.requireNotNull(uninstallAppIntent.getData()).toString()
+        );
+    }
+
+    @Test
+    public void testCreateLaunchPackageIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
+        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
+        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+
+        Intent launchAppIntent = Premisex.requireNotNull(Packagex.createLaunchPackageIntent(context, webBrowserPackageName));
+        assertEquals(Intent.ACTION_MAIN, launchAppIntent.getAction());
+        assertNotNull(Collectionx.find(launchAppIntent.getCategories(), s -> Stringx.equals(s, Intent.CATEGORY_LAUNCHER)));
+        assertEquals(webBrowserPackageName, launchAppIntent.getPackage());
+    }
+
+    @Test
+    public void testCreateApplicationDetailsSettingsIntent() {
+        Context context = InstrumentationRegistry.getContext();
+
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
+        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
+        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+
+        Intent appDetailInSystemIntent = Packagex.createApplicationDetailsSettingsIntent(webBrowserPackageName);
+        assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.getAction());
+        assertEquals(
+                Uri.fromParts("package", webBrowserPackageName, null).toString(),
+                Premisex.requireNotNull(appDetailInSystemIntent.getData()).toString()
+        );
     }
 
     @Test
     public void testGetPackage() throws PackageManager.NameNotFoundException {
         Context context = InstrumentationRegistry.getContext();
 
-        AppPackage selfAppPackage = Premisex.requireNotNull(Packagex.get(context, context.getPackageName()));
+        SimplePackageInfo selfAppPackage = Premisex.requireNotNull(Packagex.getPackage(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage.packageName);
+        assertTrue("name: " + selfAppPackage.name, Stringx.isSafe(selfAppPackage.name));
+        assertNotNull(selfAppPackage.versionName);
+        assertTrue("versionCode: " + selfAppPackage.versionCode, selfAppPackage.versionCode >= 0);
+        assertTrue("packageFilePath: " + selfAppPackage.packageFilePath, Stringx.isSafe(selfAppPackage.packageFilePath));
+        assertTrue("packageSize: " + selfAppPackage.packageSize, selfAppPackage.packageSize >= 0);
+        assertTrue("packageLastModifiedTime: " + selfAppPackage.packageLastModifiedTime, selfAppPackage.packageLastModifiedTime >= 0);
+        assertFalse(selfAppPackage.isSystemPackage());
+        assertTrue(selfAppPackage.enabled);
 
-        Assert.assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage.packageName);
-        Assert.assertTrue("name: " + selfAppPackage.name, Stringx.isSafe(selfAppPackage.name));
-        Assert.assertNotNull(selfAppPackage.versionName);
-        Assert.assertTrue("versionCode: " + selfAppPackage.versionCode, selfAppPackage.versionCode >= 0);
-        Assert.assertTrue("packageFilePath: " + selfAppPackage.packageFilePath, Stringx.isSafe(selfAppPackage.packageFilePath));
-        Assert.assertTrue("packageSize: " + selfAppPackage.packageSize, selfAppPackage.packageSize >= 0);
-        Assert.assertTrue("packageLastModifiedTime: " + selfAppPackage.packageLastModifiedTime, selfAppPackage.packageLastModifiedTime >= 0);
-        Assert.assertFalse(selfAppPackage.systemApp);
-        Assert.assertTrue(selfAppPackage.enabled);
+        SimplePackageInfo selfAppPackage1 = Premisex.requireNotNull(Packagex.getPackage(context, context.getPackageName()));
+        assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage1.packageName);
+        assertTrue("name: " + selfAppPackage1.name, Stringx.isSafe(selfAppPackage1.name));
+        assertNotNull(selfAppPackage1.versionName);
+        assertTrue("versionCode: " + selfAppPackage1.versionCode, selfAppPackage1.versionCode >= 0);
+        assertTrue("packageFilePath: " + selfAppPackage1.packageFilePath, Stringx.isSafe(selfAppPackage1.packageFilePath));
+        assertTrue("packageSize: " + selfAppPackage1.packageSize, selfAppPackage1.packageSize >= 0);
+        assertTrue("packageLastModifiedTime: " + selfAppPackage1.packageLastModifiedTime, selfAppPackage1.packageLastModifiedTime >= 0);
+        assertFalse(selfAppPackage1.isSystemPackage());
+        assertTrue(selfAppPackage1.enabled);
 
-        AppPackage systemAppPackage = Premisex.requireNotNull(Packagex.get(context, Premisex.requireNotNull(Collectionx.find(Packagex.list(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF), new Predicate<AppPackage>() {
-            @Override
-            public boolean accept(@NonNull AppPackage appPackage) {
-                return appPackage.systemApp;
-            }
-        })).packageName));
-        Assert.assertTrue(systemAppPackage.systemApp);
+        SimplePackageInfo systemAppPackage = Premisex.requireNotNull(Packagex.getPackage(context,
+                Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertTrue(systemAppPackage.isSystemPackage());
 
-        Assert.assertNull(Packagex.getOrNull(context, context.getPackageName() + "_nonono"));
+        SimplePackageInfo systemAppPackage1 = Premisex.requireNotNull(Packagex.getPackage(context,
+                Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName));
+        assertTrue(systemAppPackage1.isSystemPackage());
+
+        assertNotNull(Packagex.getPackageOrNull(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNull(Packagex.getPackageOrNull(context, context.getPackageName() + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES));
+
+        assertNotNull(Packagex.getPackageOrNull(context, context.getPackageName()));
+        assertNull(Packagex.getPackageOrNull(context, context.getPackageName() + "_nonono"));
     }
 
     @Test
-    public void testIsSystemApp() throws PackageManager.NameNotFoundException {
+    public void testGetVersionCode() throws PackageManager.NameNotFoundException {
         Context context = InstrumentationRegistry.getContext();
 
-        String systemAppPackageName = Premisex.requireNotNull(Collectionx.find(Packagex.list(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF), new Predicate<AppPackage>() {
-            @Override
-            public boolean accept(@NonNull AppPackage appPackage) {
-                return appPackage.systemApp;
-            }
-        })).packageName;
+        String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+        String selfPackageName = context.getPackageName();
 
-        Assert.assertTrue(Packagex.isSystemApp(context.getPackageManager().getApplicationInfo(systemAppPackageName, 0)));
-        Assert.assertFalse(Packagex.isSystemApp(context.getPackageManager().getApplicationInfo(context.getPackageName(), 0)));
+        assertEquals(0, Packagex.getPackageVersionCode(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNotEquals(0, Packagex.getPackageVersionCode(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        try {
+            Packagex.getPackageVersionCode(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
 
-        Assert.assertTrue(Packagex.isSystemApp(context, systemAppPackageName));
-        Assert.assertTrue(Packagex.isSystemAppOr(context, context.getPackageName() + "_nonono", true));
+        assertEquals(0, Packagex.getPackageVersionCode(context, selfPackageName));
+        assertNotEquals(0, Packagex.getPackageVersionCode(context, userPackageName));
+        try {
+            Packagex.getPackageVersionCode(context, selfPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertEquals(0, Packagex.getPackageVersionCodeOr(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertNotEquals(0, Packagex.getPackageVersionCodeOr(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertNotEquals(-1, Packagex.getPackageVersionCodeOr(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertEquals(-1, Packagex.getPackageVersionCodeOr(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+
+        assertEquals(0, Packagex.getPackageVersionCodeOr(context, selfPackageName, -1));
+        assertNotEquals(0, Packagex.getPackageVersionCodeOr(context, userPackageName, -1));
+        assertNotEquals(-1, Packagex.getPackageVersionCodeOr(context, userPackageName, -1));
+        assertEquals(-1, Packagex.getPackageVersionCodeOr(context, selfPackageName + "_nonono", -1));
     }
 
     @Test
-    public void testListVersionCodePair() throws PackageManager.NameNotFoundException {
+    public void testGetLongVersionCode() throws PackageManager.NameNotFoundException {
+        Context context = InstrumentationRegistry.getContext();
+
+        String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+        String selfPackageName = context.getPackageName();
+
+        assertEquals(0L, Packagex.getPackageLongVersionCode(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNotEquals(0L, Packagex.getPackageLongVersionCode(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        try {
+            Packagex.getPackageLongVersionCode(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertEquals(0L, Packagex.getPackageLongVersionCode(context, selfPackageName));
+        assertNotEquals(0L, Packagex.getPackageLongVersionCode(context, userPackageName));
+        try {
+            Packagex.getPackageLongVersionCode(context, selfPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertEquals(0L, Packagex.getPackageLongVersionCodeOr(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertNotEquals(0L, Packagex.getPackageLongVersionCodeOr(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertNotEquals(-1L, Packagex.getPackageLongVersionCodeOr(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+        assertEquals(-1L, Packagex.getPackageLongVersionCodeOr(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1));
+
+        assertEquals(0L, Packagex.getPackageLongVersionCodeOr(context, selfPackageName, -1));
+        assertNotEquals(0L, Packagex.getPackageLongVersionCodeOr(context, userPackageName, -1));
+        assertNotEquals(-1L, Packagex.getPackageLongVersionCodeOr(context, userPackageName, -1));
+        assertEquals(-1L, Packagex.getPackageLongVersionCodeOr(context, selfPackageName + "_nonono", -1));
+    }
+
+    @Test
+    public void testGetVersionName() {
+        Context context = InstrumentationRegistry.getContext();
+
+        String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+        String selfPackageName = context.getPackageName();
+
+        try {
+            assertEquals("", Packagex.getPackageVersionName(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+            assertNotEquals("", Packagex.getPackageVersionName(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
+        }
+        try {
+            Packagex.getPackageVersionName(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        try {
+            assertEquals("", Packagex.getPackageVersionName(context, selfPackageName));
+            assertNotEquals("", Packagex.getPackageVersionName(context, userPackageName));
+        } catch (PackageManager.NameNotFoundException e) {
+            fail();
+        }
+        try {
+            Packagex.getPackageVersionName(context, selfPackageName + "_nonono");
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertEquals("", Packagex.getPackageVersionNameOr(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"));
+        assertNotEquals("", Packagex.getPackageVersionNameOr(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"));
+        assertEquals("unknown", Packagex.getPackageVersionNameOr(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"));
+
+        assertEquals("", Packagex.getPackageVersionNameOr(context, selfPackageName, "unknown"));
+        assertNotEquals("", Packagex.getPackageVersionNameOr(context, userPackageName, "unknown"));
+        assertEquals("unknown", Packagex.getPackageVersionNameOr(context, selfPackageName + "_nonono", "unknown"));
+
+        assertEquals("", Packagex.getPackageVersionNameOrEmpty(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNotEquals("", Packagex.getPackageVersionNameOrEmpty(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertEquals("", Packagex.getPackageVersionNameOrEmpty(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES));
+
+        assertEquals("", Packagex.getPackageVersionNameOrEmpty(context, selfPackageName));
+        assertNotEquals("", Packagex.getPackageVersionNameOrEmpty(context, userPackageName));
+        assertEquals("", Packagex.getPackageVersionNameOrEmpty(context, selfPackageName + "_nonono"));
+
+        assertNull("", Packagex.getPackageVersionNameOrNull(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNotEquals("", Packagex.getPackageVersionNameOrNull(context, userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertNull("", Packagex.getPackageVersionNameOrNull(context, selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES));
+
+        assertNull("", Packagex.getPackageVersionNameOrNull(context, selfPackageName));
+        assertNotEquals("", Packagex.getPackageVersionNameOrNull(context, userPackageName));
+        assertNull("", Packagex.getPackageVersionNameOrNull(context, selfPackageName + "_nonono"));
+    }
+
+    @Test
+    public void testGetFirstPackage() {
         final Context context = InstrumentationRegistry.getContext();
         final String selfPackageName = context.getPackageName();
-        final Predicate<Pair<String, Integer>> selfPredicate = new Predicate<Pair<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Pair<String, Integer> stringIntegerPair) {
-                return stringIntegerPair.first.equals(selfPackageName);
-            }
-        };
-        final Predicate<Pair<String, Integer>> systemAppPredicate = new Predicate<Pair<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Pair<String, Integer> stringIntegerPair) {
-                return Packagex.isSystemAppOr(context, stringIntegerPair.first, false);
-            }
-        };
-        final Predicate<Pair<String, Integer>> userAppPredicate = new Predicate<Pair<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Pair<String, Integer> stringIntegerPair) {
-                return !Packagex.isSystemAppOr(context, stringIntegerPair.first, false);
-            }
-        };
+        final String errorPackageName = selfPackageName + "_nonono";
+        final String firstPackageName = Packagex.listPackageName(context).get(0);
+        final String firstSystemPackageName = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM).get(0);
 
-        /*
-         * ALL
-         */
-        List<Pair<String, Integer>> allApps = Packagex.listVersionCodePair(context, AcceptPackageType.ALL);
-        int systemAppsInAllSize = Collectionx.count(allApps, systemAppPredicate);
-        Assert.assertTrue(systemAppsInAllSize > 0);
-        int userAppsInAllSize = Collectionx.count(allApps, userAppPredicate);
-        Assert.assertTrue(userAppsInAllSize > 0);
-        Assert.assertNotNull(Collectionx.find(allApps, selfPredicate));
+        assertEquals(selfPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
+                new UniquePackageFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
+        assertNull(Packagex.getFirstPackageByFilter(context,
+                new UniquePackageFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+        assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
+                null, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
 
-        /*
-         * ALL_AND_EXCLUDE_SELF
-         */
-        List<Pair<String, Integer>> allAndExcludeSelfApps = Packagex.listVersionCodePair(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF);
-        Assert.assertEquals(allApps.size(), allAndExcludeSelfApps.size() + 1);
-        Assert.assertNull(Collectionx.find(allAndExcludeSelfApps, selfPredicate));
+        assertEquals(selfPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
+                new UniquePackageFilter(selfPackageName))).packageName);
+        assertNull(Packagex.getFirstPackageByFilter(context, new UniquePackageFilter(errorPackageName)));
+        assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(
+                context, null)).packageName);
 
+        assertEquals(firstSystemPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
+        assertEquals(firstSystemPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
+                PackageFilterFlags.ONLY_SYSTEM)).packageName);
 
-        /*
-         * USER
-         */
-        List<Pair<String, Integer>> userApps = Packagex.listVersionCodePair(context, AcceptPackageType.USER);
-        Assert.assertTrue(Collectionx.all(userApps, userAppPredicate));
-        Assert.assertEquals(userAppsInAllSize, userApps.size());
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(userApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(userApps, selfPredicate));
-        }
-
-        /*
-         * USER_AND_EXCLUDE_SELF
-         */
-        List<Pair<String, Integer>> userAndExcludeSelfApps = Packagex.listVersionCodePair(context, AcceptPackageType.USER_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(userAndExcludeSelfApps, userAppPredicate));
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(userAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * SYSTEM
-         */
-        List<Pair<String, Integer>> systemApps = Packagex.listVersionCodePair(context, AcceptPackageType.SYSTEM);
-        Assert.assertTrue(Collectionx.all(systemApps, systemAppPredicate));
-        Assert.assertEquals(systemAppsInAllSize, systemApps.size());
-        Assert.assertEquals(allApps.size(), userApps.size() + systemApps.size());
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(systemApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(systemApps, selfPredicate));
-        }
-
-        /*
-         * SYSTEM_AND_EXCLUDE_SELF
-         */
-        List<Pair<String, Integer>> systemAndExcludeSelfApps = Packagex.listVersionCodePair(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(systemAndExcludeSelfApps, systemAppPredicate));
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(systemAndExcludeSelfApps, selfPredicate));
-        Assert.assertEquals(allAndExcludeSelfApps.size(), userAndExcludeSelfApps.size() + systemAndExcludeSelfApps.size());
+        assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackage(context,
+                PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
+        assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackage(context)).packageName);
     }
 
     @Test
-    public void testGetVersionCodeMap() throws PackageManager.NameNotFoundException {
+    public void testListPackage() {
+        final Context context = InstrumentationRegistry.getContext();
+
+        int allPackagesSize = Packagex.listPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackagesSize = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackagesSize = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackagesSize > 0);
+        assertTrue(startsWithPackagesSize > 0);
+        assertTrue(notStartsWithPackagesSize > 0);
+        assertTrue(startsWithPackagesSize < allPackagesSize);
+        assertNotEquals(startsWithPackagesSize, notStartsWithPackagesSize);
+        assertEquals(allPackagesSize, startsWithPackagesSize + notStartsWithPackagesSize);
+
+        int allPackagesSize1 = Packagex.listPackageByFilter(context, null, 0).size();
+        int startsWithPackagesSize1 = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("com"), 0).size();
+        int notStartsWithPackagesSize1 = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        assertTrue(allPackagesSize1 > 0);
+        assertTrue(startsWithPackagesSize1 > 0);
+        assertNotEquals(startsWithPackagesSize1, startsWithPackagesSize);
+        assertTrue(notStartsWithPackagesSize1 > 0);
+        assertTrue(startsWithPackagesSize1 < allPackagesSize1);
+        assertNotEquals(startsWithPackagesSize1, notStartsWithPackagesSize1);
+        assertNotEquals(notStartsWithPackagesSize1, notStartsWithPackagesSize);
+        assertEquals(allPackagesSize1, startsWithPackagesSize1 + notStartsWithPackagesSize1);
+
+        int allPackagesSize2 = Packagex.listPackageByFilter(context, null).size();
+        int startsWithPackagesSize2 = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("c")).size();
+        int notStartsWithPackagesSize2 = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        assertTrue(allPackagesSize2 > 0);
+        assertTrue(startsWithPackagesSize2 > 0);
+        assertTrue(notStartsWithPackagesSize2 > 0);
+        assertTrue(startsWithPackagesSize2 < allPackagesSize2);
+        assertNotEquals(startsWithPackagesSize2, notStartsWithPackagesSize2);
+        assertEquals(allPackagesSize2, startsWithPackagesSize2 + notStartsWithPackagesSize2);
+
+
+        int allPackagesSize3 = Packagex.listPackageByFilterFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackagesSize3 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackagesSize3 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackagesSize3 > 0);
+        assertTrue(userPackagesSize3 > 0);
+        assertTrue(systemPackagesSize3 > 0);
+        assertTrue(userPackagesSize3 < allPackagesSize3);
+        assertNotEquals(userPackagesSize3, systemPackagesSize3);
+        assertEquals(allPackagesSize3, userPackagesSize3 + systemPackagesSize3);
+
+        int allPackagesSize4 = Packagex.listPackageByFilterFlags(context, 0, 0).size();
+        int junitTestPackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
+        int nonJunitTestWithPackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        assertTrue(allPackagesSize4 > 0);
+        assertTrue(junitTestPackagesSize4 > 0);
+        assertNotEquals(junitTestPackagesSize4, userPackagesSize3);
+        assertTrue(nonJunitTestWithPackagesSize4 > 0);
+        assertTrue(junitTestPackagesSize4 < allPackagesSize4);
+        assertNotEquals(junitTestPackagesSize4, nonJunitTestWithPackagesSize4);
+        assertNotEquals(nonJunitTestWithPackagesSize4, systemPackagesSize3);
+        assertEquals(allPackagesSize4, junitTestPackagesSize4 + nonJunitTestWithPackagesSize4);
+
+        int allPackagesSize5 = Packagex.listPackageByFilterFlags(context, 0).size();
+        int userPackagesSize5 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER).size();
+        int systemPackagesSize5 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM).size();
+        assertTrue(allPackagesSize5 > 0);
+        assertTrue(userPackagesSize5 > 0);
+        assertTrue(systemPackagesSize5 > 0);
+        assertTrue(userPackagesSize5 < allPackagesSize5);
+        assertNotEquals(userPackagesSize5, systemPackagesSize5);
+        assertEquals(allPackagesSize5, userPackagesSize5 + systemPackagesSize5);
+
+
+        int allPackagesSiz6 = Packagex.listPackage(context, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackagesSiz6 > 0);
+
+        int allPackagesSize7 = Packagex.listPackage(context, 0).size();
+        assertTrue(allPackagesSize7 > 0);
+
+        int allPackagesSize8 = Packagex.listPackage(context).size();
+        assertTrue(allPackagesSize8 > 0);
+        assertEquals(allPackagesSize7, allPackagesSize8);
+    }
+
+    @Test
+    public void testGetVersionCodeMap() {
+        final Context context = InstrumentationRegistry.getContext();
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilter(context, null, 0), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackageVersionCodeMapSize > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize > 0);
+        assertTrue(notStartsWithPackageVersionCodeMapSize > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize < allPackageVersionCodeMapSize);
+        assertNotEquals(startsWithPackageVersionCodeMapSize, notStartsWithPackageVersionCodeMapSize);
+        assertEquals(allPackageVersionCodeMapSize, startsWithPackageVersionCodeMapSize + notStartsWithPackageVersionCodeMapSize);
+
+        int allPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, null, 0).size();
+        int startsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("com"), 0).size();
+        int notStartsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        assertTrue(allPackageVersionCodeMapSize1 > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize1 > 0);
+        assertNotEquals(startsWithPackageVersionCodeMapSize1, startsWithPackageVersionCodeMapSize);
+        assertTrue(notStartsWithPackageVersionCodeMapSize1 > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize1 < allPackageVersionCodeMapSize1);
+        assertNotEquals(startsWithPackageVersionCodeMapSize1, notStartsWithPackageVersionCodeMapSize1);
+        assertNotEquals(notStartsWithPackageVersionCodeMapSize1, notStartsWithPackageVersionCodeMapSize);
+        assertEquals(allPackageVersionCodeMapSize1, startsWithPackageVersionCodeMapSize1 + notStartsWithPackageVersionCodeMapSize1);
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilter(context, null), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, null).size();
+        int startsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("c")).size();
+        int notStartsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        assertTrue(allPackageVersionCodeMapSize2 > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize2 > 0);
+        assertTrue(notStartsWithPackageVersionCodeMapSize2 > 0);
+        assertTrue(startsWithPackageVersionCodeMapSize2 < allPackageVersionCodeMapSize2);
+        assertNotEquals(startsWithPackageVersionCodeMapSize2, notStartsWithPackageVersionCodeMapSize2);
+        assertEquals(allPackageVersionCodeMapSize2, startsWithPackageVersionCodeMapSize2 + notStartsWithPackageVersionCodeMapSize2);
+
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0, 0), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackageVersionCodeMapSize3 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackageVersionCodeMapSize3 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackageVersionCodeMapSize3 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackageVersionCodeMapSize3 > 0);
+        assertTrue(userPackageVersionCodeMapSize3 > 0);
+        assertTrue(systemPackageVersionCodeMapSize3 > 0);
+        assertTrue(userPackageVersionCodeMapSize3 < allPackageVersionCodeMapSize3);
+        assertNotEquals(userPackageVersionCodeMapSize3, systemPackageVersionCodeMapSize3);
+        assertEquals(allPackageVersionCodeMapSize3, userPackageVersionCodeMapSize3 + systemPackageVersionCodeMapSize3);
+
+        int allPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0, 0).size();
+        int junitTestPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
+        int nonJunitTestWithPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        assertTrue(allPackageVersionCodeMapSize4 > 0);
+        assertTrue(junitTestPackageVersionCodeMapSize4 > 0);
+        assertNotEquals(junitTestPackageVersionCodeMapSize4, userPackageVersionCodeMapSize3);
+        assertTrue(nonJunitTestWithPackageVersionCodeMapSize4 > 0);
+        assertTrue(junitTestPackageVersionCodeMapSize4 < allPackageVersionCodeMapSize4);
+        assertNotEquals(junitTestPackageVersionCodeMapSize4, nonJunitTestWithPackageVersionCodeMapSize4);
+        assertNotEquals(nonJunitTestWithPackageVersionCodeMapSize4, systemPackageVersionCodeMapSize3);
+        assertEquals(allPackageVersionCodeMapSize4, junitTestPackageVersionCodeMapSize4 + nonJunitTestWithPackageVersionCodeMapSize4);
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackageVersionCodeMapSize5 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0).size();
+        int userPackageVersionCodeMapSize5 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_USER).size();
+        int systemPackageVersionCodeMapSize5 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM).size();
+        assertTrue(allPackageVersionCodeMapSize5 > 0);
+        assertTrue(userPackageVersionCodeMapSize5 > 0);
+        assertTrue(systemPackageVersionCodeMapSize5 > 0);
+        assertTrue(userPackageVersionCodeMapSize5 < allPackageVersionCodeMapSize5);
+        assertNotEquals(userPackageVersionCodeMapSize5, systemPackageVersionCodeMapSize5);
+        assertEquals(allPackageVersionCodeMapSize5, userPackageVersionCodeMapSize5 + systemPackageVersionCodeMapSize5);
+
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMap(context, 0), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackagesSiz6 = Packagex.listPackageVersionCodeToMap(context, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackagesSiz6 > 0);
+
+        int allPackageVersionCodeMapSize7 = Packagex.listPackageVersionCodeToMap(context, 0).size();
+        assertTrue(allPackageVersionCodeMapSize7 > 0);
+
+        assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMap(context), entry ->
+                Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
+        ));
+        int allPackageVersionCodeMapSize8 = Packagex.listPackageVersionCodeToMap(context).size();
+        assertTrue(allPackageVersionCodeMapSize8 > 0);
+        assertEquals(allPackageVersionCodeMapSize7, allPackageVersionCodeMapSize8);
+    }
+
+    @Test
+    public void testListPackageName() {
+        final Context context = InstrumentationRegistry.getContext();
+
+        assertTrue(Collectionx.all(Packagex.listPackageNameByFilter(context, null, 0), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackageNameSize = Packagex.listPackageNameByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackageNameSize > 0);
+        assertTrue(startsWithPackageNameSize > 0);
+        assertTrue(notStartsWithPackageNameSize > 0);
+        assertTrue(startsWithPackageNameSize < allPackageNameSize);
+        assertNotEquals(startsWithPackageNameSize, notStartsWithPackageNameSize);
+        assertEquals(allPackageNameSize, startsWithPackageNameSize + notStartsWithPackageNameSize);
+
+        int allPackageNameSize1 = Packagex.listPackageNameByFilter(context, null, 0).size();
+        int startsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("com"), 0).size();
+        int notStartsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        assertTrue(allPackageNameSize1 > 0);
+        assertTrue(startsWithPackageNameSize1 > 0);
+        assertNotEquals(startsWithPackageNameSize1, startsWithPackageNameSize);
+        assertTrue(notStartsWithPackageNameSize1 > 0);
+        assertTrue(startsWithPackageNameSize1 < allPackageNameSize1);
+        assertNotEquals(startsWithPackageNameSize1, notStartsWithPackageNameSize1);
+        assertNotEquals(notStartsWithPackageNameSize1, notStartsWithPackageNameSize);
+        assertEquals(allPackageNameSize1, startsWithPackageNameSize1 + notStartsWithPackageNameSize1);
+
+        assertTrue(Collectionx.all(Packagex.listPackageNameByFilter(context, null), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackageNameSize2 = Packagex.listPackageNameByFilter(context, null).size();
+        int startsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("c")).size();
+        int notStartsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        assertTrue(allPackageNameSize2 > 0);
+        assertTrue(startsWithPackageNameSize2 > 0);
+        assertTrue(notStartsWithPackageNameSize2 > 0);
+        assertTrue(startsWithPackageNameSize2 < allPackageNameSize2);
+        assertNotEquals(startsWithPackageNameSize2, notStartsWithPackageNameSize2);
+        assertEquals(allPackageNameSize2, startsWithPackageNameSize2 + notStartsWithPackageNameSize2);
+
+
+        assertTrue(Collectionx.all(Packagex.listPackageNameByFilterFlags(context, 0, 0), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackageNameSize3 = Packagex.listPackageNameByFilterFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackageNameSize3 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackageNameSize3 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackageNameSize3 > 0);
+        assertTrue(userPackageNameSize3 > 0);
+        assertTrue(systemPackageNameSize3 > 0);
+        assertTrue(userPackageNameSize3 < allPackageNameSize3);
+        assertNotEquals(userPackageNameSize3, systemPackageNameSize3);
+        assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
+
+        int allPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, 0, 0).size();
+        int junitTestPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
+        int nonJunitTestWithPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        assertTrue(allPackageNameSize4 > 0);
+        assertTrue(junitTestPackageNameSize4 > 0);
+        assertNotEquals(junitTestPackageNameSize4, userPackageNameSize3);
+        assertTrue(nonJunitTestWithPackageNameSize4 > 0);
+        assertTrue(junitTestPackageNameSize4 < allPackageNameSize4);
+        assertNotEquals(junitTestPackageNameSize4, nonJunitTestWithPackageNameSize4);
+        assertNotEquals(nonJunitTestWithPackageNameSize4, systemPackageNameSize3);
+        assertEquals(allPackageNameSize4, junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4);
+
+        assertTrue(Collectionx.all(Packagex.listPackageNameByFilterFlags(context, 0), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackageNameSize5 = Packagex.listPackageNameByFilterFlags(context, 0).size();
+        int userPackageNameSize5 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_USER).size();
+        int systemPackageNameSize5 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM).size();
+        assertTrue(allPackageNameSize5 > 0);
+        assertTrue(userPackageNameSize5 > 0);
+        assertTrue(systemPackageNameSize5 > 0);
+        assertTrue(userPackageNameSize5 < allPackageNameSize5);
+        assertNotEquals(userPackageNameSize5, systemPackageNameSize5);
+        assertEquals(allPackageNameSize5, userPackageNameSize5 + systemPackageNameSize5);
+
+
+        assertTrue(Collectionx.all(Packagex.listPackageName(context, 0), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackagesSiz6 = Packagex.listPackageName(context, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        assertTrue(allPackagesSiz6 > 0);
+
+        int allPackageNameSize7 = Packagex.listPackageName(context, 0).size();
+        assertTrue(allPackageNameSize7 > 0);
+
+        assertTrue(Collectionx.all(Packagex.listPackageName(context), packageName ->
+                Packagex.isPackageInstalled(context, packageName)
+        ));
+        int allPackageNameSize8 = Packagex.listPackageName(context).size();
+        assertTrue(allPackageNameSize8 > 0);
+        assertEquals(allPackageNameSize7, allPackageNameSize8);
+    }
+
+    @Test
+    public void testCountPackage() {
+        final Context context = InstrumentationRegistry.getContext();
+
+        int allPackageNameSize = Packagex.countPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int startsWithPackageNameSize = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int notStartsWithPackageNameSize = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        assertTrue(allPackageNameSize > 0);
+        assertTrue(startsWithPackageNameSize > 0);
+        assertTrue(notStartsWithPackageNameSize > 0);
+        assertTrue(startsWithPackageNameSize < allPackageNameSize);
+        assertNotEquals(startsWithPackageNameSize, notStartsWithPackageNameSize);
+        assertEquals(allPackageNameSize, startsWithPackageNameSize + notStartsWithPackageNameSize);
+
+        int allPackageNameSize1 = Packagex.countPackageByFilter(context, null, 0);
+        int startsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("com"), 0);
+        int notStartsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("com"), 0);
+        assertTrue(allPackageNameSize1 > 0);
+        assertTrue(startsWithPackageNameSize1 > 0);
+        assertNotEquals(startsWithPackageNameSize1, startsWithPackageNameSize);
+        assertTrue(notStartsWithPackageNameSize1 > 0);
+        assertTrue(startsWithPackageNameSize1 < allPackageNameSize1);
+        assertNotEquals(startsWithPackageNameSize1, notStartsWithPackageNameSize1);
+        assertNotEquals(notStartsWithPackageNameSize1, notStartsWithPackageNameSize);
+        assertEquals(allPackageNameSize1, startsWithPackageNameSize1 + notStartsWithPackageNameSize1);
+
+        int allPackageNameSize2 = Packagex.countPackageByFilter(context, null);
+        int startsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("c"));
+        int notStartsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("c"));
+        assertTrue(allPackageNameSize2 > 0);
+        assertTrue(startsWithPackageNameSize2 > 0);
+        assertTrue(notStartsWithPackageNameSize2 > 0);
+        assertTrue(startsWithPackageNameSize2 < allPackageNameSize2);
+        assertNotEquals(startsWithPackageNameSize2, notStartsWithPackageNameSize2);
+        assertEquals(allPackageNameSize2, startsWithPackageNameSize2 + notStartsWithPackageNameSize2);
+
+
+        int allPackageNameSize3 = Packagex.countPackageByFilterFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int userPackageNameSize3 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int systemPackageNameSize3 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        assertTrue(allPackageNameSize3 > 0);
+        assertTrue(userPackageNameSize3 > 0);
+        assertTrue(systemPackageNameSize3 > 0);
+        assertTrue(userPackageNameSize3 < allPackageNameSize3);
+        assertNotEquals(userPackageNameSize3, systemPackageNameSize3);
+        assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
+
+        int allPackageNameSize4 = Packagex.countPackageByFilterFlags(context, 0, 0);
+        int junitTestPackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0);
+        int nonJunitTestWithPackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0);
+        assertTrue(allPackageNameSize4 > 0);
+        assertTrue(junitTestPackageNameSize4 > 0);
+        assertNotEquals(junitTestPackageNameSize4, userPackageNameSize3);
+        assertTrue(nonJunitTestWithPackageNameSize4 > 0);
+        assertTrue(junitTestPackageNameSize4 < allPackageNameSize4);
+        assertNotEquals(junitTestPackageNameSize4, nonJunitTestWithPackageNameSize4);
+        assertNotEquals(nonJunitTestWithPackageNameSize4, systemPackageNameSize3);
+        assertEquals(allPackageNameSize4, junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4);
+
+        int allPackageNameSize5 = Packagex.countPackageByFilterFlags(context, 0);
+        int userPackageNameSize5 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER);
+        int systemPackageNameSize5 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM);
+        assertTrue(allPackageNameSize5 > 0);
+        assertTrue(userPackageNameSize5 > 0);
+        assertTrue(systemPackageNameSize5 > 0);
+        assertTrue(userPackageNameSize5 < allPackageNameSize5);
+        assertNotEquals(userPackageNameSize5, systemPackageNameSize5);
+        assertEquals(allPackageNameSize5, userPackageNameSize5 + systemPackageNameSize5);
+
+
+        int allPackagesSiz6 = Packagex.countPackage(context, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        assertTrue(allPackagesSiz6 > 0);
+
+        int allPackageNameSize7 = Packagex.countPackage(context, 0);
+        assertTrue(allPackageNameSize7 > 0);
+
+        int allPackageNameSize8 = Packagex.countPackage(context);
+        assertTrue(allPackageNameSize8 > 0);
+        assertEquals(allPackageNameSize7, allPackageNameSize8);
+    }
+
+    @Test
+    public void testGetPackageApkFile() throws PackageManager.NameNotFoundException {
         final Context context = InstrumentationRegistry.getContext();
         final String selfPackageName = context.getPackageName();
-        final Predicate<Map.Entry<String, Integer>> selfPredicate = new Predicate<Map.Entry<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Map.Entry<String, Integer> stringIntegerPair) {
-                return stringIntegerPair.getKey().equals(selfPackageName);
-            }
-        };
-        final Predicate<Map.Entry<String, Integer>> systemAppPredicate = new Predicate<Map.Entry<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Map.Entry<String, Integer> stringIntegerPair) {
-                return Packagex.isSystemAppOr(context, stringIntegerPair.getKey(), false);
-            }
-        };
-        final Predicate<Map.Entry<String, Integer>> userAppPredicate = new Predicate<Map.Entry<String, Integer>>() {
-            @Override
-            public boolean accept(@NonNull Map.Entry<String, Integer> stringIntegerPair) {
-                return !Packagex.isSystemAppOr(context, stringIntegerPair.getKey(), false);
-            }
-        };
+        final String errorPackageName = selfPackageName + "_nonono";
 
-        /*
-         * ALL
-         */
-        Set<Map.Entry<String, Integer>> allApps = Packagex.getVersionCodeMap(context, AcceptPackageType.ALL).entrySet();
-        int systemAppsInAllSize = Collectionx.count(allApps, systemAppPredicate);
-        Assert.assertTrue(systemAppsInAllSize > 0);
-        int userAppsInAllSize = Collectionx.count(allApps, userAppPredicate);
-        Assert.assertTrue(userAppsInAllSize > 0);
-        Assert.assertNotNull(Collectionx.find(allApps, selfPredicate));
-
-        /*
-         * ALL_AND_EXCLUDE_SELF
-         */
-        Set<Map.Entry<String, Integer>> allAndExcludeSelfApps = Packagex.getVersionCodeMap(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF).entrySet();
-        Assert.assertEquals(allApps.size(), allAndExcludeSelfApps.size() + 1);
-        Assert.assertNull(Collectionx.find(allAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * USER
-         */
-        Set<Map.Entry<String, Integer>> userApps = Packagex.getVersionCodeMap(context, AcceptPackageType.USER).entrySet();
-        Assert.assertTrue(Collectionx.all(userApps, userAppPredicate));
-        Assert.assertEquals(userAppsInAllSize, userApps.size());
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(userApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(userApps, selfPredicate));
+        File packageFile = Packagex.getPackageApkFile(context, selfPackageName);
+        assertNotNull(packageFile);
+        assertTrue(packageFile.getPath(), packageFile.exists());
+        try {
+            Packagex.getPackageApkFile(context, errorPackageName);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
 
-        /*
-         * USER_AND_EXCLUDE_SELF
-         */
-        Set<Map.Entry<String, Integer>> userAndExcludeSelfApps = Packagex.getVersionCodeMap(context, AcceptPackageType.USER_AND_EXCLUDE_SELF).entrySet();
-        Assert.assertTrue(Collectionx.all(userAndExcludeSelfApps, userAppPredicate));
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(userAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * SYSTEM
-         */
-        Set<Map.Entry<String, Integer>> systemApps = Packagex.getVersionCodeMap(context, AcceptPackageType.SYSTEM).entrySet();
-        Assert.assertTrue(Collectionx.all(systemApps, systemAppPredicate));
-        Assert.assertEquals(systemAppsInAllSize, systemApps.size());
-        Assert.assertEquals(allApps.size(), userApps.size() + systemApps.size());
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(systemApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(systemApps, selfPredicate));
-        }
-
-        /*
-         * SYSTEM_AND_EXCLUDE_SELF
-         */
-        Set<Map.Entry<String, Integer>> systemAndExcludeSelfApps = Packagex.getVersionCodeMap(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF).entrySet();
-        Assert.assertTrue(Collectionx.all(systemAndExcludeSelfApps, systemAppPredicate));
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(systemAndExcludeSelfApps, selfPredicate));
-        Assert.assertEquals(allAndExcludeSelfApps.size(), userAndExcludeSelfApps.size() + systemAndExcludeSelfApps.size());
-    }
-
-    @Test
-    public void testListPackageName() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
-        final String selfPackageName = context.getPackageName();
-        final Predicate<String> selfPredicate = new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String string) {
-                return string.equals(selfPackageName);
-            }
-        };
-        final Predicate<String> systemAppPredicate = new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String string) {
-                return Packagex.isSystemAppOr(context, string, false);
-            }
-        };
-        final Predicate<String> userAppPredicate = new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String string) {
-                return !Packagex.isSystemAppOr(context, string, false);
-            }
-        };
-
-        /*
-         * ALL
-         */
-        List<String> allApps = Packagex.listPackageName(context, AcceptPackageType.ALL);
-        int systemAppsInAllSize = Collectionx.count(allApps, systemAppPredicate);
-        Assert.assertTrue(systemAppsInAllSize > 0);
-        int userAppsInAllSize = Collectionx.count(allApps, userAppPredicate);
-        Assert.assertTrue(userAppsInAllSize > 0);
-        Assert.assertNotNull(Collectionx.find(allApps, selfPredicate));
-
-        /*
-         * ALL_AND_EXCLUDE_SELF
-         */
-        List<String> allAndExcludeSelfApps = Packagex.listPackageName(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF);
-        Assert.assertEquals(allApps.size(), allAndExcludeSelfApps.size() + 1);
-        Assert.assertNull(Collectionx.find(allAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * USER
-         */
-        List<String> userApps = Packagex.listPackageName(context, AcceptPackageType.USER);
-        Assert.assertTrue(Collectionx.all(userApps, userAppPredicate));
-        Assert.assertEquals(userAppsInAllSize, userApps.size());
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(userApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(userApps, selfPredicate));
-        }
-
-        /*
-         * USER_AND_EXCLUDE_SELF
-         */
-        List<String> userAndExcludeSelfApps = Packagex.listPackageName(context, AcceptPackageType.USER_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(userAndExcludeSelfApps, userAppPredicate));
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(userAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * SYSTEM
-         */
-        List<String> systemApps = Packagex.listPackageName(context, AcceptPackageType.SYSTEM);
-        Assert.assertTrue(Collectionx.all(systemApps, systemAppPredicate));
-        Assert.assertEquals(systemAppsInAllSize, systemApps.size());
-        Assert.assertEquals(allApps.size(), userApps.size() + systemApps.size());
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(systemApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(systemApps, selfPredicate));
-        }
-
-        /*
-         * SYSTEM_AND_EXCLUDE_SELF
-         */
-        List<String> systemAndExcludeSelfApps = Packagex.listPackageName(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(systemAndExcludeSelfApps, systemAppPredicate));
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(systemAndExcludeSelfApps, selfPredicate));
-        Assert.assertEquals(allAndExcludeSelfApps.size(), userAndExcludeSelfApps.size() + systemAndExcludeSelfApps.size());
-    }
-
-    @Test
-    public void testList() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
-        final String selfPackageName = context.getPackageName();
-        final Predicate<AppPackage> selfPredicate = new Predicate<AppPackage>() {
-            @Override
-            public boolean accept(@NonNull AppPackage appPackage) {
-                return appPackage.packageName.equals(selfPackageName);
-            }
-        };
-        final Predicate<AppPackage> systemAppPredicate = new Predicate<AppPackage>() {
-            @Override
-            public boolean accept(@NonNull AppPackage appPackage) {
-                return Packagex.isSystemAppOr(context, appPackage.packageName, false);
-            }
-        };
-        final Predicate<AppPackage> userAppPredicate = new Predicate<AppPackage>() {
-            @Override
-            public boolean accept(@NonNull AppPackage appPackage) {
-                return !Packagex.isSystemAppOr(context, appPackage.packageName, false);
-            }
-        };
-
-        /*
-         * ALL
-         */
-        List<AppPackage> allApps = Packagex.list(context, AcceptPackageType.ALL);
-        int systemAppsInAllSize = Collectionx.count(allApps, systemAppPredicate);
-        Assert.assertTrue(systemAppsInAllSize > 0);
-        int userAppsInAllSize = Collectionx.count(allApps, userAppPredicate);
-        Assert.assertTrue(userAppsInAllSize > 0);
-        Assert.assertNotNull(Collectionx.find(allApps, selfPredicate));
-
-        /*
-         * ALL_AND_EXCLUDE_SELF
-         */
-        List<AppPackage> allAndExcludeSelfApps = Packagex.list(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF);
-        Assert.assertEquals(allApps.size(), allAndExcludeSelfApps.size() + 1);
-        Assert.assertNull(Collectionx.find(allAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * USER
-         */
-        List<AppPackage> userApps = Packagex.list(context, AcceptPackageType.USER);
-        Assert.assertTrue(Collectionx.all(userApps, userAppPredicate));
-        Assert.assertEquals(userAppsInAllSize, userApps.size());
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(userApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(userApps, selfPredicate));
-        }
-
-        /*
-         * USER_AND_EXCLUDE_SELF
-         */
-        List<AppPackage> userAndExcludeSelfApps = Packagex.list(context, AcceptPackageType.USER_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(userAndExcludeSelfApps, userAppPredicate));
-        if (!Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(userApps.size(), userAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(userAndExcludeSelfApps, selfPredicate));
-
-
-        /*
-         * SYSTEM
-         */
-        List<AppPackage> systemApps = Packagex.list(context, AcceptPackageType.SYSTEM);
-        Assert.assertTrue(Collectionx.all(systemApps, systemAppPredicate));
-        Assert.assertEquals(systemAppsInAllSize, systemApps.size());
-        Assert.assertEquals(allApps.size(), userApps.size() + systemApps.size());
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertNotNull(Collectionx.find(systemApps, selfPredicate));
-        } else {
-            Assert.assertNull(Collectionx.find(systemApps, selfPredicate));
-        }
-
-        /*
-         * SYSTEM_AND_EXCLUDE_SELF
-         */
-        List<AppPackage> systemAndExcludeSelfApps = Packagex.list(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF);
-        Assert.assertTrue(Collectionx.all(systemAndExcludeSelfApps, systemAppPredicate));
-        if (Packagex.isSystemApp(context, selfPackageName)) {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size() + 1);
-        } else {
-            Assert.assertEquals(systemApps.size(), systemAndExcludeSelfApps.size());
-        }
-        Assert.assertNull(Collectionx.find(systemAndExcludeSelfApps, selfPredicate));
-        Assert.assertEquals(allAndExcludeSelfApps.size(), userAndExcludeSelfApps.size() + systemAndExcludeSelfApps.size());
-    }
-
-    @Test
-    public void testGetOne() {
-        final Context context = InstrumentationRegistry.getContext();
-
-        AppPackage allAppPackage = Packagex.getOne(context, AcceptPackageType.ALL);
-        Assert.assertNotNull(allAppPackage);
-
-        AppPackage allAndExcludeSelfAppPackage = Packagex.getOne(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF);
-        Assert.assertNotNull(allAndExcludeSelfAppPackage);
-        Assert.assertNotEquals(context.getPackageName(), allAndExcludeSelfAppPackage.packageName);
-
-        AppPackage userAppPackage = Packagex.getOne(context, AcceptPackageType.USER);
-        Assert.assertNotNull(userAppPackage);
-        Assert.assertFalse(Packagex.isSystemAppOr(context, userAppPackage.packageName, false));
-        Assert.assertFalse(Packagex.isSystemAppOr(context, userAppPackage.packageName, false));
-
-        AppPackage userAndExcludeSelfAppPackage = Packagex.getOne(context, AcceptPackageType.USER_AND_EXCLUDE_SELF);
-        Assert.assertNotNull(userAndExcludeSelfAppPackage);
-        Assert.assertFalse(Packagex.isSystemAppOr(context, userAndExcludeSelfAppPackage.packageName, false));
-        Assert.assertNotEquals(context.getPackageName(), userAndExcludeSelfAppPackage.packageName);
-
-        AppPackage systemAppPackage = Packagex.getOne(context, AcceptPackageType.SYSTEM);
-        Assert.assertNotNull(systemAppPackage);
-        Assert.assertTrue(Packagex.isSystemAppOr(context, systemAppPackage.packageName, false));
-
-        AppPackage systemAndExcludeSelfAppPackage = Packagex.getOne(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF);
-        Assert.assertNotNull(systemAndExcludeSelfAppPackage);
-        Assert.assertTrue(Packagex.isSystemAppOr(context, systemAndExcludeSelfAppPackage.packageName, false));
-        Assert.assertNotEquals(context.getPackageName(), systemAndExcludeSelfAppPackage.packageName);
-    }
-
-    @Test
-    public void testCount() {
-        final Context context = InstrumentationRegistry.getContext();
-
-        int allCount = Packagex.count(context, AcceptPackageType.ALL);
-        int allAndExcludeSelfCount = Packagex.count(context, AcceptPackageType.ALL_AND_EXCLUDE_SELF);
-
-        int userCount = Packagex.count(context, AcceptPackageType.USER);
-        int userAndExcludeSelfCount = Packagex.count(context, AcceptPackageType.USER_AND_EXCLUDE_SELF);
-
-        int systemCount = Packagex.count(context, AcceptPackageType.SYSTEM);
-        int systemAndExcludeSelfCount = Packagex.count(context, AcceptPackageType.SYSTEM_AND_EXCLUDE_SELF);
-
-        Assert.assertTrue(allCount > 0);
-        Assert.assertEquals(allCount - 1, allAndExcludeSelfCount);
-        Assert.assertEquals(userCount - 1, userAndExcludeSelfCount);
-        Assert.assertEquals(systemCount, systemAndExcludeSelfCount);
-        Assert.assertEquals(allCount, systemCount + userCount);
-        Assert.assertEquals(allAndExcludeSelfCount, systemAndExcludeSelfCount + userAndExcludeSelfCount);
-    }
-
-    @Test
-    public void testGetPackageFile() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
-
-        File packageFile = Packagex.getPackageApkFile(context, context.getPackageName());
-        Assert.assertTrue(packageFile.getPath(), packageFile.exists());
-
-        Assert.assertNull(Packagex.getPackageApkFileOrNull(context, context.getPackageName() + "_nonono"));
+        File packageFile1 = Packagex.getPackageApkFileOrNull(context, selfPackageName);
+        assertNotNull(packageFile1);
+        assertTrue(packageFile.getPath(), packageFile.exists());
+        assertNull(Packagex.getPackageApkFileOrNull(context, errorPackageName));
     }
 
     @Test
     public void testGetAppSignatureBytes() throws PackageManager.NameNotFoundException {
         final Context context = InstrumentationRegistry.getContext();
+        final String selfPackageName = context.getPackageName();
+        final String errorPackageName = selfPackageName + "_nonono";
 
-        Assert.assertNotNull(Packagex.getAppSignatureBytes(context, context.getPackageName()));
-        Assert.assertNull(Packagex.getAppSignatureBytesOrNull(context, context.getPackageName() + "_nonono"));
+        assertNotNull(Packagex.getPackageSignatureBytes(context, selfPackageName));
+        try {
+            Packagex.getPackageSignatureBytes(context, errorPackageName);
+            fail();
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        assertNotNull(Packagex.getPackageSignatureBytesOrNull(context, selfPackageName));
+        assertNull(Packagex.getPackageSignatureBytesOrNull(context, errorPackageName));
     }
 
     @Test
-    public void testGetAppIcon() {
+    public void testGetPackageIconDrawable() {
+        final Context context = InstrumentationRegistry.getContext();
+        final String selfPackageName = context.getPackageName();
+        final String errorPackageName = selfPackageName + "_nonono";
+
+        try {
+            assertNotNull(Packagex.getPackageIconDrawable(context, selfPackageName, 0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            Packagex.getPackageIconDrawable(context, errorPackageName, 0);
+            fail();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (!(e instanceof PackageManager.NameNotFoundException)) {
+                fail();
+            }
+        }
+        try {
+            Packagex.getPackageIconDrawable(context, selfPackageName, -1);
+            fail();
+        } catch (Exception e) {
+            e.printStackTrace();
+            //noinspection ConstantConditions
+            if (!e.getMessage().contains("versionCode inconsistent")) {
+                fail();
+            }
+        }
+
+        assertNotNull(Packagex.getPackageIconDrawableOrNull(context, selfPackageName, 0));
+        assertNull(Packagex.getPackageIconDrawableOrNull(context, errorPackageName, 0));
+        assertNull(Packagex.getPackageIconDrawableOrNull(context, selfPackageName, -1));
+    }
+
+    @Test
+    public void testGetApkIcon() throws IOException {
         final Context context = InstrumentationRegistry.getContext();
 
-        Assert.assertNotNull(Packagex.getAppIconDrawable(context, context.getPackageName(), 0));
-        Assert.assertNull(Packagex.getAppIconDrawable(context, context.getPackageName() + "_nonono", 0));
-        Assert.assertNull(Packagex.getAppIconDrawable(context, context.getPackageName(), 1));
-    }
+        File selfApkFile = null;
+        try {
+            selfApkFile = Packagex.getPackageApkFile(context, context.getPackageName());
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            fail();
+        }
+        File errorApkFile = new File(context.getFilesDir(), "testGetApkIcon.txt");
+        try {
+            Filex.writeText(Filex.createNewFileOrThrow(errorApkFile), "testGetApkIcon");
 
-    @Test
-    public void testGetApkIcon() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
-
-        String selfApkFilePath = Packagex.getPackageApkFile(context, context.getPackageName()).getPath();
-
-        Assert.assertNotNull(Packagex.getApkIconDrawable(context, selfApkFilePath));
-        Assert.assertNull(Packagex.getApkIconDrawable(context, selfApkFilePath + "_nonono"));
-    }
-
-    @Test
-    public void testCreateInstallAppIntent() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
-
-        File file = Packagex.getPackageApkFile(context, context.getPackageName());
-
-        Intent installAppIntent1 = Packagex.createInstallAppIntent(FileProviderx.getShareFileUri(context, file));
-        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent1.getAction());
-        Assert.assertEquals(Intent.CATEGORY_DEFAULT, Collectionx.find(installAppIntent1.getCategories(), new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String s) {
-                return Stringx.equals(s, Intent.CATEGORY_DEFAULT);
+            try {
+                assertNotNull(Packagex.getApkIconDrawable(context, selfApkFile));
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail();
             }
-        }));
-        Assert.assertEquals(FileProviderx.getShareFileUri(context, file).toString(),
-                Premisex.requireNotNull(installAppIntent1.getData()).toString());
-        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent1.getType());
-        Assert.assertTrue((installAppIntent1.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
-
-        Intent installAppIntent2 = Packagex.createInstallAppIntent(context, file);
-        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent2.getAction());
-        Assert.assertNotNull(Collectionx.find(installAppIntent2.getCategories(), new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String s) {
-                return Stringx.equals(s, Intent.CATEGORY_DEFAULT);
+            try {
+                Packagex.getApkIconDrawable(context, errorApkFile);
+                fail();
+            } catch (Exception e) {
+                e.printStackTrace();
+                //noinspection ConstantConditions
+                if (!e.getMessage().contains("Apk parsing error")) {
+                    fail();
+                }
             }
-        }));
-        Assert.assertEquals(FileProviderx.getShareFileUri(context, file).toString(),
-                Premisex.requireNotNull(installAppIntent2.getData()).toString());
-        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent2.getType());
-        Assert.assertTrue((installAppIntent2.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION) != 0);
 
-//        Activityx.safeStart(context, installAppIntent2);
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+            assertNotNull(Packagex.getApkIconDrawableOrNull(context, selfApkFile));
+            assertNull(Packagex.getApkIconDrawableOrNull(context, errorApkFile));
+        } finally {
+            Filex.deleteRecursively(errorApkFile);
+        }
     }
 
-    @Test
-    public void testCreateUninstallAppIntent() {
-        Context context = InstrumentationRegistry.getContext();
+    private static class UniquePackageFilter implements PackageFilter {
 
-        Intent uninstallAppIntent = Packagex.createUninstallAppIntent(context.getPackageName());
-        Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.getAction());
-        Assert.assertEquals(Uri.fromParts("package", context.getPackageName(), null).toString(),
-                Premisex.requireNotNull(uninstallAppIntent.getData()).toString());
+        @NonNull
+        private final String packageName;
 
-//        Activityx.safeStart(context, uninstallAppIntent);
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        public UniquePackageFilter(@NonNull String packageName) {
+            this.packageName = packageName;
+        }
+
+        @Override
+        public int getPackageInfoFlags() {
+            return 0;
+        }
+
+        @Override
+        public boolean accept(@NonNull PackageInfo packageInfo) {
+            return packageInfo.packageName.equals(packageName);
+        }
     }
 
-    @Test
-    public void testCreateLaunchAppIntent() {
-        Context context = InstrumentationRegistry.getContext();
+    private static class StartsWithPackageFilter implements PackageFilter {
 
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
-        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
-        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
-        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+        @NonNull
+        private final String startsWith;
 
-        Intent launchAppIntent = Premisex.requireNotNull(Packagex.createLaunchAppIntent(context, webBrowserPackageName));
-        Assert.assertEquals(Intent.ACTION_MAIN, launchAppIntent.getAction());
-        Assert.assertNotNull(Collectionx.find(launchAppIntent.getCategories(), new Predicate<String>() {
-            @Override
-            public boolean accept(@NonNull String s) {
-                return Stringx.equals(s, Intent.CATEGORY_LAUNCHER);
-            }
-        }));
-        Assert.assertEquals(webBrowserPackageName, launchAppIntent.getPackage());
+        public StartsWithPackageFilter(@NonNull String startsWith) {
+            this.startsWith = startsWith;
+        }
 
-//        Activityx.safeStart(context, launchAppIntent);
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        @Override
+        public int getPackageInfoFlags() {
+            return 0;
+        }
+
+        @Override
+        public boolean accept(@NonNull PackageInfo packageInfo) {
+            return packageInfo.packageName.startsWith(startsWith);
+        }
     }
 
-    @Test
-    public void testCreateAppDetailInSystemIntent() {
-        Context context = InstrumentationRegistry.getContext();
+    private static class NotStartsWithPackageFilter implements PackageFilter {
 
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
-        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
-        ResolveInfo resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos));
-        String webBrowserPackageName = resolveInfo.activityInfo.packageName;
+        @NonNull
+        private final String startsWith;
 
-        Intent appDetailInSystemIntent = Packagex.createAppDetailInSystemIntent(webBrowserPackageName);
-        Assert.assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.getAction());
-        Assert.assertEquals(Uri.fromParts("package", webBrowserPackageName, null).toString(),
-                Premisex.requireNotNull(appDetailInSystemIntent.getData()).toString());
+        public NotStartsWithPackageFilter(@NonNull String startsWith) {
+            this.startsWith = startsWith;
+        }
 
-//        Activityx.safeStart(context, appDetailInSystemIntent);
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        @Override
+        public int getPackageInfoFlags() {
+            return 0;
+        }
+
+        @Override
+        public boolean accept(@NonNull PackageInfo packageInfo) {
+            return !packageInfo.packageName.startsWith(startsWith);
+        }
     }
 }

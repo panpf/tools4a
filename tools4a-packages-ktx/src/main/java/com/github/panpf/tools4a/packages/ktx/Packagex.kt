@@ -19,18 +19,16 @@
 package com.github.panpf.tools4a.packages.ktx
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Pair
 import androidx.annotation.RequiresPermission
-import com.github.panpf.tools4a.packages.AcceptPackageType
-import com.github.panpf.tools4a.packages.AppPackage
-import com.github.panpf.tools4a.packages.Packagex
+import androidx.collection.ArrayMap
+import com.github.panpf.tools4a.packages.*
 import java.io.File
 
 
@@ -39,232 +37,446 @@ import java.io.File
  */
 
 
+/* ************************************* is ***************************************** */
+
+
 /**
- * Request to install apk
- * @return false: Request failed
+ * Return true if the package with the specified packageName is installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-@RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-inline fun Context.requestInstallPackage(apkFileUri: Uri): Boolean = Packagex.requestInstall(this, apkFileUri)
+inline fun Context.isPackageInstalled(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Boolean = Packagex.isPackageInstalled(this, packageName, packageInfoFlags)
+
+/**
+ * Return true if the package with the specified packageName is the system package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+@Throws(PackageManager.NameNotFoundException::class)
+inline fun Context.isSystemPackage(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Boolean = Packagex.isSystemPackage(this, packageName, packageInfoFlags)
+
+/**
+ * Return true if the package with the specified packageName is the system package, return to defaultValue if not installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.isSystemPackageOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: Boolean = false
+): Boolean = Packagex.isSystemPackageOr(this, packageName, packageInfoFlags, defaultValue)
+
+/**
+ * Return true if the package with the specified packageName is the debuggable package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+@Throws(PackageManager.NameNotFoundException::class)
+inline fun Context.isDebuggablePackage(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Boolean = Packagex.isDebuggablePackage(this, packageName, packageInfoFlags)
+
+/**
+ * Return true if the package with the specified packageName is the debuggable package, return to defaultValue if not installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.isDebuggablePackageOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: Boolean = false
+): Boolean = Packagex.isDebuggablePackageOr(this, packageName, packageInfoFlags, defaultValue)
+
+/**
+ * Return true if the package with the specified packageName is the junit test package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+@Throws(PackageManager.NameNotFoundException::class)
+inline fun Context.isJunitTestPackage(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Boolean = Packagex.isJunitTestPackage(this, packageName, packageInfoFlags)
+
+/**
+ * Return true if the package with the specified packageName is the junit test package, return to defaultValue if not installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.isJunitTestPackageOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: Boolean = false
+): Boolean = Packagex.isJunitTestPackageOr(this, packageName, packageInfoFlags, defaultValue)
+
+
+/* ************************************* intent ***************************************** */
+
+
+/**
+ * Create an Intent that opens the specified package install page
+ *
+ * @receiver APK file uri
+ */
+@SuppressLint("InlinedApi")
+@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+inline fun Context.createInstallPackageIntent(fileUri: Uri): Intent = Packagex.createInstallPackageIntent(fileUri)
+
+/**
+ * Create an Intent that opens the specified package install page
+ */
+@SuppressLint("InlinedApi")
+@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+inline fun Context.createInstallPackageIntent(apkFile: File): Intent = Packagex.createInstallPackageIntent(this, apkFile)
+
+/**
+ * Create an Intent that opens the specified package uninstall page
+ *
+ * @receiver package name
+ */
+@SuppressLint("InlinedApi")
+@RequiresPermission(Manifest.permission.REQUEST_DELETE_PACKAGES)
+inline fun Context.createUninstallPackageIntent(packageName: String): Intent = Packagex.createUninstallPackageIntent(packageName)
+
+/**
+ * Create an intent that opens the specified package
+ *
+ * @param packageName package name
+ */
+inline fun Context.createLaunchPackageIntent(packageName: String): Intent? = Packagex.createLaunchPackageIntent(this, packageName)
+
+/**
+ * Create an Intent that opens the specified package details page
+ *
+ * @receiver package name
+ */
+inline fun Context.createApplicationDetailsSettingsIntent(packageName: String): Intent = Packagex.createApplicationDetailsSettingsIntent(packageName)
+
+
+/* ************************************* install/uninstall ***************************************** */
+
 
 /**
  * Request to install apk
  * @return false: Request failed
  */
+@SuppressLint("InlinedApi")
 @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-inline fun Context.requestInstallPackage(apkFile: File): Boolean = Packagex.requestInstall(this, apkFile)
-
+inline fun Context.requestInstallPackage(apkFileUri: Uri): Boolean = Packagex.requestInstallPackage(this, apkFileUri)
 
 /**
- * Request to uninstall app
+ * Request to install apk
  * @return false: Request failed
  */
+@SuppressLint("InlinedApi")
+@RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
+inline fun Context.requestInstallPackage(apkFile: File): Boolean = Packagex.requestInstallPackage(this, apkFile)
+
+/**
+ * Request to uninstall package
+ * @return false: Request failed
+ */
+@SuppressLint("InlinedApi")
 @RequiresPermission(value = Manifest.permission.REQUEST_DELETE_PACKAGES, conditional = true)
-inline fun Context.requestUninstallPackage(packageName: String): Boolean = Packagex.requestUninstall(this, packageName)
+inline fun Context.requestUninstallPackage(packageName: String): Boolean = Packagex.requestUninstallPackage(this, packageName)
+
+
+/* ************************************* get ***************************************** */
 
 
 /**
- * Return true if the app with the specified packageName is installed
+ * Get information about the package with the specified packageName
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.isPackageInstalled(packageName: String): Boolean = Packagex.isInstalled(this, packageName)
-
+inline fun Context.getPackage(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): SimplePackageInfo = Packagex.getPackage(this, packageName, packageInfoFlags)
 
 /**
- * Get the versionCode of the app for the specified packageName
+ * Get information about the package with the specified packageName, return to null if not installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.getPackageOrNull(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): SimplePackageInfo? = Packagex.getPackageOrNull(this, packageName, packageInfoFlags)
+
+/**
+ * Get the versionCode of the package for the specified packageName
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.getPackageVersionCode(packageName: String): Int = Packagex.getVersionCode(this, packageName)
+inline fun Context.getPackageVersionCode(packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Int = Packagex.getPackageVersionCode(this, packageName, packageInfoFlags)
+
 
 /**
- * Get the versionCode of the app for the specified packageName, return to defaultValue if not installed
+ * Get the versionCode of the package for the specified packageName, return to defaultValue if not installed
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.getPackageVersionCodeOr(packageName: String, defaultValue: Int): Int = Packagex.getVersionCodeOr(this, packageName, defaultValue)
-
-
-/**
- * Get the versionName of the app for the specified packageName, return to defaultValue if not installed
- */
-inline fun Context.getPackageVersionNameOr(packageName: String, defaultValue: String): String = Packagex.getVersionNameOr(this, packageName, defaultValue)
+inline fun Context.getPackageVersionCodeOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: Int = 0
+): Int = Packagex.getPackageVersionCodeOr(this, packageName, packageInfoFlags, defaultValue)
 
 /**
- * Get the versionName of the app for the specified packageName, return to "" if not installed
- */
-inline fun Context.getPackageVersionNameOrEmpty(packageName: String): String = Packagex.getVersionNameOrEmpty(this, packageName)
-
-/**
- * Get the versionName of the app for the specified packageName, return to null if not installed
- */
-inline fun Context.getPackageVersionNameOrNull(packageName: String): String? = Packagex.getVersionNameOrNull(this, packageName)
-
-
-/**
- * Get information about the app with the specified packageName
- */
-inline fun Context.getPackage(packageName: String): AppPackage = Packagex.get(this, packageName)
-
-/**
- * Get information about the app with the specified packageName, return to null if not installed
- */
-inline fun Context.getPackageOrNull(packageName: String): AppPackage? = Packagex.getOrNull(this, packageName)
-
-
-/**
- * Return true if it is a system APP
- */
-inline fun ApplicationInfo.isSystemApp(): Boolean = Packagex.isSystemApp(this)
-
-/**
- * Return true if the app with the specified packageName is the system APP
+ * Get the versionCode of the package for the specified packageName
  */
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.isSystemApp(packageName: String): Boolean = Packagex.isSystemApp(this, packageName)
-
-/**
- * Return true if the app with the specified packageName is the system APP, return to defaultValue if not installed
- */
-inline fun Context.isSystemAppOr(packageName: String, defaultValue: Boolean): Boolean = Packagex.isSystemAppOr(this, packageName, defaultValue)
+inline fun Context.getPackageLongVersionCode(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): Long = Packagex.getPackageLongVersionCode(this, packageName, packageInfoFlags)
 
 
 /**
- * List the packageName and versionCode of all installed APPs
+ * Get the versionCode of the package for the specified packageName, return to defaultValue if not installed
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.listPackageVersionCodePair(@AcceptPackageType acceptPackageType: Int): List<Pair<String, Int>> = Packagex.listVersionCodePair(this, acceptPackageType)
+inline fun Context.getPackageLongVersionCodeOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: Long = 0L
+): Long = Packagex.getPackageLongVersionCodeOr(this, packageName, packageInfoFlags, defaultValue)
 
 
 /**
- * Get the packageName and versionCode of all installed apps Map
+ * Get the versionName of the package for the specified packageName
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.getPackageVersionCodeMap(@AcceptPackageType acceptPackageType: Int): androidx.collection.ArrayMap<String, Int> = Packagex.getVersionCodeMap(this, acceptPackageType)
+inline fun Context.getPackageVersionName(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): String = Packagex.getPackageVersionName(this, packageName, packageInfoFlags)
 
 /**
- * List the packageName of all installed apps
+ * Get the versionName of the package for the specified packageName, return to defaultValue if not installed
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.listPackageName(@AcceptPackageType acceptPackageType: Int): List<String> = Packagex.listPackageName(this, acceptPackageType)
+inline fun Context.getPackageVersionNameOr(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0, defaultValue: String = ""
+): String = Packagex.getPackageVersionNameOr(this, packageName, packageInfoFlags, defaultValue)
 
 /**
- * List information for all installed apps
+ * Get the versionName of the package for the specified packageName, return to "" if not installed
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
- * @param size             How many apps to get. -1: all
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.listPackage(@AcceptPackageType acceptPackageType: Int, size: Int): List<AppPackage> = Packagex.list(this, acceptPackageType, size)
+inline fun Context.getPackageVersionNameOrEmpty(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): String = Packagex.getPackageVersionNameOrEmpty(this, packageName, packageInfoFlags)
 
 /**
- * List information for all installed apps
+ * Get the versionName of the package for the specified packageName, return to null if not installed
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.listPackage(@AcceptPackageType acceptPackageType: Int): List<AppPackage> = Packagex.list(this, acceptPackageType)
+inline fun Context.getPackageVersionNameOrNull(
+        packageName: String, @PackageInfoFlags packageInfoFlags: Int = 0
+): String? = Packagex.getPackageVersionNameOrNull(this, packageName, packageInfoFlags)
 
 
 /**
- * Get information about an app
+ * Get information about the first package that meets the conditions
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.getOnePackage(@AcceptPackageType acceptPackageType: Int): AppPackage? = Packagex.getOne(this, acceptPackageType)
-
+inline fun Context.getFirstPackageByFilter(
+        packageFilter: PackageFilter? = null, @PackageInfoFlags packageInfoFlags: Int = 0
+): SimplePackageInfo? = Packagex.getFirstPackageByFilter(this, packageFilter, packageInfoFlags)
 
 /**
- * Get the number of installed apps
+ * Get information about the first package that meets the conditions
  *
- * @param acceptPackageType Accepted package type, see {@link AppType}
+ * @param packageFilterFlags see {@link PackageFilterFlags}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.countPackage(@AcceptPackageType acceptPackageType: Int): Int = Packagex.count(this, acceptPackageType)
+inline fun Context.getFirstPackageByFilterFlags(
+        @PackageFilterFlags packageFilterFlags: Int = 0, @PackageInfoFlags packageInfoFlags: Int = 0
+): SimplePackageInfo? = Packagex.getFirstPackageByFilterFlags(this, packageFilterFlags, packageInfoFlags)
+
+/**
+ * Get information about the first package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.getFirstPackage(@PackageInfoFlags packageInfoFlags: Int = 0): SimplePackageInfo? = Packagex.getFirstPackage(this, packageInfoFlags)
+
+
+/* ************************************* list ***************************************** */
 
 
 /**
- * Get the apk file of the app with the specified packageName
+ * List the packageName and versionCode of all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageInfo(@PackageInfoFlags packageInfoFlags: Int = 0): List<PackageInfo> = Packagex.listPackageInfo(this, packageInfoFlags)
+
+
+/**
+ * List information for all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageByFilter(
+        packageFilter: PackageFilter? = null, @PackageInfoFlags packageInfoFlags: Int = 0
+): List<SimplePackageInfo> = Packagex.listPackageByFilter(this, packageFilter, packageInfoFlags)
+
+/**
+ * List information for all installed package
+ *
+ * @param packageFilterFlags see {@link PackageFilterFlags}
+ * @param packageInfoFlags   see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageByFilterFlags(
+        @PackageFilterFlags packageFilterFlags: Int = 0, @PackageInfoFlags packageInfoFlags: Int = 0
+): List<SimplePackageInfo> = Packagex.listPackageByFilterFlags(this, packageFilterFlags, packageInfoFlags)
+
+/**
+ * List information for all installed package
+ */
+inline fun Context.listPackage(@PackageInfoFlags packageInfoFlags: Int = 0): List<SimplePackageInfo> = Packagex.listPackage(this, packageInfoFlags)
+
+
+/**
+ * List the packageName and versionCode of all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageVersionCodeToMapByFilter(
+        packageFilter: PackageFilter? = null, @PackageInfoFlags packageInfoFlags: Int = 0
+): ArrayMap<String, Int> = Packagex.listPackageVersionCodeToMapByFilter(this, packageFilter, packageInfoFlags)
+
+/**
+ * List the packageName and versionCode of all installed package
+ *
+ * @param packageFilterFlags see {@link PackageFilterFlags}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageVersionCodeToMapByFilterFlags(
+        @PackageFilterFlags packageFilterFlags: Int = 0, @PackageInfoFlags packageInfoFlags: Int = 0
+): ArrayMap<String, Int> = Packagex.listPackageVersionCodeToMapByFilterFlags(this, packageFilterFlags, packageInfoFlags)
+
+/**
+ * List the packageName and versionCode of all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageVersionCodeToMap(@PackageInfoFlags packageInfoFlags: Int = 0): ArrayMap<String, Int> = Packagex.listPackageVersionCodeToMap(this, packageInfoFlags)
+
+
+/**
+ * List the packageName of all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageNameByFilter(
+        packageFilter: PackageFilter? = null, @PackageInfoFlags packageInfoFlags: Int = 0
+): List<String> = Packagex.listPackageNameByFilter(this, packageFilter, packageInfoFlags)
+
+/**
+ * List the packageName of all installed package
+ *
+ * @param packageFilterFlags see {@link PackageFilterFlags}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageNameByFilterFlags(
+        @PackageFilterFlags packageFilterFlags: Int = 0, @PackageInfoFlags packageInfoFlags: Int = 0
+): List<String> = Packagex.listPackageNameByFilterFlags(this, packageFilterFlags, packageInfoFlags)
+
+/**
+ * List the packageName of all installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.listPackageName(@PackageInfoFlags packageInfoFlags: Int = 0): List<String>
+        = Packagex.listPackageName(this, packageInfoFlags)
+
+
+/* ************************************* count ***************************************** */
+
+
+/**
+ * Get the number of installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.countPackageByFilter(
+        packageFilter: PackageFilter? = null, @PackageInfoFlags packageInfoFlags: Int = 0
+): Int = Packagex.countPackageByFilter(this, packageFilter, packageInfoFlags)
+
+/**
+ * Get the number of installed package
+ *
+ * @param packageFilterFlags see {@link PackageFilterFlags}
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.countPackageByFilterFlags(
+        @PackageFilterFlags packageFilterFlags: Int = 0, @PackageInfoFlags packageInfoFlags: Int = 0
+): Int = Packagex.countPackageByFilterFlags(this, packageFilterFlags, packageInfoFlags)
+
+/**
+ * Get the number of installed package
+ *
+ * @param packageInfoFlags see {@link PackageInfoFlags}
+ */
+inline fun Context.countPackage(@PackageInfoFlags packageInfoFlags: Int = 0): Int
+        = Packagex.countPackage(this, packageInfoFlags)
+
+
+/* ************************************* other ***************************************** */
+
+
+/**
+ * Get the apk file of the package with the specified packageName
  */
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.getPackageApkFile(packageName: String): File = Packagex.getPackageApkFile(this, packageName)
 
 /**
- * Get the apk file of the app with the specified packageName, return to null if not installed
+ * Get the apk file of the package with the specified packageName, return to null if not installed
  */
 inline fun Context.getPackageApkFileOrNull(packageName: String): File? = Packagex.getPackageApkFileOrNull(this, packageName)
 
 
 /**
- * Get the signature data of the app with the specified packageName
+ * Get the signature data of the package with the specified packageName
  */
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.getAppSignatureBytes(packageName: String): ByteArray = Packagex.getAppSignatureBytes(this, packageName)
+inline fun Context.getPackageSignatureBytes(packageName: String): ByteArray = Packagex.getPackageSignatureBytes(this, packageName)
 
 /**
- * Get the signature data of the app with the specified packageName, return to null if not installed
+ * Get the signature data of the package with the specified packageName, return to null if not installed
  */
-inline fun Context.getAppSignatureBytesOrNull(packageName: String): ByteArray? = Packagex.getAppSignatureBytesOrNull(this, packageName)
+inline fun Context.getPackageSignatureBytesOrNull(packageName: String): ByteArray? = Packagex.getPackageSignatureBytesOrNull(this, packageName)
 
 
 /**
- * Get the icon Drawable of the app of the specified packageName
+ * Get the icon Drawable of the package of the specified packageName
  *
- * @param versionCode App versionCode. Returns null if versionCode is inconsistent, -1: ignores versionCode
+ * @param versionCode App versionCode. Returns null if versionCode is inconsistent, Integer.MIN_VALUE: ignores versionCode
+ * @throws NameNotFoundException, Exception
  */
-inline fun Context.getAppIconDrawable(packageName: String, versionCode: Int): Drawable? = Packagex.getAppIconDrawable(this, packageName, versionCode)
+@Throws(Exception::class)
+inline fun Context.getPackageIconDrawable(packageName: String, versionCode: Int): Drawable
+        = Packagex.getPackageIconDrawable(this, packageName, versionCode)
+
+/**
+ * Get the icon Drawable of the package of the specified packageName
+ *
+ * @param versionCode App versionCode. Returns null if versionCode is inconsistent, Integer.MIN_VALUE: ignores versionCode
+ */
+inline fun Context.getPackageIconDrawableOrNull(packageName: String, versionCode: Int): Drawable?
+        = Packagex.getPackageIconDrawableOrNull(this, packageName, versionCode)
 
 
 /**
  * Get the icon Drawable of the specified apk file
+ * @throws Exception: Apk parsing error
  */
-inline fun Context.getApkIconDrawable(apkFilePath: String): Drawable? = Packagex.getApkIconDrawable(this, apkFilePath)
-
+@Throws(Exception::class)
+inline fun Context.getApkIconDrawable(apkFile: File): Drawable = Packagex.getApkIconDrawable(this, apkFile)
 
 /**
- * Create an Intent that opens the specified app install page
- *
- * @receiver APK file uri
+ * Get the icon Drawable of the specified apk file
  */
-@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-inline fun Context.createInstallAppIntent(fileUri: Uri): Intent = Packagex.createInstallAppIntent(fileUri)
-
-/**
- * Create an Intent that opens the specified app install page
- */
-@RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-inline fun Context.createInstallAppIntent(apkFile: File): Intent = Packagex.createInstallAppIntent(this, apkFile)
-
-/**
- * Create an Intent that opens the specified app uninstall page
- *
- * @receiver App package name
- */
-@RequiresPermission(Manifest.permission.REQUEST_DELETE_PACKAGES)
-inline fun Context.createUninstallAppIntent(packageName: String): Intent = Packagex.createUninstallAppIntent(packageName)
-
-/**
- * Create an intent that opens the specified app
- *
- * @param packageName App package name
- */
-inline fun Context.createLaunchAppIntent(packageName: String): Intent? = Packagex.createLaunchAppIntent(this, packageName)
-
-/**
- * Create an Intent that opens the specified app details page
- *
- * @receiver App package name
- */
-inline fun Context.createAppDetailInSystemIntent(packageName: String): Intent = Packagex.createAppDetailInSystemIntent(packageName)
-
-
-/**
- * Return true if it is a test APP
- */
-inline fun PackageInfo.isTestApp(): Boolean = Packagex.isTestApp(this)
-
-/**
- * Return true if it is a test APP
- */
-@Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.isTestApp(packageName: String): Boolean = Packagex.isTestApp(this, packageName)
-
-/**
- * Return true if it is a test APP
- */
-inline fun Context.isTestAppOr(packageName: String, defaultValue: Boolean): Boolean = Packagex.isTestAppOr(this, packageName, defaultValue)
+inline fun Context.getApkIconDrawableOrNull(apkFile: File): Drawable? = Packagex.getApkIconDrawableOrNull(this, apkFile)

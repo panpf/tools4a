@@ -411,7 +411,4 @@ public class PackageInfox {
         }
     }
 
-    public interface Predicate<T> {
-        boolean accept(@NonNull T t);
-    }
 }

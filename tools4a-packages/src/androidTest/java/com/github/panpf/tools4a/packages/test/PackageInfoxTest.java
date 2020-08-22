@@ -30,6 +30,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.packages.PackageInfox;
+import com.github.panpf.tools4a.packages.Predicate;
 import com.github.panpf.tools4j.lang.Stringx;
 
 import org.junit.Assert;
@@ -44,7 +45,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String activityName = TestActivity.class.getName();
 
-        ActivityInfo activityInfo1 = PackageInfox.findActivityInfo(context, context.getPackageName(), new PackageInfox.Predicate<ActivityInfo>() {
+        ActivityInfo activityInfo1 = PackageInfox.findActivityInfo(context, context.getPackageName(), new Predicate<ActivityInfo>() {
             @Override
             public boolean accept(@NonNull ActivityInfo activityInfo) {
                 return Stringx.equals(activityInfo.name, activityName);
@@ -53,7 +54,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(activityInfo1);
         Assert.assertEquals(activityName, activityInfo1.name);
 
-        ActivityInfo activityInfo2 = PackageInfox.findSelfActivityInfo(context, new PackageInfox.Predicate<ActivityInfo>() {
+        ActivityInfo activityInfo2 = PackageInfox.findSelfActivityInfo(context, new Predicate<ActivityInfo>() {
             @Override
             public boolean accept(@NonNull ActivityInfo activityInfo) {
                 return Stringx.equals(activityInfo.name, activityName);
@@ -85,7 +86,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String serviceName = TestService.class.getName();
 
-        ServiceInfo serviceInfo1 = PackageInfox.findServiceInfo(context, context.getPackageName(), new PackageInfox.Predicate<ServiceInfo>() {
+        ServiceInfo serviceInfo1 = PackageInfox.findServiceInfo(context, context.getPackageName(), new Predicate<ServiceInfo>() {
             @Override
             public boolean accept(@NonNull ServiceInfo serviceInfo) {
                 return Stringx.equals(serviceInfo.name, serviceName);
@@ -94,7 +95,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(serviceInfo1);
         Assert.assertEquals(serviceName, serviceInfo1.name);
 
-        ServiceInfo serviceInfo2 = PackageInfox.findSelfServiceInfo(context, new PackageInfox.Predicate<ServiceInfo>() {
+        ServiceInfo serviceInfo2 = PackageInfox.findSelfServiceInfo(context, new Predicate<ServiceInfo>() {
             @Override
             public boolean accept(@NonNull ServiceInfo serviceInfo) {
                 return Stringx.equals(serviceInfo.name, serviceName);
@@ -126,7 +127,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String receiverName = TestReceiver.class.getName();
 
-        ActivityInfo receiverInfo1 = PackageInfox.findReceiverInfo(context, context.getPackageName(), new PackageInfox.Predicate<ActivityInfo>() {
+        ActivityInfo receiverInfo1 = PackageInfox.findReceiverInfo(context, context.getPackageName(), new Predicate<ActivityInfo>() {
             @Override
             public boolean accept(@NonNull ActivityInfo receiverInfo) {
                 return Stringx.equals(receiverInfo.name, receiverName);
@@ -135,7 +136,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(receiverInfo1);
         Assert.assertEquals(receiverName, receiverInfo1.name);
 
-        ActivityInfo receiverInfo2 = PackageInfox.findSelfReceiverInfo(context, new PackageInfox.Predicate<ActivityInfo>() {
+        ActivityInfo receiverInfo2 = PackageInfox.findSelfReceiverInfo(context, new Predicate<ActivityInfo>() {
             @Override
             public boolean accept(@NonNull ActivityInfo receiverInfo) {
                 return Stringx.equals(receiverInfo.name, receiverName);
@@ -167,7 +168,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String providerName = TestProvider.class.getName();
 
-        ProviderInfo providerInfo1 = PackageInfox.findProviderInfo(context, context.getPackageName(), new PackageInfox.Predicate<ProviderInfo>() {
+        ProviderInfo providerInfo1 = PackageInfox.findProviderInfo(context, context.getPackageName(), new Predicate<ProviderInfo>() {
             @Override
             public boolean accept(@NonNull ProviderInfo providerInfo) {
                 return Stringx.equals(providerInfo.name, providerName);
@@ -176,7 +177,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(providerInfo1);
         Assert.assertEquals(providerName, providerInfo1.name);
 
-        ProviderInfo providerInfo2 = PackageInfox.findSelfProviderInfo(context, new PackageInfox.Predicate<ProviderInfo>() {
+        ProviderInfo providerInfo2 = PackageInfox.findSelfProviderInfo(context, new Predicate<ProviderInfo>() {
             @Override
             public boolean accept(@NonNull ProviderInfo providerInfo) {
                 return Stringx.equals(providerInfo.name, providerName);
@@ -208,7 +209,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String permissionName = "com.github.panpf.tools4a.packages.test.share";
 
-        PermissionInfo permissionInfo1 = PackageInfox.findPermissionInfo(context, context.getPackageName(), new PackageInfox.Predicate<PermissionInfo>() {
+        PermissionInfo permissionInfo1 = PackageInfox.findPermissionInfo(context, context.getPackageName(), new Predicate<PermissionInfo>() {
             @Override
             public boolean accept(@NonNull PermissionInfo permissionInfo) {
                 return Stringx.equals(permissionInfo.name, permissionName);
@@ -217,7 +218,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(permissionInfo1);
         Assert.assertEquals(permissionName, permissionInfo1.name);
 
-        PermissionInfo permissionInfo2 = PackageInfox.findSelfPermissionInfo(context, new PackageInfox.Predicate<PermissionInfo>() {
+        PermissionInfo permissionInfo2 = PackageInfox.findSelfPermissionInfo(context, new Predicate<PermissionInfo>() {
             @Override
             public boolean accept(@NonNull PermissionInfo permissionInfo) {
                 return Stringx.equals(permissionInfo.name, permissionName);
@@ -249,7 +250,7 @@ public class PackageInfoxTest {
         Context context = InstrumentationRegistry.getContext();
         final String requestedPermissionName = "android.permission.WRITE_EXTERNAL_STORAGE";
 
-        String requestedPermission1 = PackageInfox.findRequestedPermission(context, context.getPackageName(), new PackageInfox.Predicate<String>() {
+        String requestedPermission1 = PackageInfox.findRequestedPermission(context, context.getPackageName(), new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String requestedPermission) {
                 return Stringx.equals(requestedPermission, requestedPermissionName);
@@ -258,7 +259,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(requestedPermission1);
         Assert.assertEquals(requestedPermissionName, requestedPermission1);
 
-        String requestedPermission2 = PackageInfox.findSelfRequestedPermission(context, new PackageInfox.Predicate<String>() {
+        String requestedPermission2 = PackageInfox.findSelfRequestedPermission(context, new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String requestedPermission) {
                 return Stringx.equals(requestedPermission, requestedPermissionName);
@@ -291,7 +292,7 @@ public class PackageInfoxTest {
         final String metaDataName = "meta_test_name";
         final String metaDataValue = "meta_test_value";
 
-        Pair<String, String> metaData1 = PackageInfox.findMetaDataWithName(context, context.getPackageName(), new PackageInfox.Predicate<String>() {
+        Pair<String, String> metaData1 = PackageInfox.findMetaDataWithName(context, context.getPackageName(), new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String s) {
                 return Stringx.equals(s, metaDataName);
@@ -300,7 +301,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(metaData1);
         Assert.assertEquals(metaDataName + "/" + metaDataValue, metaData1.first + "/" + metaData1.second);
 
-        Pair<String, String> metaData2 = PackageInfox.findSelfMetaDataWithName(context, new PackageInfox.Predicate<String>() {
+        Pair<String, String> metaData2 = PackageInfox.findSelfMetaDataWithName(context, new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String s) {
                 return Stringx.equals(s, metaDataName);
@@ -333,7 +334,7 @@ public class PackageInfoxTest {
         final String metaDataName = "meta_test_name";
         final String metaDataValue = "meta_test_value";
 
-        Pair<String, String> metaData1 = PackageInfox.findMetaDataWithValue(context, context.getPackageName(), new PackageInfox.Predicate<String>() {
+        Pair<String, String> metaData1 = PackageInfox.findMetaDataWithValue(context, context.getPackageName(), new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String s) {
                 return Stringx.equals(s, metaDataValue);
@@ -342,7 +343,7 @@ public class PackageInfoxTest {
         Assert.assertNotNull(metaData1);
         Assert.assertEquals(metaDataName + "/" + metaDataValue, metaData1.first + "/" + metaData1.second);
 
-        Pair<String, String> metaData2 = PackageInfox.findSelfMetaDataWithValue(context, new PackageInfox.Predicate<String>() {
+        Pair<String, String> metaData2 = PackageInfox.findSelfMetaDataWithValue(context, new Predicate<String>() {
             @Override
             public boolean accept(@NonNull String s) {
                 return Stringx.equals(s, metaDataValue);

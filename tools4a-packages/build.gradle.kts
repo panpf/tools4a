@@ -48,6 +48,7 @@ dependencies {
     androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-lang:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-premise:${property("TOOLS4J")}")
+    androidTestImplementation("com.github.panpf.tools4j:tools4j-io:${property("TOOLS4J")}")
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->

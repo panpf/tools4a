@@ -22,14 +22,15 @@ import android.content.Context
 import android.content.pm.*
 import android.util.Pair
 import com.github.panpf.tools4a.packages.PackageInfox
+import com.github.panpf.tools4a.packages.Predicate
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findActivityInfo(packageName: String, predicate: PackageInfox.Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findActivityInfo(this, packageName, predicate)
+inline fun Context.findActivityInfo(packageName: String, predicate: Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findActivityInfo(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findActivityInfo(packageName: String, crossinline predicate: (ActivityInfo) -> Boolean): ActivityInfo? = PackageInfox.findActivityInfo(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfActivityInfo(predicate: PackageInfox.Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findSelfActivityInfo(this, predicate)
+inline fun Context.findSelfActivityInfo(predicate: Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findSelfActivityInfo(this, predicate)
 
 inline fun Context.findSelfActivityInfo(crossinline predicate: (ActivityInfo) -> Boolean): ActivityInfo? = PackageInfox.findSelfActivityInfo(this) { predicate(it) }
 
@@ -40,12 +41,12 @@ inline fun Context.findSelfActivityInfoByName(activityName: String): ActivityInf
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findServiceInfo(packageName: String, predicate: PackageInfox.Predicate<ServiceInfo>): ServiceInfo? = PackageInfox.findServiceInfo(this, packageName, predicate)
+inline fun Context.findServiceInfo(packageName: String, predicate: Predicate<ServiceInfo>): ServiceInfo? = PackageInfox.findServiceInfo(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findServiceInfo(packageName: String, crossinline predicate: (ServiceInfo) -> Boolean): ServiceInfo? = PackageInfox.findServiceInfo(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfServiceInfo(predicate: PackageInfox.Predicate<ServiceInfo>): ServiceInfo? = PackageInfox.findSelfServiceInfo(this, predicate)
+inline fun Context.findSelfServiceInfo(predicate: Predicate<ServiceInfo>): ServiceInfo? = PackageInfox.findSelfServiceInfo(this, predicate)
 
 inline fun Context.findSelfServiceInfo(crossinline predicate: (ServiceInfo) -> Boolean): ServiceInfo? = PackageInfox.findSelfServiceInfo(this) { predicate(it) }
 
@@ -56,12 +57,12 @@ inline fun Context.findSelfServiceInfoByName(serviceName: String): ServiceInfo? 
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findReceiverInfo(packageName: String, predicate: PackageInfox.Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findReceiverInfo(this, packageName, predicate)
+inline fun Context.findReceiverInfo(packageName: String, predicate: Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findReceiverInfo(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findReceiverInfo(packageName: String, crossinline predicate: (ActivityInfo) -> Boolean): ActivityInfo? = PackageInfox.findReceiverInfo(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfReceiverInfo(predicate: PackageInfox.Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findSelfReceiverInfo(this, predicate)
+inline fun Context.findSelfReceiverInfo(predicate: Predicate<ActivityInfo>): ActivityInfo? = PackageInfox.findSelfReceiverInfo(this, predicate)
 
 inline fun Context.findSelfReceiverInfo(crossinline predicate: (ActivityInfo) -> Boolean): ActivityInfo? = PackageInfox.findSelfReceiverInfo(this) { predicate(it) }
 
@@ -72,12 +73,12 @@ inline fun Context.findSelfReceiverInfoByName(receiverName: String): ActivityInf
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findProviderInfo(packageName: String, predicate: PackageInfox.Predicate<ProviderInfo>): ProviderInfo? = PackageInfox.findProviderInfo(this, packageName, predicate)
+inline fun Context.findProviderInfo(packageName: String, predicate: Predicate<ProviderInfo>): ProviderInfo? = PackageInfox.findProviderInfo(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findProviderInfo(packageName: String, crossinline predicate: (ProviderInfo) -> Boolean): ProviderInfo? = PackageInfox.findProviderInfo(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfProviderInfo(predicate: PackageInfox.Predicate<ProviderInfo>): ProviderInfo? = PackageInfox.findSelfProviderInfo(this, predicate)
+inline fun Context.findSelfProviderInfo(predicate: Predicate<ProviderInfo>): ProviderInfo? = PackageInfox.findSelfProviderInfo(this, predicate)
 
 inline fun Context.findSelfProviderInfo(crossinline predicate: (ProviderInfo) -> Boolean): ProviderInfo? = PackageInfox.findSelfProviderInfo(this) { predicate(it) }
 
@@ -88,12 +89,12 @@ inline fun Context.findSelfProviderInfoByName(providerName: String): ProviderInf
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findPermissionInfo(packageName: String, predicate: PackageInfox.Predicate<PermissionInfo>): PermissionInfo? = PackageInfox.findPermissionInfo(this, packageName, predicate)
+inline fun Context.findPermissionInfo(packageName: String, predicate: Predicate<PermissionInfo>): PermissionInfo? = PackageInfox.findPermissionInfo(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findPermissionInfo(packageName: String, crossinline predicate: (PermissionInfo) -> Boolean): PermissionInfo? = PackageInfox.findPermissionInfo(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfPermissionInfo(predicate: PackageInfox.Predicate<PermissionInfo>): PermissionInfo? = PackageInfox.findSelfPermissionInfo(this, predicate)
+inline fun Context.findSelfPermissionInfo(predicate: Predicate<PermissionInfo>): PermissionInfo? = PackageInfox.findSelfPermissionInfo(this, predicate)
 
 inline fun Context.findSelfPermissionInfo(crossinline predicate: (PermissionInfo) -> Boolean): PermissionInfo? = PackageInfox.findSelfPermissionInfo(this) { predicate(it) }
 
@@ -104,12 +105,12 @@ inline fun Context.findSelfPermissionInfoByName(permissionName: String): Permiss
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findRequestedPermission(packageName: String, predicate: PackageInfox.Predicate<String>): String? = PackageInfox.findRequestedPermission(this, packageName, predicate)
+inline fun Context.findRequestedPermission(packageName: String, predicate: Predicate<String>): String? = PackageInfox.findRequestedPermission(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findRequestedPermission(packageName: String, crossinline predicate: (String) -> Boolean): String? = PackageInfox.findRequestedPermission(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfRequestedPermission(predicate: PackageInfox.Predicate<String>): String? = PackageInfox.findSelfRequestedPermission(this, predicate)
+inline fun Context.findSelfRequestedPermission(predicate: Predicate<String>): String? = PackageInfox.findSelfRequestedPermission(this, predicate)
 
 inline fun Context.findSelfRequestedPermission(crossinline predicate: (String) -> Boolean): String? = PackageInfox.findSelfRequestedPermission(this) { predicate(it) }
 
@@ -120,12 +121,12 @@ inline fun Context.findSelfRequestedPermissionByName(permissionName: String): St
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findMetaDataWithName(packageName: String, predicate: PackageInfox.Predicate<String>): Pair<String, String>? = PackageInfox.findMetaDataWithName(this, packageName, predicate)
+inline fun Context.findMetaDataWithName(packageName: String, predicate: Predicate<String>): Pair<String, String>? = PackageInfox.findMetaDataWithName(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findMetaDataWithName(packageName: String, crossinline predicate: (String) -> Boolean): Pair<String, String>? = PackageInfox.findMetaDataWithName(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfMetaDataWithName(predicate: PackageInfox.Predicate<String>): Pair<String, String>? = PackageInfox.findSelfMetaDataWithName(this, predicate)
+inline fun Context.findSelfMetaDataWithName(predicate: Predicate<String>): Pair<String, String>? = PackageInfox.findSelfMetaDataWithName(this, predicate)
 
 inline fun Context.findSelfMetaDataWithName(crossinline predicate: (String) -> Boolean): Pair<String, String>? = PackageInfox.findSelfMetaDataWithName(this) { predicate(it) }
 
@@ -136,12 +137,12 @@ inline fun Context.findSelfMetaDataByName(metaDataName: String): Pair<String, St
 
 
 @Throws(PackageManager.NameNotFoundException::class)
-inline fun Context.findMetaDataWithValue(packageName: String, predicate: PackageInfox.Predicate<String>): Pair<String, String>? = PackageInfox.findMetaDataWithValue(this, packageName, predicate)
+inline fun Context.findMetaDataWithValue(packageName: String, predicate: Predicate<String>): Pair<String, String>? = PackageInfox.findMetaDataWithValue(this, packageName, predicate)
 
 @Throws(PackageManager.NameNotFoundException::class)
 inline fun Context.findMetaDataWithValue(packageName: String, crossinline predicate: (String) -> Boolean): Pair<String, String>? = PackageInfox.findMetaDataWithValue(this, packageName) { predicate(it) }
 
-inline fun Context.findSelfMetaDataWithValue(predicate: PackageInfox.Predicate<String>): Pair<String, String>? = PackageInfox.findSelfMetaDataWithValue(this, predicate)
+inline fun Context.findSelfMetaDataWithValue(predicate: Predicate<String>): Pair<String, String>? = PackageInfox.findSelfMetaDataWithValue(this, predicate)
 
 inline fun Context.findSelfMetaDataWithValue(crossinline predicate: (String) -> Boolean): Pair<String, String>? = PackageInfox.findSelfMetaDataWithValue(this) { predicate(it) }
 

@@ -64,16 +64,8 @@ public class Resizex {
         int srcWidth = (int) (targetWidth * finalScale);
         int srcHeight = (int) (targetHeight * finalScale);
 
-        int srcLeft;
-        int srcTop;
-        // todo 这里有问题
-        if (originalWidth > originalHeight) {
-            srcLeft = originalWidth - srcWidth;
-            srcTop = originalHeight - srcHeight;
-        } else {
-            srcLeft = originalWidth - srcWidth;
-            srcTop = originalHeight - srcHeight;
-        }
+        int srcLeft = originalWidth - srcWidth;
+        int srcTop = originalHeight - srcHeight;
         return new Rect(srcLeft, srcTop, srcLeft + srcWidth, srcTop + srcHeight);
     }
 
