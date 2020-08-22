@@ -56,11 +56,13 @@ public class SimplePackageInfo implements Parcelable {
     @ApplicationInfoFlags
     public final int applicationInfoFlags;
     public final boolean enabled;
+    private final boolean junitTest;
 
     public SimplePackageInfo(
             @NonNull String name, @NonNull String packageName, int versionCode, long longVersionCode,
             @NonNull String versionName, @NonNull String packageFilePath, long packageSize,
-            long packageLastModifiedTime, @ApplicationInfoFlags int applicationInfoFlags, boolean enabled) {
+            long packageLastModifiedTime, @ApplicationInfoFlags int applicationInfoFlags,
+            boolean enabled, boolean junitTest) {
         this.name = name;
         this.packageName = packageName;
         this.versionCode = versionCode;
@@ -71,6 +73,7 @@ public class SimplePackageInfo implements Parcelable {
         this.packageLastModifiedTime = packageLastModifiedTime;
         this.applicationInfoFlags = applicationInfoFlags;
         this.enabled = enabled;
+        this.junitTest = junitTest;
     }
 
     @SuppressWarnings({"ConstantConditions"})
@@ -85,6 +88,7 @@ public class SimplePackageInfo implements Parcelable {
         packageLastModifiedTime = in.readLong();
         applicationInfoFlags = in.readInt();
         enabled = in.readByte() != 0;
+        junitTest = in.readByte() != 0;
     }
 
     @NonNull
@@ -98,15 +102,25 @@ public class SimplePackageInfo implements Parcelable {
         //noinspection deprecation
         int versionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
         long longVersionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
+        // Need PackageManager.getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION)
+        boolean junitTest = packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
         return new SimplePackageInfo(
                 label.toString(), packageName != null ? packageName : "",
                 versionCode, longVersionCode, versionName != null ? versionName : "",
                 packageFile.getPath(), packageFile.length(), packageFile.lastModified(),
-                applicationInfo.flags, applicationInfo.enabled);
+                applicationInfo.flags, applicationInfo.enabled, junitTest);
     }
 
     public boolean isSystemPackage() {
         return (applicationInfoFlags & ApplicationInfo.FLAG_SYSTEM) != 0;
+    }
+
+    public boolean isDebuggablePackage() {
+        return (applicationInfoFlags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+    }
+
+    public boolean isJunitTestPackage() {
+        return junitTest;
     }
 
     public boolean matchApplicationInfoFlag(@ApplicationInfoFlags int applicationInfoFlag) {
@@ -127,6 +141,7 @@ public class SimplePackageInfo implements Parcelable {
                 ", packageLastModifiedTime=" + packageLastModifiedTime +
                 ", applicationInfoFlags=" + applicationInfoFlags +
                 ", enabled=" + enabled +
+                ", junitTest=" + junitTest +
                 '}';
     }
 
@@ -147,5 +162,6 @@ public class SimplePackageInfo implements Parcelable {
         dest.writeLong(packageLastModifiedTime);
         dest.writeInt(applicationInfoFlags);
         dest.writeByte((byte) (enabled ? 1 : 0));
+        dest.writeByte((byte) (junitTest ? 1 : 0));
     }
 }

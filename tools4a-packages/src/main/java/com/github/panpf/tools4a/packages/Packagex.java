@@ -357,7 +357,8 @@ public class Packagex {
     public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName,
                                                @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags);
+        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags | PackageManager.GET_INSTRUMENTATION);
         return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
     }
 
@@ -367,7 +368,8 @@ public class Packagex {
     @NonNull
     public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
         return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
     }
 
@@ -380,7 +382,8 @@ public class Packagex {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         try {
-            packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags);
+            // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+            packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags | PackageManager.GET_INSTRUMENTATION);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -395,7 +398,8 @@ public class Packagex {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         try {
-            packageInfo = packageManager.getPackageInfo(packageName, 0);
+            // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -612,6 +616,8 @@ public class Packagex {
     public static SimplePackageInfo getFirstPackageByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter,
             @PackageInfoFlags int packageInfoFlags) {
+        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+        packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
         packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
 
@@ -709,6 +715,8 @@ public class Packagex {
     @NonNull
     public static List<SimplePackageInfo> listPackageByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
+        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
+        packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
         packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
         PackageManager packageManager = context.getPackageManager();
