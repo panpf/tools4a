@@ -22,8 +22,5 @@ import androidx.annotation.NonNull;
 
 public interface PackageFilter {
 
-    @PackageInfoFlags
-    int getPackageInfoFlags();
-
     boolean accept(@NonNull PackageInfo packageInfo);
 }

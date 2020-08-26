@@ -19,7 +19,6 @@ package com.github.panpf.tools4a.packages;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 
@@ -35,42 +34,37 @@ public class PackageFilterFlagsImpl implements PackageFilter {
         this.selfPackageName = context.getPackageName();
 
         if (matchFlag(PackageFilterFlags.ONLY_USER) && matchFlag(PackageFilterFlags.ONLY_SYSTEM)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.ONLY_SYSTEM' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.ONLY_SYSTEM' at the same time");
         }
         if (matchFlag(PackageFilterFlags.ONLY_USER) && matchFlag(PackageFilterFlags.EXCLUDE_USER)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.EXCLUDE_USER' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.EXCLUDE_USER' at the same time");
         }
         if (matchFlag(PackageFilterFlags.ONLY_SYSTEM) && matchFlag(PackageFilterFlags.EXCLUDE_SYSTEM)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_SYSTEM' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_SYSTEM' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
         }
         if (matchFlag(PackageFilterFlags.EXCLUDE_USER) && matchFlag(PackageFilterFlags.EXCLUDE_SYSTEM)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.EXCLUDE_USER' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.EXCLUDE_USER' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
         }
 
         if (matchFlag(PackageFilterFlags.ONLY_RELEASE) && matchFlag(PackageFilterFlags.ONLY_DEBUGGABLE)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.ONLY_DEBUGGABLE' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.ONLY_DEBUGGABLE' at the same time");
         }
         if (matchFlag(PackageFilterFlags.ONLY_RELEASE) && matchFlag(PackageFilterFlags.EXCLUDE_RELEASE)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.EXCLUDE_RELEASE' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.EXCLUDE_RELEASE' at the same time");
         }
         if (matchFlag(PackageFilterFlags.ONLY_DEBUGGABLE) && matchFlag(PackageFilterFlags.EXCLUDE_DEBUGGABLE)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_DEBUGGABLE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.ONLY_DEBUGGABLE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
         }
         if (matchFlag(PackageFilterFlags.EXCLUDE_RELEASE) && matchFlag(PackageFilterFlags.EXCLUDE_DEBUGGABLE)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.EXCLUDE_RELEASE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
-        }
-
-        if (matchFlag(PackageFilterFlags.ONLY_NON_JUNIT_TEST) && matchFlag(PackageFilterFlags.ONLY_JUNIT_TEST)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_NON_JUNIT_TEST' and 'PackageFilterFlags.ONLY_JUNIT_TEST' at the same time");
-        }
-        if (matchFlag(PackageFilterFlags.ONLY_NON_JUNIT_TEST) && matchFlag(PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_NON_JUNIT_TEST' and 'PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST' at the same time");
-        }
-        if (matchFlag(PackageFilterFlags.ONLY_JUNIT_TEST) && matchFlag(PackageFilterFlags.EXCLUDE_JUNIT_TEST)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.ONLY_JUNIT_TEST' and 'PackageFilterFlags.EXCLUDE_JUNIT_TEST' at the same time");
-        }
-        if (matchFlag(PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST) && matchFlag(PackageFilterFlags.EXCLUDE_JUNIT_TEST)) {
-            throw new IllegalArgumentException("packageFilterFlags param cannot set 'PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST' and 'PackageFilterFlags.EXCLUDE_JUNIT_TEST' at the same time");
+            throw new IllegalArgumentException("packageFilterFlags param cannot set " +
+                    "'PackageFilterFlags.EXCLUDE_RELEASE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
         }
     }
 
@@ -79,75 +73,23 @@ public class PackageFilterFlagsImpl implements PackageFilter {
     }
 
     @Override
-    public int getPackageInfoFlags() {
-        if (matchFlag(PackageFilterFlags.ONLY_JUNIT_TEST)
-                || matchFlag(PackageFilterFlags.ONLY_NON_JUNIT_TEST)
-                || matchFlag(PackageFilterFlags.EXCLUDE_JUNIT_TEST)
-                || matchFlag(PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST)
-        ) {
-            return PackageManager.GET_INSTRUMENTATION;
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
     public boolean accept(@NonNull PackageInfo packageInfo) {
-        if (matchFlag(PackageFilterFlags.ONLY_USER)) {
-            if (!((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.ONLY_SYSTEM)) {
-            //noinspection DoubleNegation
-            if (!((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)) {
-                return false;
-            }
-        }
-        if (matchFlag(PackageFilterFlags.EXCLUDE_USER)) {
-            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.EXCLUDE_SYSTEM)) {
+        if (matchFlag(PackageFilterFlags.ONLY_USER) || matchFlag(PackageFilterFlags.EXCLUDE_SYSTEM)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                 return false;
             }
+        } else if (matchFlag(PackageFilterFlags.ONLY_SYSTEM) || matchFlag(PackageFilterFlags.EXCLUDE_USER)) {
+            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                return false;
+            }
         }
 
-        if (matchFlag(PackageFilterFlags.ONLY_RELEASE)) {
-            if (!((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == 0)) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.ONLY_DEBUGGABLE)) {
-            //noinspection DoubleNegation
-            if (!((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0)) {
-                return false;
-            }
-        }
-        if (matchFlag(PackageFilterFlags.EXCLUDE_RELEASE)) {
-            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == 0) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.EXCLUDE_DEBUGGABLE)) {
+        if (matchFlag(PackageFilterFlags.ONLY_RELEASE) || matchFlag(PackageFilterFlags.EXCLUDE_DEBUGGABLE)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
                 return false;
             }
-        }
-
-        if (matchFlag(PackageFilterFlags.ONLY_NON_JUNIT_TEST)) {
-            if (!(packageInfo.instrumentation == null || packageInfo.instrumentation.length <= 0)) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.ONLY_JUNIT_TEST)) {
-            if (!(packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0)) {
-                return false;
-            }
-        }
-        if (matchFlag(PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST)) {
-            if (packageInfo.instrumentation == null || packageInfo.instrumentation.length <= 0) {
-                return false;
-            }
-        } else if (matchFlag(PackageFilterFlags.EXCLUDE_JUNIT_TEST)) {
-            if (packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0) {
+        } else if (matchFlag(PackageFilterFlags.ONLY_DEBUGGABLE) || matchFlag(PackageFilterFlags.EXCLUDE_RELEASE)) {
+            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == 0) {
                 return false;
             }
         }

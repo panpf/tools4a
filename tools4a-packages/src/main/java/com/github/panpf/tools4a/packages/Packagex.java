@@ -361,8 +361,7 @@ public class Packagex {
     public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName,
                                                @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags | PackageManager.GET_INSTRUMENTATION);
+        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags);
         return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
     }
 
@@ -372,8 +371,7 @@ public class Packagex {
     @NonNull
     public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
+        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
         return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
     }
 
@@ -386,8 +384,7 @@ public class Packagex {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         try {
-            // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-            packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags | PackageManager.GET_INSTRUMENTATION);
+            packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -402,8 +399,7 @@ public class Packagex {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         try {
-            // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
+            packageInfo = packageManager.getPackageInfo(packageName, 0);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -620,9 +616,6 @@ public class Packagex {
     public static SimplePackageInfo getFirstPackageByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter,
             @PackageInfoFlags int packageInfoFlags) {
-        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-        packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
-        packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
 
         PackageManager packageManager = context.getPackageManager();
@@ -719,9 +712,6 @@ public class Packagex {
     @NonNull
     public static List<SimplePackageInfo> listPackageByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        // SimplePackageInfo.fromPackageInfo need PackageManager.GET_INSTRUMENTATION
-        packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
-        packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
         PackageManager packageManager = context.getPackageManager();
         ArrayList<SimplePackageInfo> packageArrayList = new ArrayList<>(packageInfoList.size());
@@ -797,7 +787,6 @@ public class Packagex {
     @NonNull
     public static ArrayMap<String, Integer> listPackageVersionCodeToMapByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
         ArrayMap<String, Integer> appsSet = new ArrayMap<>(packageInfoList.size());
         for (PackageInfo packageInfo : packageInfoList) {
@@ -875,7 +864,6 @@ public class Packagex {
     public static List<String> listPackageNameByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter,
             @PackageInfoFlags int packageInfoFlags) {
-        packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
 
         List<String> appsSet = new ArrayList<>(packageInfoList.size());
@@ -953,7 +941,6 @@ public class Packagex {
      */
     public static int countPackageByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        packageInfoFlags |= packageFilter != null ? packageFilter.getPackageInfoFlags() : 0;
         List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
         if (packageFilter != null) {
             int count = 0;

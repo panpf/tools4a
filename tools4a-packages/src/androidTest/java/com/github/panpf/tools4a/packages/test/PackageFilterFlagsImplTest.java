@@ -18,9 +18,7 @@ package com.github.panpf.tools4a.packages.test;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.InstrumentationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 import androidx.test.InstrumentationRegistry;
@@ -82,27 +80,6 @@ public class PackageFilterFlagsImplTest {
         } catch (Exception ignored) {
         }
 
-        try {
-            new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST | PackageFilterFlags.ONLY_JUNIT_TEST);
-            Assert.fail();
-        } catch (Exception ignored) {
-        }
-        try {
-            new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST);
-            Assert.fail();
-        } catch (Exception ignored) {
-        }
-        try {
-            new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST | PackageFilterFlags.EXCLUDE_JUNIT_TEST);
-            Assert.fail();
-        } catch (Exception ignored) {
-        }
-        try {
-            new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_JUNIT_TEST);
-            Assert.fail();
-        } catch (Exception ignored) {
-        }
-
 
         new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER);
         new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM);
@@ -110,58 +87,26 @@ public class PackageFilterFlagsImplTest {
         new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_RELEASE);
         new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_DEBUGGABLE);
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST);
-
         new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_USER);
         new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SYSTEM);
 
         new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_RELEASE);
         new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_DEBUGGABLE);
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_JUNIT_TEST);
-
         new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SELF);
 
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.ONLY_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM | PackageFilterFlags.ONLY_DEBUGGABLE | PackageFilterFlags.ONLY_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM | PackageFilterFlags.ONLY_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SELF);
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_USER | PackageFilterFlags.EXCLUDE_RELEASE | PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_USER | PackageFilterFlags.EXCLUDE_RELEASE | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SELF);
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_RELEASE | PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_USER | PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_RELEASE | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_USER | PackageFilterFlags.EXCLUDE_SELF);
 
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SELF);
-        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST | PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SELF);
-    }
-
-    @Test
-    public void testGetPackageInfoFlags() {
-        final Context context = InstrumentationRegistry.getContext();
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER).getPackageInfoFlags());
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM).getPackageInfoFlags());
-
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_RELEASE).getPackageInfoFlags());
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_DEBUGGABLE).getPackageInfoFlags());
-
-        Assert.assertEquals(PackageManager.GET_INSTRUMENTATION, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST).getPackageInfoFlags());
-        Assert.assertEquals(PackageManager.GET_INSTRUMENTATION, new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST).getPackageInfoFlags());
-
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_USER).getPackageInfoFlags());
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SYSTEM).getPackageInfoFlags());
-
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_RELEASE).getPackageInfoFlags());
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_DEBUGGABLE).getPackageInfoFlags());
-
-        Assert.assertEquals(PackageManager.GET_INSTRUMENTATION, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST).getPackageInfoFlags());
-        Assert.assertEquals(PackageManager.GET_INSTRUMENTATION, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_JUNIT_TEST).getPackageInfoFlags());
-
-        Assert.assertEquals(0, new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SELF).getPackageInfoFlags());
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_SYSTEM | PackageFilterFlags.EXCLUDE_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SELF);
+        new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_DEBUGGABLE | PackageFilterFlags.EXCLUDE_SYSTEM | PackageFilterFlags.EXCLUDE_SELF);
     }
 
     @Test
@@ -210,27 +155,6 @@ public class PackageFilterFlagsImplTest {
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_DEBUGGABLE)));
 
 
-        Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(false)));
-        Assert.assertFalse(new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(true)));
-
-        Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(true)));
-        Assert.assertFalse(new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(false)));
-
-        Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(true)));
-        Assert.assertFalse(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(false)));
-
-        Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(false)));
-        Assert.assertFalse(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_JUNIT_TEST)
-                .accept(newPackageInfoByInstrumentation(true)));
-
-
         Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SELF)
                 .accept(newPackageInfoBySelf(context, false)));
         Assert.assertFalse(new PackageFilterFlagsImpl(context, PackageFilterFlags.EXCLUDE_SELF)
@@ -242,15 +166,6 @@ public class PackageFilterFlagsImplTest {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.applicationInfo = new ApplicationInfo();
         packageInfo.applicationInfo.flags = flags;
-        return packageInfo;
-    }
-
-    @NonNull
-    private PackageInfo newPackageInfoByInstrumentation(boolean ok) {
-        PackageInfo packageInfo = new PackageInfo();
-        if (ok) {
-            packageInfo.instrumentation = new InstrumentationInfo[]{new InstrumentationInfo()};
-        }
         return packageInfo;
     }
 

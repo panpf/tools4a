@@ -26,14 +26,10 @@ import java.lang.annotation.RetentionPolicy;
         PackageFilterFlags.ONLY_SYSTEM,
         PackageFilterFlags.ONLY_RELEASE,
         PackageFilterFlags.ONLY_DEBUGGABLE,
-        PackageFilterFlags.ONLY_NON_JUNIT_TEST,
-        PackageFilterFlags.ONLY_JUNIT_TEST,
         PackageFilterFlags.EXCLUDE_USER,
         PackageFilterFlags.EXCLUDE_SYSTEM,
         PackageFilterFlags.EXCLUDE_RELEASE,
         PackageFilterFlags.EXCLUDE_DEBUGGABLE,
-        PackageFilterFlags.EXCLUDE_NON_JUNIT_TEST,
-        PackageFilterFlags.EXCLUDE_JUNIT_TEST,
         PackageFilterFlags.EXCLUDE_SELF
 })
 @Retention(RetentionPolicy.SOURCE)
@@ -44,17 +40,11 @@ public @interface PackageFilterFlags {
     int ONLY_RELEASE = 1 << 3;
     int ONLY_DEBUGGABLE = 1 << 4;
 
-    int ONLY_NON_JUNIT_TEST = 1 << 5;
-    int ONLY_JUNIT_TEST = 1 << 6;
+    int EXCLUDE_USER = 1 << 5;
+    int EXCLUDE_SYSTEM = 1 << 6;
 
-    int EXCLUDE_USER = 1 << 7;
-    int EXCLUDE_SYSTEM = 1 << 8;
+    int EXCLUDE_RELEASE = 1 << 7;
+    int EXCLUDE_DEBUGGABLE = 1 << 8;
 
-    int EXCLUDE_RELEASE = 1 << 9;
-    int EXCLUDE_DEBUGGABLE = 1 << 10;
-
-    int EXCLUDE_NON_JUNIT_TEST = 1 << 11;
-    int EXCLUDE_JUNIT_TEST = 1 << 12;
-
-    int EXCLUDE_SELF = 1 << 13;
+    int EXCLUDE_SELF = 1 << 9;
 }

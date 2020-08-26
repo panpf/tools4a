@@ -175,15 +175,13 @@ public class PackagexTest {
 
         String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
         String userAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
-                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
-        String junitAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST)).packageName;
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
         String selfAppPackageName = context.getPackageName();
 
         try {
             assertFalse(Packagex.isJunitTestPackage(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
             assertFalse(Packagex.isJunitTestPackage(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
             assertTrue(Packagex.isJunitTestPackage(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
-            assertTrue(Packagex.isJunitTestPackage(context, junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
         } catch (PackageManager.NameNotFoundException e) {
             fail();
         }
@@ -198,7 +196,6 @@ public class PackagexTest {
             assertFalse(Packagex.isJunitTestPackage(context, systemAppPackageName));
             assertFalse(Packagex.isJunitTestPackage(context, userAppPackageName));
             assertTrue(Packagex.isJunitTestPackage(context, selfAppPackageName));
-            assertTrue(Packagex.isJunitTestPackage(context, junitAppPackageName));
         } catch (PackageManager.NameNotFoundException e) {
             fail();
         }
@@ -212,14 +209,12 @@ public class PackagexTest {
         assertFalse(Packagex.isJunitTestPackageOr(context, systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
         assertFalse(Packagex.isJunitTestPackageOr(context, userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
         assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
-        assertTrue(Packagex.isJunitTestPackageOr(context, junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
         assertFalse(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false));
         assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true));
 
         assertFalse(Packagex.isJunitTestPackageOr(context, systemAppPackageName, false));
         assertFalse(Packagex.isJunitTestPackageOr(context, userAppPackageName, false));
         assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName, false));
-        assertTrue(Packagex.isJunitTestPackageOr(context, junitAppPackageName, false));
         assertFalse(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", false));
         assertTrue(Packagex.isJunitTestPackageOr(context, selfAppPackageName + "_nonono", true));
     }
@@ -341,7 +336,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
-                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
         String selfPackageName = context.getPackageName();
 
         assertEquals(0, Packagex.getPackageVersionCode(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -376,7 +371,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
-                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
         String selfPackageName = context.getPackageName();
 
         assertEquals(0L, Packagex.getPackageLongVersionCode(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -411,7 +406,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
-                PackageFilterFlags.ONLY_USER | PackageFilterFlags.EXCLUDE_SELF | PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName;
+                PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
         String selfPackageName = context.getPackageName();
 
         try {
@@ -472,15 +467,15 @@ public class PackagexTest {
         final String firstSystemPackageName = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM).get(0);
 
         assertEquals(selfPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
-                new UniquePackageFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
+                new PackageNameFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
         assertNull(Packagex.getFirstPackageByFilter(context,
-                new UniquePackageFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+                new PackageNameFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES));
         assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
                 null, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName);
 
         assertEquals(selfPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(context,
-                new UniquePackageFilter(selfPackageName))).packageName);
-        assertNull(Packagex.getFirstPackageByFilter(context, new UniquePackageFilter(errorPackageName)));
+                new PackageNameFilter(selfPackageName))).packageName);
+        assertNull(Packagex.getFirstPackageByFilter(context, new PackageNameFilter(errorPackageName)));
         assertEquals(firstPackageName, Premisex.requireNotNull(Packagex.getFirstPackageByFilter(
                 context, null)).packageName);
 
@@ -499,8 +494,8 @@ public class PackagexTest {
         final Context context = InstrumentationRegistry.getContext();
 
         int allPackagesSize = Packagex.listPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int startsWithPackagesSize = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int notStartsWithPackagesSize = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackagesSize = Packagex.listPackageByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackagesSize = Packagex.listPackageByFilter(context, new NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackagesSize > 0);
         assertTrue(startsWithPackagesSize > 0);
         assertTrue(notStartsWithPackagesSize > 0);
@@ -509,8 +504,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize, startsWithPackagesSize + notStartsWithPackagesSize);
 
         int allPackagesSize1 = Packagex.listPackageByFilter(context, null, 0).size();
-        int startsWithPackagesSize1 = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("com"), 0).size();
-        int notStartsWithPackagesSize1 = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        int startsWithPackagesSize1 = Packagex.listPackageByFilter(context, new EndsWithPackageFilter("s"), 0).size();
+        int notStartsWithPackagesSize1 = Packagex.listPackageByFilter(context, new NotEndsWithPackageFilter("s"), 0).size();
         assertTrue(allPackagesSize1 > 0);
         assertTrue(startsWithPackagesSize1 > 0);
         assertNotEquals(startsWithPackagesSize1, startsWithPackagesSize);
@@ -521,8 +516,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize1, startsWithPackagesSize1 + notStartsWithPackagesSize1);
 
         int allPackagesSize2 = Packagex.listPackageByFilter(context, null).size();
-        int startsWithPackagesSize2 = Packagex.listPackageByFilter(context, new StartsWithPackageFilter("c")).size();
-        int notStartsWithPackagesSize2 = Packagex.listPackageByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        int startsWithPackagesSize2 = Packagex.listPackageByFilter(context, new EndsWithPackageFilter("t")).size();
+        int notStartsWithPackagesSize2 = Packagex.listPackageByFilter(context, new NotEndsWithPackageFilter("t")).size();
         assertTrue(allPackagesSize2 > 0);
         assertTrue(startsWithPackagesSize2 > 0);
         assertTrue(notStartsWithPackagesSize2 > 0);
@@ -542,16 +537,16 @@ public class PackagexTest {
         assertEquals(allPackagesSize3, userPackagesSize3 + systemPackagesSize3);
 
         int allPackagesSize4 = Packagex.listPackageByFilterFlags(context, 0, 0).size();
-        int junitTestPackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
-        int nonJunitTestWithPackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        int releasePackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_RELEASE, 0).size();
+        int debuggablePackagesSize4 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_DEBUGGABLE, 0).size();
         assertTrue(allPackagesSize4 > 0);
-        assertTrue(junitTestPackagesSize4 > 0);
-        assertNotEquals(junitTestPackagesSize4, userPackagesSize3);
-        assertTrue(nonJunitTestWithPackagesSize4 > 0);
-        assertTrue(junitTestPackagesSize4 < allPackagesSize4);
-        assertNotEquals(junitTestPackagesSize4, nonJunitTestWithPackagesSize4);
-        assertNotEquals(nonJunitTestWithPackagesSize4, systemPackagesSize3);
-        assertEquals(allPackagesSize4, junitTestPackagesSize4 + nonJunitTestWithPackagesSize4);
+        assertTrue(releasePackagesSize4 > 0);
+        assertNotEquals(releasePackagesSize4, userPackagesSize3);
+        assertTrue(debuggablePackagesSize4 > 0);
+        assertTrue(releasePackagesSize4 < allPackagesSize4);
+        assertNotEquals(releasePackagesSize4, debuggablePackagesSize4);
+        assertNotEquals(debuggablePackagesSize4, systemPackagesSize3);
+        assertEquals(allPackagesSize4, releasePackagesSize4 + debuggablePackagesSize4);
 
         int allPackagesSize5 = Packagex.listPackageByFilterFlags(context, 0).size();
         int userPackagesSize5 = Packagex.listPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER).size();
@@ -583,8 +578,8 @@ public class PackagexTest {
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
         ));
         int allPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int startsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int notStartsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackageVersionCodeMapSize = Packagex.listPackageVersionCodeToMapByFilter(context, new NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackageVersionCodeMapSize > 0);
         assertTrue(startsWithPackageVersionCodeMapSize > 0);
         assertTrue(notStartsWithPackageVersionCodeMapSize > 0);
@@ -593,8 +588,8 @@ public class PackagexTest {
         assertEquals(allPackageVersionCodeMapSize, startsWithPackageVersionCodeMapSize + notStartsWithPackageVersionCodeMapSize);
 
         int allPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, null, 0).size();
-        int startsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("com"), 0).size();
-        int notStartsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        int startsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new EndsWithPackageFilter("s"), 0).size();
+        int notStartsWithPackageVersionCodeMapSize1 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotEndsWithPackageFilter("s"), 0).size();
         assertTrue(allPackageVersionCodeMapSize1 > 0);
         assertTrue(startsWithPackageVersionCodeMapSize1 > 0);
         assertNotEquals(startsWithPackageVersionCodeMapSize1, startsWithPackageVersionCodeMapSize);
@@ -608,8 +603,8 @@ public class PackagexTest {
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
         ));
         int allPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, null).size();
-        int startsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new StartsWithPackageFilter("c")).size();
-        int notStartsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        int startsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new EndsWithPackageFilter("t")).size();
+        int notStartsWithPackageVersionCodeMapSize2 = Packagex.listPackageVersionCodeToMapByFilter(context, new NotEndsWithPackageFilter("t")).size();
         assertTrue(allPackageVersionCodeMapSize2 > 0);
         assertTrue(startsWithPackageVersionCodeMapSize2 > 0);
         assertTrue(notStartsWithPackageVersionCodeMapSize2 > 0);
@@ -632,16 +627,16 @@ public class PackagexTest {
         assertEquals(allPackageVersionCodeMapSize3, userPackageVersionCodeMapSize3 + systemPackageVersionCodeMapSize3);
 
         int allPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0, 0).size();
-        int junitTestPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
-        int nonJunitTestWithPackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        int releasePackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_RELEASE, 0).size();
+        int debuggablePackageVersionCodeMapSize4 = Packagex.listPackageVersionCodeToMapByFilterFlags(context, PackageFilterFlags.ONLY_DEBUGGABLE, 0).size();
         assertTrue(allPackageVersionCodeMapSize4 > 0);
-        assertTrue(junitTestPackageVersionCodeMapSize4 > 0);
-        assertNotEquals(junitTestPackageVersionCodeMapSize4, userPackageVersionCodeMapSize3);
-        assertTrue(nonJunitTestWithPackageVersionCodeMapSize4 > 0);
-        assertTrue(junitTestPackageVersionCodeMapSize4 < allPackageVersionCodeMapSize4);
-        assertNotEquals(junitTestPackageVersionCodeMapSize4, nonJunitTestWithPackageVersionCodeMapSize4);
-        assertNotEquals(nonJunitTestWithPackageVersionCodeMapSize4, systemPackageVersionCodeMapSize3);
-        assertEquals(allPackageVersionCodeMapSize4, junitTestPackageVersionCodeMapSize4 + nonJunitTestWithPackageVersionCodeMapSize4);
+        assertTrue(releasePackageVersionCodeMapSize4 > 0);
+        assertNotEquals(releasePackageVersionCodeMapSize4, userPackageVersionCodeMapSize3);
+        assertTrue(debuggablePackageVersionCodeMapSize4 > 0);
+        assertTrue(releasePackageVersionCodeMapSize4 < allPackageVersionCodeMapSize4);
+        assertNotEquals(releasePackageVersionCodeMapSize4, debuggablePackageVersionCodeMapSize4);
+        assertNotEquals(debuggablePackageVersionCodeMapSize4, systemPackageVersionCodeMapSize3);
+        assertEquals(allPackageVersionCodeMapSize4, releasePackageVersionCodeMapSize4 + debuggablePackageVersionCodeMapSize4);
 
         assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilterFlags(context, 0), entry ->
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
@@ -682,8 +677,8 @@ public class PackagexTest {
                 Packagex.isPackageInstalled(context, packageName)
         ));
         int allPackageNameSize = Packagex.listPackageNameByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int startsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int notStartsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int startsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int notStartsWithPackageNameSize = Packagex.listPackageNameByFilter(context, new NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackageNameSize > 0);
         assertTrue(startsWithPackageNameSize > 0);
         assertTrue(notStartsWithPackageNameSize > 0);
@@ -692,8 +687,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize, startsWithPackageNameSize + notStartsWithPackageNameSize);
 
         int allPackageNameSize1 = Packagex.listPackageNameByFilter(context, null, 0).size();
-        int startsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("com"), 0).size();
-        int notStartsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("com"), 0).size();
+        int startsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new EndsWithPackageFilter("s"), 0).size();
+        int notStartsWithPackageNameSize1 = Packagex.listPackageNameByFilter(context, new NotEndsWithPackageFilter("s"), 0).size();
         assertTrue(allPackageNameSize1 > 0);
         assertTrue(startsWithPackageNameSize1 > 0);
         assertNotEquals(startsWithPackageNameSize1, startsWithPackageNameSize);
@@ -707,8 +702,8 @@ public class PackagexTest {
                 Packagex.isPackageInstalled(context, packageName)
         ));
         int allPackageNameSize2 = Packagex.listPackageNameByFilter(context, null).size();
-        int startsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new StartsWithPackageFilter("c")).size();
-        int notStartsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new NotStartsWithPackageFilter("c")).size();
+        int startsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new EndsWithPackageFilter("t")).size();
+        int notStartsWithPackageNameSize2 = Packagex.listPackageNameByFilter(context, new NotEndsWithPackageFilter("t")).size();
         assertTrue(allPackageNameSize2 > 0);
         assertTrue(startsWithPackageNameSize2 > 0);
         assertTrue(notStartsWithPackageNameSize2 > 0);
@@ -731,16 +726,16 @@ public class PackagexTest {
         assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
 
         int allPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, 0, 0).size();
-        int junitTestPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0).size();
-        int nonJunitTestWithPackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size();
+        int releasePackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_RELEASE, 0).size();
+        int debuggablePackageNameSize4 = Packagex.listPackageNameByFilterFlags(context, PackageFilterFlags.ONLY_DEBUGGABLE, 0).size();
         assertTrue(allPackageNameSize4 > 0);
-        assertTrue(junitTestPackageNameSize4 > 0);
-        assertNotEquals(junitTestPackageNameSize4, userPackageNameSize3);
-        assertTrue(nonJunitTestWithPackageNameSize4 > 0);
-        assertTrue(junitTestPackageNameSize4 < allPackageNameSize4);
-        assertNotEquals(junitTestPackageNameSize4, nonJunitTestWithPackageNameSize4);
-        assertNotEquals(nonJunitTestWithPackageNameSize4, systemPackageNameSize3);
-        assertEquals(allPackageNameSize4, junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4);
+        assertTrue(releasePackageNameSize4 > 0);
+        assertNotEquals(releasePackageNameSize4, userPackageNameSize3);
+        assertTrue(debuggablePackageNameSize4 > 0);
+        assertTrue(releasePackageNameSize4 < allPackageNameSize4);
+        assertNotEquals(releasePackageNameSize4, debuggablePackageNameSize4);
+        assertNotEquals(debuggablePackageNameSize4, systemPackageNameSize3);
+        assertEquals(allPackageNameSize4, releasePackageNameSize4 + debuggablePackageNameSize4);
 
         assertTrue(Collectionx.all(Packagex.listPackageNameByFilterFlags(context, 0), packageName ->
                 Packagex.isPackageInstalled(context, packageName)
@@ -778,8 +773,8 @@ public class PackagexTest {
         final Context context = InstrumentationRegistry.getContext();
 
         int allPackageNameSize = Packagex.countPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES);
-        int startsWithPackageNameSize = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
-        int notStartsWithPackageNameSize = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int startsWithPackageNameSize = Packagex.countPackageByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int notStartsWithPackageNameSize = Packagex.countPackageByFilter(context, new NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
         assertTrue(allPackageNameSize > 0);
         assertTrue(startsWithPackageNameSize > 0);
         assertTrue(notStartsWithPackageNameSize > 0);
@@ -788,8 +783,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize, startsWithPackageNameSize + notStartsWithPackageNameSize);
 
         int allPackageNameSize1 = Packagex.countPackageByFilter(context, null, 0);
-        int startsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("com"), 0);
-        int notStartsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("com"), 0);
+        int startsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new EndsWithPackageFilter("s"), 0);
+        int notStartsWithPackageNameSize1 = Packagex.countPackageByFilter(context, new NotEndsWithPackageFilter("s"), 0);
         assertTrue(allPackageNameSize1 > 0);
         assertTrue(startsWithPackageNameSize1 > 0);
         assertNotEquals(startsWithPackageNameSize1, startsWithPackageNameSize);
@@ -800,8 +795,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize1, startsWithPackageNameSize1 + notStartsWithPackageNameSize1);
 
         int allPackageNameSize2 = Packagex.countPackageByFilter(context, null);
-        int startsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new StartsWithPackageFilter("c"));
-        int notStartsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new NotStartsWithPackageFilter("c"));
+        int startsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new EndsWithPackageFilter("t"));
+        int notStartsWithPackageNameSize2 = Packagex.countPackageByFilter(context, new NotEndsWithPackageFilter("t"));
         assertTrue(allPackageNameSize2 > 0);
         assertTrue(startsWithPackageNameSize2 > 0);
         assertTrue(notStartsWithPackageNameSize2 > 0);
@@ -821,16 +816,16 @@ public class PackagexTest {
         assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
 
         int allPackageNameSize4 = Packagex.countPackageByFilterFlags(context, 0, 0);
-        int junitTestPackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_JUNIT_TEST, 0);
-        int nonJunitTestWithPackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0);
+        int releasePackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_RELEASE, 0);
+        int debuggablePackageNameSize4 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_DEBUGGABLE, 0);
         assertTrue(allPackageNameSize4 > 0);
-        assertTrue(junitTestPackageNameSize4 > 0);
-        assertNotEquals(junitTestPackageNameSize4, userPackageNameSize3);
-        assertTrue(nonJunitTestWithPackageNameSize4 > 0);
-        assertTrue(junitTestPackageNameSize4 < allPackageNameSize4);
-        assertNotEquals(junitTestPackageNameSize4, nonJunitTestWithPackageNameSize4);
-        assertNotEquals(nonJunitTestWithPackageNameSize4, systemPackageNameSize3);
-        assertEquals(allPackageNameSize4, junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4);
+        assertTrue(releasePackageNameSize4 > 0);
+        assertNotEquals(releasePackageNameSize4, userPackageNameSize3);
+        assertTrue(debuggablePackageNameSize4 > 0);
+        assertTrue(releasePackageNameSize4 < allPackageNameSize4);
+        assertNotEquals(releasePackageNameSize4, debuggablePackageNameSize4);
+        assertNotEquals(debuggablePackageNameSize4, systemPackageNameSize3);
+        assertEquals(allPackageNameSize4, releasePackageNameSize4 + debuggablePackageNameSize4);
 
         int allPackageNameSize5 = Packagex.countPackageByFilterFlags(context, 0);
         int userPackageNameSize5 = Packagex.countPackageByFilterFlags(context, PackageFilterFlags.ONLY_USER);
@@ -968,18 +963,13 @@ public class PackagexTest {
         }
     }
 
-    private static class UniquePackageFilter implements PackageFilter {
+    private static class PackageNameFilter implements PackageFilter {
 
         @NonNull
         private final String packageName;
 
-        public UniquePackageFilter(@NonNull String packageName) {
+        public PackageNameFilter(@NonNull String packageName) {
             this.packageName = packageName;
-        }
-
-        @Override
-        public int getPackageInfoFlags() {
-            return 0;
         }
 
         @Override
@@ -988,43 +978,33 @@ public class PackagexTest {
         }
     }
 
-    private static class StartsWithPackageFilter implements PackageFilter {
+    private static class EndsWithPackageFilter implements PackageFilter {
 
         @NonNull
-        private final String startsWith;
+        private final String endsWith;
 
-        public StartsWithPackageFilter(@NonNull String startsWith) {
-            this.startsWith = startsWith;
-        }
-
-        @Override
-        public int getPackageInfoFlags() {
-            return 0;
+        public EndsWithPackageFilter(@NonNull String endsWith) {
+            this.endsWith = endsWith;
         }
 
         @Override
         public boolean accept(@NonNull PackageInfo packageInfo) {
-            return packageInfo.packageName.startsWith(startsWith);
+            return packageInfo.packageName.endsWith(endsWith);
         }
     }
 
-    private static class NotStartsWithPackageFilter implements PackageFilter {
+    private static class NotEndsWithPackageFilter implements PackageFilter {
 
         @NonNull
-        private final String startsWith;
+        private final String endsWith;
 
-        public NotStartsWithPackageFilter(@NonNull String startsWith) {
-            this.startsWith = startsWith;
-        }
-
-        @Override
-        public int getPackageInfoFlags() {
-            return 0;
+        public NotEndsWithPackageFilter(@NonNull String endsWith) {
+            this.endsWith = endsWith;
         }
 
         @Override
         public boolean accept(@NonNull PackageInfo packageInfo) {
-            return !packageInfo.packageName.startsWith(startsWith);
+            return !packageInfo.packageName.endsWith(endsWith);
         }
     }
 }

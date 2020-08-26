@@ -159,15 +159,13 @@ class PackagexTest {
 
         val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
         val userAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.EXCLUDE_SELF or PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName
-        val junitAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_JUNIT_TEST)).packageName
+                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
         val selfAppPackageName = context.packageName
 
         try {
             Assert.assertFalse(context.isJunitTestPackage(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
             Assert.assertFalse(context.isJunitTestPackage(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
             Assert.assertTrue(context.isJunitTestPackage(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertTrue(context.isJunitTestPackage(junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         } catch (e: PackageManager.NameNotFoundException) {
             Assert.fail()
         }
@@ -182,7 +180,6 @@ class PackagexTest {
             Assert.assertFalse(context.isJunitTestPackage(systemAppPackageName))
             Assert.assertFalse(context.isJunitTestPackage(userAppPackageName))
             Assert.assertTrue(context.isJunitTestPackage(selfAppPackageName))
-            Assert.assertTrue(context.isJunitTestPackage(junitAppPackageName))
         } catch (e: PackageManager.NameNotFoundException) {
             Assert.fail()
         }
@@ -196,14 +193,12 @@ class PackagexTest {
         Assert.assertFalse(context.isJunitTestPackageOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
         Assert.assertFalse(context.isJunitTestPackageOr(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
         Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isJunitTestPackageOr(junitAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
         Assert.assertFalse(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
         Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
 
         Assert.assertFalse(context.isJunitTestPackageOr(systemAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isJunitTestPackageOr(userAppPackageName, defaultValue = false))
         Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName, defaultValue = false))
-        Assert.assertTrue(context.isJunitTestPackageOr(junitAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", defaultValue = false))
         Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", defaultValue = true))
     }
@@ -328,7 +323,7 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.EXCLUDE_SELF or PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName
+                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
         val selfPackageName = context.packageName
 
         Assert.assertEquals(0, context.getPackageVersionCode(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES).toLong())
@@ -364,7 +359,7 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.EXCLUDE_SELF or PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName
+                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
         val selfPackageName = context.packageName
 
         Assert.assertEquals(0L, context.getPackageLongVersionCode(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
@@ -399,7 +394,7 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.EXCLUDE_SELF or PackageFilterFlags.EXCLUDE_JUNIT_TEST)).packageName
+                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
         val selfPackageName = context.packageName
 
         try {
@@ -460,15 +455,15 @@ class PackagexTest {
         val firstSystemPackageName = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)[0]
 
         Assert.assertEquals(selfPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
-                UniquePackageFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
+                PackageNameFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
         Assert.assertNull(context.getFirstPackageByFilter(
-                UniquePackageFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES))
+                PackageNameFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES))
         Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
                 null, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
 
         Assert.assertEquals(selfPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
-                UniquePackageFilter(selfPackageName))).packageName)
-        Assert.assertNull(context.getFirstPackageByFilter(UniquePackageFilter(errorPackageName)))
+                PackageNameFilter(selfPackageName))).packageName)
+        Assert.assertNull(context.getFirstPackageByFilter(PackageNameFilter(errorPackageName)))
         Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(null)).packageName)
 
         Assert.assertEquals(firstSystemPackageName, Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
@@ -486,8 +481,8 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val allPackagesSize = context.listPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackagesSize = context.listPackageByFilter(StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackagesSize = context.listPackageByFilter(NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackagesSize = context.listPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackagesSize = context.listPackageByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSize > 0)
         Assert.assertTrue(startsWithPackagesSize > 0)
         Assert.assertTrue(notStartsWithPackagesSize > 0)
@@ -496,8 +491,8 @@ class PackagexTest {
         Assert.assertEquals(allPackagesSize.toLong(), startsWithPackagesSize + notStartsWithPackagesSize.toLong())
 
         val allPackagesSize1 = context.listPackageByFilter(null, 0).size
-        val startsWithPackagesSize1 = context.listPackageByFilter(StartsWithPackageFilter("com"), 0).size
-        val notStartsWithPackagesSize1 = context.listPackageByFilter(NotStartsWithPackageFilter("com"), 0).size
+        val startsWithPackagesSize1 = context.listPackageByFilter(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackagesSize1 = context.listPackageByFilter(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackagesSize1 > 0)
         Assert.assertTrue(startsWithPackagesSize1 > 0)
         Assert.assertNotEquals(startsWithPackagesSize1.toLong(), startsWithPackagesSize.toLong())
@@ -508,8 +503,8 @@ class PackagexTest {
         Assert.assertEquals(allPackagesSize1.toLong(), startsWithPackagesSize1 + notStartsWithPackagesSize1.toLong())
 
         val allPackagesSize2 = context.listPackageByFilter(null).size
-        val startsWithPackagesSize2 = context.listPackageByFilter(StartsWithPackageFilter("c")).size
-        val notStartsWithPackagesSize2 = context.listPackageByFilter(NotStartsWithPackageFilter("c")).size
+        val startsWithPackagesSize2 = context.listPackageByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackagesSize2 = context.listPackageByFilter(NotEndsWithPackageFilter("t")).size
         Assert.assertTrue(allPackagesSize2 > 0)
         Assert.assertTrue(startsWithPackagesSize2 > 0)
         Assert.assertTrue(notStartsWithPackagesSize2 > 0)
@@ -528,16 +523,16 @@ class PackagexTest {
         Assert.assertEquals(allPackagesSize3.toLong(), userPackagesSize3 + systemPackagesSize3.toLong())
 
         val allPackagesSize4 = context.listPackageByFilterFlags(0, 0).size
-        val junitTestPackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_JUNIT_TEST, 0).size
-        val nonJunitTestWithPackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size
+        val releasePackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
+        val debuggablePackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackagesSize4 > 0)
-        Assert.assertTrue(junitTestPackagesSize4 > 0)
-        Assert.assertNotEquals(junitTestPackagesSize4.toLong(), userPackagesSize3.toLong())
-        Assert.assertTrue(nonJunitTestWithPackagesSize4 > 0)
-        Assert.assertTrue(junitTestPackagesSize4 < allPackagesSize4)
-        Assert.assertNotEquals(junitTestPackagesSize4.toLong(), nonJunitTestWithPackagesSize4.toLong())
-        Assert.assertNotEquals(nonJunitTestWithPackagesSize4.toLong(), systemPackagesSize3.toLong())
-        Assert.assertEquals(allPackagesSize4.toLong(), junitTestPackagesSize4 + nonJunitTestWithPackagesSize4.toLong())
+        Assert.assertTrue(releasePackagesSize4 > 0)
+        Assert.assertNotEquals(releasePackagesSize4.toLong(), userPackagesSize3.toLong())
+        Assert.assertTrue(debuggablePackagesSize4 > 0)
+        Assert.assertTrue(releasePackagesSize4 < allPackagesSize4)
+        Assert.assertNotEquals(releasePackagesSize4.toLong(), debuggablePackagesSize4.toLong())
+        Assert.assertNotEquals(debuggablePackagesSize4.toLong(), systemPackagesSize3.toLong())
+        Assert.assertEquals(allPackagesSize4.toLong(), releasePackagesSize4 + debuggablePackagesSize4.toLong())
 
         val allPackagesSize5 = context.listPackageByFilterFlags(0).size
         val userPackagesSize5 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_USER).size
@@ -568,8 +563,8 @@ class PackagexTest {
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
         val allPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageVersionCodeMapSize > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize > 0)
         Assert.assertTrue(notStartsWithPackageVersionCodeMapSize > 0)
@@ -578,8 +573,8 @@ class PackagexTest {
         Assert.assertEquals(allPackageVersionCodeMapSize.toLong(), startsWithPackageVersionCodeMapSize + notStartsWithPackageVersionCodeMapSize.toLong())
 
         val allPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(null, 0).size
-        val startsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(StartsWithPackageFilter("com"), 0).size
-        val notStartsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(NotStartsWithPackageFilter("com"), 0).size
+        val startsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackageVersionCodeMapSize1 > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize1 > 0)
         Assert.assertNotEquals(startsWithPackageVersionCodeMapSize1.toLong(), startsWithPackageVersionCodeMapSize.toLong())
@@ -593,8 +588,8 @@ class PackagexTest {
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
         val allPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(null).size
-        val startsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(StartsWithPackageFilter("c")).size
-        val notStartsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(NotStartsWithPackageFilter("c")).size
+        val startsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("t")).size
         Assert.assertTrue(allPackageVersionCodeMapSize2 > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize2 > 0)
         Assert.assertTrue(notStartsWithPackageVersionCodeMapSize2 > 0)
@@ -616,16 +611,16 @@ class PackagexTest {
         Assert.assertEquals(allPackageVersionCodeMapSize3.toLong(), userPackageVersionCodeMapSize3 + systemPackageVersionCodeMapSize3.toLong())
 
         val allPackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(0, 0).size
-        val junitTestPackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_JUNIT_TEST, 0).size
-        val nonJunitTestWithPackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size
+        val releasePackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
+        val debuggablePackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackageVersionCodeMapSize4 > 0)
-        Assert.assertTrue(junitTestPackageVersionCodeMapSize4 > 0)
-        Assert.assertNotEquals(junitTestPackageVersionCodeMapSize4.toLong(), userPackageVersionCodeMapSize3.toLong())
-        Assert.assertTrue(nonJunitTestWithPackageVersionCodeMapSize4 > 0)
-        Assert.assertTrue(junitTestPackageVersionCodeMapSize4 < allPackageVersionCodeMapSize4)
-        Assert.assertNotEquals(junitTestPackageVersionCodeMapSize4.toLong(), nonJunitTestWithPackageVersionCodeMapSize4.toLong())
-        Assert.assertNotEquals(nonJunitTestWithPackageVersionCodeMapSize4.toLong(), systemPackageVersionCodeMapSize3.toLong())
-        Assert.assertEquals(allPackageVersionCodeMapSize4.toLong(), junitTestPackageVersionCodeMapSize4 + nonJunitTestWithPackageVersionCodeMapSize4.toLong())
+        Assert.assertTrue(releasePackageVersionCodeMapSize4 > 0)
+        Assert.assertNotEquals(releasePackageVersionCodeMapSize4.toLong(), userPackageVersionCodeMapSize3.toLong())
+        Assert.assertTrue(debuggablePackageVersionCodeMapSize4 > 0)
+        Assert.assertTrue(releasePackageVersionCodeMapSize4 < allPackageVersionCodeMapSize4)
+        Assert.assertNotEquals(releasePackageVersionCodeMapSize4.toLong(), debuggablePackageVersionCodeMapSize4.toLong())
+        Assert.assertNotEquals(debuggablePackageVersionCodeMapSize4.toLong(), systemPackageVersionCodeMapSize3.toLong())
+        Assert.assertEquals(allPackageVersionCodeMapSize4.toLong(), releasePackageVersionCodeMapSize4 + debuggablePackageVersionCodeMapSize4.toLong())
 
         Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilterFlags(0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
@@ -665,8 +660,8 @@ class PackagexTest {
             context.isPackageInstalled(packageName!!)
         })
         val allPackageNameSize = context.listPackageNameByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackageNameSize = context.listPackageNameByFilter(StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackageNameSize = context.listPackageNameByFilter(NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackageNameSize = context.listPackageNameByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackageNameSize = context.listPackageNameByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageNameSize > 0)
         Assert.assertTrue(startsWithPackageNameSize > 0)
         Assert.assertTrue(notStartsWithPackageNameSize > 0)
@@ -675,8 +670,8 @@ class PackagexTest {
         Assert.assertEquals(allPackageNameSize.toLong(), startsWithPackageNameSize + notStartsWithPackageNameSize.toLong())
 
         val allPackageNameSize1 = context.listPackageNameByFilter(null, 0).size
-        val startsWithPackageNameSize1 = context.listPackageNameByFilter(StartsWithPackageFilter("com"), 0).size
-        val notStartsWithPackageNameSize1 = context.listPackageNameByFilter(NotStartsWithPackageFilter("com"), 0).size
+        val startsWithPackageNameSize1 = context.listPackageNameByFilter(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackageNameSize1 = context.listPackageNameByFilter(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackageNameSize1 > 0)
         Assert.assertTrue(startsWithPackageNameSize1 > 0)
         Assert.assertNotEquals(startsWithPackageNameSize1.toLong(), startsWithPackageNameSize.toLong())
@@ -690,8 +685,8 @@ class PackagexTest {
             context.isPackageInstalled(packageName!!)
         })
         val allPackageNameSize2 = context.listPackageNameByFilter(null).size
-        val startsWithPackageNameSize2 = context.listPackageNameByFilter(StartsWithPackageFilter("c")).size
-        val notStartsWithPackageNameSize2 = context.listPackageNameByFilter(NotStartsWithPackageFilter("c")).size
+        val startsWithPackageNameSize2 = context.listPackageNameByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackageNameSize2 = context.listPackageNameByFilter(NotEndsWithPackageFilter("t")).size
         Assert.assertTrue(allPackageNameSize2 > 0)
         Assert.assertTrue(startsWithPackageNameSize2 > 0)
         Assert.assertTrue(notStartsWithPackageNameSize2 > 0)
@@ -713,16 +708,16 @@ class PackagexTest {
         Assert.assertEquals(allPackageNameSize3.toLong(), userPackageNameSize3 + systemPackageNameSize3.toLong())
 
         val allPackageNameSize4 = context.listPackageNameByFilterFlags(0, 0).size
-        val junitTestPackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_JUNIT_TEST, 0).size
-        val nonJunitTestWithPackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0).size
+        val releasePackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
+        val debuggablePackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackageNameSize4 > 0)
-        Assert.assertTrue(junitTestPackageNameSize4 > 0)
-        Assert.assertNotEquals(junitTestPackageNameSize4.toLong(), userPackageNameSize3.toLong())
-        Assert.assertTrue(nonJunitTestWithPackageNameSize4 > 0)
-        Assert.assertTrue(junitTestPackageNameSize4 < allPackageNameSize4)
-        Assert.assertNotEquals(junitTestPackageNameSize4.toLong(), nonJunitTestWithPackageNameSize4.toLong())
-        Assert.assertNotEquals(nonJunitTestWithPackageNameSize4.toLong(), systemPackageNameSize3.toLong())
-        Assert.assertEquals(allPackageNameSize4.toLong(), junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4.toLong())
+        Assert.assertTrue(releasePackageNameSize4 > 0)
+        Assert.assertNotEquals(releasePackageNameSize4.toLong(), userPackageNameSize3.toLong())
+        Assert.assertTrue(debuggablePackageNameSize4 > 0)
+        Assert.assertTrue(releasePackageNameSize4 < allPackageNameSize4)
+        Assert.assertNotEquals(releasePackageNameSize4.toLong(), debuggablePackageNameSize4.toLong())
+        Assert.assertNotEquals(debuggablePackageNameSize4.toLong(), systemPackageNameSize3.toLong())
+        Assert.assertEquals(allPackageNameSize4.toLong(), releasePackageNameSize4 + debuggablePackageNameSize4.toLong())
 
         Assert.assertTrue(Collectionx.all(context.listPackageNameByFilterFlags(0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
@@ -759,8 +754,8 @@ class PackagexTest {
         val context = InstrumentationRegistry.getContext()
 
         val allPackageNameSize = context.countPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val startsWithPackageNameSize = context.countPackageByFilter(StartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val notStartsWithPackageNameSize = context.countPackageByFilter(NotStartsWithPackageFilter("c"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val startsWithPackageNameSize = context.countPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val notStartsWithPackageNameSize = context.countPackageByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
         Assert.assertTrue(allPackageNameSize > 0)
         Assert.assertTrue(startsWithPackageNameSize > 0)
         Assert.assertTrue(notStartsWithPackageNameSize > 0)
@@ -769,8 +764,8 @@ class PackagexTest {
         Assert.assertEquals(allPackageNameSize.toLong(), startsWithPackageNameSize + notStartsWithPackageNameSize.toLong())
 
         val allPackageNameSize1 = context.countPackageByFilter(null, 0)
-        val startsWithPackageNameSize1 = context.countPackageByFilter(StartsWithPackageFilter("com"), 0)
-        val notStartsWithPackageNameSize1 = context.countPackageByFilter(NotStartsWithPackageFilter("com"), 0)
+        val startsWithPackageNameSize1 = context.countPackageByFilter(EndsWithPackageFilter("s"), 0)
+        val notStartsWithPackageNameSize1 = context.countPackageByFilter(NotEndsWithPackageFilter("s"), 0)
         Assert.assertTrue(allPackageNameSize1 > 0)
         Assert.assertTrue(startsWithPackageNameSize1 > 0)
         Assert.assertNotEquals(startsWithPackageNameSize1.toLong(), startsWithPackageNameSize.toLong())
@@ -781,8 +776,8 @@ class PackagexTest {
         Assert.assertEquals(allPackageNameSize1.toLong(), startsWithPackageNameSize1 + notStartsWithPackageNameSize1.toLong())
 
         val allPackageNameSize2 = context.countPackageByFilter(null)
-        val startsWithPackageNameSize2 = context.countPackageByFilter(StartsWithPackageFilter("c"))
-        val notStartsWithPackageNameSize2 = context.countPackageByFilter(NotStartsWithPackageFilter("c"))
+        val startsWithPackageNameSize2 = context.countPackageByFilter(EndsWithPackageFilter("t"))
+        val notStartsWithPackageNameSize2 = context.countPackageByFilter(NotEndsWithPackageFilter("t"))
         Assert.assertTrue(allPackageNameSize2 > 0)
         Assert.assertTrue(startsWithPackageNameSize2 > 0)
         Assert.assertTrue(notStartsWithPackageNameSize2 > 0)
@@ -801,16 +796,16 @@ class PackagexTest {
         Assert.assertEquals(allPackageNameSize3.toLong(), userPackageNameSize3 + systemPackageNameSize3.toLong())
 
         val allPackageNameSize4 = context.countPackageByFilterFlags(0, 0)
-        val junitTestPackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_JUNIT_TEST, 0)
-        val nonJunitTestWithPackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_NON_JUNIT_TEST, 0)
+        val releasePackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0)
+        val debuggablePackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0)
         Assert.assertTrue(allPackageNameSize4 > 0)
-        Assert.assertTrue(junitTestPackageNameSize4 > 0)
-        Assert.assertNotEquals(junitTestPackageNameSize4.toLong(), userPackageNameSize3.toLong())
-        Assert.assertTrue(nonJunitTestWithPackageNameSize4 > 0)
-        Assert.assertTrue(junitTestPackageNameSize4 < allPackageNameSize4)
-        Assert.assertNotEquals(junitTestPackageNameSize4.toLong(), nonJunitTestWithPackageNameSize4.toLong())
-        Assert.assertNotEquals(nonJunitTestWithPackageNameSize4.toLong(), systemPackageNameSize3.toLong())
-        Assert.assertEquals(allPackageNameSize4.toLong(), junitTestPackageNameSize4 + nonJunitTestWithPackageNameSize4.toLong())
+        Assert.assertTrue(releasePackageNameSize4 > 0)
+        Assert.assertNotEquals(releasePackageNameSize4.toLong(), userPackageNameSize3.toLong())
+        Assert.assertTrue(debuggablePackageNameSize4 > 0)
+        Assert.assertTrue(releasePackageNameSize4 < allPackageNameSize4)
+        Assert.assertNotEquals(releasePackageNameSize4.toLong(), debuggablePackageNameSize4.toLong())
+        Assert.assertNotEquals(debuggablePackageNameSize4.toLong(), systemPackageNameSize3.toLong())
+        Assert.assertEquals(allPackageNameSize4.toLong(), releasePackageNameSize4 + debuggablePackageNameSize4.toLong())
 
         val allPackageNameSize5 = context.countPackageByFilterFlags(0)
         val userPackageNameSize5 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_USER)
@@ -947,36 +942,21 @@ class PackagexTest {
         }
     }
 
-    private class UniquePackageFilter(private val packageName: String) : PackageFilter {
-        override fun getPackageInfoFlags(): Int {
-            return 0
-        }
-
+    private class PackageNameFilter(private val packageName: String) : PackageFilter {
         override fun accept(packageInfo: PackageInfo): Boolean {
             return packageInfo.packageName == packageName
         }
-
     }
 
-    private class StartsWithPackageFilter(private val startsWith: String) : PackageFilter {
-        override fun getPackageInfoFlags(): Int {
-            return 0
-        }
-
+    private class EndsWithPackageFilter(private val endsWith: String) : PackageFilter {
         override fun accept(packageInfo: PackageInfo): Boolean {
-            return packageInfo.packageName.startsWith(startsWith)
+            return packageInfo.packageName.endsWith(endsWith)
         }
-
     }
 
-    private class NotStartsWithPackageFilter(private val startsWith: String) : PackageFilter {
-        override fun getPackageInfoFlags(): Int {
-            return 0
-        }
-
+    private class NotEndsWithPackageFilter(private val endsWith: String) : PackageFilter {
         override fun accept(packageInfo: PackageInfo): Boolean {
-            return !packageInfo.packageName.startsWith(startsWith)
+            return !packageInfo.packageName.endsWith(endsWith)
         }
-
     }
 }
