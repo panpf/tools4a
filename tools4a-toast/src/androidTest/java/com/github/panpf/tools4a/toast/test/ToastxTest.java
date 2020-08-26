@@ -53,13 +53,13 @@ public class ToastxTest {
 
         Toastx.showLong(activity, "今天是2018年10月18号");
         Toastx.showLong(activity, R.string.toast_test);
-        Toastx.showWithFormatLong(activity, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatLong(activity, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showLongWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showLongWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
 
         Toastx.showShort(activity, "今天是2018年10月18号");
         Toastx.showShort(activity, R.string.toast_test);
-        Toastx.showWithFormatShort(activity, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatShort(activity, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showShortWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showShortWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
     }
 
     @Test
@@ -68,13 +68,13 @@ public class ToastxTest {
 
         Toastx.showLong(fragment, "今天是2018年10月18号");
         Toastx.showLong(fragment, R.string.toast_test);
-        Toastx.showWithFormatLong(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatLong(fragment, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showLongWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showLongWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
 
         Toastx.showShort(fragment, "今天是2018年10月18号");
         Toastx.showShort(fragment, R.string.toast_test);
-        Toastx.showWithFormatShort(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatShort(fragment, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showShortWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showShortWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
     }
 
     @Test
@@ -83,13 +83,13 @@ public class ToastxTest {
 
         Toastx.showLong(view, "今天是2018年10月18号");
         Toastx.showLong(view, R.string.toast_test);
-        Toastx.showWithFormatLong(view, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatLong(view, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showLongWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showLongWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
 
         Toastx.showShort(view, "今天是2018年10月18号");
         Toastx.showShort(view, R.string.toast_test);
-        Toastx.showWithFormatShort(view, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showWithFormatShort(view, R.string.toast_test_tp, 2018, 10, 18);
+        Toastx.showShortWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
+        Toastx.showShortWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
     }
 
     @Test

@@ -45,13 +45,13 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull Context context, @NonNull final String format, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull Context context, @NonNull final String format, @NonNull final Object... params) {
         final CharSequence message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull Context context, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull Context context, @StringRes final int messageResId, @NonNull final Object... params) {
         final CharSequence message = context.getString(messageResId, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
@@ -69,13 +69,13 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull Context context, @NonNull final String format, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull Context context, @NonNull final String format, @NonNull final Object... params) {
         final String message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull Context context, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull Context context, @StringRes final int messageResId, @NonNull final Object... params) {
         final CharSequence message = context.getResources().getString(messageResId, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
@@ -98,14 +98,14 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull Fragment fragment, @NonNull final String format, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull Fragment fragment, @NonNull final String format, @NonNull final Object... params) {
         final Context context = fragment.requireContext();
         final CharSequence message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull Fragment fragment, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull Fragment fragment, @StringRes final int messageResId, @NonNull final Object... params) {
         final Context context = fragment.requireContext();
         final CharSequence message = context.getResources().getString(messageResId, params);
         final Context appContext = context.getApplicationContext();
@@ -126,14 +126,14 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull Fragment fragment, @NonNull final String format, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull Fragment fragment, @NonNull final String format, @NonNull final Object... params) {
         final Context context = fragment.requireContext();
         final CharSequence message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull Fragment fragment, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull Fragment fragment, @StringRes final int messageResId, @NonNull final Object... params) {
         final Context context = fragment.requireContext();
         final CharSequence message = context.getResources().getString(messageResId, params);
         final Context appContext = context.getApplicationContext();
@@ -157,14 +157,14 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull View view, @NonNull final String format, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull View view, @NonNull final String format, @NonNull final Object... params) {
         final Context context = view.getContext();
         final CharSequence message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_LONG).show());
     }
 
-    public static void showWithFormatLong(@NonNull View view, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showLongWithFormat(@NonNull View view, @StringRes final int messageResId, @NonNull final Object... params) {
         final Context context = view.getContext();
         final CharSequence message = context.getResources().getString(messageResId, params);
         final Context appContext = context.getApplicationContext();
@@ -185,14 +185,14 @@ public class Toastx {
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull View view, @NonNull final String format, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull View view, @NonNull final String format, @NonNull final Object... params) {
         final Context context = view.getContext();
         final CharSequence message = String.format(format, params);
         final Context appContext = context.getApplicationContext();
         Runx.runOnUIThread(() -> Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show());
     }
 
-    public static void showWithFormatShort(@NonNull View view, @StringRes final int messageResId, @NonNull final Object... params) {
+    public static void showShortWithFormat(@NonNull View view, @StringRes final int messageResId, @NonNull final Object... params) {
         final Context context = view.getContext();
         final CharSequence message = context.getResources().getString(messageResId, params);
         final Context appContext = context.getApplicationContext();

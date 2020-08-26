@@ -38,14 +38,14 @@ class ToastxTest {
         val activity = fragmentActivityRule.activity
 
         activity.showLongToast("今天是2018年10月18号")
-        activity.showWithFormatLongToast("今天是%d年%d月%d号", 2018, 10, 18)
+        activity.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         activity.showLongToast(R.string.toast_test)
-        activity.showWithFormatLongToast(R.string.toast_test_tp, 2018, 10, 18)
+        activity.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
         activity.showShortToast("今天是2018年10月18号")
-        activity.showWithFormatShortToast("今天是%d年%d月%d号", 2018, 10, 18)
+        activity.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         activity.showShortToast(R.string.toast_test)
-        activity.showWithFormatShortToast(R.string.toast_test_tp, 2018, 10, 18)
+        activity.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
     }
 
     @Test
@@ -53,14 +53,14 @@ class ToastxTest {
         val fragment = fragmentActivityRule.activity.fragment
 
         fragment.showLongToast("今天是2018年10月18号")
-        fragment.showWithFormatLongToast("今天是%d年%d月%d号", 2018, 10, 18)
+        fragment.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         fragment.showLongToast(R.string.toast_test)
-        fragment.showWithFormatLongToast(R.string.toast_test_tp, 2018, 10, 18)
+        fragment.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
         fragment.showShortToast("今天是2018年10月18号")
-        fragment.showWithFormatShortToast("今天是%d年%d月%d号", 2018, 10, 18)
+        fragment.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         fragment.showShortToast(R.string.toast_test)
-        fragment.showWithFormatShortToast(R.string.toast_test_tp, 2018, 10, 18)
+        fragment.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
     }
 
     @Test
@@ -68,14 +68,14 @@ class ToastxTest {
         val view = fragmentActivityRule.activity.view
 
         view.showLongToast("今天是2018年10月18号")
-        view.showWithFormatLongToast("今天是%d年%d月%d号", 2018, 10, 18)
+        view.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         view.showLongToast(R.string.toast_test)
-        view.showWithFormatLongToast(R.string.toast_test_tp, 2018, 10, 18)
+        view.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
         view.showShortToast("今天是2018年10月18号")
-        view.showWithFormatShortToast("今天是%d年%d月%d号", 2018, 10, 18)
+        view.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
         view.showShortToast(R.string.toast_test)
-        view.showWithFormatShortToast(R.string.toast_test_tp, 2018, 10, 18)
+        view.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
     }
 
     @Test

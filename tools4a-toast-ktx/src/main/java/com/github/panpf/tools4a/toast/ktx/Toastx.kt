@@ -35,18 +35,18 @@ inline fun Context.showLongToast(message: CharSequence) = Toastx.showLong(this, 
 
 inline fun Context.showLongToast(@StringRes messageResId: Int) = Toastx.showLong(this, messageResId)
 
-inline fun Context.showWithFormatLongToast(message: String, vararg params: Any) = Toastx.showWithFormatLong(this, message, *params)
+inline fun Context.showLongToastWithFormat(message: String, vararg params: Any) = Toastx.showLongWithFormat(this, message, *params)
 
-inline fun Context.showWithFormatLongToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatLong(this, messageResId, *params)
+inline fun Context.showLongToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showLongWithFormat(this, messageResId, *params)
 
 
 inline fun Context.showShortToast(message: CharSequence) = Toastx.showShort(this, message)
 
 inline fun Context.showShortToast(@StringRes messageResId: Int) = Toastx.showShort(this, messageResId)
 
-inline fun Context.showWithFormatShortToast(message: String, vararg params: Any) = Toastx.showWithFormatShort(this, message, *params)
+inline fun Context.showShortToastWithFormat(message: String, vararg params: Any) = Toastx.showShortWithFormat(this, message, *params)
 
-inline fun Context.showWithFormatShortToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatShort(this, messageResId, *params)
+inline fun Context.showShortToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showShortWithFormat(this, messageResId, *params)
 
 
 /* ************************************* androidx.fragment.app.Fragment ***************************************** */
@@ -56,18 +56,18 @@ inline fun androidx.fragment.app.Fragment.showLongToast(message: CharSequence) =
 
 inline fun androidx.fragment.app.Fragment.showLongToast(@StringRes messageResId: Int) = Toastx.showLong(this, messageResId)
 
-inline fun androidx.fragment.app.Fragment.showWithFormatLongToast(message: String, vararg params: Any) = Toastx.showWithFormatLong(this, message, *params)
+inline fun androidx.fragment.app.Fragment.showLongToastWithFormat(message: String, vararg params: Any) = Toastx.showLongWithFormat(this, message, *params)
 
-inline fun androidx.fragment.app.Fragment.showWithFormatLongToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatLong(this, messageResId, *params)
+inline fun androidx.fragment.app.Fragment.showLongToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showLongWithFormat(this, messageResId, *params)
 
 
 inline fun androidx.fragment.app.Fragment.showShortToast(message: CharSequence) = Toastx.showShort(this, message)
 
 inline fun androidx.fragment.app.Fragment.showShortToast(@StringRes messageResId: Int) = Toastx.showShort(this, messageResId)
 
-inline fun androidx.fragment.app.Fragment.showWithFormatShortToast(message: String, vararg params: Any) = Toastx.showWithFormatShort(this, message, *params)
+inline fun androidx.fragment.app.Fragment.showShortToastWithFormat(message: String, vararg params: Any) = Toastx.showShortWithFormat(this, message, *params)
 
-inline fun androidx.fragment.app.Fragment.showWithFormatShortToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatShort(this, messageResId, *params)
+inline fun androidx.fragment.app.Fragment.showShortToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showShortWithFormat(this, messageResId, *params)
 
 
 /* ************************************* View ***************************************** */
@@ -77,18 +77,18 @@ inline fun View.showLongToast(message: CharSequence) = Toastx.showLong(this, mes
 
 inline fun View.showLongToast(@StringRes messageResId: Int) = Toastx.showLong(this, messageResId)
 
-inline fun View.showWithFormatLongToast(message: String, vararg params: Any) = Toastx.showWithFormatLong(this, message, *params)
+inline fun View.showLongToastWithFormat(message: String, vararg params: Any) = Toastx.showLongWithFormat(this, message, *params)
 
-inline fun View.showWithFormatLongToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatLong(this, messageResId, *params)
+inline fun View.showLongToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showLongWithFormat(this, messageResId, *params)
 
 
 inline fun View.showShortToast(message: CharSequence) = Toastx.showShort(this, message)
 
 inline fun View.showShortToast(@StringRes messageResId: Int) = Toastx.showShort(this, messageResId)
 
-inline fun View.showWithFormatShortToast(message: String, vararg params: Any) = Toastx.showWithFormatShort(this, message, *params)
+inline fun View.showShortToastWithFormat(message: String, vararg params: Any) = Toastx.showShortWithFormat(this, message, *params)
 
-inline fun View.showWithFormatShortToast(@StringRes messageResId: Int, vararg params: Any) = Toastx.showWithFormatShort(this, messageResId, *params)
+inline fun View.showShortToastWithFormat(@StringRes messageResId: Int, vararg params: Any) = Toastx.showShortWithFormat(this, messageResId, *params)
 
 
 /* ************************************* Show View ***************************************** */
