@@ -51,16 +51,16 @@ public class SimplePackageInfo implements Parcelable {
     public final String versionName;
     @NonNull
     public final String packageFilePath;
-    public final long packageSize;
-    public final long packageLastModifiedTime;
+    public final long packageFileLength;
+    public final long packageFileLastModifiedTime;
     @ApplicationInfoFlags
     public final int applicationInfoFlags;
     public final boolean enabled;
 
     public SimplePackageInfo(
             @NonNull String name, @NonNull String packageName, int versionCode, long longVersionCode,
-            @NonNull String versionName, @NonNull String packageFilePath, long packageSize,
-            long packageLastModifiedTime, @ApplicationInfoFlags int applicationInfoFlags,
+            @NonNull String versionName, @NonNull String packageFilePath, long packageFileLength,
+            long packageFileLastModifiedTime, @ApplicationInfoFlags int applicationInfoFlags,
             boolean enabled) {
         this.name = name;
         this.packageName = packageName;
@@ -68,8 +68,8 @@ public class SimplePackageInfo implements Parcelable {
         this.longVersionCode = longVersionCode;
         this.versionName = versionName;
         this.packageFilePath = packageFilePath;
-        this.packageSize = packageSize;
-        this.packageLastModifiedTime = packageLastModifiedTime;
+        this.packageFileLength = packageFileLength;
+        this.packageFileLastModifiedTime = packageFileLastModifiedTime;
         this.applicationInfoFlags = applicationInfoFlags;
         this.enabled = enabled;
     }
@@ -82,8 +82,8 @@ public class SimplePackageInfo implements Parcelable {
         longVersionCode = in.readLong();
         versionName = in.readString();
         packageFilePath = in.readString();
-        packageSize = in.readLong();
-        packageLastModifiedTime = in.readLong();
+        packageFileLength = in.readLong();
+        packageFileLastModifiedTime = in.readLong();
         applicationInfoFlags = in.readInt();
         enabled = in.readByte() != 0;
     }
@@ -129,8 +129,8 @@ public class SimplePackageInfo implements Parcelable {
                 ", longVersionCode=" + longVersionCode +
                 ", versionName='" + versionName + '\'' +
                 ", packageFilePath='" + packageFilePath + '\'' +
-                ", packageSize=" + packageSize +
-                ", packageLastModifiedTime=" + packageLastModifiedTime +
+                ", packageSize=" + packageFileLength +
+                ", packageLastModifiedTime=" + packageFileLastModifiedTime +
                 ", applicationInfoFlags=" + applicationInfoFlags +
                 ", enabled=" + enabled +
                 '}';
@@ -149,8 +149,8 @@ public class SimplePackageInfo implements Parcelable {
         dest.writeLong(longVersionCode);
         dest.writeString(versionName);
         dest.writeString(packageFilePath);
-        dest.writeLong(packageSize);
-        dest.writeLong(packageLastModifiedTime);
+        dest.writeLong(packageFileLength);
+        dest.writeLong(packageFileLastModifiedTime);
         dest.writeInt(applicationInfoFlags);
         dest.writeByte((byte) (enabled ? 1 : 0));
     }

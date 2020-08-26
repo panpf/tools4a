@@ -286,8 +286,8 @@ class PackagexTest {
         Assert.assertNotNull(selfAppPackage.versionName)
         Assert.assertTrue("versionCode: " + selfAppPackage.versionCode, selfAppPackage.versionCode >= 0)
         Assert.assertTrue("packageFilePath: " + selfAppPackage.packageFilePath, Stringx.isSafe(selfAppPackage.packageFilePath))
-        Assert.assertTrue("packageSize: " + selfAppPackage.packageSize, selfAppPackage.packageSize >= 0)
-        Assert.assertTrue("packageLastModifiedTime: " + selfAppPackage.packageLastModifiedTime, selfAppPackage.packageLastModifiedTime >= 0)
+        Assert.assertTrue("packageFileLength: " + selfAppPackage.packageFileLength, selfAppPackage.packageFileLength >= 0)
+        Assert.assertTrue("packageFileLastModifiedTime: " + selfAppPackage.packageFileLastModifiedTime, selfAppPackage.packageFileLastModifiedTime >= 0)
         Assert.assertFalse(selfAppPackage.isSystemPackage)
         Assert.assertTrue(selfAppPackage.enabled)
 
@@ -297,8 +297,8 @@ class PackagexTest {
         Assert.assertNotNull(selfAppPackage1.versionName)
         Assert.assertTrue("versionCode: " + selfAppPackage1.versionCode, selfAppPackage1.versionCode >= 0)
         Assert.assertTrue("packageFilePath: " + selfAppPackage1.packageFilePath, Stringx.isSafe(selfAppPackage1.packageFilePath))
-        Assert.assertTrue("packageSize: " + selfAppPackage1.packageSize, selfAppPackage1.packageSize >= 0)
-        Assert.assertTrue("packageLastModifiedTime: " + selfAppPackage1.packageLastModifiedTime, selfAppPackage1.packageLastModifiedTime >= 0)
+        Assert.assertTrue("packageFileLength: " + selfAppPackage1.packageFileLength, selfAppPackage1.packageFileLength >= 0)
+        Assert.assertTrue("packageFileLastModifiedTime: " + selfAppPackage1.packageFileLastModifiedTime, selfAppPackage1.packageFileLastModifiedTime >= 0)
         Assert.assertFalse(selfAppPackage1.isSystemPackage)
         Assert.assertTrue(selfAppPackage1.enabled)
 
