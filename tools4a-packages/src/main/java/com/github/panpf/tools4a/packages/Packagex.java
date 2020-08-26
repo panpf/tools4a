@@ -176,7 +176,8 @@ public class Packagex {
                                              @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
-        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
     }
 
     /**
@@ -184,7 +185,8 @@ public class Packagex {
      */
     public static boolean isJunitTestPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
-        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
     }
 
     /**
@@ -199,7 +201,8 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
     }
 
     /**
@@ -212,7 +215,8 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        return packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
     }
 
 
