@@ -113,6 +113,14 @@ public class Contextx {
         return activity.getApplicationContext();
     }
 
+    /**
+     * Get Application Context
+     */
+    @NonNull
+    public static Context appContext(@NonNull View view) {
+        return view.getContext().getApplicationContext();
+    }
+
 
     /**
      * Get Context, Throw an exception if Fragment is dead
@@ -122,21 +130,12 @@ public class Contextx {
         return fragment.requireContext();
     }
 
-
     /**
      * Get Application Context, Throw an exception if Fragment is dead
      */
     @NonNull
     public static Context requireAppContext(@NonNull Fragment fragment) {
         return requireContext(fragment).getApplicationContext();
-    }
-
-    /**
-     * Get Application Context
-     */
-    @NonNull
-    public static Context appContext(@NonNull View view) {
-        return view.getContext().getApplicationContext();
     }
 
     /* ******************************************* SystemService *******************************************/
