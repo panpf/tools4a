@@ -15,8 +15,8 @@ include(":tools4a-build")
 include(":tools4a-clipboard")
 include(":tools4a-clipboard-ktx")
 
-include(":tools4a-content")
-include(":tools4a-content-ktx")
+include(":tools4a-context")
+include(":tools4a-context-ktx")
 
 include(":tools4a-device")
 include(":tools4a-device-ktx")
@@ -41,6 +41,9 @@ include(":tools4a-graphics-ktx")
 
 include(":tools4a-inputmethod")
 include(":tools4a-inputmethod-ktx")
+
+include(":tools4a-intent")
+include(":tools4a-intent-ktx")
 
 include(":tools4a-network")
 include(":tools4a-network-ktx")
