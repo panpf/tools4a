@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils;
+package com.github.panpf.tools4a.root;
 
 import androidx.annotation.AnyThread;
 
@@ -27,7 +27,9 @@ public class Rootx {
      */
     @AnyThread
     public static boolean isRooted() {
-        return new File("/system/bin/su").exists() || new File("/system/xbin/su").exists()
-                || new File("/sbin/su").exists() || new File("/su").exists();
+        return new File("/system/bin/su").exists()
+                || new File("/system/xbin/su").exists()
+                || new File("/sbin/su").exists()
+                || new File("/su").exists();
     }
 }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils.test;
+package com.github.panpf.tools4a.root.test;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.github.panpf.tools4a.utils.Rootx;
+import com.github.panpf.tools4a.root.Rootx;
 
 import org.junit.Assert;
 import org.junit.Test;

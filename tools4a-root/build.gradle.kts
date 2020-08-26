@@ -37,32 +37,7 @@ android {
 }
 
 dependencies {
-    api(project(":tools4a-activity"))
-    api(project(":tools4a-args"))
-    api(project(":tools4a-build"))
-    api(project(":tools4a-clipboard"))
-    api(project(":tools4a-content"))
-    api(project(":tools4a-device"))
-    api(project(":tools4a-dialog"))
-    api(project(":tools4a-dimen"))
-    api(project(":tools4a-display"))
-    api(project(":tools4a-fileprovider"))
-    api(project(":tools4a-fragment"))
-    api(project(":tools4a-graphics"))
-    api(project(":tools4a-inputmethod"))
-    api(project(":tools4a-network"))
-    api(project(":tools4a-packages"))
-    api(project(":tools4a-permission"))
-    api(project(":tools4a-rom"))
-    api(project(":tools4a-root"))
-    api(project(":tools4a-run"))
-    api(project(":tools4a-service"))
-    api(project(":tools4a-settings"))
-    api(project(":tools4a-storage"))
-    api(project(":tools4a-systemproperties"))
-    api(project(":tools4a-toast"))
-    api(project(":tools4a-utils"))
-    api(project(":tools4a-view"))
+    api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
 
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")
@@ -75,9 +50,9 @@ Properties().apply { project.file("local.properties").takeIf { it.exists() }?.in
 
     configure<PublishExtension> {
         groupId = "com.github.panpf.tools4a"
-        artifactId = "tools4a"
+        artifactId = "tools4a-root"
         publishVersion = property("VERSION_NAME").toString()
-        desc = "Android, Tools"
+        desc = "Android, Tools, Root"
         website = "https://github.com/panpf/tools4a"
         userOrg = localProperties.getProperty("bintray.userOrg")
         bintrayUser = localProperties.getProperty("bintray.user")

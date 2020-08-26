@@ -45,8 +45,6 @@ dependencies {
     androidTestImplementation("androidx.test:rules:${property("TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
     androidTestImplementation("androidx.fragment:fragment:${property("ANDROIDX_FRAGMENT")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-ranges:${property("TOOLS4J")}")
 }
 
 Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->

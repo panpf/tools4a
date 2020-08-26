@@ -10,6 +10,8 @@ include(":tools4a-activity-ktx")
 include(":tools4a-args")
 include(":tools4a-args-ktx")
 
+include(":tools4a-build")
+
 include(":tools4a-clipboard")
 include(":tools4a-clipboard-ktx")
 
@@ -52,6 +54,8 @@ include(":tools4a-permission-ktx")
 include(":tools4a-prefsdelegate")
 
 include(":tools4a-rom")
+
+include(":tools4a-root")
 
 include(":tools4a-run")
 include(":tools4a-run-ktx")

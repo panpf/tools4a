@@ -40,7 +40,7 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class LifecycleBroadcastReceiverTest {
-    private static String INTENT_ACTION = BuildConfig.APPLICATION_ID + ".LifecycleBroadcastReceiverTest";
+    private static String INTENT_ACTION = "com.github.panpf.tools4a.utils.test.LifecycleBroadcastReceiverTest";
 
     @NonNull
     private final ActivityTestRule<TestFragmentActivity> activityTestRule = new ActivityTestRule<>(TestFragmentActivity.class);

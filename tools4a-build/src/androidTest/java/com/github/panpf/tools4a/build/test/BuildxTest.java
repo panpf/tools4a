@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils.test;
+package com.github.panpf.tools4a.build.test;
 
 import android.os.Build;
 import android.util.SparseArray;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.github.panpf.tools4a.utils.Buildx;
+import com.github.panpf.tools4a.build.Buildx;
 import com.github.panpf.tools4j.collections.Collectionx;
 import com.github.panpf.tools4j.common.Predicate;
 import com.github.panpf.tools4j.ranges.Rangex;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils;
+package com.github.panpf.tools4a.build;
 
 import android.os.Build;
 
