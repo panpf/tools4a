@@ -1,4 +1,4 @@
-# ANDROIDX
+# Tools4a
 
 [![Platform][platform_android_icon]][platform_android_link]
 [![Platform][platform_kotlin_icon]][platform_kotlin_link]
@@ -133,7 +133,7 @@ Dependencies:
     * bind\*IntentUriArgOr, bind\*UriIntentArg, bind\*UriIntentArgOr
 
 ### tools4a-build
-* Buildx: [Buildx.java] ([Test]BuildxTest.java])
+* Buildx: [Buildx.java] ([Test][BuildxTest.java])
     * isAtLeastJ/isAtLeast16/isAtLeast4_1..., getVersionName, getVersionCodeName
 
 ### tools4a-clipboard
