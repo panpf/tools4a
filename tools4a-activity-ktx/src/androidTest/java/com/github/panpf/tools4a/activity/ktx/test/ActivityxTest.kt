@@ -28,7 +28,7 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.activity.ktx.*
-import com.github.panpf.tools4a.run.ktx.runOnUIThreadAndWaitResult
+import com.github.panpf.tools4a.run.ktx.runOnUiThreadAndWaitResult
 import com.github.panpf.tools4j.lang.Throwablex
 import com.github.panpf.tools4j.premise.ktx.requireNotNull
 import org.junit.Assert
@@ -84,7 +84,7 @@ class ActivityxTest {
             e.printStackTrace()
         }
 
-        var result = runOnUIThreadAndWaitResult { activity.convertToTranslucentCompat() }
+        var result = runOnUiThreadAndWaitResult { activity.convertToTranslucentCompat() }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result)
         } else {
@@ -97,7 +97,7 @@ class ActivityxTest {
             e.printStackTrace()
         }
 
-        result = runOnUIThreadAndWaitResult { activity.convertFromTranslucentCompat() }
+        result = runOnUiThreadAndWaitResult { activity.convertFromTranslucentCompat() }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result)
         } else {
@@ -139,7 +139,7 @@ class ActivityxTest {
         }
 
         try {
-            activity.getApplicationContext().startActivity(Intent(activity, ActivityxTest::class.java))
+            activity.applicationContext.startActivity(Intent(activity, ActivityxTest::class.java))
             Assert.fail()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -160,7 +160,7 @@ class ActivityxTest {
         }
 
         try {
-            activity.getApplicationContext().startActivityByClass(NoRegisterTestActivity::class.java)
+            activity.applicationContext.startActivityByClass(NoRegisterTestActivity::class.java)
             Assert.fail()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -294,10 +294,10 @@ class ActivityxTest {
         val activity = fragmentActivityTestRule.activity
 
         Assert.assertTrue(activity.safeStartActivity(Intent(activity, TestFragmentActivity::class.java)))
-        Assert.assertFalse(activity.getApplicationContext().safeStartActivity(Intent(activity, ActivityxTest::class.java)))
+        Assert.assertFalse(activity.applicationContext.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
         Assert.assertTrue(activity.safeStartActivityByClass(TestFragmentActivity::class.java, null))
         Assert.assertTrue(activity.safeStartActivityByClass(TestFragmentActivity::class.java))
-        Assert.assertFalse(activity.getApplicationContext().safeStartActivityByClass(NoRegisterTestActivity::class.java))
+        Assert.assertFalse(activity.applicationContext.safeStartActivityByClass(NoRegisterTestActivity::class.java))
     }
 
     @Test
@@ -325,10 +325,10 @@ class ActivityxTest {
     interface ImplTestInterface
 
     class TestFragmentActivity : androidx.fragment.app.FragmentActivity() {
-        var finished: Boolean = false
-        var finishedActivity: Boolean = false
-        var finishedActivityFromChild: Boolean = false
-        var destoryed: Boolean = false
+        private var finished: Boolean = false
+        private var finishedActivity: Boolean = false
+        private var finishedActivityFromChild: Boolean = false
+        private var destoryed: Boolean = false
 
         public override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -365,10 +365,10 @@ class ActivityxTest {
     }
 
     class NoRegisterTestActivity : Activity(), ImplTestInterface {
-        var finished: Boolean = false
-        var finishedActivity: Boolean = false
-        var finishedActivityFromChild: Boolean = false
-        var destoryed: Boolean = false
+        private var finished: Boolean = false
+        private var finishedActivity: Boolean = false
+        private var finishedActivityFromChild: Boolean = false
+        private var destoryed: Boolean = false
 
         override fun finish() {
             super.finish()
