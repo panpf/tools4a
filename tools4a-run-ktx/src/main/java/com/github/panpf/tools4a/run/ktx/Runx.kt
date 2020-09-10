@@ -26,64 +26,43 @@ import com.github.panpf.tools4a.run.Runx
 /**
  * Execute the specified code block in the main thread
  */
-inline fun runOnUIThread(block: Runnable) = Runx.runOnUIThread(block)
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun runOnUIThread(noinline block: () -> Unit) = Runx.runOnUIThread(block)
+inline fun runOnUiThread(block: Runnable) = Runx.runOnUiThread(block)
 
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun runOnUIThreadAndWait(block: Runnable) = Runx.runOnUIThreadAndWait(block)
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun runOnUIThreadAndWait(noinline block: () -> Unit) = Runx.runOnUIThreadAndWait(block)
+inline fun runOnUiThreadAndWait(block: Runnable) = Runx.runOnUiThreadAndWait(block)
 
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun <T> runOnUIThreadAndWaitResult(block: ResultRunnable<T>): T = Runx.runOnUIThreadAndWaitResult(block)
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun <T> runOnUIThreadAndWaitResult(noinline block: () -> T): T = Runx.runOnUIThreadAndWaitResult { block() }
+inline fun <T> runOnUiThreadAndWaitResult(block: ResultRunnable<T>): T = Runx.runOnUiThreadAndWaitResult(block)
 
 
 /**
  * Execute the specified code block in the main thread
  */
-inline fun <T> runOnUIThreadAndWaitNullableResult(block: ResultNullableRunnable<T>): T? = Runx.runOnUIThreadAndWaitNullableResult(block)
+inline fun <T> runOnUiThreadAndWaitNullableResult(block: ResultNullableRunnable<T>): T? = Runx.runOnUiThreadAndWaitNullableResult(block)
 
 
 /**
- * Execute the specified code block in the main thread
+ * Is on main thread?
  */
-inline fun <T> runOnUIThreadAndWaitNullableResult(noinline block: () -> T?): T? = Runx.runOnUIThreadAndWaitNullableResult { block() }
-
-
-/**
- * Is on the main thread?
- */
-inline fun isOnTheMainThread(): Boolean = Runx.isOnTheMainThread()
+inline fun isOnMainThread(): Boolean = Runx.isOnMainThread()
 
 /**
- * Is on the main process?
+ * Is on main process?
  */
-inline fun Context.isOnTheMainProcess(): Boolean = Runx.isOnTheMainProcess(this)
+inline fun Context.isOnMainProcess(): Boolean = Runx.isOnMainProcess(this)
 
 /**
- * Get the name of the current process
+ * Get name of the current process
  */
-inline fun Context.getTheProcessName(): String? = Runx.getTheProcessName(this)
+inline fun Context.getProcessName(): String? = Runx.getProcessName(this)
 
 /**
- * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
+ * Get suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
  */
-inline fun Context.getTheProcessNameSuffix(): String? = Runx.getTheProcessNameSuffix(this)
+inline fun Context.getProcessNameSuffix(): String? = Runx.getProcessNameSuffix(this)

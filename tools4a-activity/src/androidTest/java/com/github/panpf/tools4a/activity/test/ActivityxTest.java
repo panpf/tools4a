@@ -96,7 +96,7 @@ public class ActivityxTest {
             e.printStackTrace();
         }
 
-        boolean result = Runx.runOnUIThreadAndWaitResult(() -> Activityx.convertToTranslucentCompat(activity));
+        boolean result = Runx.runOnUiThreadAndWaitResult(() -> Activityx.convertToTranslucentCompat(activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result);
         } else {
@@ -109,7 +109,7 @@ public class ActivityxTest {
             e.printStackTrace();
         }
 
-        result = Runx.runOnUIThreadAndWaitResult(() -> Activityx.convertFromTranslucentCompat(activity));
+        result = Runx.runOnUiThreadAndWaitResult(() -> Activityx.convertFromTranslucentCompat(activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Assert.assertTrue(result);
         } else {

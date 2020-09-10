@@ -43,8 +43,8 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
-    public static void runOnUIThread(@NonNull Runnable block) {
-        if (isOnTheMainThread()) {
+    public static void runOnUiThread(@NonNull Runnable block) {
+        if (isOnMainThread()) {
             block.run();
         } else {
             getMainHandler().post(block);
@@ -54,17 +54,14 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
-    public static void runOnUIThreadAndWait(@NonNull final Runnable block) {
-        if (isOnTheMainThread()) {
+    public static void runOnUiThreadAndWait(@NonNull final Runnable block) {
+        if (isOnMainThread()) {
             block.run();
         } else {
             final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    block.run();
-                    countDownLatch.countDown();
-                }
+            getMainHandler().post(() -> {
+                block.run();
+                countDownLatch.countDown();
             });
             try {
                 countDownLatch.await();
@@ -78,18 +75,15 @@ public class Runx {
      * Execute the specified code block in the main thread
      */
     @NonNull
-    public static <T> T runOnUIThreadAndWaitResult(@NonNull final ResultRunnable<T> block) {
-        if (isOnTheMainThread()) {
+    public static <T> T runOnUiThreadAndWaitResult(@NonNull final ResultRunnable<T> block) {
+        if (isOnMainThread()) {
             return block.run();
         } else {
             final Object[] results = new Object[1];
             final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    results[0] = block.run();
-                    countDownLatch.countDown();
-                }
+            getMainHandler().post(() -> {
+                results[0] = block.run();
+                countDownLatch.countDown();
             });
             try {
                 countDownLatch.await();
@@ -110,18 +104,15 @@ public class Runx {
      * Execute the specified code block in the main thread
      */
     @Nullable
-    public static <T> T runOnUIThreadAndWaitNullableResult(@NonNull final ResultNullableRunnable<T> block) {
-        if (isOnTheMainThread()) {
+    public static <T> T runOnUiThreadAndWaitNullableResult(@NonNull final ResultNullableRunnable<T> block) {
+        if (isOnMainThread()) {
             return block.run();
         } else {
             final Object[] results = new Object[1];
             final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    results[0] = block.run();
-                    countDownLatch.countDown();
-                }
+            getMainHandler().post(() -> {
+                results[0] = block.run();
+                countDownLatch.countDown();
             });
             try {
                 countDownLatch.await();
@@ -134,24 +125,24 @@ public class Runx {
     }
 
     /**
-     * Is on the main thread?
+     * Is on main thread?
      */
-    public static boolean isOnTheMainThread() {
+    public static boolean isOnMainThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
 
     /**
-     * Is on the main process?
+     * Is on main process?
      */
-    public static boolean isOnTheMainProcess(@NonNull Context context) {
-        return context.getPackageName().equals(getTheProcessName(context));
+    public static boolean isOnMainProcess(@NonNull Context context) {
+        return context.getPackageName().equals(getProcessName(context));
     }
 
     /**
      * Get the name of the current process
      */
     @Nullable
-    public static String getTheProcessName(@NonNull Context context) {
+    public static String getProcessName(@NonNull Context context) {
         final int myPid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> processInfoList = activityManager.getRunningAppProcesses();
@@ -169,8 +160,8 @@ public class Runx {
      * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
      */
     @Nullable
-    public static String getTheProcessNameSuffix(@NonNull Context context) {
-        String processName = getTheProcessName(context);
+    public static String getProcessNameSuffix(@NonNull Context context) {
+        String processName = getProcessName(context);
         if (processName == null) return null;
         String packageName = context.getPackageName();
         int lastIndex = processName.lastIndexOf(packageName, 0);

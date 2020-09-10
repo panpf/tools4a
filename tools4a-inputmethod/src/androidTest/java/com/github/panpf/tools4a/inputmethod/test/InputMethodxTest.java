@@ -58,13 +58,13 @@ public class InputMethodxTest {
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
-            Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(activity));
+            Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(activity));
             Thread.sleep(500);
             Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
         }
 
         // show
-        Runx.runOnUIThread(() -> InputMethodx.showSoftInput(originEditText));
+        Runx.runOnUiThread(() -> InputMethodx.showSoftInput(originEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
     }
@@ -76,23 +76,23 @@ public class InputMethodxTest {
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
-            Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(activity));
+            Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(activity));
             Thread.sleep(500);
             Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
         }
 
         // show
-        Runx.runOnUIThread(() -> InputMethodx.delayShowSoftInput(supportEditText));
+        Runx.runOnUiThread(() -> InputMethodx.delayShowSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
         // hide
-        Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(activity));
+        Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(activity));
         Thread.sleep(500);
         Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
 
         // show
-        Runx.runOnUIThread(() -> InputMethodx.delayShowSoftInput(supportEditText, 500));
+        Runx.runOnUiThread(() -> InputMethodx.delayShowSoftInput(supportEditText, 500));
         Thread.sleep(500 + 500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
     }
@@ -104,28 +104,28 @@ public class InputMethodxTest {
 
         // ensure hide
         if (InputMethodx.isSoftInputShowing(activity)) {
-            Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(activity));
+            Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(activity));
             Thread.sleep(500);
             Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
         }
 
         // show
-        Runx.runOnUIThread(() -> InputMethodx.showSoftInput(supportEditText));
+        Runx.runOnUiThread(() -> InputMethodx.showSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
         // hide
-        Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(activity.getSupportFragment()));
+        Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(activity.getSupportFragment()));
         Thread.sleep(500);
         Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
 
         // show
-        Runx.runOnUIThread(() -> InputMethodx.showSoftInput(supportEditText));
+        Runx.runOnUiThread(() -> InputMethodx.showSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
         // hide
-        Runx.runOnUIThread(() -> InputMethodx.hideSoftInput(supportEditText));
+        Runx.runOnUiThread(() -> InputMethodx.hideSoftInput(supportEditText));
         Thread.sleep(500);
         Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
     }
@@ -135,15 +135,15 @@ public class InputMethodxTest {
         final TestActivity activity = activityRule.getActivity();
         final EditText originEditText = activity.getSupportFragmentEditTxt();
 
-        Runx.runOnUIThread(() -> InputMethodx.moveCursorToEnd(originEditText));
+        Runx.runOnUiThread(() -> InputMethodx.moveCursorToEnd(originEditText));
         Thread.sleep(100);
         Assert.assertEquals(originEditText.length(), Selection.getSelectionEnd(originEditText.getText()));
 
-        Runx.runOnUIThread(() -> InputMethodx.moveCursorToStart(originEditText));
+        Runx.runOnUiThread(() -> InputMethodx.moveCursorToStart(originEditText));
         Thread.sleep(100);
         Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.getText()));
 
-        Runx.runOnUIThread(() -> InputMethodx.moveCursorTo(originEditText, originEditText.length() / 2));
+        Runx.runOnUiThread(() -> InputMethodx.moveCursorTo(originEditText, originEditText.length() / 2));
         Thread.sleep(100);
         Assert.assertEquals(originEditText.length() / 2, Selection.getSelectionEnd(originEditText.getText()));
     }
@@ -170,12 +170,7 @@ public class InputMethodxTest {
 
         @NonNull
         public EditText getSupportFragmentEditTxt() {
-            //noinspection ConstantConditions
             return (EditText) getSupportFragment().getView();
-        }
-
-        public View getView() {
-            return findViewById(android.R.id.content);
         }
     }
 

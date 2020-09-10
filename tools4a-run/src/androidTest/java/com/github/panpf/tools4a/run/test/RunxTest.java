@@ -45,12 +45,9 @@ public class RunxTest {
     public void testRunInUI() {
         final String[] results = new String[1];
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Runx.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                results[0] = Runx.isOnTheMainThread() ? "MainThread1" : "NoMainThread1";
-                countDownLatch.countDown();
-            }
+        Runx.runOnUiThread(() -> {
+            results[0] = Runx.isOnMainThread() ? "MainThread1" : "NoMainThread1";
+            countDownLatch.countDown();
         });
         try {
             countDownLatch.await();
@@ -59,50 +56,33 @@ public class RunxTest {
         }
         Assert.assertEquals(results[0], "MainThread1");
 
-        Runx.runOnUIThreadAndWait(new Runnable() {
-            @Override
-            public void run() {
-                results[0] = Runx.isOnTheMainThread() ? "MainThread2" : "NoMainThread2";
-            }
-        });
+        Runx.runOnUiThreadAndWait(() -> results[0] = Runx.isOnMainThread() ? "MainThread2" : "NoMainThread2");
         Assert.assertEquals(results[0], "MainThread2");
 
-        results[0] = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<String>() {
-            @NonNull
-            @Override
-            public String run() {
-                return Runx.isOnTheMainThread() ? "MainThread3" : "NoMainThread3";
-            }
-        });
+        results[0] = Runx.runOnUiThreadAndWaitResult(() -> Runx.isOnMainThread() ? "MainThread3" : "NoMainThread3");
         Assert.assertEquals(results[0], "MainThread3");
 
-        results[0] = Runx.runOnUIThreadAndWaitNullableResult(new ResultNullableRunnable<String>() {
-            @Nullable
-            @Override
-            public String run() {
-                return Runx.isOnTheMainThread() ? "MainThread4" : null;
-            }
-        });
+        results[0] = Runx.runOnUiThreadAndWaitNullableResult(() -> Runx.isOnMainThread() ? "MainThread4" : null);
         Assert.assertEquals(results[0], "MainThread4");
     }
 
     @Test
     public void testIsMainThread() {
-        Assert.assertFalse(Runx.isOnTheMainThread());
+        Assert.assertFalse(Runx.isOnMainThread());
     }
 
     @Test
     public void testIsMainProcess() {
         Context context = InstrumentationRegistry.getContext();
 
-        Assert.assertTrue(Runx.isOnTheMainProcess(context));
+        Assert.assertTrue(Runx.isOnMainProcess(context));
     }
 
     @Test
     public void testInProcessName() {
         Context context = InstrumentationRegistry.getContext();
 
-        Assert.assertNotNull(Runx.getTheProcessName(context));
-        Assert.assertEquals(Runx.getTheProcessNameSuffix(context), "");
+        Assert.assertNotNull(Runx.getProcessName(context));
+        Assert.assertEquals(Runx.getProcessNameSuffix(context), "");
     }
 }

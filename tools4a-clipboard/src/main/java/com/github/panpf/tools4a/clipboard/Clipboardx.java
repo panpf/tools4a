@@ -535,7 +535,7 @@ public class Clipboardx {
     @NonNull
     private static ClipboardManager getClipboardManager(@NonNull final Context context) {
         final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
-        return Runx.runOnUIThreadAndWaitResult(() -> {
+        return Runx.runOnUiThreadAndWaitResult(() -> {
             Context nowContext = contextWeakReference.get();
             if (nowContext == null) throw new IllegalStateException("Context has death");
             ClipboardManager clipboardManager = (ClipboardManager) nowContext.getSystemService(Context.CLIPBOARD_SERVICE);

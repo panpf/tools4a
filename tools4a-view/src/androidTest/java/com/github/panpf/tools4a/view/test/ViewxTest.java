@@ -58,7 +58,7 @@ public class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT, view.getLayoutParams().width);
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutWidth(view, 100);
@@ -67,7 +67,7 @@ public class ViewxTest {
             Thread.sleep(100);
             Assert.assertEquals(100, view.getLayoutParams().width);
         } finally {
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutSize(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -76,7 +76,7 @@ public class ViewxTest {
             Thread.sleep(100);
         }
 
-        final View newView1 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        final View newView1 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -84,7 +84,7 @@ public class ViewxTest {
             }
         });
         Assert.assertNull(newView1.getLayoutParams());
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutWidth(newView1, 100);
@@ -95,7 +95,7 @@ public class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT, view.getLayoutParams().height);
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutHeight(view, 300);
@@ -104,7 +104,7 @@ public class ViewxTest {
             Thread.sleep(100);
             Assert.assertEquals(300, view.getLayoutParams().height);
         } finally {
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutSize(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -113,7 +113,7 @@ public class ViewxTest {
             Thread.sleep(100);
         }
 
-        final View newView2 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        final View newView2 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -121,7 +121,7 @@ public class ViewxTest {
             }
         });
         Assert.assertNull(newView2.getLayoutParams());
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutHeight(newView2, 300);
@@ -132,7 +132,7 @@ public class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT, view.getLayoutParams().width);
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutWidthOrInitSize(view, 200, 600);
@@ -141,7 +141,7 @@ public class ViewxTest {
             Thread.sleep(100);
             Assert.assertEquals(200, view.getLayoutParams().width);
         } finally {
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutSize(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -150,7 +150,7 @@ public class ViewxTest {
             Thread.sleep(100);
         }
 
-        final View newView3 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        final View newView3 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -158,7 +158,7 @@ public class ViewxTest {
             }
         });
         Assert.assertNull(newView3.getLayoutParams());
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutWidthOrInitSize(newView3, 200, 600);
@@ -171,7 +171,7 @@ public class ViewxTest {
 
         try {
             Assert.assertEquals(ViewGroup.LayoutParams.MATCH_PARENT, view.getLayoutParams().height);
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutHeightOrInitSize(view, 200, 600);
@@ -180,7 +180,7 @@ public class ViewxTest {
             Thread.sleep(100);
             Assert.assertEquals(600, view.getLayoutParams().height);
         } finally {
-            Runx.runOnUIThread(new Runnable() {
+            Runx.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Viewx.setLayoutSize(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -189,7 +189,7 @@ public class ViewxTest {
             Thread.sleep(100);
         }
 
-        final View newView4 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        final View newView4 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -197,7 +197,7 @@ public class ViewxTest {
             }
         });
         Assert.assertNull(newView4.getLayoutParams());
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutHeightOrInitSize(newView4, 200, 600);
@@ -209,7 +209,7 @@ public class ViewxTest {
         Assert.assertEquals(600, newView4.getLayoutParams().height);
 
         Assert.assertEquals(0, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutMarginTop(view, 200);
@@ -224,7 +224,7 @@ public class ViewxTest {
         final TestActivity activity = activityRule.getActivity();
         final View view = activity.getView();
 
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutSize(view, 100, 300);
@@ -234,7 +234,7 @@ public class ViewxTest {
         Assert.assertEquals(100, view.getLayoutParams().width);
         Assert.assertEquals(300, view.getLayoutParams().height);
 
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.addLayoutWidth(view, 100);
@@ -245,7 +245,7 @@ public class ViewxTest {
         Assert.assertEquals(200, view.getLayoutParams().width);
         Assert.assertEquals(400, view.getLayoutParams().height);
 
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.addLayoutSize(view, 100, 100);
@@ -256,7 +256,7 @@ public class ViewxTest {
         Assert.assertEquals(500, view.getLayoutParams().height);
 
         Assert.assertEquals(0, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.setLayoutMarginTop(view, 200);
@@ -264,7 +264,7 @@ public class ViewxTest {
         });
         Thread.sleep(100);
         Assert.assertEquals(200, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
-        Runx.runOnUIThread(new Runnable() {
+        Runx.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Viewx.addLayoutMarginTop(view, 200);
@@ -323,7 +323,7 @@ public class ViewxTest {
         final ViewGroup contentView = activity.getContentView();
         int contentViewChildCount = contentView.getChildCount();
 
-        View childView1 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        View childView1 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -336,7 +336,7 @@ public class ViewxTest {
         Assert.assertNotNull(childView1.getLayoutParams());
         Assert.assertEquals(contentViewChildCount, contentView.getChildCount());
 
-        View childView2 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        View childView2 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -350,7 +350,7 @@ public class ViewxTest {
         Assert.assertEquals(childView2.getParent(), contentView);
         Assert.assertEquals(contentViewChildCount + 1, contentView.getChildCount());
 
-        View childView3 = Runx.runOnUIThreadAndWaitResult(new ResultRunnable<View>() {
+        View childView3 = Runx.runOnUiThreadAndWaitResult(new ResultRunnable<View>() {
             @NonNull
             @Override
             public View run() {
@@ -369,7 +369,7 @@ public class ViewxTest {
         final TestActivity activity = activityRule.getActivity();
         final ViewGroup contentView = activity.getContentView();
         final int oldTopPadding = contentView.getPaddingTop();
-        Runx.runOnUIThreadAndWait(new Runnable() {
+        Runx.runOnUiThreadAndWait(new Runnable() {
             @Override
             public void run() {
                 Viewx.addPaddingTopByStatusBarHeight(contentView);
