@@ -1,5 +1,4 @@
-import com.novoda.gradle.release.PublishExtension
-import java.util.*
+import org.jetbrains.kotlin.konan.properties.hasProperty
 
 plugins {
     id("com.android.library")
@@ -49,10 +48,17 @@ dependencies {
     androidTestImplementation(project(":tools4a-run-ktx"))
 }
 
-Properties().apply { project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }.takeIf { !it.isEmpty }?.let { localProperties ->
-    apply { plugin("com.novoda.bintray-release") }
-
-    configure<PublishExtension> {
+/*
+ * publish to bintray
+ */
+`java.util`.Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+    project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}.takeIf {
+    it.getProperty("bintray.user") != null && it.getProperty("bintray.userOrg") != null && it.getProperty("bintray.apiKey") != null
+}?.let { localProperties ->
+    apply { plugin("com.github.panpf.bintraypublish") }
+    configure<com.github.panpf.bintray.publish.PublishExtension> {
         groupId = "com.github.panpf.tools4a"
         artifactId = "tools4a-view-ktx"
         publishVersion = property("VERSION_NAME").toString()
@@ -60,6 +66,6 @@ Properties().apply { project.file("local.properties").takeIf { it.exists() }?.in
         website = "https://github.com/panpf/tools4a"
         userOrg = localProperties.getProperty("bintray.userOrg")
         bintrayUser = localProperties.getProperty("bintray.user")
-        bintrayKey = localProperties.getProperty("bintray.apikey")
+        bintrayKey = localProperties.getProperty("bintray.apiKey")
     }
 }
