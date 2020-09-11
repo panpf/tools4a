@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:${property("ANDROID_BUILD_GRADLE")}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("KOTLIN_VERSION")}")
-        classpath("com.github.panpf.bintraypublish:bintraypublish:${property("BINTRAY_PUBLISH")}")
+        classpath("com.github.panpf.bintray-publish:bintray-publish:${property("BINTRAY_PUBLISH")}")
     }
 }
 
