@@ -32,10 +32,10 @@ import androidx.annotation.RequiresPermission;
 public class NetworkState {
 
     @NonNull
-    private ConnectivityManager connectivity;
+    private final ConnectivityManager connectivity;
 
     @Nullable
-    private NetworkInfo networkInfo;
+    private final NetworkInfo networkInfo; // todo Switch to the new api NetworkCapabilities
 
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     private NetworkState(@NonNull Context context) {

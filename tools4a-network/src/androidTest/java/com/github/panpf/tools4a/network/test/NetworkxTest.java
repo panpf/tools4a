@@ -179,9 +179,9 @@ public class NetworkxTest {
         if (Networkx.isWifiActivated(context)) {
             Assert.assertEquals("WIFI", Networkx.getTypeName(context));
         } else if (Networkx.isMobileActivated(context)) {
-            Assert.assertEquals("Mobile", Networkx.getTypeName(context));
+            Assert.assertEquals("MOBILE", Networkx.getTypeName(context));
         } else if (Networkx.isBluetoothActivated(context)) {
-            Assert.assertEquals("Bluetooth", Networkx.getTypeName(context));
+            Assert.assertEquals("BLUETOOTH", Networkx.getTypeName(context));
         } else if (Networkx.isVPNActivated(context)) {
             Assert.assertEquals("VPN", Networkx.getTypeName(context));
         } else if (!Networkx.isActivated(context)) {

@@ -163,11 +163,11 @@ public class NetworkStateTest {
         Context context = InstrumentationRegistry.getContext();
         NetworkState networkState = NetworkState.get(context);
         if (networkState.isWifiActivated()) {
-            Assert.assertEquals("WIFI", networkState.getTypeName());
+            Assert.assertEquals("WIFI".toLowerCase(), networkState.getTypeName().toLowerCase());
         } else if (networkState.isMobileActivated()) {
-            Assert.assertEquals("Mobile", networkState.getTypeName());
+            Assert.assertEquals("MOBILE", networkState.getTypeName());
         } else if (networkState.isBluetoothActivated()) {
-            Assert.assertEquals("Bluetooth", networkState.getTypeName());
+            Assert.assertEquals("BLUETOOTH", networkState.getTypeName());
         } else if (networkState.isVPNActivated()) {
             Assert.assertEquals("VPN", networkState.getTypeName());
         } else if (!networkState.isActivated()) {

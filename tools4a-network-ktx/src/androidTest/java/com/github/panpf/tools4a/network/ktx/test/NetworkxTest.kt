@@ -173,9 +173,9 @@ class NetworkxTest {
         if (context.isWifiNetworkActivated()) {
             Assert.assertEquals("WIFI", context.getNetworkTypeName())
         } else if (context.isMobileNetworkActivated()) {
-            Assert.assertEquals("Mobile", context.getNetworkTypeName())
+            Assert.assertEquals("MOBILE", context.getNetworkTypeName())
         } else if (context.isBluetoothNetworkActivated()) {
-            Assert.assertEquals("Bluetooth", context.getNetworkTypeName())
+            Assert.assertEquals("BLUETOOTH", context.getNetworkTypeName())
         } else if (context.isVPNNetworkActivated()) {
             Assert.assertEquals("VPN", context.getNetworkTypeName())
         } else if (!context.isNetworkActivated()) {
