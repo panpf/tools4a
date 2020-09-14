@@ -413,7 +413,6 @@ public class Packagex {
     public static int getPackageVersionCode(@NonNull Context context, @NonNull String packageName,
                                             @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -422,7 +421,6 @@ public class Packagex {
      */
     public static int getPackageVersionCode(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -437,7 +435,6 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -451,7 +448,6 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -461,7 +457,6 @@ public class Packagex {
     public static long getPackageLongVersionCode(@NonNull Context context, @NonNull String packageName,
                                                  @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -470,7 +465,6 @@ public class Packagex {
      */
     public static long getPackageLongVersionCode(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -485,7 +479,6 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -499,7 +492,6 @@ public class Packagex {
         } catch (NameNotFoundException e) {
             return defaultValue;
         }
-        //noinspection deprecation
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
 
@@ -791,7 +783,6 @@ public class Packagex {
         ArrayMap<String, Integer> appsSet = new ArrayMap<>(packageInfoList.size());
         for (PackageInfo packageInfo : packageInfoList) {
             if (packageFilter == null || packageFilter.accept(packageInfo)) {
-                //noinspection deprecation
                 int versionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                         ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
                 appsSet.put(packageInfo.packageName, versionCode);
@@ -1040,10 +1031,8 @@ public class Packagex {
             SigningInfo signingInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo;
             signatures = signingInfo != null ? signingInfo.getApkContentsSigners() : null;
         } else {
-            //noinspection deprecation
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
-            //noinspection deprecation
             signatures = packageInfo.signatures;
         }
         if (signatures != null && signatures.length > 0) {
@@ -1064,10 +1053,8 @@ public class Packagex {
                 SigningInfo signingInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo;
                 signatures = signingInfo != null ? signingInfo.getApkContentsSigners() : null;
             } else {
-                //noinspection deprecation
                 @SuppressLint("PackageManagerGetSignatures")
                 PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
-                //noinspection deprecation
                 signatures = packageInfo.signatures;
             }
             if (signatures != null && signatures.length > 0) {
@@ -1085,14 +1072,14 @@ public class Packagex {
      * Get the icon Drawable of the package of the specified packageName
      *
      * @param versionCode App versionCode. Returns null if versionCode is inconsistent, Integer.MIN_VALUE: ignores versionCode
-     * @throws NameNotFoundException, Exception
+     * @throws NameNotFoundException Could not find package based on [packageName]
+     * @throws Exception The versionCode of the installed package is not the same as [versionCode]
      */
     @NonNull
-    public static Drawable getPackageIconDrawable(@NonNull Context context, @NonNull String packageName, int versionCode) throws Exception {
+    public static Drawable getPackageIconDrawable(@NonNull Context context, @NonNull String packageName, int versionCode) throws NameNotFoundException, Exception {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
 
-        //noinspection deprecation
         int installedVersionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                 ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
         if (versionCode != Integer.MIN_VALUE && installedVersionCode != versionCode) {
@@ -1118,7 +1105,6 @@ public class Packagex {
             return null;
         }
 
-        //noinspection deprecation
         int installedVersionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                 ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
         if (versionCode != Integer.MIN_VALUE && installedVersionCode != versionCode) {
@@ -1132,7 +1118,7 @@ public class Packagex {
     /**
      * Get the icon Drawable of the specified apk file
      *
-     * @throws Exception: Apk parsing error
+     * @throws Exception Apk parsing error
      */
     @NonNull
     public static Drawable getApkIconDrawable(@NonNull Context context, @NonNull File apkFile) throws Exception {
