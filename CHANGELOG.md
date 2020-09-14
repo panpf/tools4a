@@ -9,6 +9,7 @@
     * getTheProcessName rename to getProcessName
     * getTheProcessNameSuffix rename to getProcessNameSuffix
 * upgrade: Upgrade androidx.core to 1.3.1
+* upgrade: Upgrade target sdk to 30
 
 ## v1.0.0-beta02
 upgrade: Kotlin upgraded to 1.4.0

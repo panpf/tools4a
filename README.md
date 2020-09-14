@@ -3,6 +3,7 @@
 [![Platform][platform_android_icon]][platform_android_link]
 [![Platform][platform_kotlin_icon]][platform_kotlin_link]
 [![API][min_api_icon]][min_api_link]
+[![TargetSdk][android_targetsdk_icon]][android_targetsdk_link]
 [![License][license_icon]][license_link]
 
 Extensions to the Android standard library and support libraries and some basic tools
@@ -379,6 +380,8 @@ Please view the [CHANGELOG.md] file
 [platform_android_link]: https://android.com
 [platform_kotlin_icon]: https://img.shields.io/badge/Platform-Kotlin-blue.svg
 [platform_kotlin_link]: http://kotlinlang.org
+[android_targetsdk_icon]: https://img.shields.io/badge/TargetSdk-API30-green.svg
+[android_targetsdk_link]: https://developer.android.com/about/versions/11
 [min_api_icon]: https://img.shields.io/badge/API-16%2B-orange.svg
 [min_api_link]: https://developer.android.com/about/dashboards/
 [license_icon]: https://img.shields.io/badge/License-Apache%202-blue.svg
