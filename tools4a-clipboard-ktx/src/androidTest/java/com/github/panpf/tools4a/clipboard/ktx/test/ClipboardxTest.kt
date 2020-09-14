@@ -18,16 +18,13 @@ package com.github.panpf.tools4a.clipboard.ktx.test
 
 import android.app.Activity
 import android.content.ClipDescription
-import android.content.ClipboardManager
+import android.content.ClipboardManager.OnPrimaryClipChangedListener
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.clipboard.ClipHtmlText
-import com.github.panpf.tools4a.clipboard.ClipIntent
-import com.github.panpf.tools4a.clipboard.ClipPlainText
-import com.github.panpf.tools4a.clipboard.ClipUri
+import com.github.panpf.tools4a.clipboard.*
 import com.github.panpf.tools4a.clipboard.ktx.*
 import org.junit.Assert
 import org.junit.Test
@@ -35,203 +32,6 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ClipboardxTest {
-
-    @Test
-    fun testLabel() {
-        val context = InstrumentationRegistry.getContext()
-
-        context.copyText("clipLabel", TEST_TEXT)
-        Assert.assertEquals(context.getClipDataLabel(), "clipLabel")
-    }
-
-    @Test
-    fun testText() {
-        val context = InstrumentationRegistry.getContext()
-
-        context.copyText(TEST_TEXT)
-        Assert.assertEquals(context.getClipText(), TEST_TEXT)
-
-        context.copyText(arrayOf<CharSequence>(TEST_TEXT, TEST_TEXT2))
-        val texts = context.getClipTexts()
-        Assert.assertEquals(if (texts != null) texts[0] else "null", TEST_TEXT)
-        Assert.assertEquals(if (texts != null) texts[1] else "null", TEST_TEXT2)
-    }
-
-    @Test
-    fun testHtmlText() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            val context = InstrumentationRegistry.getContext()
-
-            context.copyHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
-            val clipHtmlText = context.getClipHtmlText()
-            Assert.assertEquals(if (clipHtmlText != null) clipHtmlText.text else "null", TEST_HTML_TEXT)
-            Assert.assertEquals(if (clipHtmlText != null) clipHtmlText.htmlText else "null", TEST_HTML_HTML)
-
-            context.copyHtmlText(arrayOf(ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML), ClipHtmlText(TEST_HTML_TEXT2, TEST_HTML_HTML2)))
-            val htmlTexts = context.getClipHtmlTexts()
-
-            val clipHtmlText1 = if (htmlTexts != null) htmlTexts[0] else null
-            Assert.assertEquals(if (clipHtmlText1 != null) clipHtmlText1.text else "null", TEST_HTML_TEXT)
-            Assert.assertEquals(if (clipHtmlText1 != null) clipHtmlText1.htmlText else "null", TEST_HTML_HTML)
-
-            val clipHtmlText2 = if (htmlTexts != null) htmlTexts[1] else null
-            Assert.assertEquals(if (clipHtmlText2 != null) clipHtmlText2.text else "null", TEST_HTML_TEXT2)
-            Assert.assertEquals(if (clipHtmlText2 != null) clipHtmlText2.htmlText else "null", TEST_HTML_HTML2)
-        }
-    }
-
-    @Test
-    fun testIntent() {
-        val context = InstrumentationRegistry.getContext()
-
-        val intent = Intent(context, Activity::class.java)
-        context.copyIntent(intent)
-
-        val result = context.getClipIntent()
-        Assert.assertEquals(result?.getComponent().toString(), intent.component.toString())
-
-        val intent2 = Intent(context, Activity::class.java)
-        context.copyIntent(arrayOf(intent, intent2))
-
-        val results = context.getClipIntents()
-        Assert.assertEquals(results?.get(0)?.getComponent().toString(), intent.component.toString())
-        Assert.assertEquals(results?.get(1)?.getComponent().toString(), intent2.component.toString())
-    }
-
-    @Test
-    fun testRawUri() {
-        val context = InstrumentationRegistry.getContext()
-
-        val uri = Uri.parse("https://www.github.com")
-        context.copyRawUri(uri)
-
-        val result = context.getClipUri()
-        Assert.assertEquals(result?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(result?.uri.toString(), uri.toString())
-
-        val uri2 = Uri.parse("https://www.youtube.com")
-        context.copyRawUri(arrayOf(uri, uri2))
-
-        val results = context.getClipUris()
-        Assert.assertEquals(results?.get(0)?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(results?.get(0)?.uri.toString(), uri.toString())
-        Assert.assertEquals(results?.get(1)?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(results?.get(1)?.uri.toString(), uri2.toString())
-    }
-
-    @Test
-    fun testMimeTypeUri() {
-        val context = InstrumentationRegistry.getContext()
-
-        val uri = Uri.parse("https://www.github.com")
-        context.copyMimeTypeUri("app/android", uri)
-
-        val result = context.getClipUri()
-        Assert.assertEquals(result?.mimeType, "app/android")
-        Assert.assertEquals(result?.uri.toString(), uri.toString())
-
-        val uri2 = Uri.parse("https://www.youtube.com")
-        context.copyMimeTypeUri("app/android", arrayOf(uri, uri2))
-
-        val results = context.getClipUris()
-        Assert.assertEquals(results?.get(0)?.mimeType, "app/android")
-        Assert.assertEquals(results?.get(0)?.uri.toString(), uri.toString())
-        Assert.assertEquals(results?.get(1)?.mimeType, "app/android")
-        Assert.assertEquals(results?.get(1)?.uri.toString(), uri2.toString())
-    }
-
-    @Test
-    fun testUri() {
-        val context = InstrumentationRegistry.getContext()
-
-        val uri = Uri.parse("https://www.github.com")
-        context.copyUri(uri)
-
-        val result = context.getClipUri()
-        Assert.assertEquals(result?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(result?.uri.toString(), uri.toString())
-
-        val uri2 = Uri.parse("https://www.youtube.com")
-        context.copyUri(arrayOf(uri, uri2))
-
-        val results = context.getClipUris()
-        Assert.assertEquals(results?.get(0)?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(results?.get(0)?.uri.toString(), uri.toString())
-        Assert.assertEquals(results?.get(1)?.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
-        Assert.assertEquals(results?.get(1)?.uri.toString(), uri2.toString())
-    }
-
-    @Test
-    fun testListener() {
-        val context = InstrumentationRegistry.getContext()
-
-        val result = arrayOfNulls<String>(1)
-        val listener = ClipboardManager.OnPrimaryClipChangedListener { result[0] = "onPrimaryClipChanged" }
-
-        context.addPrimaryClipChangedListener(listener)
-        context.copyText("Hello Word")
-        // Callback will be delayed
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        Assert.assertEquals(result[0], "onPrimaryClipChanged")
-
-        result[0] = "None"
-        context.removePrimaryClipChangedListener(listener)
-        context.copyText("Hello Word")
-        // Callback will be delayed
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        Assert.assertEquals(result[0], "None")
-    }
-
-    @Test
-    fun testMultiType() {
-        val context = InstrumentationRegistry.getContext()
-
-        val text = ClipPlainText(TEST_TEXT)
-        val htmlText = ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
-        val intent = ClipIntent(Intent(context, Activity::class.java))
-        val uri = ClipUri("app/android", Uri.parse("https://www.youtube.com"))
-
-        context.copyContents(arrayOf(text, htmlText, intent, uri))
-
-        val results = context.getClipDataContents()
-
-        val textResult = results?.get(0) as ClipPlainText
-        Assert.assertEquals(textResult.text, text.text)
-
-        val htmlTextResult = results[1] as ClipHtmlText
-        Assert.assertEquals(htmlTextResult.text, htmlText.text)
-        Assert.assertEquals(htmlTextResult.htmlText, htmlText.htmlText)
-
-        val intentResult = results[2] as ClipIntent
-        Assert.assertEquals(intentResult.intent.component.toString(), intent.intent.component.toString())
-
-        val uriResult = results[3] as ClipUri
-        Assert.assertEquals(uriResult.mimeType, uri.mimeType)
-        Assert.assertEquals(uriResult.uri.toString(), uri.uri.toString())
-    }
-
-    @Test
-    fun testClean() {
-        if (Build.VERSION.SDK_INT >= 28) {
-            val context = InstrumentationRegistry.getContext()
-
-            context.copyText("Hello Word")
-            Assert.assertEquals(context.getClipText(), "Hello Word")
-
-            context.clearClip()
-            Assert.assertNull(context.getClipText())
-        }
-    }
 
     companion object {
 
@@ -276,5 +76,264 @@ class ClipboardxTest {
                 "    <li><a href=\"/tougao.html\">投稿网址</a></li>\n" +
                 "    <li><a href=\"/shop\">积分商城</a></li>\n" +
                 "  </ul>\n"
+    }
+
+    @Test
+    fun testLabel() {
+        val context = InstrumentationRegistry.getContext()
+
+        context.copyText("clipLabel", TEST_TEXT)
+        val content = context.getClipDataLabel()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(content)
+        } else if (content != null) {
+            Assert.assertEquals("clipLabel", content)
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testText() {
+        val context = InstrumentationRegistry.getContext()
+        context.copyText(TEST_TEXT)
+        val content = context.getClipText()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(content)
+        } else if (content != null) {
+            Assert.assertEquals(TEST_TEXT, content)
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        context.copyText(arrayOf(TEST_TEXT, TEST_TEXT2))
+        val texts = context.getClipTexts()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(texts)
+        } else if (texts != null) {
+            Assert.assertEquals(TEST_TEXT, texts[0])
+            Assert.assertEquals(TEST_TEXT2, texts[1])
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testHtmlText() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            return
+        }
+        val context = InstrumentationRegistry.getContext()
+        context.copyHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
+        val clipHtmlText = context.getClipHtmlText()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(clipHtmlText)
+        } else if (clipHtmlText != null) {
+            Assert.assertEquals(TEST_HTML_TEXT, clipHtmlText.text)
+            Assert.assertEquals(TEST_HTML_HTML, clipHtmlText.htmlText)
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        context.copyHtmlText(arrayOf(ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML), ClipHtmlText(TEST_HTML_TEXT2, TEST_HTML_HTML2)))
+        val htmlTexts = context.getClipHtmlTexts()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(htmlTexts)
+        } else if (htmlTexts != null) {
+            val clipHtmlText1 = htmlTexts[0]
+            Assert.assertEquals(TEST_HTML_TEXT, clipHtmlText1.text)
+            Assert.assertEquals(TEST_HTML_HTML, clipHtmlText1.htmlText)
+            val clipHtmlText2 = htmlTexts[1]
+            Assert.assertEquals(TEST_HTML_TEXT2, clipHtmlText2.text)
+            Assert.assertEquals(TEST_HTML_HTML2, clipHtmlText2.htmlText)
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testIntent() {
+        val context = InstrumentationRegistry.getContext()
+        val intent = Intent(context, Activity::class.java)
+        context.copyIntent(intent)
+        val result = context.getClipIntent()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(result)
+        } else if (result != null) {
+            Assert.assertEquals(result.component.toString(), intent.component.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        val intent2 = Intent(context, Activity::class.java)
+        context.copyIntent(arrayOf(intent, intent2))
+        val results = context.getClipIntents()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(results)
+        } else if (results != null) {
+            Assert.assertEquals(results[0].component.toString(), intent.component.toString())
+            Assert.assertEquals(results[1].component.toString(), intent2.component.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testRawUri() {
+        val context = InstrumentationRegistry.getContext()
+        val uri = Uri.parse("https://www.github.com")
+        context.copyRawUri(uri)
+        val result = context.getClipUri()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(result)
+        } else if (result != null) {
+            Assert.assertEquals(result.mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
+            Assert.assertEquals(result.uri.toString(), uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        val uri2 = Uri.parse("https://www.youtube.com")
+        context.copyRawUri(arrayOf(uri, uri2))
+        val results = context.getClipUris()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(results)
+        } else if (results != null) {
+            Assert.assertEquals(results[0].mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
+            Assert.assertEquals(results[0].uri.toString(), uri.toString())
+            Assert.assertEquals(results[1].mimeType, ClipDescription.MIMETYPE_TEXT_URILIST)
+            Assert.assertEquals(results[1].uri.toString(), uri2.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testMimeTypeUri() {
+        val context = InstrumentationRegistry.getContext()
+        val uri = Uri.parse("https://www.github.com")
+        context.copyMimeTypeUri("app/android", uri)
+        val result = context.getClipUri()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(result)
+        } else if (result != null) {
+            Assert.assertEquals("app/android", result.mimeType)
+            Assert.assertEquals(uri.toString(), result.uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        val uri2 = Uri.parse("https://www.youtube.com")
+        context.copyMimeTypeUri("app/android", arrayOf(uri, uri2))
+        val results = context.getClipUris()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(results)
+        } else if (results != null) {
+            Assert.assertEquals("app/android", results[0].mimeType)
+            Assert.assertEquals(uri.toString(), results[0].uri.toString())
+            Assert.assertEquals("app/android", results[1].mimeType)
+            Assert.assertEquals(uri2.toString(), results[1].uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testUri() {
+        val context = InstrumentationRegistry.getContext()
+        val uri = Uri.parse("https://www.github.com")
+        context.copyUri(uri)
+        val result = context.getClipUri()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(result)
+        } else if (result != null) {
+            Assert.assertEquals(ClipDescription.MIMETYPE_TEXT_URILIST, result.mimeType)
+            Assert.assertEquals(uri.toString(), result.uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+        val uri2 = Uri.parse("https://www.youtube.com")
+        context.copyUri(arrayOf(uri, uri2))
+        val results = context.getClipUris()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(results)
+        } else if (results != null) {
+            Assert.assertEquals(ClipDescription.MIMETYPE_TEXT_URILIST, results[0].mimeType)
+            Assert.assertEquals(uri.toString(), results[0].uri.toString())
+            Assert.assertEquals(ClipDescription.MIMETYPE_TEXT_URILIST, results[1].mimeType)
+            Assert.assertEquals(uri2.toString(), results[1].uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testListener() {
+        val context = InstrumentationRegistry.getContext()
+        val result = arrayOfNulls<String>(1)
+        val listener = OnPrimaryClipChangedListener { result[0] = "onPrimaryClipChanged" }
+        context.addPrimaryClipChangedListener(listener)
+        context.copyText("Hello Word")
+        // Callback will be delayed
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(result[0])
+        } else {
+            Assert.assertEquals("onPrimaryClipChanged", result[0])
+        }
+        result[0] = "None"
+        context.removePrimaryClipChangedListener(listener)
+        context.copyText("Hello Word")
+        // Callback will be delayed
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        Assert.assertEquals("None", result[0])
+    }
+
+    @Test
+    fun testMultiType() {
+        val context = InstrumentationRegistry.getContext()
+        val text = ClipPlainText(TEST_TEXT)
+        val htmlText = ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
+        val intent = ClipIntent(Intent(context, Activity::class.java))
+        val uri = ClipUri("app/android", Uri.parse("https://www.youtube.com"))
+        context.copyContents(arrayOf(text, htmlText, intent, uri))
+        val results = context.getClipDataContents()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Assert.assertNull(results)
+        } else if (results != null) {
+            val textResult = results[0] as ClipPlainText
+            Assert.assertEquals(textResult.text, text.text)
+            val htmlTextResult = results[1] as ClipHtmlText
+            Assert.assertEquals(htmlTextResult.text, htmlText.text)
+            Assert.assertEquals(htmlTextResult.htmlText, htmlText.htmlText)
+            val intentResult = results[2] as ClipIntent
+            Assert.assertEquals(intentResult.intent.component.toString(), intent.intent.component.toString())
+            val uriResult = results[3] as ClipUri
+            Assert.assertEquals(uriResult.mimeType, uri.mimeType)
+            Assert.assertEquals(uriResult.uri.toString(), uri.uri.toString())
+        } else {
+            Assert.fail("Get clipboard content error")
+        }
+    }
+
+    @Test
+    fun testClean() {
+        if (Build.VERSION.SDK_INT >= 28) {
+            val context = InstrumentationRegistry.getContext()
+            context.copyText("Hello Word")
+            val content = context.getClipText()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                Assert.assertNull(content)
+            } else if (content != null) {
+                Assert.assertEquals("Hello Word", content)
+            } else {
+                Assert.fail("Get clipboard content error")
+            }
+            context.clearClip()
+            Assert.assertNull(context.getClipText())
+        }
     }
 }

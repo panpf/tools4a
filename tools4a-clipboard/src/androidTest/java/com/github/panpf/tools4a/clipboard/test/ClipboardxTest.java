@@ -350,7 +350,6 @@ public class ClipboardxTest {
         } else {
             Assert.fail("Get clipboard content error");
         }
-
     }
 
     @Test
