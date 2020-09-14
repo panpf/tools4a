@@ -120,7 +120,7 @@ Dependencies:
 
 ### tools4a-activity
 * Activityx: [Activityx.java] ([Test][ActivityxTest.java]) | [Activityx.kt] ([Test][ActivityxTest.kt])
-    * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat, 
+    * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat,
     * getImplFromParent, canStart, start, startByClass, safeStart, safeStartByClass
 
 ### tools4a-args
@@ -130,7 +130,7 @@ Dependencies:
     * read\*IntentUriArgOrThrow, read\*IntentUriArgOr,read\*IntentUriArgOrNull,
     * read\*UriIntentArgOrThrow, read\*UriIntentArgOr, read\*UriIntentArgOrNull
 * ArgsBinder: [ArgsBinder.kt] ([Test][ArgsBinderTest.kt])
-    * bind\*Arg, bind\*ArgOr, bind\*UriArg, bind\*UriArgOr, bind\*IntentUriArg, 
+    * bind\*Arg, bind\*ArgOr, bind\*UriArg, bind\*UriArgOr, bind\*IntentUriArg,
     * bind\*IntentUriArgOr, bind\*UriIntentArg, bind\*UriIntentArgOr
 
 ### tools4a-build
@@ -139,23 +139,23 @@ Dependencies:
 
 ### tools4a-clipboard
 * Clipboardx: [Clipboardx.java] ([Test][ClipboardxTest.java]) | [Clipboardx.kt] ([Test][ClipboardxTest.kt])
-    * copy, copyText, copyHtmlText, copyIntent, copyUri, copyRawUri, copyMimeTypeUri, 
-    * copyContents, get, getLabel, getContents, getText, getHtmlText, getIntent, getUri, 
+    * copy, copyText, copyHtmlText, copyIntent, copyUri, copyRawUri, copyMimeTypeUri,
+    * copyContents, get, getLabel, getContents, getText, getHtmlText, getIntent, getUri,
     * addPrimaryClipChangedListener, removePrimaryClipChangedListener, clear
 
 ### tools4a-context
 * Context: [Contextx.java] ([Test][ContextxTest.java]) | [Contextx.kt] ([Test][ContextxTest.kt])
-    * appContext, requireContext, requireAppContext, systemService, systemServiceOrNull, 
+    * appContext, requireContext, requireAppContext, systemService, systemServiceOrNull,
     * systemServiceInUI, systemServiceOrNullInUI, \*Manager
 
 ### tools4a-device
 * Devicex: [Devicex.java] ([Test][DevicexTest.java]) | [Devicex.kt] ([Test][DevicexTest.kt])
-    * getProduct, getBrand, getModel, getDevice, getHardware, getSupportedAbis, 
+    * getProduct, getBrand, getModel, getDevice, getHardware, getSupportedAbis,
     * getPhoneNumberOr, getPhoneNumberOrThrow, getPhoneNumberOrNull, getDeviceIdOr,
-    * getDeviceIdOrThrow, getDeviceIdOrNull, getAndroidIdOr, getAndroidIdOrThrow, 
+    * getDeviceIdOrThrow, getDeviceIdOrNull, getAndroidIdOr, getAndroidIdOrThrow,
     * getAndroidIdOrNull, getSubscriberIdOr, getSubscriberIdOrThrow, getSubscriberIdOrNull,
-    * getSimSerialNumberOr, getSimSerialNumberOrThrow, getSimSerialNumberOrNull, 
-    * getSerialOr, getSerialOrThrow, getSerialOrNull, getIMEIOr, getIMEIOrThrow, 
+    * getSimSerialNumberOr, getSimSerialNumberOrThrow, getSimSerialNumberOrNull,
+    * getSerialOr, getSerialOrThrow, getSerialOrNull, getIMEIOr, getIMEIOrThrow,
     * getIMEIOrNull, getIMSIOr, getIMSIOrThrow, getIMSIOrNull, getMacAddressOr, getMacAddress
 
 ### tools4a-dialog
@@ -168,9 +168,9 @@ Dependencies:
 
 ### tools4a-display
 * Displayx: [Displayx.java] ([Test][DisplayxTest.java]) | [Displayx.kt] ([Test][DisplayxTest.kt])
-    * getScreenSize, getScreenWidth, getScreenHeight, getActionBarSize, getMetrics, getDensity, 
-    * getDisplayRotation, getDensityDpi, isOrientationPortrait, isOrientationLandscape, 
-    * isOrientationUndefined, getRotation, hasNavigationBar, getStatusBarHeight, 
+    * getScreenSize, getScreenWidth, getScreenHeight, getActionBarSize, getMetrics, getDensity,
+    * getDisplayRotation, getDensityDpi, isOrientationPortrait, isOrientationLandscape,
+    * isOrientationUndefined, getRotation, hasNavigationBar, getStatusBarHeight,
     * getNavigationBarHeight, getNavigationBarWidth
 
 ### tools4a-fileprovider
@@ -186,8 +186,8 @@ Dependencies:
 * Drawablex: [Drawablex.java] ([Test][DrawablexTest.java]) | [Drawablex.kt] ([Test][DrawablexTest.kt])
     * toBitmapWithIntrinsicSize, toBitmapWithBoundsSize, changeColor, changeResDrawableColor
 * Bitmapx: [Bitmapx.java] ([Test][BitmapxTest.java]) | [Bitmapx.kt] ([Test][BitmapxTest.kt])
-    * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor, 
-    * toByteArray, writeToFile, readBitmap, toDrawable, use, calculateSamplingSize, 
+    * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor,
+    * toByteArray, writeToFile, readBitmap, toDrawable, use, calculateSamplingSize,
     * calculateSamplingSizeForRegion
 * Imagex: [Imagex.java] ([Test][ImagexTest.java]) | [Imagex.kt] ([Test][ImagexTest.kt])
     * getMimeType, getMimeSubType
@@ -207,27 +207,27 @@ Dependencies:
 
 ### tools4a-inputmethod
 * InputMethodx: [InputMethodx.java] ([Test][InputMethodxTest.java]) | [InputMethodx.kt] ([Test][InputMethodxTest.kt])
-    * showSoftInput, delayShowSoftInput, hideSoftInput, moveCursorToEnd, 
+    * showSoftInput, delayShowSoftInput, hideSoftInput, moveCursorToEnd,
     * moveCursorToStart, moveCursorTo
 
 ### tools4a-intent
 * Intentx: [Intentx.java] ([Test][IntentxTest.java]) | [Intentx.kt] ([Test][IntentxTest.kt])
-    * createRecordingIntent, createLaunchDialingIntent, createCallPhoneIntent, 
-    * createLaunchSendSmsIntent, createLaunchWebBrowserIntent, createScanFileBroadcastIntent, 
-    * createActivityIntentByResolveInfo, createTakePhotoIntent, createPickImageIntent, 
-    * createCropImageIntent, createSendTextIntent, createSendTextFileIntent, 
+    * createRecordingIntent, createLaunchDialingIntent, createCallPhoneIntent,
+    * createLaunchSendSmsIntent, createLaunchWebBrowserIntent, createScanFileBroadcastIntent,
+    * createActivityIntentByResolveInfo, createTakePhotoIntent, createPickImageIntent,
+    * createCropImageIntent, createSendTextIntent, createSendTextFileIntent,
     * createSendImageFileIntent, createSendFileIntent
 
 ### tools4a-network
 * Network: [Networkx.java] ([Test][NetworkxTest.java]) | [Networkx.kt] ([Test][NetworkxTest.kt])
     * getState, isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
-    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover, 
-    & getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity, 
-    * getWifiState, isWifiEnabled, setWifiEnabled, isMobileEnabled, setMobileEnabled, 
+    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
+    & getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity,
+    * getWifiState, isWifiEnabled, setWifiEnabled, isMobileEnabled, setMobileEnabled,
     * getGateway, getDNS1, getDNS2
 * NetworkState: [NetworkState.java] ([Test][NetworkStateTest.java])
-    * isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated, 
-    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover, 
+    * isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
+    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
     * getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity
 
 ### tools4a-packages
@@ -259,21 +259,21 @@ Dependencies:
 
 ### tools4a-prefsdelegate
 * [PrefsDelegateTest.kt][PrefsDelegateTest.kt]
-* [BeanListNullablePrefsDelegate.kt][BeanListNullablePrefsDelegate.kt], [BeanListPrefsDelegate.kt][BeanListPrefsDelegate.kt], 
-* [BeanNullablePrefsDelegate.kt][BeanNullablePrefsDelegate.kt], [BeanPrefsDelegate.kt][BeanPrefsDelegate.kt], 
-* [BooleanNullablePrefsDelegate.kt][BooleanNullablePrefsDelegate.kt], [BooleanPrefsDelegate.kt][BooleanPrefsDelegate.kt], 
-* [EnumNullablePrefsDelegate.kt][EnumNullablePrefsDelegate.kt], [EnumPrefsDelegate.kt][EnumPrefsDelegate.kt], 
+* [BeanListNullablePrefsDelegate.kt][BeanListNullablePrefsDelegate.kt], [BeanListPrefsDelegate.kt][BeanListPrefsDelegate.kt],
+* [BeanNullablePrefsDelegate.kt][BeanNullablePrefsDelegate.kt], [BeanPrefsDelegate.kt][BeanPrefsDelegate.kt],
+* [BooleanNullablePrefsDelegate.kt][BooleanNullablePrefsDelegate.kt], [BooleanPrefsDelegate.kt][BooleanPrefsDelegate.kt],
+* [EnumNullablePrefsDelegate.kt][EnumNullablePrefsDelegate.kt], [EnumPrefsDelegate.kt][EnumPrefsDelegate.kt],
 * [FloatNullablePrefsDelegate.kt][FloatNullablePrefsDelegate.kt], [FloatPrefsDelegate.kt][FloatPrefsDelegate.kt],
-* [IntNullablePrefsDelegate.kt][IntNullablePrefsDelegate.kt], [IntPrefsDelegate.kt][IntPrefsDelegate.kt], 
-* [LongNullablePrefsDelegate.kt][LongNullablePrefsDelegate.kt], [LongPrefsDelegate.kt][LongPrefsDelegate.kt], 
-* [StringListNullablePrefsDelegate.kt][StringListNullablePrefsDelegate.kt], [StringListPrefsDelegate.kt][StringListPrefsDelegate.kt], 
-* [StringNullablePrefsDelegate.kt][StringNullablePrefsDelegate.kt], [StringPrefsDelegate.kt][StringPrefsDelegate.kt], 
-* [StringSetNullablePrefsDelegate.kt][StringSetNullablePrefsDelegate.kt], [StringSetPrefsDelegate.kt][StringSetPrefsDelegate.kt], 
+* [IntNullablePrefsDelegate.kt][IntNullablePrefsDelegate.kt], [IntPrefsDelegate.kt][IntPrefsDelegate.kt],
+* [LongNullablePrefsDelegate.kt][LongNullablePrefsDelegate.kt], [LongPrefsDelegate.kt][LongPrefsDelegate.kt],
+* [StringListNullablePrefsDelegate.kt][StringListNullablePrefsDelegate.kt], [StringListPrefsDelegate.kt][StringListPrefsDelegate.kt],
+* [StringNullablePrefsDelegate.kt][StringNullablePrefsDelegate.kt], [StringPrefsDelegate.kt][StringPrefsDelegate.kt],
+* [StringSetNullablePrefsDelegate.kt][StringSetNullablePrefsDelegate.kt], [StringSetPrefsDelegate.kt][StringSetPrefsDelegate.kt],
 
 ### tools4a-rom
 * Romx: [Romx.java] ([Test][RomxTest.java])
-    * getType, isType, isMiuiType, isEmuiType, isFlymeType, isColorType, 
-    * isFuntouchOSType, isSmartisanOSType, isH2OSType, getTypeName, 
+    * getType, isType, isMiuiType, isEmuiType, isFlymeType, isColorType,
+    * isFuntouchOSType, isSmartisanOSType, isH2OSType, getTypeName,
     * getVersionName, getVersionCode, getVersionIncremental
 
 ### tools4a-root
@@ -293,7 +293,7 @@ Dependencies:
 ### tools4a-settings
 * Settingsx: [Settingsx.java] ([Test][SettingsxTest.java])  | [Settingsx.kt] ([Test][SettingsxTest.kt])
     * isScreenBrightnessModeAutomatic, setScreenBrightnessModeAutomatic, getScreenBrightness,
-    * setScreenBrightness, getScreenOffTimeout, setScreenOffTimeout, isAirplaneModeOn, 
+    * setScreenBrightness, getScreenOffTimeout, setScreenOffTimeout, isAirplaneModeOn,
     * setAirplaneModeOn, isBluetoothOn, setBluetoothOn
 
 ### tools4a-storage
@@ -328,8 +328,8 @@ Dependencies:
 ### tools4a-utils
 * LifecycleBroadcastReceiver: [LifecycleBroadcastReceiver.java] ([Test][LifecycleBroadcastReceiverTest.java])
 * Textx: [Textx.java] ([Test][TextxTest.java]) | [Textx.kt] ([Test][TextxTest.kt])
-    * textToBitmap, changeColorByHtml, changeColorToRedByHtml, changeKeywordColorByHtml, 
-    * changeKeywordColorToRedByHtml, changeColorBySpannable, changeColorToRedBySpannable, 
+    * textToBitmap, changeColorByHtml, changeColorToRedByHtml, changeKeywordColorByHtml,
+    * changeKeywordColorToRedByHtml, changeColorBySpannable, changeColorToRedBySpannable,
     * changeKeywordColorBySpannable, changeKeywordColorToRedBySpannable
 * WeakAsyncTask: [WeakAsyncTask.java] ([Test][WeakAsyncTaskTest.java])
 
@@ -380,9 +380,9 @@ Please view the [CHANGELOG.md] file
 [platform_android_link]: https://android.com
 [platform_kotlin_icon]: https://img.shields.io/badge/Platform-Kotlin-blue.svg
 [platform_kotlin_link]: http://kotlinlang.org
-[android_targetsdk_icon]: https://img.shields.io/badge/TargetSdk-API30-green.svg
+[android_targetsdk_icon]: https://img.shields.io/badge/TargetSdk-30-brightgreen.svg
 [android_targetsdk_link]: https://developer.android.com/about/versions/11
-[min_api_icon]: https://img.shields.io/badge/API-16%2B-orange.svg
+[min_api_icon]: https://img.shields.io/badge/MinSdk-16-red.svg
 [min_api_link]: https://developer.android.com/about/dashboards/
 [license_icon]: https://img.shields.io/badge/License-Apache%202-blue.svg
 [license_link]: https://www.apache.org/licenses/LICENSE-2.0
