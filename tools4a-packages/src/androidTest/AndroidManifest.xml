@@ -2,6 +2,7 @@
     package="com.github.panpf.tools4a.packages.test">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <permission android:name="com.github.panpf.tools4a.packages.test.share" />
 
