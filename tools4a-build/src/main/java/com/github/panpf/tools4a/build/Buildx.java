@@ -182,103 +182,97 @@ public class Buildx {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
+    public static boolean isAtLeastQ() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    public static boolean isAtLeast29() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    public static boolean isAtLeast10_0() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    public static boolean isAtLeastR() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
+    public static boolean isAtLeast30() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
+    public static boolean isAtLeast11_0() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
 
     @NonNull
     public static String getVersionName(int sdkVersion) {
-        String name;
         switch (sdkVersion) {
             case Build.VERSION_CODES.BASE:
-                name = "1.0.0";
-                break;
+                return "1.0.0";
             case Build.VERSION_CODES.BASE_1_1:
-                name = "1.1.0";
-                break;
+                return "1.1.0";
             case Build.VERSION_CODES.CUPCAKE:
-                name = "1.5.0";
-                break;
+                return "1.5.0";
             case Build.VERSION_CODES.DONUT:
-                name = "1.6.0";
-                break;
+                return "1.6.0";
             case Build.VERSION_CODES.ECLAIR:
-                name = "2.0.0";
-                break;
+                return "2.0.0";
             case Build.VERSION_CODES.ECLAIR_0_1:
-                name = "2.0.1";
-                break;
+                return "2.0.1";
             case Build.VERSION_CODES.ECLAIR_MR1:
-                name = "2.1.0";
-                break;
+                return "2.1.0";
             case Build.VERSION_CODES.FROYO:
-                name = "2.2.0";
-                break;
+                return "2.2.0";
             case Build.VERSION_CODES.GINGERBREAD:
-                name = "2.3.0";
-                break;
+                return "2.3.0";
             case Build.VERSION_CODES.GINGERBREAD_MR1:
-                name = "2.3.3";
-                break;
+                return "2.3.3";
             case Build.VERSION_CODES.HONEYCOMB:
-                name = "3.0.0";
-                break;
+                return "3.0.0";
             case Build.VERSION_CODES.HONEYCOMB_MR1:
-                name = "3.1.0";
-                break;
+                return "3.1.0";
             case Build.VERSION_CODES.HONEYCOMB_MR2:
-                name = "3.2.0";
-                break;
+                return "3.2.0";
             case Build.VERSION_CODES.ICE_CREAM_SANDWICH:
-                name = "4.0.0";
-                break;
+                return "4.0.0";
             case Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1:
-                name = "4.0.3";
-                break;
+                return "4.0.3";
             case Build.VERSION_CODES.JELLY_BEAN:
-                name = "4.1.0";
-                break;
+                return "4.1.0";
             case Build.VERSION_CODES.JELLY_BEAN_MR1:
-                name = "4.2.0";
-                break;
+                return "4.2.0";
             case Build.VERSION_CODES.JELLY_BEAN_MR2:
-                name = "4.3.0";
-                break;
+                return "4.3.0";
             case Build.VERSION_CODES.KITKAT:
-                name = "4.4.0";
-                break;
+                return "4.4.0";
             case Build.VERSION_CODES.KITKAT_WATCH:
-                name = "4.4W";
-                break;
+                return "4.4W";
             case Build.VERSION_CODES.LOLLIPOP:
-                name = "5.0.0";
-                break;
+                return "5.0.0";
             case Build.VERSION_CODES.LOLLIPOP_MR1:
-                name = "5.1.0";
-                break;
+                return "5.1.0";
             case Build.VERSION_CODES.M:
-                name = "6.0.0";
-                break;
+                return "6.0.0";
             case Build.VERSION_CODES.N:
-                name = "7.0.0";
-                break;
+                return "7.0.0";
             case Build.VERSION_CODES.N_MR1:
-                name = "7.1.1";
-                break;
+                return "7.1.1";
             case Build.VERSION_CODES.O:
-                name = "8.0.0";
-                break;
+                return "8.0.0";
             case Build.VERSION_CODES.O_MR1:
-                name = "8.1.0";
-                break;
+                return "8.1.0";
             case Build.VERSION_CODES.P:
-                name = "9.0.0";
-                break;
+                return "9.0.0";
             case Build.VERSION_CODES.Q:
-                name = "10.0.0";
-                break;
+                return "10.0.0";
+            case Build.VERSION_CODES.R:
+                return "11.0.0";
             default:
-                name = "Unknown(" + sdkVersion + ')';
+                return "Unknown(" + sdkVersion + ')';
         }
-
-        return name;
     }
 
     @NonNull
@@ -347,6 +341,8 @@ public class Buildx {
                 return "Pie";
             case Build.VERSION_CODES.Q:
                 return "10";
+            case Build.VERSION_CODES.R:
+                return "11";
             default:
                 return "Unknown(" + sdkVersion + ')';
         }

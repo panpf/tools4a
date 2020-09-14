@@ -10,6 +10,7 @@
     * getTheProcessNameSuffix rename to getProcessNameSuffix
 * upgrade: Upgrade androidx.core to 1.3.1
 * upgrade: Upgrade target sdk to 30
+* improve: Buildx adapts to android 11
 
 ## v1.0.0-beta02
 upgrade: Kotlin upgraded to 1.4.0

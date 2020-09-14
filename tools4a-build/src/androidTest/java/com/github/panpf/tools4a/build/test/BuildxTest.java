@@ -51,6 +51,8 @@ public class BuildxTest {
         array.append(Build.VERSION_CODES.O, Collectionx.mutableListOf(s -> Buildx.isAtLeastO(), s -> Buildx.isAtLeast26(), s -> Buildx.isAtLeast8_0()));
         array.append(Build.VERSION_CODES.O_MR1, Collectionx.mutableListOf(s -> Buildx.isAtLeastOMR1(), s -> Buildx.isAtLeast27(), s -> Buildx.isAtLeast8_1()));
         array.append(Build.VERSION_CODES.P, Collectionx.mutableListOf(s -> Buildx.isAtLeastP(), s -> Buildx.isAtLeast28(), s -> Buildx.isAtLeast9_0()));
+        array.append(Build.VERSION_CODES.Q, Collectionx.mutableListOf(s -> Buildx.isAtLeastQ(), s -> Buildx.isAtLeast29(), s -> Buildx.isAtLeast10_0()));
+        array.append(Build.VERSION_CODES.R, Collectionx.mutableListOf(s -> Buildx.isAtLeastR(), s -> Buildx.isAtLeast30(), s -> Buildx.isAtLeast11_0()));
 
         for (int index : Rangex.until(0, array.size())) {
             int key = array.keyAt(index);
@@ -66,35 +68,36 @@ public class BuildxTest {
 
     @Test
     public void testGetVersionName() {
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.BASE), "1.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.BASE_1_1), "1.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.CUPCAKE), "1.5.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.DONUT), "1.6.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.ECLAIR), "2.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.ECLAIR_0_1), "2.0.1");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.ECLAIR_MR1), "2.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.FROYO), "2.2.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.GINGERBREAD), "2.3.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.GINGERBREAD_MR1), "2.3.3");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB), "3.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB_MR1), "3.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB_MR2), "3.2.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.ICE_CREAM_SANDWICH), "4.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1), "4.0.3");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN), "4.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN_MR1), "4.2.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN_MR2), "4.3.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.KITKAT), "4.4.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.KITKAT_WATCH), "4.4W");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.LOLLIPOP), "5.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.LOLLIPOP_MR1), "5.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.M), "6.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.N), "7.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.N_MR1), "7.1.1");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.O), "8.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.O_MR1), "8.1.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.P), "9.0.0");
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION_CODES.Q), "10.0.0");
+        Assert.assertEquals("1.0.0", Buildx.getVersionName(Build.VERSION_CODES.BASE));
+        Assert.assertEquals("1.1.0", Buildx.getVersionName(Build.VERSION_CODES.BASE_1_1));
+        Assert.assertEquals("1.5.0", Buildx.getVersionName(Build.VERSION_CODES.CUPCAKE));
+        Assert.assertEquals("1.6.0", Buildx.getVersionName(Build.VERSION_CODES.DONUT));
+        Assert.assertEquals("2.0.0", Buildx.getVersionName(Build.VERSION_CODES.ECLAIR));
+        Assert.assertEquals("2.0.1", Buildx.getVersionName(Build.VERSION_CODES.ECLAIR_0_1));
+        Assert.assertEquals("2.1.0", Buildx.getVersionName(Build.VERSION_CODES.ECLAIR_MR1));
+        Assert.assertEquals("2.2.0", Buildx.getVersionName(Build.VERSION_CODES.FROYO));
+        Assert.assertEquals("2.3.0", Buildx.getVersionName(Build.VERSION_CODES.GINGERBREAD));
+        Assert.assertEquals("2.3.3", Buildx.getVersionName(Build.VERSION_CODES.GINGERBREAD_MR1));
+        Assert.assertEquals("3.0.0", Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB));
+        Assert.assertEquals("3.1.0", Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB_MR1));
+        Assert.assertEquals("3.2.0", Buildx.getVersionName(Build.VERSION_CODES.HONEYCOMB_MR2));
+        Assert.assertEquals("4.0.0", Buildx.getVersionName(Build.VERSION_CODES.ICE_CREAM_SANDWICH));
+        Assert.assertEquals("4.0.3", Buildx.getVersionName(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1));
+        Assert.assertEquals("4.1.0", Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN));
+        Assert.assertEquals("4.2.0", Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN_MR1));
+        Assert.assertEquals("4.3.0", Buildx.getVersionName(Build.VERSION_CODES.JELLY_BEAN_MR2));
+        Assert.assertEquals("4.4.0", Buildx.getVersionName(Build.VERSION_CODES.KITKAT));
+        Assert.assertEquals("4.4W", Buildx.getVersionName(Build.VERSION_CODES.KITKAT_WATCH));
+        Assert.assertEquals("5.0.0", Buildx.getVersionName(Build.VERSION_CODES.LOLLIPOP));
+        Assert.assertEquals("5.1.0", Buildx.getVersionName(Build.VERSION_CODES.LOLLIPOP_MR1));
+        Assert.assertEquals("6.0.0", Buildx.getVersionName(Build.VERSION_CODES.M));
+        Assert.assertEquals("7.0.0", Buildx.getVersionName(Build.VERSION_CODES.N));
+        Assert.assertEquals("7.1.1", Buildx.getVersionName(Build.VERSION_CODES.N_MR1));
+        Assert.assertEquals("8.0.0", Buildx.getVersionName(Build.VERSION_CODES.O));
+        Assert.assertEquals("8.1.0", Buildx.getVersionName(Build.VERSION_CODES.O_MR1));
+        Assert.assertEquals("9.0.0", Buildx.getVersionName(Build.VERSION_CODES.P));
+        Assert.assertEquals("10.0.0", Buildx.getVersionName(Build.VERSION_CODES.Q));
+        Assert.assertEquals("11.0.0", Buildx.getVersionName(Build.VERSION_CODES.R));
 
         SparseArray<String> array = new SparseArray<>();
         array.append(Build.VERSION_CODES.BASE, "1.0.0");
@@ -126,42 +129,44 @@ public class BuildxTest {
         array.append(Build.VERSION_CODES.O_MR1, "8.1.0");
         array.append(Build.VERSION_CODES.P, "9.0.0");
         array.append(Build.VERSION_CODES.Q, "10.0.0");
+        array.append(Build.VERSION_CODES.R, "11.0.0");
 
-        Assert.assertEquals(Buildx.getVersionName(), array.get(Build.VERSION.SDK_INT));
-        Assert.assertEquals(Buildx.getVersionName(Build.VERSION.SDK_INT), array.get(Build.VERSION.SDK_INT));
+        Assert.assertEquals(array.get(Build.VERSION.SDK_INT), Buildx.getVersionName());
+        Assert.assertEquals(array.get(Build.VERSION.SDK_INT), Buildx.getVersionName(Build.VERSION.SDK_INT));
     }
 
     @Test
     public void testGetVersionCodeName() {
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.BASE), "Base");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.BASE_1_1), "Base1_1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.CUPCAKE), "Cupcake");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.DONUT), "Donut");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR), "Eclair");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR_0_1), "Eclair01");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR_MR1), "EclairMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.FROYO), "Froyo");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.GINGERBREAD), "Gingerbread");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.GINGERBREAD_MR1), "GingerbreadMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB), "Honeycomb");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB_MR1), "HoneycombMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB_MR2), "HoneycombMR2");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.ICE_CREAM_SANDWICH), "IceCreamSandwich");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1), "IceCreamSandwichMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN), "JellyBean");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN_MR1), "JellyBeanMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN_MR2), "JellyBeanMR2");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.KITKAT), "KITKAT");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.KITKAT_WATCH), "KitkatWatch");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.LOLLIPOP), "Lollipop");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.LOLLIPOP_MR1), "LollipopMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.M), "Marshmallow");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.N), "Nougat");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.N_MR1), "NougatMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.O), "Oreo");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.O_MR1), "OreoMR1");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.P), "Pie");
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION_CODES.Q), "10");
+        Assert.assertEquals("Base", Buildx.getVersionCodeName(Build.VERSION_CODES.BASE));
+        Assert.assertEquals("Base1_1", Buildx.getVersionCodeName(Build.VERSION_CODES.BASE_1_1));
+        Assert.assertEquals("Cupcake", Buildx.getVersionCodeName(Build.VERSION_CODES.CUPCAKE));
+        Assert.assertEquals("Donut", Buildx.getVersionCodeName(Build.VERSION_CODES.DONUT));
+        Assert.assertEquals("Eclair", Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR));
+        Assert.assertEquals("Eclair01", Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR_0_1));
+        Assert.assertEquals("EclairMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.ECLAIR_MR1));
+        Assert.assertEquals("Froyo", Buildx.getVersionCodeName(Build.VERSION_CODES.FROYO));
+        Assert.assertEquals("Gingerbread", Buildx.getVersionCodeName(Build.VERSION_CODES.GINGERBREAD));
+        Assert.assertEquals("GingerbreadMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.GINGERBREAD_MR1));
+        Assert.assertEquals("Honeycomb", Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB));
+        Assert.assertEquals("HoneycombMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB_MR1));
+        Assert.assertEquals("HoneycombMR2", Buildx.getVersionCodeName(Build.VERSION_CODES.HONEYCOMB_MR2));
+        Assert.assertEquals("IceCreamSandwich", Buildx.getVersionCodeName(Build.VERSION_CODES.ICE_CREAM_SANDWICH));
+        Assert.assertEquals("IceCreamSandwichMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1));
+        Assert.assertEquals("JellyBean", Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN));
+        Assert.assertEquals("JellyBeanMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN_MR1));
+        Assert.assertEquals("JellyBeanMR2", Buildx.getVersionCodeName(Build.VERSION_CODES.JELLY_BEAN_MR2));
+        Assert.assertEquals("KITKAT", Buildx.getVersionCodeName(Build.VERSION_CODES.KITKAT));
+        Assert.assertEquals("KitkatWatch", Buildx.getVersionCodeName(Build.VERSION_CODES.KITKAT_WATCH));
+        Assert.assertEquals("Lollipop", Buildx.getVersionCodeName(Build.VERSION_CODES.LOLLIPOP));
+        Assert.assertEquals("LollipopMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.LOLLIPOP_MR1));
+        Assert.assertEquals("Marshmallow", Buildx.getVersionCodeName(Build.VERSION_CODES.M));
+        Assert.assertEquals("Nougat", Buildx.getVersionCodeName(Build.VERSION_CODES.N));
+        Assert.assertEquals("NougatMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.N_MR1));
+        Assert.assertEquals("Oreo", Buildx.getVersionCodeName(Build.VERSION_CODES.O));
+        Assert.assertEquals("OreoMR1", Buildx.getVersionCodeName(Build.VERSION_CODES.O_MR1));
+        Assert.assertEquals("Pie", Buildx.getVersionCodeName(Build.VERSION_CODES.P));
+        Assert.assertEquals("10", Buildx.getVersionCodeName(Build.VERSION_CODES.Q));
+        Assert.assertEquals("11", Buildx.getVersionCodeName(Build.VERSION_CODES.R));
 
         SparseArray<String> array = new SparseArray<>();
         array.append(Build.VERSION_CODES.BASE, "Base");
@@ -193,8 +198,9 @@ public class BuildxTest {
         array.append(Build.VERSION_CODES.O_MR1, "OreoMR1");
         array.append(Build.VERSION_CODES.P, "Pie");
         array.append(Build.VERSION_CODES.Q, "10");
+        array.append(Build.VERSION_CODES.R, "11");
 
-        Assert.assertEquals(Buildx.getVersionCodeName(), array.get(Build.VERSION.SDK_INT));
-        Assert.assertEquals(Buildx.getVersionCodeName(Build.VERSION.SDK_INT), array.get(Build.VERSION.SDK_INT));
+        Assert.assertEquals(array.get(Build.VERSION.SDK_INT), Buildx.getVersionCodeName());
+        Assert.assertEquals(array.get(Build.VERSION.SDK_INT), Buildx.getVersionCodeName(Build.VERSION.SDK_INT));
     }
 }
