@@ -557,10 +557,10 @@ public class Contextx {
 
     // WIFI_SCANNING_SERVICE
 
-    @NonNull
+    @Nullable
     @RequiresApi(api = Build.VERSION_CODES.P)
     public static WifiRttManager wifiRttManager(@NonNull Context context) {
-        return systemService(context, Context.WIFI_RTT_RANGING_SERVICE);
+        return systemServiceOrNull(context, Context.WIFI_RTT_RANGING_SERVICE);
     }
 
     @NonNull

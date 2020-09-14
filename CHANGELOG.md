@@ -1,4 +1,10 @@
 ## new
+
+Upgrade:
+* upgrade: Upgrade androidx.core to 1.3.1
+* upgrade: Upgrade target sdk to 30
+
+Change:
 * change: All methods in Runx are renamed as follows:
     * runOnUIThread rename to runOnUiThread
     * runOnUIThreadAndWait rename to runOnUiThreadAndWait
@@ -8,8 +14,12 @@
     * isOnTheMainProcess rename to isOnMainProcess
     * getTheProcessName rename to getProcessName
     * getTheProcessNameSuffix rename to getProcessNameSuffix
-* upgrade: Upgrade androidx.core to 1.3.1
-* upgrade: Upgrade target sdk to 30
+* change: Contextx.wifiRttManager() mtehod now returns nullable WifiRttManager
+
+New:
+* new: Devivex added isEmulator method
+
+Improve:
 * improve: Buildx adapts to android 11
 
 ## v1.0.0-beta02

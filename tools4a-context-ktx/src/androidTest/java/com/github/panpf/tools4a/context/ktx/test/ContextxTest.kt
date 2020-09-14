@@ -27,6 +27,7 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.context.ktx.*
+import com.github.panpf.tools4a.device.Devicex
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -134,7 +135,11 @@ class ContextxTest {
         }
         Assert.assertNotNull(context.wifiP2pManager())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Assert.assertNotNull(context.wifiRttManager())
+            if (Devicex.isEmulator()) {
+                Assert.assertNull(context.wifiRttManager())
+            } else {
+                Assert.assertNotNull(context.wifiRttManager())
+            }
         }
         Assert.assertNotNull(context.nsdManager())
         Assert.assertNotNull(context.audioManager())

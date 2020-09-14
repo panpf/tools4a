@@ -170,7 +170,7 @@ inline fun Context.wifiP2pManager(): WifiP2pManager = Contextx.wifiP2pManager(th
 // WIFI_SCANNING_SERVICE
 
 @RequiresApi(api = Build.VERSION_CODES.P)
-inline fun Context.wifiRttManager(): WifiRttManager = Contextx.wifiRttManager(this)
+inline fun Context.wifiRttManager(): WifiRttManager? = Contextx.wifiRttManager(this)
 
 inline fun Context.nsdManager(): NsdManager = Contextx.nsdManager(this)
 

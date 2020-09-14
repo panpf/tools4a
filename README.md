@@ -150,7 +150,7 @@ Dependencies:
 
 ### tools4a-device
 * Devicex: [Devicex.java] ([Test][DevicexTest.java]) | [Devicex.kt] ([Test][DevicexTest.kt])
-    * getProduct, getBrand, getModel, getDevice, getHardware, getSupportedAbis,
+    * isEmulator, getProduct, getBrand, getModel, getDevice, getHardware, getSupportedAbis,
     * getPhoneNumberOr, getPhoneNumberOrThrow, getPhoneNumberOrNull, getDeviceIdOr,
     * getDeviceIdOrThrow, getDeviceIdOrNull, getAndroidIdOr, getAndroidIdOrThrow,
     * getAndroidIdOrNull, getSubscriberIdOr, getSubscriberIdOrThrow, getSubscriberIdOrNull,

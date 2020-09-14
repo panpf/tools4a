@@ -29,6 +29,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 
+import com.github.panpf.tools4a.systemproperties.SystemPropertiesx;
+
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -38,6 +40,10 @@ import java.util.List;
 public class Devicex {
 
     private Devicex() {
+    }
+
+    public static boolean isEmulator() {
+        return "1".equals(SystemPropertiesx.get("ro.kernel.qemu"));
     }
 
     @NonNull
