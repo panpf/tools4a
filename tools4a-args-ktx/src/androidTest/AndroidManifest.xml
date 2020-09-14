@@ -129,15 +129,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name="ArgsxTest$TestUriActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
 
         <activity android:name="ArgsxTest$ResTestUriActivity">
             <intent-filter>
