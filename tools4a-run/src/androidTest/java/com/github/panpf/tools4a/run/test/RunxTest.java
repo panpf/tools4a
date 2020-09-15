@@ -42,7 +42,7 @@ public class RunxTest {
     }
 
     @Test
-    public void testRunInUI() {
+    public void testRunOnUiThread() {
         final String[] results = new String[1];
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         Runx.runOnUiThread(() -> {
@@ -67,19 +67,19 @@ public class RunxTest {
     }
 
     @Test
-    public void testIsMainThread() {
+    public void testIsOnMainThread() {
         Assert.assertFalse(Runx.isOnMainThread());
     }
 
     @Test
-    public void testIsMainProcess() {
+    public void testIsOnMainProcess() {
         Context context = InstrumentationRegistry.getContext();
 
         Assert.assertTrue(Runx.isOnMainProcess(context));
     }
 
     @Test
-    public void testInProcessName() {
+    public void testGetProcessName() {
         Context context = InstrumentationRegistry.getContext();
 
         Assert.assertNotNull(Runx.getProcessName(context));

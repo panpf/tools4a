@@ -18,8 +18,6 @@ package com.github.panpf.tools4a.run.ktx.test
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.run.ResultNullableRunnable
-import com.github.panpf.tools4a.run.ResultRunnable
 import com.github.panpf.tools4a.run.ktx.*
 import org.junit.Assert
 import org.junit.Test
@@ -30,7 +28,7 @@ import java.util.concurrent.CountDownLatch
 class RunxTest {
 
     @Test
-    fun testRunInUI() {
+    fun testRunOnUiThread() {
         val results = arrayOfNulls<String>(1)
         val countDownLatch = CountDownLatch(1)
         runOnUiThread {
@@ -55,19 +53,19 @@ class RunxTest {
         }
         Assert.assertEquals(results[0], "MainThread1-")
 
-        runOnUiThreadAndWait(Runnable { results[0] = if (isOnMainThread()) "MainThread2-" else "NoMainThread2-" })
+        runOnUiThreadAndWait { results[0] = if (isOnMainThread()) "MainThread2-" else "NoMainThread2-" }
         Assert.assertEquals(results[0], "MainThread2-")
 
         runOnUiThreadAndWait { results[0] = if (isOnMainThread()) "MainThread2" else "NoMainThread2" }
         Assert.assertEquals(results[0], "MainThread2")
 
-        results[0] = runOnUiThreadAndWaitResult(ResultRunnable { if (isOnMainThread()) "MainThread3-" else "NoMainThread3-" })
+        results[0] = runOnUiThreadAndWaitResult { if (isOnMainThread()) "MainThread3-" else "NoMainThread3-" }
         Assert.assertEquals(results[0], "MainThread3-")
 
         results[0] = runOnUiThreadAndWaitResult { if (isOnMainThread()) "MainThread3" else "NoMainThread3" }
         Assert.assertEquals(results[0], "MainThread3")
 
-        results[0] = runOnUiThreadAndWaitNullableResult(ResultNullableRunnable { if (isOnMainThread()) "MainThread4-" else null })
+        results[0] = runOnUiThreadAndWaitNullableResult { if (isOnMainThread()) "MainThread4-" else null }
         Assert.assertEquals(results[0], "MainThread4-")
 
         results[0] = runOnUiThreadAndWaitNullableResult { if (isOnMainThread()) "MainThread4" else null }
@@ -75,14 +73,14 @@ class RunxTest {
     }
 
     @Test
-    fun testIsMainProcess() {
+    fun testIsOnMainProcess() {
         val context = InstrumentationRegistry.getContext()
 
         Assert.assertTrue(context.isOnMainProcess())
     }
 
     @Test
-    fun testInProcessName() {
+    fun testInOnProcessName() {
         val context = InstrumentationRegistry.getContext()
 
         Assert.assertNotNull(context.getProcessName())
