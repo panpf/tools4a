@@ -20,7 +20,9 @@ package com.github.panpf.tools4a.toast.ktx
 
 import android.content.Context
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
+import com.github.panpf.tools4a.run.Runx
 import com.github.panpf.tools4a.toast.Toastx
 
 /*
@@ -94,6 +96,8 @@ inline fun View.showShortToastWithFormat(@StringRes messageResId: Int, vararg pa
 /* ************************************* Show View ***************************************** */
 
 
+@Deprecated("Starting from Android 11, the app cannot send custom toasts in the background")
 inline fun View.showLongToastWithSelf() = Toastx.showLongWithView(this)
 
+@Deprecated("Starting from Android 11, the app cannot send custom toasts in the background")
 inline fun View.showShortToastWithSelf() = Toastx.showShortWithView(this)

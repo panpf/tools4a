@@ -202,7 +202,10 @@ public class Toastx {
 
     /* ************************************* Show View ***************************************** */
 
-
+    /**
+     * @deprecated Starting from Android 11, the app cannot send custom toasts in the background
+     */
+    @Deprecated
     public static void showLongWithView(@NonNull final View view) {
         final Context context = view.getContext();
         final Context appContext = context.getApplicationContext();
@@ -214,6 +217,10 @@ public class Toastx {
         });
     }
 
+    /**
+     * @deprecated Starting from Android 11, the app cannot send custom toasts in the background
+     */
+    @Deprecated
     public static void showShortWithView(@NonNull final View view) {
         final Context context = view.getContext();
         final Context appContext = context.getApplicationContext();
