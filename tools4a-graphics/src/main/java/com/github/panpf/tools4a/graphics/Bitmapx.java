@@ -266,6 +266,7 @@ public class Bitmapx {
         Canvas canvas = new Canvas(dstBitmap);
         canvas.drawARGB(0, 0, 0, 0);
 
+        //noinspection IntegerDivisionInFloatingPointContext
         float newBitmapRadius = Math.min(dstBitmap.getWidth(), dstBitmap.getHeight()) / 2;
         canvas.drawCircle(newBitmapRadius, newBitmapRadius, newBitmapRadius, paint);
 
@@ -439,6 +440,7 @@ public class Bitmapx {
         Canvas canvas = new Canvas(bitmap);
         float y = compact ? Paintx.getDrawTextVerticalCenterBaseLineCompact(paint, 0, newBitmapHeight) : Paintx.getDrawTextVerticalCenterBaseLine(paint, 0, newBitmapHeight);
         if (leftIcon != null) {
+            //noinspection IntegerDivisionInFloatingPointContext
             canvas.drawBitmap(leftIcon, 0, (newBitmapHeight - leftIcon.getHeight()) / 2, paint);
             canvas.drawText(text, leftIcon.getWidth(), y, paint);
         } else {
