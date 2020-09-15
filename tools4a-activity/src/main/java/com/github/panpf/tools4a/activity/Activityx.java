@@ -16,6 +16,7 @@
 
 package com.github.panpf.tools4a.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
@@ -81,20 +82,25 @@ public class Activityx {
     public static boolean convertToTranslucentCompat(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
+                //noinspection JavaReflectionMemberAccess
+                @SuppressLint("DiscouragedPrivateApi")
                 Method getActivityOptions = Activity.class.getDeclaredMethod("getActivityOptions");
                 getActivityOptions.setAccessible(true);
                 Object options = getActivityOptions.invoke(activity);
 
                 Class<?>[] classes = Activity.class.getDeclaredClasses();
                 Class<?> translucentConversionListenerClazz = null;
-                for (Class clazz : classes) {
+                for (Class<?> clazz : classes) {
                     if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
                         translucentConversionListenerClazz = clazz;
                     }
                 }
+                //noinspection JavaReflectionMemberAccess
+                @SuppressLint("DiscouragedPrivateApi")
                 Method convertToTranslucent = Activity.class.getDeclaredMethod("convertToTranslucent",
                         translucentConversionListenerClazz, ActivityOptions.class);
                 convertToTranslucent.setAccessible(true);
+                //noinspection JavaReflectionInvocation
                 convertToTranslucent.invoke(activity, null, options);
                 return true;
             } catch (Throwable e) {
@@ -105,11 +111,12 @@ public class Activityx {
             try {
                 Class<?>[] classes = Activity.class.getDeclaredClasses();
                 Class<?> translucentConversionListenerClazz = null;
-                for (Class clazz : classes) {
+                for (Class<?> clazz : classes) {
                     if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
                         translucentConversionListenerClazz = clazz;
                     }
                 }
+                //noinspection JavaReflectionMemberAccess
                 Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
                         translucentConversionListenerClazz);
                 method.setAccessible(true);
@@ -142,6 +149,7 @@ public class Activityx {
     public static boolean convertFromTranslucentCompat(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
+                //noinspection JavaReflectionMemberAccess
                 Method method = Activity.class.getDeclaredMethod("convertFromTranslucent");
                 method.setAccessible(true);
                 method.invoke(activity);
@@ -185,6 +193,7 @@ public class Activityx {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
 
+        @SuppressLint("QueryPermissionsNeeded")
         List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(intent, 0);
         return resolveInfoList != null && resolveInfoList.size() > 0;
     }
