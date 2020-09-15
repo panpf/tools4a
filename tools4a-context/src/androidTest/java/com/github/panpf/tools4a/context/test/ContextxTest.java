@@ -142,9 +142,9 @@ public class ContextxTest {
         Assert.assertNotNull(Contextx.wifiP2pManager(context));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (Devicex.isEmulator()) {
-                Assert.assertNull(Contextx.wifiRttManager(context));
+                Assert.assertNull(Contextx.wifiRttManagerOrNull(context));
             } else {
-                Assert.assertNotNull(Contextx.wifiRttManager(context));
+                Assert.assertNotNull(Contextx.wifiRttManagerOrNull(context));
             }
         }
         Assert.assertNotNull(Contextx.nsdManager(context));

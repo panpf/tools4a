@@ -15,6 +15,7 @@ Change:
     * getTheProcessName rename to getProcessName
     * getTheProcessNameSuffix rename to getProcessNameSuffix
 * change: Contextx.wifiRttManager() mtehod now returns nullable WifiRttManager
+* change: Contextx.wifiRttManager() rename to wifiRttManagerOrNull()
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
 * change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
 
