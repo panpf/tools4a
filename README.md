@@ -145,7 +145,7 @@ Dependencies:
 ### tools4a-context
 * Context: [Contextx.java] ([Test][ContextxTest.java]) | [Contextx.kt] ([Test][ContextxTest.kt])
     * appContext, requireContext, requireAppContext, systemService, systemServiceOrNull,
-    * systemServiceInUI, systemServiceOrNullInUI, \*Manager
+    * systemServiceOnUiThread, systemServiceOrNullOnUiThread, \*Manager
 
 ### tools4a-device
 * Devicex: [Devicex.java] ([Test][DevicexTest.java]) | [Devicex.kt] ([Test][DevicexTest.kt])

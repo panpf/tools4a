@@ -16,6 +16,7 @@ Change:
     * getTheProcessNameSuffix rename to getProcessNameSuffix
 * change: Contextx.wifiRttManager() mtehod now returns nullable WifiRttManager
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
+* change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
 
 New:
 * new: Devivex added isEmulator method

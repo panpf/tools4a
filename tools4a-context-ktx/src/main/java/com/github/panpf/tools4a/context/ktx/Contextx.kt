@@ -107,6 +107,10 @@ inline fun <T> Context.systemService(serviceName: String): T = Contextx.systemSe
 
 inline fun <T> Context.systemServiceOrNull(serviceName: String): T? = Contextx.systemServiceOrNull(this, serviceName)
 
+inline fun <T> Context.systemServiceOnUiThread(serviceName: String): T = Contextx.systemServiceOnUiThread(this, serviceName)
+
+inline fun <T> Context.systemServiceOrNullOnUiThread(serviceName: String): T? = Contextx.systemServiceOrNullOnUiThread(this, serviceName)
+
 inline fun Context.packageManager(): PackageManager = Contextx.packageManager(this)
 
 inline fun Context.powerManager(): PowerManager = Contextx.powerManager(this)

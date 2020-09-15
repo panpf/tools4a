@@ -47,7 +47,7 @@ public class ContextxTest {
 
     @Rule
     @NonNull
-    public final ActivityTestRule getActivityRule() {
+    public final ActivityTestRule<TestActivity> getActivityRule() {
         return this.activityRule;
     }
 

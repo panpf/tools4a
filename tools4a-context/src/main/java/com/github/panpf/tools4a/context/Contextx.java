@@ -329,7 +329,7 @@ public class Contextx {
      * @see Context#HARDWARE_PROPERTIES_SERVICE
      */
     @NonNull
-    public static <T> T systemServiceInUI(@NonNull final Context context, @NonNull final String serviceName) {
+    public static <T> T systemServiceOnUiThread(@NonNull final Context context, @NonNull final String serviceName) {
         final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         return Runx.runOnUiThreadAndWaitResult(() -> {
             Context nowContext = contextWeakReference.get();
@@ -403,7 +403,7 @@ public class Contextx {
      * @see Context#HARDWARE_PROPERTIES_SERVICE
      */
     @Nullable
-    public static <T> T systemServiceOrNullInUI(@NonNull final Context context, @NonNull final String serviceName) {
+    public static <T> T systemServiceOrNullOnUiThread(@NonNull final Context context, @NonNull final String serviceName) {
         final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         return Runx.runOnUiThreadAndWaitNullableResult(() -> {
             Context nowContext = contextWeakReference.get();
@@ -465,7 +465,7 @@ public class Contextx {
     @NonNull
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static CaptioningManager captioningManager(@NonNull Context context) {
-        return systemServiceInUI(context, Context.CAPTIONING_SERVICE);
+        return systemServiceOnUiThread(context, Context.CAPTIONING_SERVICE);
     }
 
     @NonNull
@@ -620,7 +620,7 @@ public class Contextx {
 
     @NonNull
     public static ClipboardManager clipboardManager(@NonNull Context context) {
-        return systemServiceInUI(context, Context.CLIPBOARD_SERVICE);
+        return systemServiceOnUiThread(context, Context.CLIPBOARD_SERVICE);
     }
 
     @NonNull
