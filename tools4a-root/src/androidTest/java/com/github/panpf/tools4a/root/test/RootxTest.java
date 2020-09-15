@@ -24,11 +24,17 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+
 @RunWith(AndroidJUnit4.class)
 public class RootxTest {
 
     @Test
     public void testIsRoot() {
-        Assert.assertNotNull(String.valueOf(Rootx.isRooted()));
+        boolean rooted = new File("/system/bin/su").exists()
+                || new File("/system/xbin/su").exists()
+                || new File("/sbin/su").exists()
+                || new File("/su").exists();
+        Assert.assertEquals(rooted, Rootx.isRooted());
     }
 }
