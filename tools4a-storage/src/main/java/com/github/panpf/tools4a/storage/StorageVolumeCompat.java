@@ -44,25 +44,32 @@ public class StorageVolumeCompat {
      */
     @Nullable
     public String getPath() {
-        try {
-            //noinspection JavaReflectionMemberAccess
-            @SuppressLint("DiscouragedPrivateApi")
-            Method method = storageVolume.getClass().getDeclaredMethod("getPath");
-            method.setAccessible(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            File directory = storageVolume.getDirectory();
+            return directory != null ? directory.getPath() : null;
+        } else {
             try {
-                return (String) method.invoke(storageVolume);
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
+                //noinspection JavaReflectionMemberAccess
+                @SuppressLint("DiscouragedPrivateApi")
+                Method method = storageVolume.getClass().getDeclaredMethod("getPath");
+                method.setAccessible(true);
+                try {
+                    return (String) method.invoke(storageVolume);
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+                return null;
             }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
     @Nullable
     public File getPathFile() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return storageVolume.getDirectory();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             try {
                 //noinspection JavaReflectionMemberAccess
                 @SuppressLint("DiscouragedPrivateApi")
