@@ -101,7 +101,6 @@ implementation "com.github.panpf.tools4a:tools4a-toast:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-toast-ktx:$LAST_VERSION" // Kotlin extension, not required
 
 implementation "com.github.panpf.tools4a:tools4a-utils:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-utils-ktx:$LAST_VERSION" // Kotlin extension, not required
 
 implementation "com.github.panpf.tools4a:tools4a-view:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-view-ktx:$LAST_VERSION" // Kotlin extension, not required
@@ -188,7 +187,7 @@ Dependencies:
 * Bitmapx: [Bitmapx.java] ([Test][BitmapxTest.java]) | [Bitmapx.kt] ([Test][BitmapxTest.kt])
     * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor,
     * toByteArray, writeToFile, readBitmap, toDrawable, use, calculateSamplingSize,
-    * calculateSamplingSizeForRegion
+    * calculateSamplingSizeForRegion, textToBitmap
 * Imagex: [Imagex.java] ([Test][ImagexTest.java]) | [Imagex.kt] ([Test][ImagexTest.kt])
     * getMimeType, getMimeSubType
 * Colorx: [Colorx.java] ([Test][ColorxTest.java]) | [Colorx.kt] ([Test][ColorxTest.kt])
@@ -327,10 +326,6 @@ Dependencies:
 
 ### tools4a-utils
 * LifecycleBroadcastReceiver: [LifecycleBroadcastReceiver.java] ([Test][LifecycleBroadcastReceiverTest.java])
-* Textx: [Textx.java] ([Test][TextxTest.java]) | [Textx.kt] ([Test][TextxTest.kt])
-    * textToBitmap, changeColorByHtml, changeColorToRedByHtml, changeKeywordColorByHtml,
-    * changeKeywordColorToRedByHtml, changeColorBySpannable, changeColorToRedBySpannable,
-    * changeKeywordColorBySpannable, changeKeywordColorToRedBySpannable
 * WeakAsyncTask: [WeakAsyncTask.java] ([Test][WeakAsyncTaskTest.java])
 
 ### tools4a-view
@@ -355,6 +350,10 @@ Dependencies:
     * containsFrom, containsAnyFrom, containsAllFrom, isEmpty, isEmptyFrom, clear,
     * registerOnChangeListener, registerOnChangeListenerTo, unregisterOnChangeListener, unregisterOnChangeListenerFrom
 * SingletonLazy: [SingletonLazy.java]
+* Textx: [Textx.java] ([Test][TextxTest.java]) | [Textx.kt] ([Test][TextxTest.kt])
+    * changeColorByHtml, changeColorToRedByHtml, changeKeywordColorByHtml,
+    * changeKeywordColorToRedByHtml, changeColorBySpannable, changeColorToRedBySpannable,
+    * changeKeywordColorBySpannable, changeKeywordColorToRedBySpannable
 
 ## Change Log
 
@@ -597,11 +596,6 @@ Please view the [CHANGELOG.md] file
 [LifecycleBroadcastReceiver.java]: tools4a-utils/src/main/java/com/github/panpf/tools4a/utils/LifecycleBroadcastReceiver.java
 [LifecycleBroadcastReceiverTest.java]: tools4a-utils/src/androidTest/java/com/github/panpf/tools4a/utils/test/LifecycleBroadcastReceiverTest.java
 
-[Textx.java]: tools4a-utils/src/main/java/com/github/panpf/tools4a/utils/Textx.java
-[TextxTest.java]: tools4a-utils/src/androidTest/java/com/github/panpf/tools4a/utils/test/TextxTest.java
-[Textx.kt]: tools4a-utils-ktx/src/main/java/com/github/panpf/tools4a/utils/ktx/Textx.kt
-[TextxTest.kt]: tools4a-utils-ktx/src/androidTest/java/com/github/panpf/tools4a/utils/ktx/test/TextxTest.kt
-
 [WeakAsyncTask.java]: tools4a-utils/src/main/java/com/github/panpf/tools4a/utils/WeakAsyncTask.java
 [WeakAsyncTaskTest.java]: tools4a-utils/src/androidTest/java/com/github/panpf/tools4a/utils/test/WeakAsyncTaskTest.java
 
@@ -624,5 +618,10 @@ Please view the [CHANGELOG.md] file
 [PreferencexTest.java]: other/src/androidTest/java/com/github/panpf/tools4a/other/test/PreferencexTest.java
 [Preferencex.kt]: other-ktx/src/main/java/com/github/panpf/tools4a/other/ktx/Preferencex.kt
 [PreferencexTest.kt]: other-ktx/src/androidTest/java/com/github/panpf/tools4a/other/ktx/test/PreferencexTest.kt
+
+[Textx.java]: tools4a-other/src/main/java/com/github/panpf/tools4a/other/Textx.java
+[TextxTest.java]: tools4a-other/src/androidTest/java/com/github/panpf/tools4a/other/test/TextxTest.java
+[Textx.kt]: tools4a-other-ktx/src/main/java/com/github/panpf/tools4a/other/ktx/Textx.kt
+[TextxTest.kt]: tools4a-other-ktx/src/androidTest/java/com/github/panpf/tools4a/other/ktx/test/TextxTest.kt
 
 [SingletonLazy.java]: other/src/main/java/com/github/panpf/tools4a/other/SingletonLazy.java

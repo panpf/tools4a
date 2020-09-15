@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils.test;
+package com.github.panpf.tools4a.other.test;
 
 import android.graphics.Color;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.github.panpf.tools4a.utils.Textx;
+import com.github.panpf.tools4a.other.Textx;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class TextxTest {
-
 
     @Test
     public void testChangeColor() {

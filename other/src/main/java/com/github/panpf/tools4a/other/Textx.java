@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils;
+package com.github.panpf.tools4a.other;
 
 import android.graphics.Color;
 import android.text.Spannable;

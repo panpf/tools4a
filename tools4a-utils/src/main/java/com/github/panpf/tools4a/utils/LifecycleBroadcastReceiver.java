@@ -22,9 +22,9 @@ import androidx.lifecycle.LifecycleOwner;
 public abstract class LifecycleBroadcastReceiver extends BroadcastReceiver {
 
     @NonNull
-    private Context appContext;
+    private final Context appContext;
     @NonNull
-    private LifecycleOwner lifecycleOwner;
+    private final LifecycleOwner lifecycleOwner;
 
     public LifecycleBroadcastReceiver(@NonNull Context context, @NonNull LifecycleOwner lifecycleOwner) {
         this.appContext = context.getApplicationContext();
@@ -63,15 +63,15 @@ public abstract class LifecycleBroadcastReceiver extends BroadcastReceiver {
 
     private static class ReceiverLifecycleEventObserver implements LifecycleEventObserver {
         @NonNull
-        private Context appContext;
+        private final Context appContext;
         @NonNull
-        private LifecycleBroadcastReceiver receiver;
+        private final LifecycleBroadcastReceiver receiver;
         @NonNull
-        private IntentFilter filter;
+        private final IntentFilter filter;
         @NonNull
-        private Lifecycle.Event registerEvent;
+        private final Lifecycle.Event registerEvent;
         @NonNull
-        private Lifecycle.Event unregisterEvent;
+        private final Lifecycle.Event unregisterEvent;
 
         ReceiverLifecycleEventObserver(
                 @NonNull Context context, @NonNull LifecycleBroadcastReceiver receiver,

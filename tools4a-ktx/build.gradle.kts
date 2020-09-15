@@ -62,7 +62,7 @@ dependencies {
     api(project(":tools4a-storage-ktx"))
     api(project(":tools4a-systemproperties"))
     api(project(":tools4a-toast-ktx"))
-    api(project(":tools4a-utils-ktx"))
+    api(project(":tools4a-utils"))
     api(project(":tools4a-view-ktx"))
 
     testImplementation("junit:junit:${property("JUNIT")}")

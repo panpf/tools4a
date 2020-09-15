@@ -38,15 +38,15 @@ import java.lang.reflect.Modifier;
  * 3. Overloads the onPreExecute, doInBackground, onProgressUpdate, and onPostExecute methods,
  * extending a Page parameter, checking whether the Page has been destroyed before calling back related methods
  *
- * @param <Page>
- * @param <Param>
- * @param <Progress>
- * @param <Result>
+ * @deprecated Use the standard <code>java.util.concurrent</code> or
+ *   <a href="https://developer.android.com/topic/libraries/architecture/coroutines">
+ *   Kotlin concurrency utilities</a> instead.
  */
+@Deprecated
 public abstract class WeakAsyncTask<Page, Param, Progress, Result> extends AsyncTask<Param, Progress, Result> {
 
     @NonNull
-    private WeakReference<Page> reference;
+    private final WeakReference<Page> reference;
 
     public WeakAsyncTask(@NonNull Page page) {
         // The class name contains '$' is the inner class, the inner class must be static

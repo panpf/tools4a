@@ -16,10 +16,10 @@
 
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.github.panpf.tools4a.utils.ktx
+package com.github.panpf.tools4a.other.ktx
 
 import android.text.SpannableStringBuilder
-import com.github.panpf.tools4a.utils.Textx
+import com.github.panpf.tools4a.other.Textx
 
 
 /**

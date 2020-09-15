@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.panpf.tools4a.utils.ktx.test
+package com.github.panpf.tools4a.other.ktx.test
 
 import android.graphics.Color
 import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.utils.ktx.*
+import com.github.panpf.tools4a.other.ktx.*
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

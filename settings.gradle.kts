@@ -78,7 +78,6 @@ include(":tools4a-toast")
 include(":tools4a-toast-ktx")
 
 include(":tools4a-utils")
-include(":tools4a-utils-ktx")
 
 include(":tools4a-view")
 include(":tools4a-view-ktx")

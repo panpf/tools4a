@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 public class SingletonLazy<P, R> {
 
     @NonNull
-    private Callback<P, R> callback;
+    private final Callback<P, R> callback;
     @Nullable
     private volatile R instance;
 

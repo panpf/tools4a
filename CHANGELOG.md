@@ -15,12 +15,16 @@ Change:
     * getTheProcessName rename to getProcessName
     * getTheProcessNameSuffix rename to getProcessNameSuffix
 * change: Contextx.wifiRttManager() mtehod now returns nullable WifiRttManager
+* move: Textx from 'tools4a-utils' move to 'tools4a-other'
 
 New:
 * new: Devivex added isEmulator method
 
 Improve:
 * improve: Buildx adapts to android 11
+
+Remove:
+* remove: Remove 'tools4a-utils-ktx' module
 
 ## v1.0.0-beta02
 upgrade: Kotlin upgraded to 1.4.0
