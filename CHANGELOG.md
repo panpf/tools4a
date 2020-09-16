@@ -21,6 +21,7 @@ Change:
 
 New:
 * new: Devivex added isEmulator method
+* new: Added 'tools4a-test' and 'tools4a-test-ktx' module
 
 Improve:
 * improve: Buildx adapts to android 11

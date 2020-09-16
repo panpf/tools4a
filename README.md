@@ -28,7 +28,7 @@ implementation "com.github.panpf.tools4a:tools4a-ktx:$LAST_VERSION" // Kotlin ex
 
 Please replace `$LAST_VERSION` with the latest version: [![Download][version_java_icon]][version_java_link]
 
-The "com.github.panpf.tools4a:tools4a:$LAST_VERSION" dependency will add all the modules included in tools4a to your project. If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
+The "com.github.panpf.tools4a:tools4a:$LAST_VERSION" dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
 ```groovy
 implementation "com.github.panpf.tools4a:tools4a-activity:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-activity-ktx:$LAST_VERSION" // Kotlin extension, not required
@@ -96,6 +96,9 @@ implementation "com.github.panpf.tools4a:tools4a-storage:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-storage-ktx:$LAST_VERSION" // Kotlin extension, not required
 
 implementation "com.github.panpf.tools4a:tools4a-systemproperties:$LAST_VERSION"
+
+implementation "com.github.panpf.tools4a:tools4a-test:$LAST_VERSION"    // Not included in 'com.github.panpf.tools4a:tools4a'
+implementation "com.github.panpf.tools4a:tools4a-test-ktx:$LAST_VERSION" // Kotlin extension, not required, Not included in 'com.github.panpf.tools4a:tools4a'
 
 implementation "com.github.panpf.tools4a:tools4a-toast:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-toast-ktx:$LAST_VERSION" // Kotlin extension, not required
@@ -323,6 +326,10 @@ Dependencies:
 ### tools4a-toast
 * Toastx: [Toastx.java] ([Test][ToastxTest.java]) | [Toastx.kt] ([Test][ToastxTest.kt])
     * showLong, showWithFormatLong, showShort, showWithFormatShort, showLongWithView, showShortWithView
+
+### tools4a-test
+* Testx: [Testx.java] | [Testx.kt]
+    * getActivitySync, getActivityOrNullSync, launchAndOnActivityWithUse, launchActivityWithUse
 
 ### tools4a-utils
 * LifecycleBroadcastReceiver: [LifecycleBroadcastReceiver.java] ([Test][LifecycleBroadcastReceiverTest.java])
@@ -587,6 +594,9 @@ Please view the [CHANGELOG.md] file
 
 [SystemPropertiesx.java]: tools4a-systemproperties/src/main/java/com/github/panpf/tools4a/systemproperties/SystemPropertiesx.java
 [SystemPropertiesxTest.java]: tools4a-systemproperties/src/androidTest/java/com/github/panpf/tools4a/systemproperties/test/SystemPropertiesxTest.java
+
+[Testx.java]: tools4a-test/src/main/java/com/github/panpf/tools4a/test/Testx.java
+[Testx.kt]: tools4a-test-ktx/src/main/java/com/github/panpf/tools4a/test/ktx/Testx.kt
 
 [Toastx.java]: tools4a-toast/src/main/java/com/github/panpf/tools4a/toast/Toastx.java
 [ToastxTest.java]: tools4a-toast/src/androidTest/java/com/github/panpf/tools4a/toast/test/ToastxTest.java
