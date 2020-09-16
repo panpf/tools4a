@@ -16,7 +16,7 @@
 
 package com.github.panpf.tools4a.root.test;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.panpf.tools4a.root.Rootx;
 

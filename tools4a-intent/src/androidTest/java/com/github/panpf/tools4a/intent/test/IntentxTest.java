@@ -18,18 +18,15 @@ package com.github.panpf.tools4a.intent.test;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.Settings;
 
-import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.github.panpf.tools4a.intent.Intentx;
 import com.github.panpf.tools4a.fileprovider.FileProviderx;
+import com.github.panpf.tools4a.intent.Intentx;
 import com.github.panpf.tools4a.storage.Storagex;
 import com.github.panpf.tools4j.io.Filex;
 import com.github.panpf.tools4j.io.IOx;
@@ -84,7 +81,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateScanFileBroadcastIntent() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File file = new File(Storagex.getAppExternalFilesDir(context), "testCreateScanFileBroadcastIntent.jpg");
 
         Intent scanFileIntent1 = Intentx.createScanFileBroadcastIntent(FileProviderx.getShareFileUri(context, file));
@@ -96,7 +93,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateActivityIntentByResolveInfo() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Intent sendIntent = Intentx.createSendTextIntent("https://github.com");
         Assert.assertNull(sendIntent.getComponent());
@@ -111,7 +108,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateTakePhotoIntent() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File file = new File(Storagex.getAppExternalFilesDir(context), "testCreateTakePhotoIntent_temp.jpg");
         try {
@@ -135,7 +132,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateCropImageIntent() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File sourceFile = new File(Storagex.getAppExternalFilesDir(context), "testCreateCropImageIntent.jpg");
         File saveFile = new File(Storagex.getAppExternalFilesDir(context), "testCreateCropImageIntent_temp.jpg");
         try {
@@ -189,7 +186,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateSendTextFileIntent() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File textFile = new File(Storagex.getAppExternalFilesDir(context), "testCreateSendTextFileIntent.txt");
         try {
             Filex.createNewFileOrThrow(textFile);
@@ -217,7 +214,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateSendImageFileIntent() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File imageFile = new File(Storagex.getAppExternalFilesDir(context), "testCreateSendImageFileIntent.jpg");
         try {
             Filex.createNewFileOrThrow(imageFile);
@@ -249,7 +246,7 @@ public class IntentxTest {
 
     @Test
     public void testCreateSendFileIntent() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File textFile = new File(Storagex.getAppExternalFilesDir(context), "testCreateSendFileIntent.txt");
         try {
             Filex.createNewFileOrThrow(textFile);

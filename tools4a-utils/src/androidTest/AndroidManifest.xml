@@ -2,7 +2,7 @@
     package="com.github.panpf.tools4a.utils.test">
 
     <application>
-        <activity android:name=".WeakAsyncTaskTest$TestActivity"/>
-        <activity android:name=".LifecycleBroadcastReceiverTest$TestFragmentActivity"/>
+        <activity android:name=".WeakAsyncTaskTest$TestActivity" />
+        <activity android:name=".LifecycleBroadcastReceiverTest$TestFragmentActivity" />
     </application>
 </manifest>

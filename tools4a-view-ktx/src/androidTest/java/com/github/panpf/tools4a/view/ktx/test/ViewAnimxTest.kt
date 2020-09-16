@@ -21,8 +21,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.ImageView
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.run.ktx.runOnUiThread
 import com.github.panpf.tools4a.view.ViewAnimx
 import com.github.panpf.tools4a.view.ktx.*

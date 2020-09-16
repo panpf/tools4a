@@ -25,9 +25,9 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.settings.ktx.*
 import org.junit.Assert
 import org.junit.Rule
@@ -47,7 +47,7 @@ class SettingsxTest {
 
     @Test
     fun testScreenBrightnessMode() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (!context.canWrite()) {
             val activity = requestPermissionActivityRule.activity
             try {
@@ -74,7 +74,7 @@ class SettingsxTest {
 
     @Test
     fun testScreenBrightness() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (!context.canWrite()) {
             val activity = requestPermissionActivityRule.activity
             try {
@@ -101,7 +101,7 @@ class SettingsxTest {
 
     @Test
     fun testScreenOffTimeout() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (!context.canWrite()) {
             val activity = requestPermissionActivityRule.activity
             try {
@@ -130,7 +130,7 @@ class SettingsxTest {
     fun testAirplaneModeOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) return
 
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (!context.canWrite()) {
             val activity = requestPermissionActivityRule.activity
             try {

@@ -54,6 +54,7 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
+    // todo rename to runOnUiThreadSync
     public static void runOnUiThreadAndWait(@NonNull final Runnable block) {
         if (isOnMainThread()) {
             block.run();
@@ -71,9 +72,39 @@ public class Runx {
         }
     }
 
+    // todo 优化 sync 代码
+//    private static final class SyncRunnable implements Runnable {
+//        private final Runnable mTarget;
+//        private boolean mComplete;
+//
+//        public SyncRunnable(Runnable target) {
+//            mTarget = target;
+//        }
+//
+//        public void run() {
+//            mTarget.run();
+//            synchronized (this) {
+//                mComplete = true;
+//                notifyAll();
+//            }
+//        }
+//
+//        public void waitForComplete() {
+//            synchronized (this) {
+//                while (!mComplete) {
+//                    try {
+//                        wait();
+//                    } catch (InterruptedException e) {
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     /**
      * Execute the specified code block in the main thread
      */
+    // todo rename to runOnUiThreadSyncResult
     @NonNull
     public static <T> T runOnUiThreadAndWaitResult(@NonNull final ResultRunnable<T> block) {
         if (isOnMainThread()) {
@@ -103,6 +134,7 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
+    // todo rename to runOnUiThreadSyncNullableResult
     @Nullable
     public static <T> T runOnUiThreadAndWaitNullableResult(@NonNull final ResultNullableRunnable<T> block) {
         if (isOnMainThread()) {

@@ -18,7 +18,7 @@ package com.github.panpf.tools4a.prefsdelegate.test
 
 import android.content.Context
 import android.preference.PreferenceManager
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.panpf.tools4a.prefsdelegate.*
 import org.json.JSONObject
 import org.junit.Assert.*
@@ -30,7 +30,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testDefaultValue() {
-        val context = androidx.test.InstrumentationRegistry.getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
         val prefsService = DefaultValueTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()
@@ -91,7 +91,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testValue() {
-        val context = androidx.test.InstrumentationRegistry.getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
         val prefsService = ValueTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()
@@ -272,7 +272,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testPrefsName() {
-        val context = androidx.test.InstrumentationRegistry.getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
         val prefsService = PrefsNameTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()

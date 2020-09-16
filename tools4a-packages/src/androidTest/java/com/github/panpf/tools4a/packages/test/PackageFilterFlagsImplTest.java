@@ -21,8 +21,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 
 import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.packages.PackageFilterFlags;
 import com.github.panpf.tools4a.packages.PackageFilterFlagsImpl;
@@ -36,7 +36,7 @@ public class PackageFilterFlagsImplTest {
 
     @Test
     public void testConstructor() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         try {
             new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_SYSTEM);
@@ -111,7 +111,7 @@ public class PackageFilterFlagsImplTest {
 
     @Test
     public void testFlags() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Assert.assertTrue(new PackageFilterFlagsImpl(context, PackageFilterFlags.ONLY_USER)
                 .accept(newPackageInfoByFlag(0)));

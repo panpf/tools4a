@@ -1,6 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.panpf.tools4a.graphics">
+<manifest package="com.github.panpf.tools4a.graphics">
 
-    <application>
-    </application>
+    <application></application>
 </manifest>

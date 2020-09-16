@@ -18,13 +18,9 @@ package com.github.panpf.tools4a.run.test;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.github.panpf.tools4a.run.ResultNullableRunnable;
-import com.github.panpf.tools4a.run.ResultRunnable;
 import com.github.panpf.tools4a.run.Runx;
 
 import org.junit.Assert;
@@ -73,14 +69,14 @@ public class RunxTest {
 
     @Test
     public void testIsOnMainProcess() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Assert.assertTrue(Runx.isOnMainProcess(context));
     }
 
     @Test
     public void testGetProcessName() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Assert.assertNotNull(Runx.getProcessName(context));
         Assert.assertEquals(Runx.getProcessNameSuffix(context), "");

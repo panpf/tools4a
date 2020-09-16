@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.args.ktx
 
 import android.app.Activity

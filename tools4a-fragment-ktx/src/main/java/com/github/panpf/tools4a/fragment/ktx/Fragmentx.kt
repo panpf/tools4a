@@ -59,17 +59,23 @@ inline fun <T : androidx.fragment.app.Fragment> Class<out T>.instantiate(): T = 
 /**
  * Find the visible fragments visible to the current user from the fragment list
  */
+// todo rename to findUserVisibleChildFragmentByUserVisibleHint
 inline fun List<androidx.fragment.app.Fragment>?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
 
 /**
  * Find the visible fragments visible to the current user from the FragmentActivity
  */
+// todo rename to findUserVisibleChildFragmentByUserVisibleHint
 inline fun androidx.fragment.app.FragmentActivity?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
 
 /**
  * Find the visible fragments visible to the current user from the fragment
  */
+// todo rename to findUserVisibleChildFragmentByUserVisibleHint
 inline fun androidx.fragment.app.Fragment?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
+
+
+// todo add findUserVisibleChildFragmentByResumed
 
 
 /**

@@ -26,8 +26,8 @@ import android.content.pm.ServiceInfo;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.packages.PackageInfox;
 import com.github.panpf.tools4a.packages.Predicate;
@@ -42,7 +42,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindActivityInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String activityName = TestActivity.class.getName();
 
         ActivityInfo activityInfo1 = PackageInfox.findActivityInfo(context, context.getPackageName(), new Predicate<ActivityInfo>() {
@@ -83,7 +83,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindServiceInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String serviceName = TestService.class.getName();
 
         ServiceInfo serviceInfo1 = PackageInfox.findServiceInfo(context, context.getPackageName(), new Predicate<ServiceInfo>() {
@@ -124,7 +124,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindReceiverInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String receiverName = TestReceiver.class.getName();
 
         ActivityInfo receiverInfo1 = PackageInfox.findReceiverInfo(context, context.getPackageName(), new Predicate<ActivityInfo>() {
@@ -165,7 +165,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindProviderInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String providerName = TestProvider.class.getName();
 
         ProviderInfo providerInfo1 = PackageInfox.findProviderInfo(context, context.getPackageName(), new Predicate<ProviderInfo>() {
@@ -206,7 +206,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindPermissionInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String permissionName = "com.github.panpf.tools4a.packages.test.share";
 
         PermissionInfo permissionInfo1 = PackageInfox.findPermissionInfo(context, context.getPackageName(), new Predicate<PermissionInfo>() {
@@ -247,7 +247,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindRequestedPermissionInfo() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String requestedPermissionName = "android.permission.WRITE_EXTERNAL_STORAGE";
 
         String requestedPermission1 = PackageInfox.findRequestedPermission(context, context.getPackageName(), new Predicate<String>() {
@@ -288,7 +288,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindMetaDataByName() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String metaDataName = "meta_test_name";
         final String metaDataValue = "meta_test_value";
 
@@ -330,7 +330,7 @@ public class PackageInfoxTest {
 
     @Test
     public void testFindMetaDataByValue() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String metaDataName = "meta_test_name";
         final String metaDataValue = "meta_test_value";
 

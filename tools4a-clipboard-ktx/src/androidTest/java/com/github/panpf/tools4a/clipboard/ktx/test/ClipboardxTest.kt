@@ -22,9 +22,12 @@ import android.content.ClipboardManager.OnPrimaryClipChangedListener
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.clipboard.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.github.panpf.tools4a.clipboard.ClipHtmlText
+import com.github.panpf.tools4a.clipboard.ClipIntent
+import com.github.panpf.tools4a.clipboard.ClipPlainText
+import com.github.panpf.tools4a.clipboard.ClipUri
 import com.github.panpf.tools4a.clipboard.ktx.*
 import org.junit.Assert
 import org.junit.Test
@@ -80,7 +83,7 @@ class ClipboardxTest {
 
     @Test
     fun testLabel() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         context.copyText("clipLabel", TEST_TEXT)
         val content = context.getClipDataLabel()
@@ -95,7 +98,7 @@ class ClipboardxTest {
 
     @Test
     fun testText() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         context.copyText(TEST_TEXT)
         val content = context.getClipText()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -122,7 +125,7 @@ class ClipboardxTest {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             return
         }
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         context.copyHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
         val clipHtmlText = context.getClipHtmlText()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -151,7 +154,7 @@ class ClipboardxTest {
 
     @Test
     fun testIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val intent = Intent(context, Activity::class.java)
         context.copyIntent(intent)
         val result = context.getClipIntent()
@@ -177,7 +180,7 @@ class ClipboardxTest {
 
     @Test
     fun testRawUri() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val uri = Uri.parse("https://www.github.com")
         context.copyRawUri(uri)
         val result = context.getClipUri()
@@ -206,7 +209,7 @@ class ClipboardxTest {
 
     @Test
     fun testMimeTypeUri() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val uri = Uri.parse("https://www.github.com")
         context.copyMimeTypeUri("app/android", uri)
         val result = context.getClipUri()
@@ -235,7 +238,7 @@ class ClipboardxTest {
 
     @Test
     fun testUri() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val uri = Uri.parse("https://www.github.com")
         context.copyUri(uri)
         val result = context.getClipUri()
@@ -264,7 +267,7 @@ class ClipboardxTest {
 
     @Test
     fun testListener() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val result = arrayOfNulls<String>(1)
         val listener = OnPrimaryClipChangedListener { result[0] = "onPrimaryClipChanged" }
         context.addPrimaryClipChangedListener(listener)
@@ -294,7 +297,7 @@ class ClipboardxTest {
 
     @Test
     fun testMultiType() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val text = ClipPlainText(TEST_TEXT)
         val htmlText = ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML)
         val intent = ClipIntent(Intent(context, Activity::class.java))
@@ -322,7 +325,7 @@ class ClipboardxTest {
     @Test
     fun testClean() {
         if (Build.VERSION.SDK_INT >= 28) {
-            val context = InstrumentationRegistry.getContext()
+            val context = InstrumentationRegistry.getInstrumentation().getContext()
             context.copyText("Hello Word")
             val content = context.getClipText()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

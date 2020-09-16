@@ -19,10 +19,10 @@ package com.github.panpf.tools4a.intent.ktx.test
 import android.content.Intent
 import android.os.Parcelable
 import android.provider.MediaStore
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.intent.ktx.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.fileprovider.ktx.getShareFileUri
+import com.github.panpf.tools4a.intent.ktx.*
 import com.github.panpf.tools4a.storage.ktx.getAppExternalFilesDir
 import com.github.panpf.tools4j.io.ktx.closeQuietly
 import com.github.panpf.tools4j.io.ktx.createNewFileOrThrow
@@ -66,7 +66,7 @@ class IntentxTest {
 
     @Test
     fun testCreateScanFileBroadcastIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val file = File(context.getAppExternalFilesDir(), "testCreateScanFileBroadcastIntent.jpg")
 
         val scanFileIntent1 = context.getShareFileUri(file).createScanFileBroadcastIntent()
@@ -78,7 +78,7 @@ class IntentxTest {
 
     @Test
     fun testCreateActivityIntentByResolveInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val sendIntent = "https://github.com".createSendTextIntent()
         Assert.assertNull(sendIntent.component)
@@ -94,7 +94,7 @@ class IntentxTest {
     @Test
     @Throws(IOException::class)
     fun testCreateTakePhotoIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val file = File(context.getAppExternalFilesDir(), "testCreateTakePhotoIntent_temp.jpg")
         try {
@@ -112,7 +112,7 @@ class IntentxTest {
     @Test
     @Throws(IOException::class)
     fun testCreateCropImageIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val sourceFile = File(context.getAppExternalFilesDir(), "testCreateCropImageIntent.jpg")
         val saveFile = File(context.getAppExternalFilesDir(), "testCreateCropImageIntent_temp.jpg")
         try {
@@ -167,7 +167,7 @@ class IntentxTest {
     @Test
     @Throws(IOException::class)
     fun testCreateSendTextFileIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val textFile = File(context.getAppExternalFilesDir(), "testCreateSendTextFileIntent.txt")
         try {
             textFile.createNewFileOrThrow()
@@ -196,7 +196,7 @@ class IntentxTest {
     @Test
     @Throws(IOException::class)
     fun testCreateSendImageFileIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val imageFile = File(context.getAppExternalFilesDir(), "testCreateSendImageFileIntent.jpg")
         try {
             imageFile.createNewFileOrThrow()
@@ -229,7 +229,7 @@ class IntentxTest {
     @Test
     @Throws(IOException::class)
     fun testCreateSendFileIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val textFile = File(context.getAppExternalFilesDir(), "testCreateSendFileIntent.txt")
         try {
             textFile.createNewFileOrThrow()

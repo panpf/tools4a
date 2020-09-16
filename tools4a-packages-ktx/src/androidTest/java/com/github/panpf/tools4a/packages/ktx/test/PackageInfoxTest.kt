@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.packages.ktx.test
 
 import android.app.Activity
 import android.content.pm.PackageManager
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.packages.Predicate
 import com.github.panpf.tools4a.packages.ktx.*
 import com.github.panpf.tools4j.lang.Stringx
@@ -33,7 +33,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindActivityInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val activityName = TestActivity::class.java.name
 
         val activityInfo1 = context.findActivityInfo(context.packageName, Predicate { activityInfo -> Stringx.equals(activityInfo.name, activityName) })
@@ -73,7 +73,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindServiceInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val serviceName = TestService::class.java.name
 
         val serviceInfo1 = context.findServiceInfo(context.packageName, Predicate { serviceInfo -> Stringx.equals(serviceInfo.name, serviceName) })
@@ -113,7 +113,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindReceiverInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val receiverName = TestReceiver::class.java.name
 
         val receiverInfo1 = context.findReceiverInfo(context.packageName, Predicate { receiverInfo -> Stringx.equals(receiverInfo.name, receiverName) })
@@ -153,7 +153,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindProviderInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val providerName = TestProvider::class.java.name
 
         val providerInfo1 = context.findProviderInfo(context.packageName, Predicate { providerInfo -> Stringx.equals(providerInfo.name, providerName) })
@@ -193,7 +193,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindPermissionInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val permissionName = "com.github.panpf.tools4a.packages.ktx.test.share"
 
         val permissionInfo1 = context.findPermissionInfo(context.packageName, Predicate { permissionInfo -> Stringx.equals(permissionInfo.name, permissionName) })
@@ -233,7 +233,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindRequestedPermissionInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val requestedPermissionName = "android.permission.WRITE_EXTERNAL_STORAGE"
 
         val requestedPermission1 = context.findRequestedPermission(context.packageName) { requestedPermission -> Stringx.equals(requestedPermission, requestedPermissionName) }
@@ -273,7 +273,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindMetaDataByName() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val metaDataName = "meta_test_name"
         val metaDataValue = "meta_test_value"
 
@@ -314,7 +314,7 @@ class PackageInfoxTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testFindMetaDataByValue() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val metaDataName = "meta_test_name"
         val metaDataValue = "meta_test_value"
 

@@ -16,8 +16,8 @@
 
 package com.github.panpf.tools4a.graphics.ktx.test
 
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.graphics.ktx.getOpenGlVersion
 import org.junit.Assert
 import org.junit.Test
@@ -28,7 +28,7 @@ class OpenGlxTest {
 
     @Test
     fun testGetVersion() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertNotNull(context.getOpenGlVersion())
     }
 }

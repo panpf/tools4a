@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.storage.test;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.storage.StorageManagerCompat;
 import com.github.panpf.tools4a.storage.StorageVolumeCompat;
@@ -36,7 +36,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testGetPath() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         StorageVolumeCompat volumeCompat = managerCompat.getVolume(new File(managerCompat.getVolumePaths()[0]));
@@ -45,7 +45,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testGetPathFile() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         StorageVolumeCompat volumeCompat = managerCompat.getVolume(new File(managerCompat.getVolumePaths()[0]));
@@ -54,7 +54,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testIsPrimary() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();
@@ -74,7 +74,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testIsEmulated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();
@@ -93,7 +93,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testIsRemovable() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();
@@ -116,7 +116,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testAllowMassStorage() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();
@@ -134,7 +134,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testGetMaxFileSize() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();
@@ -154,7 +154,7 @@ public class StorageVolumeCompatTest {
 
     @Test
     public void testGetState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
 
         String[] volumePaths = managerCompat.getVolumePaths();

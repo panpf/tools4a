@@ -17,8 +17,8 @@
 package com.github.panpf.tools4a.graphics.ktx.test
 
 import android.graphics.Rect
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.graphics.ktx.getImageMimeSubType
 import com.github.panpf.tools4a.graphics.ktx.getImageMimeType
 import com.github.panpf.tools4a.storage.ktx.getAppExternalCacheDirs
@@ -33,7 +33,7 @@ class ImagexTest {
 
     @Test
     fun testMimeType() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val operaFile = context.getAppExternalCacheDirs().getFileIn("ic_opera.png", 0).requireNotNull()
         val rectFile = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()
@@ -81,7 +81,7 @@ class ImagexTest {
 
     @Test
     fun testMimeSubType() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val operaFile = context.getAppExternalCacheDirs().getFileIn("ic_opera.png", 0).requireNotNull()
         val rectFile = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()

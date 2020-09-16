@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.storage.test;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.storage.StorageManagerCompat;
 import com.github.panpf.tools4a.storage.Storagex;
@@ -35,32 +35,32 @@ public class StorageManagerCompatTest {
 
     @Test
     public void testGetVolumeList() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertTrue(Storagex.storageManagerCompat(context).getVolumes().length >= 1);
     }
 
     @Test
     public void testGetStorageVolumes() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertTrue(Storagex.storageManagerCompat(context).getVolumeList().size() >= 1);
     }
 
     @Test
     public void testGetVolumePaths() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertTrue(Storagex.storageManagerCompat(context).getVolumePaths().length >= 1);
     }
 
     @Test
     public void testGetStorageVolume() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
         Assert.assertNotNull(managerCompat.getVolume(new File(managerCompat.getVolumePaths()[0])));
     }
 
     @Test
     public void testGetVolumeState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         StorageManagerCompat managerCompat = Storagex.storageManagerCompat(context);
         Assert.assertNotEquals(managerCompat.getVolumeState(managerCompat.getVolumePaths()[0]), "unknown");
     }

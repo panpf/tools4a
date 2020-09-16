@@ -1073,7 +1073,7 @@ public class Packagex {
      *
      * @param versionCode App versionCode. Returns null if versionCode is inconsistent, Integer.MIN_VALUE: ignores versionCode
      * @throws NameNotFoundException Could not find package based on [packageName]
-     * @throws Exception The versionCode of the installed package is not the same as [versionCode]
+     * @throws Exception             The versionCode of the installed package is not the same as [versionCode]
      */
     @NonNull
     public static Drawable getPackageIconDrawable(@NonNull Context context, @NonNull String packageName, int versionCode) throws NameNotFoundException, Exception {

@@ -19,7 +19,7 @@ package com.github.panpf.tools4a.build.test;
 import android.os.Build;
 import android.util.SparseArray;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.panpf.tools4a.build.Buildx;
 import com.github.panpf.tools4j.collections.Collectionx;

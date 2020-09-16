@@ -25,8 +25,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.dimen.Dimenx;
 import com.github.panpf.tools4a.graphics.Bitmapx;
@@ -51,7 +51,7 @@ public class BitmapxTest {
 
     @Test
     public void testRead() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File file = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "rect.jpeg", 0));
 
         try {
@@ -197,7 +197,7 @@ public class BitmapxTest {
 
     @Test
     public void testWriteToFile() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap bitmap = Bitmapx.createByColor(200, 200, Bitmap.Config.ARGB_8888, Colorx.FUCHSIA);
         File saveFile = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "testWriteToFile.jpeg", 0));
@@ -245,7 +245,7 @@ public class BitmapxTest {
 
     @Test
     public void tesToDrawable() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap sourceBitmap = Bitmapx.createByColor(100, 100, Color.parseColor("#FF0000"));
         try {
@@ -261,7 +261,7 @@ public class BitmapxTest {
 
     @Test
     public void testCircular() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap rectBitmap = Premisex.requireNotNull(Bitmapx.readBitmap(context.getResources(), R.drawable.rect));
 
@@ -285,7 +285,7 @@ public class BitmapxTest {
 
     @Test
     public void testCrop() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap rectBitmap = Premisex.requireNotNull(Bitmapx.readBitmap(context.getResources(), R.drawable.rect));
         Rect srcRect = new Rect(0, 0, rectBitmap.getWidth() / 2, rectBitmap.getHeight() / 2);
@@ -308,7 +308,7 @@ public class BitmapxTest {
 
     @Test
     public void testCenterCrop() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap rectBitmap = Premisex.requireNotNull(Bitmapx.readBitmap(context.getResources(), R.drawable.rect));
 
@@ -326,7 +326,7 @@ public class BitmapxTest {
 
     @Test
     public void testTint() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Bitmap operaBitmap = Premisex.requireNotNull(Bitmapx.readBitmap(context.getResources(), R.drawable.ic_opera));
 
@@ -338,7 +338,7 @@ public class BitmapxTest {
 
     @Test
     public void testInSampleSize() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         InputStream inputStream = context.getResources().openRawResource(R.drawable.rect);
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         IOx.closeQuietly(inputStream);
@@ -368,7 +368,7 @@ public class BitmapxTest {
 
     @Test
     public void testRegionInSampleSize() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         InputStream inputStream = context.getResources().openRawResource(R.drawable.rect);
 
         BitmapRegionDecoder regionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
@@ -395,9 +395,10 @@ public class BitmapxTest {
                         + ", actual bitmap size is " + finalBitmapWidth + "x" + finalBitmapHeight,
                 finalBitmapWidth == expectedBitmapWidth && finalBitmapHeight == expectedBitmapHeight);
     }
+
     @Test
     public void testTextToBitmap() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Bitmap bitmap = null;
         Bitmap bitmapCompact = null;
         Bitmap icon = null;

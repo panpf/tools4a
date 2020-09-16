@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.device.ktx.test
 
 import android.Manifest
 import android.os.Build
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.device.ktx.*
 import com.github.panpf.tools4a.permission.ktx.isGrantPermissions
 import com.github.panpf.tools4j.lang.ktx.isSafe
@@ -33,19 +33,19 @@ class DevicexTest {
 
     @Test
     fun testPhoneNumber() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         Assert.assertNotNull(context.getPhoneNumberOr("defaultValue"))
     }
 
     @Test
     fun testAndroidId() {
-        val androidId = InstrumentationRegistry.getContext().getAndroidIdOr("defaultValue")
+        val androidId = InstrumentationRegistry.getInstrumentation().context.getAndroidIdOr("defaultValue")
         Assert.assertTrue("androidId: $androidId", androidId.isSafe())
     }
 
     @Test
     fun testDeviceId() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val deviceId = context.getDeviceIdOr("defaultValue")
             Assert.assertEquals("deviceId: $deviceId", "defaultValue", deviceId)
@@ -69,7 +69,7 @@ class DevicexTest {
 
     @Test
     fun testSubscriberId() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val subscriberId = context.getSubscriberIdOr("defaultValue")
             Assert.assertEquals("subscriberId: $subscriberId", "defaultValue", subscriberId)
@@ -93,7 +93,7 @@ class DevicexTest {
 
     @Test
     fun testSimSerialNumber() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val simSerialNumber = context.getSimSerialNumberOr("defaultValue")
             Assert.assertEquals("simSerialNumber: $simSerialNumber", "defaultValue", simSerialNumber)
@@ -117,7 +117,7 @@ class DevicexTest {
 
     @Test
     fun testIMEI() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val imei = context.getIMEIOr("defaultValue")
             Assert.assertEquals("imei: $imei", "defaultValue", imei)
@@ -141,7 +141,7 @@ class DevicexTest {
 
     @Test
     fun testIMSI() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val imsi = context.getIMSIOr("defaultValue")
             Assert.assertEquals("imsi: $imsi", "defaultValue", imsi)
@@ -166,16 +166,20 @@ class DevicexTest {
     @Test
     fun testMacAddress() {
         val macAddressPattern = Pattern.compile("([A-Fa-f0-9]{2}(-[A-Fa-f0-9]{2}){5})|([A-Fa-f0-9]{2}(:[A-Fa-f0-9]{2}){5})")
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.isGrantPermissions(Manifest.permission.ACCESS_WIFI_STATE)) {
-                Assert.assertTrue(macAddressPattern.matcher(context.getMacAddressOr("defaultValue")).matches())
+                val maxAddress = context.getMacAddressOr("defaultValue")
+                Assert.assertTrue("maxAddress: $maxAddress", macAddressPattern.matcher(maxAddress).matches())
             } else {
-                Assert.assertEquals("02:00:00:00:00:00", context.getMacAddress())
-                Assert.assertEquals("defaultValue", context.getMacAddressOr("defaultValue"))
+                val maxAddress = context.getMacAddressOr("defaultValue")
+                val maxAddressNoDefault = context.getMacAddress()
+                Assert.assertEquals("maxAddressNoDefault: $maxAddressNoDefault", "02:00:00:00:00:00", maxAddressNoDefault)
+                Assert.assertEquals("maxAddress: $maxAddress", "defaultValue", maxAddress)
             }
         } else {
-            Assert.assertTrue(macAddressPattern.matcher(context.getMacAddressOr("defaultValue")).matches())
+            val maxAddress = context.getMacAddressOr("defaultValue")
+            Assert.assertTrue("maxAddress: $maxAddress", macAddressPattern.matcher(maxAddress).matches())
         }
     }
 }

@@ -2,6 +2,6 @@
     package="com.github.panpf.tools4a.toast.test">
 
     <application>
-        <activity android:name=".ToastxTest$TestFragmentActivity"/>
+        <activity android:name=".ToastxTest$TestFragmentActivity" />
     </application>
 </manifest>

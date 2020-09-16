@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.display.ktx.test
 
 import android.content.Context
@@ -25,10 +23,9 @@ import android.util.TypedValue
 import android.view.Surface
 import android.view.View
 import android.view.WindowManager
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import com.github.panpf.tools4a.display.Displayx
 import com.github.panpf.tools4a.display.ktx.*
 import org.junit.Assert
 import org.junit.Rule
@@ -47,7 +44,7 @@ class DisplayxTest {
 
     @Test
     fun testGetScreenSize() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val point = context.getScreenSize()
 
         Assert.assertTrue(point.x > 0)
@@ -64,7 +61,7 @@ class DisplayxTest {
 
     @Test
     fun testGetActionBarSize() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val tv = TypedValue()
         val actonBarSize: Int = if (context.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             TypedValue.complexToDimensionPixelSize(tv.data, context.resources.displayMetrics)
@@ -77,13 +74,13 @@ class DisplayxTest {
 
     @Test
     fun testGetMetrics() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertNotNull(context.getDisplayMetrics())
     }
 
     @Test
     fun testGetDensity() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertEquals(context.resources.displayMetrics.density, context.getDisplayDensity(), 0f)
         Assert.assertEquals(context.resources.displayMetrics.densityDpi.toFloat(), context.getDisplayDensityDpi().toFloat(), 0f)
     }
@@ -167,13 +164,13 @@ class DisplayxTest {
 
     @Test
     fun testStatusBar() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertTrue(context.getStatusBarHeight() > 0)
     }
 
     @Test
     fun testNavigationBar() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (context.hasNavigationBar()) {
             if (context.isOrientationPortrait()) {
                 Assert.assertTrue(context.getNavigationBarHeight() > 0)

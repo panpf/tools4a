@@ -17,12 +17,15 @@ import android.util.SparseArray;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.args.Argsx;
+import com.github.panpf.tools4j.collections.Collectionx;
+import com.github.panpf.tools4j.lang.Stringx;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,9 +33,6 @@ import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import com.github.panpf.tools4j.collections.Collectionx;
-import com.github.panpf.tools4j.lang.Stringx;
 
 import static com.github.panpf.tools4j.collections.Arrayx.arrayOf;
 import static com.github.panpf.tools4j.collections.Arrayx.booleanArrayOf;
@@ -55,7 +55,7 @@ public class ArgsxTest {
     public final ActivityTestRule<TestActivity> mActivityTestRule = new ActivityTestRule<TestActivity>(TestActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return TestActivity.createIntent(InstrumentationRegistry.getContext());
+            return TestActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -63,7 +63,7 @@ public class ArgsxTest {
     public final ActivityTestRule<ResTestActivity> mResActivityTestRule = new ActivityTestRule<ResTestActivity>(ResTestActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return ResTestActivity.createIntent(InstrumentationRegistry.getContext());
+            return ResTestActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -71,7 +71,7 @@ public class ArgsxTest {
     public final ActivityTestRule<NoExtraActivity> mNoExtrasActivityTestRule = new ActivityTestRule<NoExtraActivity>(NoExtraActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return NoExtraActivity.createIntent(InstrumentationRegistry.getContext());
+            return NoExtraActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -87,7 +87,7 @@ public class ArgsxTest {
     public final ActivityTestRule<TestOnlyIntentNoUriActivity> intentNoUriActivityActivityTestRule = new ActivityTestRule<TestOnlyIntentNoUriActivity>(TestOnlyIntentNoUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return TestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getContext());
+            return TestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -95,7 +95,7 @@ public class ArgsxTest {
     public final ActivityTestRule<TestBothIntentUriActivity> bothIntentUriActivityActivityTestRule = new ActivityTestRule<TestBothIntentUriActivity>(TestBothIntentUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return TestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getContext());
+            return TestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -103,7 +103,7 @@ public class ArgsxTest {
     public final ActivityTestRule<TestNoIntentUriActivity> noIntentUriActivityActivityTestRule = new ActivityTestRule<TestNoIntentUriActivity>(TestNoIntentUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return TestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getContext());
+            return TestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -119,7 +119,7 @@ public class ArgsxTest {
     public final ActivityTestRule<ResTestOnlyIntentNoUriActivity> resIntentNoUriActivityActivityTestRule = new ActivityTestRule<ResTestOnlyIntentNoUriActivity>(ResTestOnlyIntentNoUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return ResTestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getContext());
+            return ResTestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -127,7 +127,7 @@ public class ArgsxTest {
     public final ActivityTestRule<ResTestBothIntentUriActivity> resBothIntentUriActivityActivityTestRule = new ActivityTestRule<ResTestBothIntentUriActivity>(ResTestBothIntentUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return ResTestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getContext());
+            return ResTestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -135,7 +135,7 @@ public class ArgsxTest {
     public final ActivityTestRule<ResTestNoIntentUriActivity> resNoIntentUriActivityActivityTestRule = new ActivityTestRule<ResTestNoIntentUriActivity>(ResTestNoIntentUriActivity.class) {
         @Override
         protected Intent getActivityIntent() {
-            return ResTestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getContext());
+            return ResTestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getInstrumentation().getContext());
         }
     };
 
@@ -1990,6 +1990,154 @@ public class ArgsxTest {
 
     public static class TestActivity extends FragmentActivity {
 
+        @NotNull
+        public static Bundle createParams() {
+            Bundle bundle = new Bundle();
+            bundle.putByte("byteRequired", (byte) 2);
+            bundle.putByteArray("byteArrayRequired", byteArrayOf((byte) 2, (byte) (-2)));
+            bundle.putByteArray("byteArrayOrDefault", byteArrayOf((byte) 2, (byte) (-2)));
+            bundle.putByteArray("byteArrayOptional", byteArrayOf((byte) (-2), (byte) 2));
+
+
+            bundle.putShort("shortRequired", (short) 3);
+            bundle.putShortArray("shortArrayRequired", shortArrayOf((short) 3, (short) (-3)));
+            bundle.putShortArray("shortArrayOptional", shortArrayOf((short) (-3), (short) 3));
+
+            bundle.putInt("intRequired", 500);
+            bundle.putIntArray("intArrayRequired", intArrayOf(500, -500));
+            bundle.putIntArray("intArrayOptional", intArrayOf(-500, 500));
+            bundle.putIntegerArrayList("intArrayListRequired", arrayListOf(500, -500));
+            bundle.putIntegerArrayList("intArrayListOptional", arrayListOf(-500, 500));
+
+            bundle.putLong("longRequired", 1000L);
+            bundle.putLongArray("longArrayRequired", longArrayOf(1000L, -1000L));
+            bundle.putLongArray("longArrayOptional", longArrayOf(-1000L, 1000L));
+
+            bundle.putFloat("floatRequired", 4f);
+            bundle.putFloatArray("floatArrayRequired", floatArrayOf(4f, -4f));
+            bundle.putFloatArray("floatArrayOptional", floatArrayOf(-4f, 4f));
+
+
+            bundle.putDouble("doubleRequired", 6d);
+            bundle.putDoubleArray("doubleArrayRequired", doubleArrayOf(6d, (-6d)));
+            bundle.putDoubleArray("doubleArrayOptional", doubleArrayOf((-6d), 6d));
+
+
+            bundle.putBoolean("booleanRequired", true);
+            bundle.putBooleanArray("booleanArrayRequired", booleanArrayOf(true, false));
+            bundle.putBooleanArray("booleanArrayOptional", booleanArrayOf(false, true));
+
+
+            bundle.putChar("charRequired", 'a');
+            bundle.putCharArray("charArrayRequired", charArrayOf('a', 'b'));
+            bundle.putCharArray("charArrayOptional", charArrayOf('b', 'a'));
+
+            bundle.putString("stringRequired", "stringRequired");
+            bundle.putString("stringOptional", "stringOptional");
+            bundle.putStringArray("stringArrayRequired", arrayOf("stringRequired", "stringOptional"));
+            bundle.putStringArray("stringArrayOptional", arrayOf("stringOptional", "stringRequired"));
+            bundle.putStringArrayList("stringArrayListRequired", arrayListOf("stringRequired", "stringOptional"));
+            bundle.putStringArrayList("stringArrayListOptional", arrayListOf("stringOptional", "stringRequired"));
+
+            bundle.putCharSequence("charSequenceRequired", "stringRequired");
+            bundle.putCharSequence("charSequenceOptional", "stringOptional");
+            bundle.putCharSequenceArray("charSequenceArrayRequired", arrayOf("stringRequired", "stringOptional"));
+            bundle.putCharSequenceArray("charSequenceArrayOptional", arrayOf("stringOptional", "stringRequired"));
+
+
+            bundle.putParcelable("parcelableRequired", new ArgsxTest.TestParcelable("parcelableRequired"));
+            bundle.putParcelable("parcelableOptional", new ArgsxTest.TestParcelable("parcelableOptional"));
+            bundle.putParcelableArray("parcelableArrayRequired", arrayOf(new ArgsxTest.TestParcelable("parcelableRequired"), new ArgsxTest.TestParcelable("parcelableOptional")));
+            bundle.putParcelableArray("parcelableArrayOptional", arrayOf(new ArgsxTest.TestParcelable("parcelableOptional"), new ArgsxTest.TestParcelable("parcelableRequired")));
+            bundle.putParcelableArrayList("parcelableArrayListRequired", arrayListOf(new ArgsxTest.TestParcelable("parcelableRequired"), new ArgsxTest.TestParcelable("parcelableOptional")));
+            bundle.putParcelableArrayList("parcelableArrayListOptional", arrayListOf(new ArgsxTest.TestParcelable("parcelableOptional"), new ArgsxTest.TestParcelable("parcelableRequired")));
+
+
+            bundle.putSerializable("serializableRequired", new ArgsxTest.TestSerializable("serializableRequired"));
+            bundle.putSerializable("serializableOptional", new ArgsxTest.TestSerializable("serializableOptional"));
+
+            bundle.putByteArray("byteArrayOrDefault", byteArrayOf((byte) 2, (byte) (-2)));
+            bundle.putShortArray("shortArrayOrDefault", shortArrayOf((short) 3, (short) (-3)));
+            bundle.putIntArray("intArrayOrDefault", intArrayOf(500, -500));
+            bundle.putIntegerArrayList("intArrayListOrDefault", arrayListOf(600, -600));
+            bundle.putLongArray("longArrayOrDefault", longArrayOf(1000L, -1000L));
+            bundle.putFloatArray("floatArrayOrDefault", floatArrayOf(4f, -4f));
+            bundle.putDoubleArray("doubleArrayOrDefault", doubleArrayOf(6d, (-6d)));
+            bundle.putBooleanArray("booleanArrayOrDefault", booleanArrayOf(true, false));
+            bundle.putCharArray("charArrayOrDefault", charArrayOf('a', 'b'));
+            bundle.putCharSequence("charSequenceOrDefault", "charSequenceOrDefault");
+            bundle.putCharSequenceArray("charSequenceArrayOrDefault", arrayOf("charSequence", "default"));
+
+
+            bundle.putCharSequenceArrayList("charSequenceArrayListRequired", Collectionx.<CharSequence>arrayListOf("charSequenceArrayListRequired", "required"));
+            bundle.putCharSequenceArrayList("charSequenceArrayListOptional", Collectionx.<CharSequence>arrayListOf("charSequenceArrayListOptional", "optional"));
+            bundle.putCharSequenceArrayList("charSequenceArrayListOrDefault", Collectionx.<CharSequence>arrayListOf("charSequenceArrayListOrDefault", "default"));
+
+            bundle.putString("stringOrDefault", "stringOrDefault");
+            bundle.putStringArray("stringArrayOrDefault", arrayOf("stringArrayOrDefault", "default"));
+            bundle.putStringArrayList("stringArrayListOrDefault", arrayListOf("stringArrayListOrDefault", "default"));
+
+            bundle.putParcelable("parcelableOrDefault", new ArgsxTest.TestParcelable("parcelableOrDefault"));
+            bundle.putParcelableArray("parcelableArrayOrDefault", arrayOf(new ArgsxTest.TestParcelable("parcelableArrayOrDefault"), new ArgsxTest.TestParcelable("default")));
+            bundle.putParcelableArrayList("parcelableArrayListOrDefault", arrayListOf(new ArgsxTest.TestParcelable("parcelableArrayListOrDefault"), new ArgsxTest.TestParcelable("default")));
+
+            bundle.putSerializable("serializableOrDefault", new ArgsxTest.TestSerializable("serializableOrDefault"));
+
+            Bundle bundleDefault = new Bundle();
+            bundleDefault.putString("bundle", "bundleOrDefault");
+            bundle.putBundle("bundleOrDefault", bundleDefault);
+
+            Bundle bundleRequired = new Bundle();
+            bundleRequired.putString("bundle", "bundleRequired");
+            bundle.putBundle("bundleRequired", bundleRequired);
+
+            Bundle bundleOptional = new Bundle();
+            bundleOptional.putString("bundle", "bundleOptional");
+            bundle.putBundle("bundleOptional", bundleOptional);
+
+            Bundle b = new Bundle();
+            b.putString("extrasRequired", "extrasRequired");
+            b.putString("extrasOptional", "extrasOptional");
+            b.putString("extrasOrDefault", "extrasOrDefault");
+            bundle.putAll(b);
+
+            Bundle args = new Bundle();
+            SparseArray<Parcelable> sparseParcelableArrayRequired = new SparseArray<>();
+            sparseParcelableArrayRequired.put(-1, new ArgsxTest.TestParcelable("-1"));
+            sparseParcelableArrayRequired.put(1, new ArgsxTest.TestParcelable("1"));
+            args.putSparseParcelableArray("sparseParcelableArrayRequired", sparseParcelableArrayRequired);
+
+            SparseArray<Parcelable> sparseParcelableArrayOptional = new SparseArray<>();
+            sparseParcelableArrayOptional.put(-2, new ArgsxTest.TestParcelable("-2"));
+            sparseParcelableArrayOptional.put(2, new ArgsxTest.TestParcelable("2"));
+            args.putSparseParcelableArray("sparseParcelableArrayOptional", sparseParcelableArrayOptional);
+
+            SparseArray<Parcelable> sparseParcelableArrayOrDefault = new SparseArray<>();
+            sparseParcelableArrayOrDefault.put(-3, new ArgsxTest.TestParcelable("-3"));
+            sparseParcelableArrayOrDefault.put(3, new ArgsxTest.TestParcelable("3"));
+            args.putSparseParcelableArray("sparseParcelableArrayOrDefault", sparseParcelableArrayOrDefault);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                args.putBinder("binderRequired", new ArgsxTest.TestBinder("binderRequired"));
+                args.putBinder("binderOptional", new ArgsxTest.TestBinder("binderOptional"));
+                args.putBinder("binderOrDefault", new ArgsxTest.TestBinder("binderOrDefault"));
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                args.putSize("sizeRequired", new Size(1, 1));
+                args.putSize("sizeOptional", new Size(2, 2));
+                args.putSize("sizeOrDefault", new Size(3, 3));
+
+                args.putSizeF("sizeFRequired", new SizeF(1f, 1f));
+                args.putSizeF("sizeFOptional", new SizeF(2f, 2f));
+                args.putSizeF("sizeFOrDefault", new SizeF(3f, 3f));
+            }
+
+            bundle.putAll(args);
+
+            return bundle;
+        }
+
         public static Intent createIntent(Context context) {
             Intent starter = new Intent(context, TestActivity.class);
             starter.putExtra("byteRequired", (byte) 2);
@@ -2044,16 +2192,16 @@ public class ArgsxTest {
             starter.putExtra("charSequenceArrayOptional", arrayOf("stringOptional", "stringRequired"));
 
 
-            starter.putExtra("parcelableRequired", new TestParcelable("parcelableRequired"));
-            starter.putExtra("parcelableOptional", new TestParcelable("parcelableOptional"));
-            starter.putExtra("parcelableArrayRequired", arrayOf(new TestParcelable("parcelableRequired"), new TestParcelable("parcelableOptional")));
-            starter.putExtra("parcelableArrayOptional", arrayOf(new TestParcelable("parcelableOptional"), new TestParcelable("parcelableRequired")));
-            starter.putParcelableArrayListExtra("parcelableArrayListRequired", arrayListOf(new TestParcelable("parcelableRequired"), new TestParcelable("parcelableOptional")));
-            starter.putParcelableArrayListExtra("parcelableArrayListOptional", arrayListOf(new TestParcelable("parcelableOptional"), new TestParcelable("parcelableRequired")));
+            starter.putExtra("parcelableRequired", new ArgsxTest.TestParcelable("parcelableRequired"));
+            starter.putExtra("parcelableOptional", new ArgsxTest.TestParcelable("parcelableOptional"));
+            starter.putExtra("parcelableArrayRequired", arrayOf(new ArgsxTest.TestParcelable("parcelableRequired"), new ArgsxTest.TestParcelable("parcelableOptional")));
+            starter.putExtra("parcelableArrayOptional", arrayOf(new ArgsxTest.TestParcelable("parcelableOptional"), new ArgsxTest.TestParcelable("parcelableRequired")));
+            starter.putParcelableArrayListExtra("parcelableArrayListRequired", arrayListOf(new ArgsxTest.TestParcelable("parcelableRequired"), new ArgsxTest.TestParcelable("parcelableOptional")));
+            starter.putParcelableArrayListExtra("parcelableArrayListOptional", arrayListOf(new ArgsxTest.TestParcelable("parcelableOptional"), new ArgsxTest.TestParcelable("parcelableRequired")));
 
 
-            starter.putExtra("serializableRequired", new TestSerializable("serializableRequired"));
-            starter.putExtra("serializableOptional", new TestSerializable("serializableOptional"));
+            starter.putExtra("serializableRequired", new ArgsxTest.TestSerializable("serializableRequired"));
+            starter.putExtra("serializableOptional", new ArgsxTest.TestSerializable("serializableOptional"));
 
             starter.putExtra("byteArrayOrDefault", byteArrayOf((byte) 2, (byte) (-2)));
             starter.putExtra("shortArrayOrDefault", shortArrayOf((short) 3, (short) (-3)));
@@ -2076,11 +2224,11 @@ public class ArgsxTest {
             starter.putExtra("stringArrayOrDefault", arrayOf("stringArrayOrDefault", "default"));
             starter.putExtra("stringArrayListOrDefault", arrayListOf("stringArrayListOrDefault", "default"));
 
-            starter.putExtra("parcelableOrDefault", new TestParcelable("parcelableOrDefault"));
-            starter.putExtra("parcelableArrayOrDefault", arrayOf(new TestParcelable("parcelableArrayOrDefault"), new TestParcelable("default")));
-            starter.putParcelableArrayListExtra("parcelableArrayListOrDefault", arrayListOf(new TestParcelable("parcelableArrayListOrDefault"), new TestParcelable("default")));
+            starter.putExtra("parcelableOrDefault", new ArgsxTest.TestParcelable("parcelableOrDefault"));
+            starter.putExtra("parcelableArrayOrDefault", arrayOf(new ArgsxTest.TestParcelable("parcelableArrayOrDefault"), new ArgsxTest.TestParcelable("default")));
+            starter.putParcelableArrayListExtra("parcelableArrayListOrDefault", arrayListOf(new ArgsxTest.TestParcelable("parcelableArrayListOrDefault"), new ArgsxTest.TestParcelable("default")));
 
-            starter.putExtra("serializableOrDefault", new TestSerializable("serializableOrDefault"));
+            starter.putExtra("serializableOrDefault", new ArgsxTest.TestSerializable("serializableOrDefault"));
 
             Bundle bundleDefault = new Bundle();
             bundleDefault.putString("bundle", "bundleOrDefault");
@@ -2102,24 +2250,24 @@ public class ArgsxTest {
 
             Bundle args = new Bundle();
             SparseArray<Parcelable> sparseParcelableArrayRequired = new SparseArray<>();
-            sparseParcelableArrayRequired.put(-1, new TestParcelable("-1"));
-            sparseParcelableArrayRequired.put(1, new TestParcelable("1"));
+            sparseParcelableArrayRequired.put(-1, new ArgsxTest.TestParcelable("-1"));
+            sparseParcelableArrayRequired.put(1, new ArgsxTest.TestParcelable("1"));
             args.putSparseParcelableArray("sparseParcelableArrayRequired", sparseParcelableArrayRequired);
 
             SparseArray<Parcelable> sparseParcelableArrayOptional = new SparseArray<>();
-            sparseParcelableArrayOptional.put(-2, new TestParcelable("-2"));
-            sparseParcelableArrayOptional.put(2, new TestParcelable("2"));
+            sparseParcelableArrayOptional.put(-2, new ArgsxTest.TestParcelable("-2"));
+            sparseParcelableArrayOptional.put(2, new ArgsxTest.TestParcelable("2"));
             args.putSparseParcelableArray("sparseParcelableArrayOptional", sparseParcelableArrayOptional);
 
             SparseArray<Parcelable> sparseParcelableArrayOrDefault = new SparseArray<>();
-            sparseParcelableArrayOrDefault.put(-3, new TestParcelable("-3"));
-            sparseParcelableArrayOrDefault.put(3, new TestParcelable("3"));
+            sparseParcelableArrayOrDefault.put(-3, new ArgsxTest.TestParcelable("-3"));
+            sparseParcelableArrayOrDefault.put(3, new ArgsxTest.TestParcelable("3"));
             args.putSparseParcelableArray("sparseParcelableArrayOrDefault", sparseParcelableArrayOrDefault);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                args.putBinder("binderRequired", new TestBinder("binderRequired"));
-                args.putBinder("binderOptional", new TestBinder("binderOptional"));
-                args.putBinder("binderOrDefault", new TestBinder("binderOrDefault"));
+                args.putBinder("binderRequired", new ArgsxTest.TestBinder("binderRequired"));
+                args.putBinder("binderOptional", new ArgsxTest.TestBinder("binderOptional"));
+                args.putBinder("binderOrDefault", new ArgsxTest.TestBinder("binderOrDefault"));
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -2141,7 +2289,7 @@ public class ArgsxTest {
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.at_test);
-            TestSupportFragment supportFragment = TestSupportFragment.newInstance(getIntent().getExtras());
+            ArgsxTest.TestSupportFragment supportFragment = ArgsxTest.TestSupportFragment.newInstance(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction().replace(R.id.testAt_frame, supportFragment).commit();
         }
     }

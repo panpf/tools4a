@@ -19,8 +19,8 @@ package com.github.panpf.tools4a.graphics.test;
 import android.content.Context;
 import android.graphics.Rect;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.graphics.Imagex;
 import com.github.panpf.tools4a.storage.Storagex;
@@ -43,7 +43,7 @@ public class ImagexTest {
 
     @Test
     public void testMimeType() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File operaFile = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "ic_opera.png", 0));
         File rectFile = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "rect.jpeg", 0));
@@ -124,7 +124,7 @@ public class ImagexTest {
 
     @Test
     public void testMimeSubType() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File operaFile = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "ic_opera.png", 0));
         File rectFile = Premisex.requireNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "rect.jpeg", 0));

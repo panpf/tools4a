@@ -19,8 +19,8 @@ package com.github.panpf.tools4a.other.test;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.other.Preferencex;
 import com.github.panpf.tools4j.collections.Collectionx;
@@ -40,7 +40,7 @@ public class PreferencexTest {
 
     @Test
     public void testGetPreferences() throws NoSuchFieldException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         SharedPreferences preferences = Preferencex.getPreferences(context, "testGetPreferences");
         Assert.assertEquals("testGetPreferences.xml", ((File) Reflectx.getFieldValue(preferences, "mFile")).getName());
@@ -54,7 +54,7 @@ public class PreferencexTest {
 
     @Test
     public void testPutAndGet() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String name = "testPutAndGet";
 
         Preferencex.clear(context);
@@ -200,7 +200,7 @@ public class PreferencexTest {
 
     @Test
     public void testGetAll() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String name = "testGetAll";
 
         Preferencex.clear(context);
@@ -234,7 +234,7 @@ public class PreferencexTest {
 
     @Test
     public void testRemoveAndContains() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String name = "testRemoveAndContains";
 
         Preferencex.clear(context);
@@ -285,7 +285,7 @@ public class PreferencexTest {
 
     @Test
     public void testListener() throws InterruptedException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String name = "testListener";
 
         Preferencex.clear(context);

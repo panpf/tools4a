@@ -19,9 +19,9 @@ package com.github.panpf.tools4a.toast.ktx.test
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.toast.ktx.*
 import org.junit.Rule
 import org.junit.Test
@@ -80,9 +80,9 @@ class ToastxTest {
 
     @Test
     fun testWithViewToast() {
-        LayoutInflater.from(InstrumentationRegistry.getContext()).inflate(R.layout.view_toast, null, false).showLongToastWithSelf()
+        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false).showLongToastWithSelf()
 
-        LayoutInflater.from(InstrumentationRegistry.getContext()).inflate(R.layout.view_toast, null, false).showShortToastWithSelf()
+        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false).showShortToastWithSelf()
     }
 
     class TestFragmentActivity : androidx.fragment.app.FragmentActivity() {

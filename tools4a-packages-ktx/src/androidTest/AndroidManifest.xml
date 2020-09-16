@@ -7,7 +7,7 @@
     <permission android:name="com.github.panpf.tools4a.packages.ktx.test.share" />
 
     <application>
-        <activity android:name=".PackageInfoxTest$TestActivity"/>
+        <activity android:name=".PackageInfoxTest$TestActivity" />
         <service android:name=".TestService" />
         <receiver android:name=".TestReceiver" />
         <provider

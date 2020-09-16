@@ -23,8 +23,8 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.service.Servicex;
 
@@ -37,7 +37,7 @@ public final class ServicexTest {
 
     @Test
     public void testIsRunning() throws InterruptedException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         try {
             Servicex.start(context, TestService.class);
@@ -60,7 +60,7 @@ public final class ServicexTest {
 
     @Test
     public void testStart() throws InterruptedException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         try {
             Assert.assertFalse(Servicex.isRunning(context, TestService.class));
@@ -94,7 +94,7 @@ public final class ServicexTest {
 
     @Test
     public void testStop() throws InterruptedException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         try {
             Servicex.start(context, TestService.class);
@@ -114,7 +114,7 @@ public final class ServicexTest {
 
     @Test
     public void testIsAccessibilityServiceEnabled() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Assert.assertFalse(Servicex.isAccessibilityServiceEnabled(context, AccessibilityService.class));
         Assert.assertFalse(Servicex.isAccessibilityServiceEnabled(context, AccessibilityService.class, context.getPackageName()));

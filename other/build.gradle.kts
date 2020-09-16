@@ -37,9 +37,10 @@ dependencies {
     api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
 
     testImplementation("junit:junit:${property("JUNIT")}")
-    androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")
-    androidTestImplementation("androidx.test:rules:${property("TEST_RULES")}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
+    androidTestImplementation("androidx.test:runner:${property("ANDROIDX_TEST_RUNNER")}")
+    androidTestImplementation("androidx.test:rules:${property("ANDROIDX_TEST_RULES")}")
+    androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")
+    androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-reflect:${property("TOOLS4J")}")
 }

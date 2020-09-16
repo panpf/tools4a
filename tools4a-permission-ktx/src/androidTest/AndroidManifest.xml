@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.panpf.tools4a.permission.ktx.test">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
-    <application>
-    </application>
+    <application></application>
 </manifest>

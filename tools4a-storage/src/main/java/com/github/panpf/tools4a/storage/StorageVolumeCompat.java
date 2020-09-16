@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 public class StorageVolumeCompat {
 
     @NonNull
-    private StorageVolume storageVolume;
+    private final StorageVolume storageVolume;
 
     public StorageVolumeCompat(@NonNull StorageVolume storageVolume) {
         this.storageVolume = storageVolume;
@@ -103,6 +103,7 @@ public class StorageVolumeCompat {
                     Method method = storageVolume.getClass().getDeclaredMethod("isPrimary");
                     method.setAccessible(true);
                     try {
+                        //noinspection ConstantConditions
                         return (boolean) method.invoke(storageVolume);
                     } catch (Exception e) {
                         throw new IllegalStateException(e);
@@ -113,6 +114,7 @@ public class StorageVolumeCompat {
             }
 
             String path = getPath();
+            //noinspection deprecation
             return path != null && path.equals(Environment.getExternalStorageDirectory().getPath());
         }
     }
@@ -131,6 +133,7 @@ public class StorageVolumeCompat {
                 Method method = storageVolume.getClass().getDeclaredMethod("isRemovable");
                 method.setAccessible(true);
                 try {
+                    //noinspection ConstantConditions
                     return (boolean) method.invoke(storageVolume);
                 } catch (Exception e) {
                     throw new IllegalStateException(e);
@@ -156,6 +159,7 @@ public class StorageVolumeCompat {
                 Method method = storageVolume.getClass().getDeclaredMethod("isEmulated");
                 method.setAccessible(true);
                 try {
+                    //noinspection ConstantConditions
                     return (boolean) method.invoke(storageVolume);
                 } catch (Exception e) {
                     throw new IllegalStateException(e);
@@ -179,6 +183,7 @@ public class StorageVolumeCompat {
             Method method = storageVolume.getClass().getDeclaredMethod("allowMassStorage");
             method.setAccessible(true);
             try {
+                //noinspection ConstantConditions
                 return (boolean) method.invoke(storageVolume);
             } catch (Exception e) {
                 throw new IllegalStateException(e);
@@ -201,6 +206,7 @@ public class StorageVolumeCompat {
             Method method = storageVolume.getClass().getDeclaredMethod("getMaxFileSize");
             method.setAccessible(true);
             try {
+                //noinspection ConstantConditions
                 return (long) method.invoke(storageVolume);
             } catch (Exception e) {
                 throw new IllegalStateException(e);

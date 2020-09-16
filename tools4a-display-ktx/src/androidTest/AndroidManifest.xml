@@ -2,6 +2,6 @@
     package="com.github.panpf.tools4a.display.ktx.test">
 
     <application>
-        <activity android:name=".DisplayxTest$TestActivity"/>
+        <activity android:name=".DisplayxTest$TestActivity" />
     </application>
 </manifest>

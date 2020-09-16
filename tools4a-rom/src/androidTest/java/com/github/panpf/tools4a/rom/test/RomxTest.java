@@ -16,7 +16,7 @@
 
 package com.github.panpf.tools4a.rom.test;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.panpf.tools4a.rom.Romx;
 

@@ -21,8 +21,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.utils.WeakAsyncTask;
 
@@ -47,6 +47,7 @@ public class WeakAsyncTaskTest {
     public void testError() {
         String result;
         try {
+            //noinspection deprecation
             new WeakAsyncTask<WeakAsyncTaskTest, Integer, Integer, Integer>(this) {
                 @Override
                 protected Integer doInBackground(@NonNull WeakAsyncTaskTest weakAsyncTaskTest, @NonNull Integer[] integers) {
@@ -107,6 +108,7 @@ public class WeakAsyncTaskTest {
         Assert.assertEquals(activity.result, "onPostExecute");
     }
 
+    @SuppressWarnings("deprecation")
     private static class TestWeakAsyncTask extends WeakAsyncTask<WeakAsyncTaskTest, Integer, Integer, Integer> {
 
         TestWeakAsyncTask(@NonNull WeakAsyncTaskTest weakAsyncTaskTest) {
@@ -129,6 +131,7 @@ public class WeakAsyncTaskTest {
             new LoadDataTask(this).execute(0);
         }
 
+        @SuppressWarnings("deprecation")
         private static class LoadDataTask extends WeakAsyncTask<TestActivity, Integer, Integer, Integer> {
 
             LoadDataTask(@NonNull TestActivity testActivity) {
@@ -153,6 +156,7 @@ public class WeakAsyncTaskTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static class TestWeakAsyncTask2 extends WeakAsyncTask<WeakAsyncTaskTest, Integer, Integer, Integer> {
 
         TestWeakAsyncTask2(@NonNull WeakAsyncTaskTest weakAsyncTaskTest) {

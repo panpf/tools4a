@@ -20,8 +20,8 @@ import android.accessibilityservice.AccessibilityService
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.service.ktx.isAccessibilityServiceEnabled
 import com.github.panpf.tools4a.service.ktx.isServiceRunning
 import com.github.panpf.tools4a.service.ktx.startService
@@ -36,7 +36,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testIsRunning() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         try {
             context.startService(TestService::class.java)
@@ -55,7 +55,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testStart() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         try {
             Assert.assertFalse(context.isServiceRunning(TestService::class.java))
@@ -96,7 +96,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testStop() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         try {
             context.startService(TestService::class.java)
@@ -116,7 +116,7 @@ class ServicexTest {
 
     @Test
     fun testIsAccessibilityServiceEnabled() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         Assert.assertFalse(context.isAccessibilityServiceEnabled(AccessibilityService::class.java))
         Assert.assertFalse(context.isAccessibilityServiceEnabled(AccessibilityService::class.java, context.packageName))

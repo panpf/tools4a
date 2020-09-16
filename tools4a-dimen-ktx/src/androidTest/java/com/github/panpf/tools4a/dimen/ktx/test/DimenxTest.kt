@@ -19,9 +19,9 @@ package com.github.panpf.tools4a.dimen.ktx.test
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.dimen.ktx.*
 import org.junit.Assert
 import org.junit.Rule
@@ -36,7 +36,7 @@ class DimenxTest {
 
     @Test
     fun testContext() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), context.dp2px(10f).toLong())
         Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), context.dp2px(10).toLong())
@@ -60,7 +60,7 @@ class DimenxTest {
 
     @Test
     fun testFragment() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val supportFragment = activityTestRule.activity.supportFragment
 
@@ -86,7 +86,7 @@ class DimenxTest {
 
     @Test
     fun testView() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val view = activityTestRule.activity.view
 

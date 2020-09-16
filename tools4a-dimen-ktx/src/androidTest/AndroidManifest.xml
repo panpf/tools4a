@@ -2,6 +2,6 @@
     package="com.github.panpf.tools4a.dimen.ktx.test">
 
     <application>
-        <activity android:name=".DimenxTest$TestActivity"/>
+        <activity android:name=".DimenxTest$TestActivity" />
     </application>
 </manifest>

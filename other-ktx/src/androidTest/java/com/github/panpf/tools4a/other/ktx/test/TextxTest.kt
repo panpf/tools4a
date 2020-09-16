@@ -17,7 +17,7 @@
 package com.github.panpf.tools4a.other.ktx.test
 
 import android.graphics.Color
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.panpf.tools4a.other.ktx.*
 import org.junit.Assert
 import org.junit.Test

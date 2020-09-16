@@ -17,7 +17,7 @@
 package com.github.panpf.tools4a.graphics.ktx.test
 
 import android.graphics.Matrix
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.panpf.tools4a.graphics.ktx.getScale
 import com.github.panpf.tools4a.graphics.ktx.getValue
 import org.junit.Assert

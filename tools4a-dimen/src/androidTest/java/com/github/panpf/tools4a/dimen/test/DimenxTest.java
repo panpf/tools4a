@@ -25,9 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.dimen.Dimenx;
 
@@ -50,7 +50,7 @@ public class DimenxTest {
 
     @Test
     public void testContext() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(context, 10f));
         Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(context, 10));
@@ -74,7 +74,7 @@ public class DimenxTest {
 
     @Test
     public void testFragment() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Fragment supportFragment = activityTestRule.getActivity().getSupportFragment();
 
         Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(supportFragment, 10f));
@@ -99,7 +99,7 @@ public class DimenxTest {
 
     @Test
     public void testView() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         View view = activityTestRule.getActivity().getView();
 

@@ -20,7 +20,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.ImageView;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.panpf.tools4a.graphics.Resizex;
 

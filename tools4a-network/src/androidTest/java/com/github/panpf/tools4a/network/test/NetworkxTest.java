@@ -21,8 +21,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.network.Networkx;
 
@@ -35,13 +35,13 @@ public class NetworkxTest {
 
     @Test
     public void testGetNetworkState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertNotNull(Networkx.getState(context));
     }
 
     @Test
     public void testIsActivated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -60,7 +60,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsWifiActivated() throws InterruptedException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -80,7 +80,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsNoMeteredWifiActivated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -96,7 +96,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsMobileActivated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
@@ -112,7 +112,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsBluetoothActivated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_BLUETOOTH) {
@@ -124,7 +124,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsVPNActivated() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_VPN) {
@@ -136,7 +136,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsMetered() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.isActiveNetworkMetered()) {
             Assert.assertTrue(Networkx.isMetered(context));
@@ -147,7 +147,7 @@ public class NetworkxTest {
 
     @Test
     public void testIsRoaming() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.isRoaming()) {
@@ -159,7 +159,7 @@ public class NetworkxTest {
 
     @Test
     public void testGetType() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Networkx.isWifiActivated(context)) {
             Assert.assertEquals(ConnectivityManager.TYPE_WIFI, Networkx.getType(context));
         } else if (Networkx.isMobileActivated(context)) {
@@ -175,7 +175,7 @@ public class NetworkxTest {
 
     @Test
     public void testGetTypeName() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Networkx.isWifiActivated(context)) {
             Assert.assertEquals("WIFI", Networkx.getTypeName(context));
         } else if (Networkx.isMobileActivated(context)) {
@@ -191,7 +191,7 @@ public class NetworkxTest {
 
     @Test
     public void testGetSubTypeName() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String subtypeName = Networkx.getSubtypeName(context);
         if (Networkx.isActivated(context)) {
             Assert.assertNotNull(subtypeName);
@@ -202,7 +202,7 @@ public class NetworkxTest {
 
     @Test
     public void testGetExtraInfo() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Networkx.isActivated(context)) {
             Assert.assertNotNull(Networkx.getExtraInfo(context));
         } else {
@@ -212,14 +212,14 @@ public class NetworkxTest {
 
     @Test
     public void testGetWifiState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         int wifiState = Networkx.getWifiState(context);
         Assert.assertTrue(wifiState >= WifiManager.WIFI_STATE_DISABLING && wifiState <= WifiManager.WIFI_STATE_UNKNOWN);
     }
 
     @Test
     public void testIsFailover() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.isFailover()) {
@@ -231,7 +231,7 @@ public class NetworkxTest {
 
     @Test
     public void testGateway() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertNotNull(Networkx.getGateway(context));
     }
 

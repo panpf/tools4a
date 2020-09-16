@@ -2,6 +2,6 @@
     package="com.github.panpf.tools4a.inputmethod.ktx.test">
 
     <application>
-        <activity android:name=".InputMethodxTest$TestActivity"/>
+        <activity android:name=".InputMethodxTest$TestActivity" />
     </application>
 </manifest>

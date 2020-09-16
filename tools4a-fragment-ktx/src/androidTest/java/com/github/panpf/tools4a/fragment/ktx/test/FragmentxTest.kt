@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.fragment.ktx.test
 
 import android.os.Bundle
@@ -24,8 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.fragment.ktx.*
 import com.github.panpf.tools4a.run.ktx.runOnUiThreadAndWait
 import com.github.panpf.tools4a.run.ktx.runOnUiThreadAndWaitResult

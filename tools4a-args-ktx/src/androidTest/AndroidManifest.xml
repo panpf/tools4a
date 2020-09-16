@@ -75,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity android:name="ArgsBinderTest$ResTestNoIntentUriActivity" />
-        
+
         <activity android:name="ArgsxTest$TestActivity" />
         <activity android:name="ArgsxTest$ResTestActivity" />
         <activity android:name="ArgsxTest$NoExtraActivity" />

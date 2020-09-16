@@ -23,67 +23,62 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityManager
-import androidx.test.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.context.ktx.*
 import com.github.panpf.tools4a.device.Devicex
+import com.github.panpf.tools4a.run.Runx
+import com.github.panpf.tools4a.test.ktx.getActivitySync
+import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
+import com.github.panpf.tools4j.test.ktx.assertThrow
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ContextxTest {
 
-    private val activityRule = ActivityTestRule<TestActivity>(TestActivity::class.java)
-
-    @Rule
-    fun getActivityRule(): ActivityTestRule<*> {
-        return this.activityRule
-    }
-
     @Test
     fun testAppContext() {
-        val activity = activityRule.activity
+        launchActivityWithUse(TestActivity::class.java) { scenario ->
+            val activity = scenario.getActivitySync()
+            val fragment = activity.supportFragment
+            val view = activity.view
 
-        Assert.assertTrue(activity.appContext() is Application)
-        Assert.assertFalse(activity.appContext() is Activity)
+            Runx.runOnUiThreadAndWait {
+                Assert.assertTrue(activity.appContext() is Application)
+                Assert.assertFalse(activity.appContext() is Activity)
 
-        Assert.assertNotNull(activity.supportFragment.requireContext())
-        Assert.assertFalse(activity.supportFragment.requireContext() is Application)
-        Assert.assertTrue(activity.supportFragment.requireContext() is Activity)
+                Assert.assertNotNull(fragment.requireContext())
+                Assert.assertFalse(fragment.requireContext() is Application)
+                Assert.assertTrue(fragment.requireContext() is Activity)
 
-        Assert.assertNotNull(activity.supportFragment.requireAppContext())
-        Assert.assertTrue(activity.supportFragment.requireAppContext() is Application)
-        Assert.assertFalse(activity.supportFragment.requireAppContext() is Activity)
+                Assert.assertNotNull(fragment.requireAppContext())
+                Assert.assertTrue(fragment.requireAppContext() is Application)
+                Assert.assertFalse(fragment.requireAppContext() is Activity)
 
-        Assert.assertTrue(activity.view.appContext() is Application)
-        Assert.assertFalse(activity.view.appContext() is Activity)
+                Assert.assertTrue(view.appContext() is Application)
+                Assert.assertFalse(view.appContext() is Activity)
+            }
 
-        activityRule.finishActivity()
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+            scenario.moveToState(Lifecycle.State.DESTROYED)
 
-        try {
-            activity.supportFragment.requireContext()
-            Assert.fail()
-        } catch (ignored: Exception) {
-        }
+            assertThrow(IllegalStateException::class) {
+                fragment.requireContext()
+            }
 
-        try {
-            activity.supportFragment.requireAppContext()
-            Assert.fail()
-        } catch (ignored: Exception) {
+            assertThrow(IllegalStateException::class) {
+                fragment.requireAppContext()
+            }
         }
     }
 
     @Test
     fun testSystemService() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         Assert.assertNotNull(context.systemService<AccessibilityManager>(Context.ACCESSIBILITY_SERVICE))
         context.systemServiceOrNull<AccessibilityManager>(Context.ACCESSIBILITY_SERVICE)
@@ -259,9 +254,9 @@ class ContextxTest {
         }
     }
 
-    class TestActivity : androidx.fragment.app.FragmentActivity() {
+    class TestActivity : FragmentActivity() {
 
-        val supportFragment: androidx.fragment.app.Fragment
+        val supportFragment: Fragment
             get() =
                 supportFragmentManager.findFragmentById(R.id.multiFrameAt_frame2)!!
 
@@ -273,7 +268,7 @@ class ContextxTest {
             setContentView(R.layout.at_multi_frame)
 
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.multiFrameAt_frame2, androidx.fragment.app.Fragment())
+                    .replace(R.id.multiFrameAt_frame2, Fragment())
                     .commit()
         }
     }

@@ -388,8 +388,7 @@ inline fun Context.listPackageNameByFilterFlags(
  *
  * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.listPackageName(@PackageInfoFlags packageInfoFlags: Int = 0): List<String>
-        = Packagex.listPackageName(this, packageInfoFlags)
+inline fun Context.listPackageName(@PackageInfoFlags packageInfoFlags: Int = 0): List<String> = Packagex.listPackageName(this, packageInfoFlags)
 
 
 /* ************************************* count ***************************************** */
@@ -419,8 +418,7 @@ inline fun Context.countPackageByFilterFlags(
  *
  * @param packageInfoFlags see {@link PackageInfoFlags}
  */
-inline fun Context.countPackage(@PackageInfoFlags packageInfoFlags: Int = 0): Int
-        = Packagex.countPackage(this, packageInfoFlags)
+inline fun Context.countPackage(@PackageInfoFlags packageInfoFlags: Int = 0): Int = Packagex.countPackage(this, packageInfoFlags)
 
 
 /* ************************************* other ***************************************** */
@@ -457,16 +455,14 @@ inline fun Context.getPackageSignatureBytesOrNull(packageName: String): ByteArra
  * @throws NameNotFoundException, Exception
  */
 @Throws(Exception::class)
-inline fun Context.getPackageIconDrawable(packageName: String, versionCode: Int): Drawable
-        = Packagex.getPackageIconDrawable(this, packageName, versionCode)
+inline fun Context.getPackageIconDrawable(packageName: String, versionCode: Int): Drawable = Packagex.getPackageIconDrawable(this, packageName, versionCode)
 
 /**
  * Get the icon Drawable of the package of the specified packageName
  *
  * @param versionCode App versionCode. Returns null if versionCode is inconsistent, Integer.MIN_VALUE: ignores versionCode
  */
-inline fun Context.getPackageIconDrawableOrNull(packageName: String, versionCode: Int): Drawable?
-        = Packagex.getPackageIconDrawableOrNull(this, packageName, versionCode)
+inline fun Context.getPackageIconDrawableOrNull(packageName: String, versionCode: Int): Drawable? = Packagex.getPackageIconDrawableOrNull(this, packageName, versionCode)
 
 
 /**

@@ -24,8 +24,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.clipboard.ClipContent;
 import com.github.panpf.tools4a.clipboard.ClipHtmlText;
@@ -85,7 +85,7 @@ public class ClipboardxTest {
 
     @Test
     public void testLabel() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Clipboardx.copyText(context, "clipLabel", TEST_TEXT);
         CharSequence content = Clipboardx.getLabel(context);
@@ -100,7 +100,7 @@ public class ClipboardxTest {
 
     @Test
     public void testText() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Clipboardx.copyText(context, TEST_TEXT);
         CharSequence content = Clipboardx.getText(context);
@@ -130,7 +130,7 @@ public class ClipboardxTest {
             return;
         }
 
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Clipboardx.copyHtmlText(context, TEST_HTML_TEXT, TEST_HTML_HTML);
         ClipHtmlText clipHtmlText = Clipboardx.getHtmlText(context);
@@ -162,7 +162,7 @@ public class ClipboardxTest {
 
     @Test
     public void testIntent() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Intent intent = new Intent(context, Activity.class);
         Clipboardx.copyIntent(context, intent);
@@ -190,7 +190,7 @@ public class ClipboardxTest {
 
     @Test
     public void testRawUri() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Uri uri = Uri.parse("https://www.github.com");
         Clipboardx.copyRawUri(context, uri);
@@ -221,7 +221,7 @@ public class ClipboardxTest {
 
     @Test
     public void testMimeTypeUri() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Uri uri = Uri.parse("https://www.github.com");
         Clipboardx.copyMimeTypeUri(context, "app/android", uri);
@@ -252,7 +252,7 @@ public class ClipboardxTest {
 
     @Test
     public void testUri() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Uri uri = Uri.parse("https://www.github.com");
         Clipboardx.copyUri(context, uri);
@@ -283,7 +283,7 @@ public class ClipboardxTest {
 
     @Test
     public void testListener() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         final String[] result = new String[1];
         ClipboardManager.OnPrimaryClipChangedListener listener = new ClipboardManager.OnPrimaryClipChangedListener() {
@@ -321,7 +321,7 @@ public class ClipboardxTest {
 
     @Test
     public void testMultiType() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         ClipPlainText text = new ClipPlainText(TEST_TEXT);
         ClipHtmlText htmlText = new ClipHtmlText(TEST_HTML_TEXT, TEST_HTML_HTML);
@@ -355,7 +355,7 @@ public class ClipboardxTest {
     @Test
     public void testClean() {
         if (Build.VERSION.SDK_INT >= 28) {
-            final Context context = InstrumentationRegistry.getContext();
+            final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
             Clipboardx.copyText(context, "Hello Word");
             CharSequence content = Clipboardx.getText(context);

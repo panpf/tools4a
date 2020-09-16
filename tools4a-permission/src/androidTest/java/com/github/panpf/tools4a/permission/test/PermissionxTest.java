@@ -20,8 +20,8 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.permission.Permissionx;
 
@@ -34,13 +34,13 @@ public final class PermissionxTest {
 
     @Test
     public final void testSinglePermission() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertTrue(Permissionx.isGrantPermissions(context, Manifest.permission.INTERNET));
     }
 
     @Test
     public final void testSingleNoPermission() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String result = TestUtils.getDeviceIdOr(context, "defaultValue");
             if ("defaultValue".equals(result)) {
@@ -55,7 +55,7 @@ public final class PermissionxTest {
 
     @Test
     public final void testMultiPermission() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertEquals(
                 0,
                 Permissionx.filterDeniedPermissions(context, Manifest.permission.INTERNET, Manifest.permission.VIBRATE).length
@@ -64,7 +64,7 @@ public final class PermissionxTest {
 
     @Test
     public final void testMultiNoPermission() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String deviceIdResult = TestUtils.getDeviceIdOr(context, "defaultValue");
             String macAddressResult = TestUtils.getMacAddressOr(context, "defaultValue");

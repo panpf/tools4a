@@ -26,8 +26,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.display.Displayx;
 import com.github.panpf.tools4a.run.ResultRunnable;

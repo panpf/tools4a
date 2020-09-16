@@ -17,8 +17,8 @@ package com.github.panpf.tools4a.fileprovider.ktx.test
 
 import android.net.Uri
 import android.os.Build
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.fileprovider.ktx.getShareFileUri
 import com.github.panpf.tools4j.io.Filex
 import org.junit.Assert
@@ -32,7 +32,7 @@ class FileProviderxTest {
     @Test
     @Throws(IOException::class)
     fun testGetShareFileUri() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val file = File(context.getExternalFilesDir(null), "testGetShareFileUri.txt")
         val authority = "com.github.panpf.tools4a.fileprovider.ktx.test.file.provider"
         try {

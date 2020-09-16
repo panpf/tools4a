@@ -19,8 +19,8 @@ package com.github.panpf.tools4a.view.test;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.run.Runx;
 import com.github.panpf.tools4a.view.Windowx;

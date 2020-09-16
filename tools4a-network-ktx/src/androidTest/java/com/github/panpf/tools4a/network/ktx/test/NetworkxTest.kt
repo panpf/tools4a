@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.network.ktx.test
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.network.ktx.*
 import org.junit.Assert
 import org.junit.Test
@@ -33,13 +31,13 @@ class NetworkxTest {
 
     @Test
     fun testGetNetworkState() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertNotNull(context.getNetworkState())
     }
 
     @Test
     fun testIsActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected) {
@@ -58,7 +56,7 @@ class NetworkxTest {
 
     @Test
     fun testIsWifiActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.type == ConnectivityManager.TYPE_WIFI) {
@@ -78,7 +76,7 @@ class NetworkxTest {
 
     @Test
     fun testIsNoMeteredWifiActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.type == ConnectivityManager.TYPE_WIFI && connectivityManager.isActiveNetworkMetered) {
@@ -90,7 +88,7 @@ class NetworkxTest {
 
     @Test
     fun testIsMobileActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.type == ConnectivityManager.TYPE_MOBILE) {
@@ -106,7 +104,7 @@ class NetworkxTest {
 
     @Test
     fun testIsBluetoothActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.type == ConnectivityManager.TYPE_BLUETOOTH) {
@@ -118,7 +116,7 @@ class NetworkxTest {
 
     @Test
     fun testIsVPNActivated() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.type == ConnectivityManager.TYPE_VPN) {
@@ -130,7 +128,7 @@ class NetworkxTest {
 
     @Test
     fun testIsMetered() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (connectivityManager.isActiveNetworkMetered) {
             Assert.assertTrue(context.isNetworkMetered())
@@ -141,7 +139,7 @@ class NetworkxTest {
 
     @Test
     fun testIsRoaming() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.isRoaming) {
@@ -153,7 +151,7 @@ class NetworkxTest {
 
     @Test
     fun testGetType() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (context.isWifiNetworkActivated()) {
             Assert.assertEquals(ConnectivityManager.TYPE_WIFI.toLong(), context.getNetworkType().toLong())
         } else if (context.isMobileNetworkActivated()) {
@@ -169,7 +167,7 @@ class NetworkxTest {
 
     @Test
     fun testGetTypeName() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (context.isWifiNetworkActivated()) {
             Assert.assertEquals("WIFI", context.getNetworkTypeName())
         } else if (context.isMobileNetworkActivated()) {
@@ -185,7 +183,7 @@ class NetworkxTest {
 
     @Test
     fun testGetSubTypeName() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val subtypeName = context.getNetworkSubtypeName()
         if (context.isNetworkActivated()) {
             Assert.assertNotNull(subtypeName)
@@ -196,7 +194,7 @@ class NetworkxTest {
 
     @Test
     fun testGetExtraInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (context.isNetworkActivated()) {
             Assert.assertNotNull(context.getNetworkExtraInfo())
         } else {
@@ -206,7 +204,7 @@ class NetworkxTest {
 
     @Test
     fun testGetNetworkInfo() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (context.isNetworkActivated()) {
             Assert.assertNotNull(context.getNetworkInfo())
         } else {
@@ -216,13 +214,13 @@ class NetworkxTest {
 
     @Test
     fun testGetWifiState() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertTrue(context.getWifiState() in WifiManager.WIFI_STATE_DISABLING..WifiManager.WIFI_STATE_UNKNOWN)
     }
 
     @Test
     fun testIsFailover() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected && networkInfo.isFailover) {
@@ -234,6 +232,6 @@ class NetworkxTest {
 
     @Test
     fun testGateway() {
-        Assert.assertNotNull(InstrumentationRegistry.getContext().getNetworkGateway())
+        Assert.assertNotNull(InstrumentationRegistry.getInstrumentation().getContext().getNetworkGateway())
     }
 }

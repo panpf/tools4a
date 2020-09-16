@@ -19,8 +19,8 @@ package com.github.panpf.tools4a.graphics.ktx.test
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.graphics.ktx.changeColor
 import com.github.panpf.tools4a.graphics.ktx.changeResDrawableColor
 import com.github.panpf.tools4a.graphics.ktx.toBitmapWithBoundsSize
@@ -34,7 +34,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsic() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
         val bitmap = drawable.toBitmapWithIntrinsicSize()
@@ -43,7 +43,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsicReuse() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
 
@@ -54,7 +54,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsicConfig() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
 
@@ -139,7 +139,7 @@ class DrawablexTest {
 
     @Test
     fun testChangeColor() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera).changeColor(Color.parseColor("#0000FF"))
         val bitmap = drawable.toBitmapWithIntrinsicSize()

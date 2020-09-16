@@ -10,10 +10,10 @@ import android.os.Parcelable
 import android.util.Size
 import android.util.SizeF
 import android.util.SparseArray
-import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.args.ktx.*
 import kotlinx.android.parcel.Parcelize
 import org.junit.Assert
@@ -27,21 +27,21 @@ class ArgsBinderTest {
     @get:Rule
     val testRule: ActivityTestRule<TestActivity> = object : ActivityTestRule<TestActivity>(TestActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestActivity.createIntent(InstrumentationRegistry.getContext())
+            return TestActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val testNoExtrasRule: ActivityTestRule<TestNoExtrasActivity> = object : ActivityTestRule<TestNoExtrasActivity>(TestNoExtrasActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestNoExtrasActivity.createIntent(InstrumentationRegistry.getContext())
+            return TestNoExtrasActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val resTestRule: ActivityTestRule<ResTestActivity> = object : ActivityTestRule<ResTestActivity>(ResTestActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestActivity.createIntent(InstrumentationRegistry.getContext())
+            return ResTestActivity.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
@@ -69,21 +69,21 @@ class ArgsBinderTest {
     @get:Rule
     val intentOnlyNoUriTestRule: ActivityTestRule<TestOnlyIntentNoUriActivity> = object : ActivityTestRule<TestOnlyIntentNoUriActivity>(TestOnlyIntentNoUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getContext())
+            return TestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val intentUriBothTestRule: ActivityTestRule<TestBothIntentUriActivity> = object : ActivityTestRule<TestBothIntentUriActivity>(TestBothIntentUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getContext())
+            return TestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val noIntentUriTestRule: ActivityTestRule<TestNoIntentUriActivity> = object : ActivityTestRule<TestNoIntentUriActivity>(TestNoIntentUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getContext())
+            return TestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
@@ -97,21 +97,21 @@ class ArgsBinderTest {
     @get:Rule
     val resIntentOnlyNoUriTestRule: ActivityTestRule<ResTestOnlyIntentNoUriActivity> = object : ActivityTestRule<ResTestOnlyIntentNoUriActivity>(ResTestOnlyIntentNoUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getContext())
+            return ResTestOnlyIntentNoUriActivity.createIntentWithExtras(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val resIntentUriBothTestRule: ActivityTestRule<ResTestBothIntentUriActivity> = object : ActivityTestRule<ResTestBothIntentUriActivity>(ResTestBothIntentUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getContext())
+            return ResTestBothIntentUriActivity.createIntentWithUriAndExtras(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val resNoIntentUriTestRule: ActivityTestRule<ResTestNoIntentUriActivity> = object : ActivityTestRule<ResTestNoIntentUriActivity>(ResTestNoIntentUriActivity::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getContext())
+            return ResTestNoIntentUriActivity.createIntentWithNothing(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
@@ -2979,14 +2979,14 @@ class ArgsBinderTest18 {
     @get:Rule
     val testRule18: ActivityTestRule<TestActivity18> = object : ActivityTestRule<TestActivity18>(TestActivity18::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestActivity18.createIntent(InstrumentationRegistry.getContext())
+            return TestActivity18.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val resTestRule18: ActivityTestRule<ResTestActivity18> = object : ActivityTestRule<ResTestActivity18>(ResTestActivity18::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestActivity18.createIntent(InstrumentationRegistry.getContext())
+            return ResTestActivity18.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
@@ -3098,14 +3098,14 @@ class ArgsBinderTest21 {
     @get:Rule
     val testRule21: ActivityTestRule<TestActivity21> = object : ActivityTestRule<TestActivity21>(TestActivity21::class.java) {
         override fun getActivityIntent(): Intent {
-            return TestActivity21.createIntent(InstrumentationRegistry.getContext())
+            return TestActivity21.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 
     @get:Rule
     val resTestRule21: ActivityTestRule<ResTestActivity21> = object : ActivityTestRule<ResTestActivity21>(ResTestActivity21::class.java) {
         override fun getActivityIntent(): Intent {
-            return ResTestActivity21.createIntent(InstrumentationRegistry.getContext())
+            return ResTestActivity21.createIntent(InstrumentationRegistry.getInstrumentation().getContext())
         }
     }
 

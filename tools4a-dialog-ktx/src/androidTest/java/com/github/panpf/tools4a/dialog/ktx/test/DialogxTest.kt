@@ -1,12 +1,10 @@
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.dialog.ktx.test
 
 import android.R
 import android.app.Dialog
 import android.os.Bundle
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.dialog.ktx.setClickButtonClosable
 import com.github.panpf.tools4a.dialog.ktx.showProgressDialog
 import com.github.panpf.tools4a.run.ktx.runOnUiThreadAndWait

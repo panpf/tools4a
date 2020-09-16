@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package com.github.panpf.tools4a.inputmethod.ktx.test
 
 import android.content.pm.ActivityInfo
@@ -25,8 +23,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.inputmethod.ktx.*
 import com.github.panpf.tools4a.run.ktx.runOnUiThread
 import org.junit.Assert

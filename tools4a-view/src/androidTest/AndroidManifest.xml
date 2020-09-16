@@ -2,8 +2,8 @@
     package="com.github.panpf.tools4a.view.test">
 
     <application>
-        <activity android:name=".WindowxTest$TestActivity"/>
-        <activity android:name=".ViewAnimxTest$TestActivity"/>
-        <activity android:name=".ViewxTest$TestActivity"/>
+        <activity android:name=".WindowxTest$TestActivity" />
+        <activity android:name=".ViewAnimxTest$TestActivity" />
+        <activity android:name=".ViewxTest$TestActivity" />
     </application>
 </manifest>

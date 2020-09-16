@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.graphics.ktx.test
 
 import android.content.Context
 import android.graphics.Paint
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.graphics.ktx.*
 import org.junit.Assert
 import org.junit.Test
@@ -31,7 +31,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextWidth() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val text = "0123456789"
 
         val paint = Paint()
@@ -43,7 +43,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextHeight() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val paint = Paint()
         paint.textSize = dp2px(context, 14).toFloat()
@@ -58,7 +58,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextBounds() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val text = "0123456789"
 
         val paint = Paint()
@@ -71,7 +71,7 @@ class PaintxTest {
 
     @Test
     fun testGetDrawTextVerticalCenterBaseLine() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val paint = Paint()
         paint.textSize = dp2px(context, 14).toFloat()

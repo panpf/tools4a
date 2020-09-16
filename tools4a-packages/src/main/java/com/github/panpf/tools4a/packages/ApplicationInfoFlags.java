@@ -1,7 +1,6 @@
 package com.github.panpf.tools4a.packages;
 
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 
 import androidx.annotation.IntDef;
 
@@ -40,4 +39,5 @@ import java.lang.annotation.RetentionPolicy;
         ApplicationInfo.FLAG_MULTIARCH
 })
 @Retention(RetentionPolicy.SOURCE)
-public @interface ApplicationInfoFlags {}
+public @interface ApplicationInfoFlags {
+}

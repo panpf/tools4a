@@ -29,9 +29,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.display.Displayx;
 
@@ -54,7 +54,7 @@ public class DisplayxTest {
 
     @Test
     public void testGetScreenSize() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Point point = Displayx.getScreenSize(context);
 
         Assert.assertTrue(point.x > 0);
@@ -71,7 +71,7 @@ public class DisplayxTest {
 
     @Test
     public void testGetActionBarSize() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         TypedValue tv = new TypedValue();
         int actonBarSize;
         if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
@@ -85,13 +85,13 @@ public class DisplayxTest {
 
     @Test
     public void testGetMetrics() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertNotNull(Displayx.getMetrics(context));
     }
 
     @Test
     public void testGetDensity() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertEquals(context.getResources().getDisplayMetrics().density, Displayx.getDensity(context), 0f);
         Assert.assertEquals(context.getResources().getDisplayMetrics().densityDpi, Displayx.getDensityDpi(context), 0f);
     }
@@ -195,13 +195,13 @@ public class DisplayxTest {
 
     @Test
     public void testStatusBar() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertTrue(Displayx.getStatusBarHeight(context) > 0);
     }
 
     @Test
     public void testNavigationBar() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Displayx.hasNavigationBar(context)) {
             if (Displayx.isOrientationPortrait(context)) {
                 Assert.assertTrue(Displayx.getNavigationBarHeight(context) > 0);

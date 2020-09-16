@@ -115,12 +115,14 @@ public class Fragmentx {
     /**
      * Find the visible fragments visible to the current user from the fragment list
      */
+    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
     public static Fragment findUserVisibleChildFragment(@Nullable List<Fragment> fragmentList) {
         Fragment userVisibleFragment = null;
         if (fragmentList != null) {
             for (Fragment childFragment : fragmentList) {
                 if (childFragment != null) {
+                    //noinspection deprecation
                     if (childFragment.isResumed() && childFragment.getUserVisibleHint()) {
                         userVisibleFragment = childFragment;
                     } else {
@@ -139,6 +141,7 @@ public class Fragmentx {
     /**
      * Find the visible fragments visible to the current user from the FragmentActivity
      */
+    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
     public static Fragment findUserVisibleChildFragment(@Nullable FragmentActivity fragmentActivity) {
         return findUserVisibleChildFragment(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
@@ -147,11 +150,13 @@ public class Fragmentx {
     /**
      * Find the visible fragments visible to the current user from the fragment
      */
+    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
     public static Fragment findUserVisibleChildFragment(@Nullable Fragment fragment) {
         return findUserVisibleChildFragment(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
     }
 
+    // todo add findUserVisibleChildFragmentByResumed
 
     /**
      * Find the target fragment from the specified fragment list based on the current Item of ViewPager

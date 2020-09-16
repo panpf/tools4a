@@ -20,8 +20,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.dimen.ktx.dp2px
 import com.github.panpf.tools4a.graphics.Bitmapx
 import com.github.panpf.tools4a.graphics.Colorx
@@ -44,7 +44,7 @@ class BitmapxTest {
     @Test
     @Throws(IOException::class)
     fun testRead() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val file = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()
 
         try {
@@ -164,7 +164,7 @@ class BitmapxTest {
 
     @Test
     fun testWriteToFile() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val bitmap = Bitmapx.createByColor(200, 200, Bitmap.Config.ARGB_8888, Colorx.FUCHSIA)
         val saveFile = context.getAppExternalCacheDirs().getFileIn("testWriteToFile.jpeg", 0).requireNotNull()
@@ -208,7 +208,7 @@ class BitmapxTest {
 
     @Test
     fun tesToDrawable() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val sourceBitmap = Bitmapx.createByColor(100, 100, Color.parseColor("#FF0000"))
         try {
@@ -224,7 +224,7 @@ class BitmapxTest {
 
     @Test
     fun testCircular() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
 
@@ -248,7 +248,7 @@ class BitmapxTest {
 
     @Test
     fun testCrop() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
         val srcRect = Rect(0, 0, rectBitmap.width / 2, rectBitmap.height / 2)
@@ -271,7 +271,7 @@ class BitmapxTest {
 
     @Test
     fun testCenterCrop() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
 
@@ -289,7 +289,7 @@ class BitmapxTest {
 
     @Test
     fun testTint() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val operaBitmap = context.resources.readBitmap(R.drawable.ic_opera).requireNotNull()
 
@@ -301,7 +301,7 @@ class BitmapxTest {
 
     @Test
     fun testTextToBitmap() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         var bitmap: Bitmap? = null
         var bitmapCompact: Bitmap? = null
         var icon: Bitmap? = null

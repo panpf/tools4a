@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.graphics.test;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.graphics.OpenGlx;
 
@@ -32,7 +32,7 @@ public class OpenGlxTest {
 
     @Test
     public void testGetVersion() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertNotNull(OpenGlx.getVersion(context));
     }
 }

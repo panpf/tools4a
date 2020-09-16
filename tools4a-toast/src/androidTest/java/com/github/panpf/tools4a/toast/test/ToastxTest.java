@@ -25,9 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.toast.Toastx;
 
@@ -94,8 +94,8 @@ public class ToastxTest {
 
     @Test
     public final void testWithViewToast() {
-        Toastx.showLongWithView(LayoutInflater.from(InstrumentationRegistry.getContext()).inflate(R.layout.view_toast, null, false));
-        Toastx.showShortWithView(LayoutInflater.from(InstrumentationRegistry.getContext()).inflate(R.layout.view_toast, null, false));
+        Toastx.showLongWithView(LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false));
+        Toastx.showShortWithView(LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false));
     }
 
     public static class TestFragmentActivity extends FragmentActivity {

@@ -22,8 +22,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.graphics.Drawablex;
 
@@ -36,7 +36,7 @@ public class DrawablexTest {
 
     @Test
     public void testIntrinsic() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.ic_opera);
         Bitmap bitmap = Drawablex.toBitmapWithIntrinsicSize(drawable);
@@ -45,7 +45,7 @@ public class DrawablexTest {
 
     @Test
     public void testIntrinsicReuse() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.ic_opera);
 
@@ -56,7 +56,7 @@ public class DrawablexTest {
 
     @Test
     public void testIntrinsicConfig() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.ic_opera);
 
@@ -139,7 +139,7 @@ public class DrawablexTest {
 
     @Test
     public void testChangeColor() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Drawable drawable = Drawablex.changeColor(context.getResources().getDrawable(R.drawable.ic_opera), Color.parseColor("#0000FF"));
         Bitmap bitmap = Drawablex.toBitmapWithIntrinsicSize(drawable);

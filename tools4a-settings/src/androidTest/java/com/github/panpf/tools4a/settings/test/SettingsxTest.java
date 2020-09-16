@@ -29,9 +29,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.github.panpf.tools4a.settings.Settingsx;
 
@@ -65,7 +65,7 @@ public class SettingsxTest {
 
     @Test
     public void testScreenBrightnessMode() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
             RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
             try {
@@ -92,7 +92,7 @@ public class SettingsxTest {
 
     @Test
     public void testScreenBrightness() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
             RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
             try {
@@ -119,7 +119,7 @@ public class SettingsxTest {
 
     @Test
     public void testScreenOffTimeout() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
             RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
             try {
@@ -148,7 +148,7 @@ public class SettingsxTest {
     public void testAirplaneModeOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) return;
 
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
             RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
             try {

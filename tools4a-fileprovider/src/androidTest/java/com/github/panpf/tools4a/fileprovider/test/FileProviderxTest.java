@@ -20,8 +20,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.fileprovider.FileProviderx;
 import com.github.panpf.tools4j.io.Filex;
@@ -38,7 +38,7 @@ public class FileProviderxTest {
 
     @Test
     public void testGetShareFileUri() throws IOException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         File file = new File(context.getExternalFilesDir(null), "testGetShareFileUri.txt");
         String authority = "com.github.panpf.tools4a.fileprovider.test.file.provider";
         try {

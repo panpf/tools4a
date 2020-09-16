@@ -20,8 +20,8 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.device.Devicex;
 import com.github.panpf.tools4a.permission.Permissionx;
@@ -68,19 +68,19 @@ public class DevicexTest {
 
     @Test
     public final void testPhoneNumber() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Assert.assertNotNull(Devicex.getPhoneNumberOr(context, "defaultValue"));
     }
 
     @Test
     public final void testAndroidId() {
-        String androidId = Devicex.getAndroidIdOr(InstrumentationRegistry.getContext(), "defaultValue");
+        String androidId = Devicex.getAndroidIdOr(InstrumentationRegistry.getInstrumentation().getContext(), "defaultValue");
         Assert.assertTrue("androidId: " + androidId, Stringx.isSafe(androidId));
     }
 
     @Test
     public final void testDeviceId() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String deviceId = Devicex.getDeviceIdOr(context, "defaultValue");
             Assert.assertEquals("deviceId: " + deviceId, "defaultValue", deviceId);
@@ -104,7 +104,7 @@ public class DevicexTest {
 
     @Test
     public final void testSubscriberId() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String subscriberId = Devicex.getSubscriberIdOr(context, "defaultValue");
             Assert.assertEquals("subscriberId: " + subscriberId, "defaultValue", subscriberId);
@@ -128,7 +128,7 @@ public class DevicexTest {
 
     @Test
     public final void testSimSerialNumber() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String simSerialNumber = Devicex.getSimSerialNumberOr(context, "defaultValue");
             Assert.assertEquals("simSerialNumber: " + simSerialNumber, "defaultValue", simSerialNumber);
@@ -151,7 +151,7 @@ public class DevicexTest {
 
     @Test
     public final void testSerial() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String serial = Devicex.getSerialOr("defaultValue");
             Assert.assertEquals("serial: " + serial, "defaultValue", serial);
@@ -175,7 +175,7 @@ public class DevicexTest {
 
     @Test
     public final void testIMEI() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String imei = Devicex.getIMEIOr(context, "defaultValue");
             Assert.assertEquals("imei: " + imei, "defaultValue", imei);
@@ -199,7 +199,7 @@ public class DevicexTest {
 
     @Test
     public final void testIMSI() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             String imsi = Devicex.getIMSIOr(context, "defaultValue");
             Assert.assertEquals("imsi: " + imsi, "defaultValue", imsi);
@@ -224,16 +224,20 @@ public class DevicexTest {
     @Test
     public final void testMacAddress() {
         Pattern macAddressPattern = Pattern.compile("([A-Fa-f0-9]{2}(-[A-Fa-f0-9]{2}){5})|([A-Fa-f0-9]{2}(:[A-Fa-f0-9]{2}){5})");
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Permissionx.isGrantPermissions(context, Manifest.permission.ACCESS_WIFI_STATE)) {
-                Assert.assertTrue(macAddressPattern.matcher(Devicex.getMacAddressOr(context, "defaultValue")).matches());
+                String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
+                Assert.assertTrue("maxAddress: " + maxAddress, macAddressPattern.matcher(maxAddress).matches());
             } else {
-                Assert.assertEquals("02:00:00:00:00:00", Devicex.getMacAddress(context));
-                Assert.assertEquals("defaultValue", Devicex.getMacAddressOr(context, "defaultValue"));
+                String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
+                String maxAddressNoDefault = Devicex.getMacAddress(context);
+                Assert.assertEquals("maxAddressNoDefault: " + maxAddressNoDefault, "02:00:00:00:00:00", maxAddressNoDefault);
+                Assert.assertEquals("maxAddress: " + maxAddress, "defaultValue", maxAddress);
             }
         } else {
-            Assert.assertTrue(macAddressPattern.matcher(Devicex.getMacAddressOr(context, "defaultValue")).matches());
+            String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
+            Assert.assertTrue("maxAddress: " + maxAddress, macAddressPattern.matcher(maxAddress).matches());
         }
     }
 }

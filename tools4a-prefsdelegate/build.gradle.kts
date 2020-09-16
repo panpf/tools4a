@@ -4,6 +4,7 @@ plugins {
     id("jacoco")
 }
 
+// todo module 改名为 tools4a-prefsdelegate-kt
 android {
     compileSdkVersion(property("COMPILE_SDK_VERSION").toString().toInt())
 
@@ -38,9 +39,10 @@ dependencies {
     api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${property("KOTLIN_VERSION")}")
 
     testImplementation("junit:junit:${property("JUNIT")}")
-    androidTestImplementation("androidx.test:runner:${property("TEST_RUNNER")}")
-    androidTestImplementation("androidx.test:rules:${property("TEST_RULES")}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${property("TEST_ESPRESSO")}")
+    androidTestImplementation("androidx.test:runner:${property("ANDROIDX_TEST_RUNNER")}")
+    androidTestImplementation("androidx.test:rules:${property("ANDROIDX_TEST_RULES")}")
+    androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")
+    androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
 }
 
 /*

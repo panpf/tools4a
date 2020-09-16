@@ -39,8 +39,8 @@ import java.lang.reflect.Modifier;
  * extending a Page parameter, checking whether the Page has been destroyed before calling back related methods
  *
  * @deprecated Use the standard <code>java.util.concurrent</code> or
- *   <a href="https://developer.android.com/topic/libraries/architecture/coroutines">
- *   Kotlin concurrency utilities</a> instead.
+ * <a href="https://developer.android.com/topic/libraries/architecture/coroutines">
+ * Kotlin concurrency utilities</a> instead.
  */
 @Deprecated
 public abstract class WeakAsyncTask<Page, Param, Progress, Result> extends AsyncTask<Param, Progress, Result> {
@@ -48,6 +48,7 @@ public abstract class WeakAsyncTask<Page, Param, Progress, Result> extends Async
     @NonNull
     private final WeakReference<Page> reference;
 
+    @SuppressWarnings("deprecation")
     public WeakAsyncTask(@NonNull Page page) {
         // The class name contains '$' is the inner class, the inner class must be static
         if (getClass().getName().contains("$") && !Modifier.isStatic(getClass().getModifiers())) {

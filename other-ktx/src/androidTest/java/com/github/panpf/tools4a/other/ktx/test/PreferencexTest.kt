@@ -17,8 +17,8 @@
 package com.github.panpf.tools4a.other.ktx.test
 
 import android.content.SharedPreferences
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.other.ktx.*
 import com.github.panpf.tools4j.collections.Mapx
 import com.github.panpf.tools4j.reflect.ktx.getFieldValue
@@ -34,7 +34,7 @@ class PreferencexTest {
     @Test
     @Throws(NoSuchFieldException::class)
     fun testGetPreferences() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val preferences = context.getSharedPreferences("testGetPreferences")
         Assert.assertEquals("testGetPreferences.xml", (preferences.getFieldValue("mFile") as File?)!!.name)
@@ -45,7 +45,7 @@ class PreferencexTest {
 
     @Test
     fun testPutAndGet() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val name = "testPutAndGet"
 
         context.clearPreferences()
@@ -191,7 +191,7 @@ class PreferencexTest {
 
     @Test
     fun testGetAll() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val name = "testGetAll"
 
         context.clearPreferences()
@@ -225,7 +225,7 @@ class PreferencexTest {
 
     @Test
     fun testRemoveAndContains() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val name = "testRemoveAndContains"
 
         context.clearPreferences()
@@ -277,7 +277,7 @@ class PreferencexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testListener() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val name = "testListener"
 
         context.clearPreferences()

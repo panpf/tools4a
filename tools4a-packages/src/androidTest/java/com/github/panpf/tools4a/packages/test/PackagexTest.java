@@ -25,8 +25,8 @@ import android.net.Uri;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.fileprovider.FileProviderx;
 import com.github.panpf.tools4a.packages.PackageFilter;
@@ -59,7 +59,7 @@ public class PackagexTest {
 
     @Test
     public void testIsPackageInstalled() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         assertTrue(Packagex.isPackageInstalled(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
         assertFalse(Packagex.isPackageInstalled(context, context.getPackageName() + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -70,7 +70,7 @@ public class PackagexTest {
 
     @Test
     public void testIsSystemPackage() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
         String selfAppPackageName = context.getPackageName();
@@ -116,7 +116,7 @@ public class PackagexTest {
 
     @Test
     public void testIsDebuggablePackage() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
         String userAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
@@ -171,7 +171,7 @@ public class PackagexTest {
 
     @Test
     public void testIsJUnitTestPackage() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String systemAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context, PackageFilterFlags.ONLY_SYSTEM)).packageName;
         String userAppPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
@@ -221,7 +221,7 @@ public class PackagexTest {
 
     @Test
     public void testCreateInstallPackageIntent() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File file = Packagex.getPackageApkFile(context, context.getPackageName());
 
@@ -248,7 +248,7 @@ public class PackagexTest {
 
     @Test
     public void testCreateUninstallPackageIntent() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Intent uninstallAppIntent = Packagex.createUninstallPackageIntent(context.getPackageName());
         assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.getAction());
@@ -260,7 +260,7 @@ public class PackagexTest {
 
     @Test
     public void testCreateLaunchPackageIntent() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
         List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
@@ -275,7 +275,7 @@ public class PackagexTest {
 
     @Test
     public void testCreateApplicationDetailsSettingsIntent() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"));
         List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(webIntent, 0);
@@ -292,7 +292,7 @@ public class PackagexTest {
 
     @Test
     public void testGetPackage() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         SimplePackageInfo selfAppPackage = Premisex.requireNotNull(Packagex.getPackage(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
         assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage.packageName);
@@ -333,7 +333,7 @@ public class PackagexTest {
 
     @Test
     public void testGetVersionCode() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
                 PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
@@ -368,7 +368,7 @@ public class PackagexTest {
 
     @Test
     public void testGetLongVersionCode() throws PackageManager.NameNotFoundException {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
                 PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
@@ -403,7 +403,7 @@ public class PackagexTest {
 
     @Test
     public void testGetVersionName() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.getFirstPackageByFilterFlags(context,
                 PackageFilterFlags.ONLY_USER | PackageFilterFlags.ONLY_RELEASE | PackageFilterFlags.EXCLUDE_SELF)).packageName;
@@ -460,7 +460,7 @@ public class PackagexTest {
 
     @Test
     public void testGetFirstPackage() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String selfPackageName = context.getPackageName();
         final String errorPackageName = selfPackageName + "_nonono";
         final String firstPackageName = Packagex.listPackageName(context).get(0);
@@ -491,7 +491,7 @@ public class PackagexTest {
 
     @Test
     public void testListPackage() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         int allPackagesSize = Packagex.listPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         int startsWithPackagesSize = Packagex.listPackageByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
@@ -572,7 +572,7 @@ public class PackagexTest {
 
     @Test
     public void testGetVersionCodeMap() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         assertTrue(Mapx.all(Packagex.listPackageVersionCodeToMapByFilter(context, null, 0), entry ->
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
@@ -671,7 +671,7 @@ public class PackagexTest {
 
     @Test
     public void testListPackageName() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         assertTrue(Collectionx.all(Packagex.listPackageNameByFilter(context, null, 0), packageName ->
                 Packagex.isPackageInstalled(context, packageName)
@@ -770,7 +770,7 @@ public class PackagexTest {
 
     @Test
     public void testCountPackage() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         int allPackageNameSize = Packagex.countPackageByFilter(context, null, PackageManager.MATCH_UNINSTALLED_PACKAGES);
         int startsWithPackageNameSize = Packagex.countPackageByFilter(context, new EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES);
@@ -851,7 +851,7 @@ public class PackagexTest {
 
     @Test
     public void testGetPackageApkFile() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String selfPackageName = context.getPackageName();
         final String errorPackageName = selfPackageName + "_nonono";
 
@@ -872,7 +872,7 @@ public class PackagexTest {
 
     @Test
     public void testGetAppSignatureBytes() throws PackageManager.NameNotFoundException {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String selfPackageName = context.getPackageName();
         final String errorPackageName = selfPackageName + "_nonono";
 
@@ -889,7 +889,7 @@ public class PackagexTest {
 
     @Test
     public void testGetPackageIconDrawable() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final String selfPackageName = context.getPackageName();
         final String errorPackageName = selfPackageName + "_nonono";
 
@@ -926,7 +926,7 @@ public class PackagexTest {
 
     @Test
     public void testGetApkIcon() throws IOException {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File selfApkFile = null;
         try {

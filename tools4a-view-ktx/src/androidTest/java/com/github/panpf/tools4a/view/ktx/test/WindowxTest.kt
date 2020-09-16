@@ -17,8 +17,8 @@
 package com.github.panpf.tools4a.view.ktx.test
 
 import android.app.Activity
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.github.panpf.tools4a.run.ktx.runOnUiThread
 import com.github.panpf.tools4a.view.ktx.getBrightness
 import com.github.panpf.tools4a.view.ktx.isBrightnessFlowSystem

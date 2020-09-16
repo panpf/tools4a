@@ -27,8 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 import androidx.viewpager.widget.ViewPager;
 
 import com.github.panpf.tools4a.fragment.Fragmentx;
@@ -41,6 +41,8 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class FragmentxTest {
@@ -110,7 +112,7 @@ public class FragmentxTest {
     public void testInstantiate() {
         Fragment supportFragment = Fragmentx.instantiate(Fragment.class, new BundleBuilder().putString("key", "testInstantiate").build());
         Assert.assertEquals(Fragment.class.getName(), supportFragment.getClass().getName());
-        Assert.assertEquals("testInstantiate", supportFragment.getArguments().getString("key"));
+        Assert.assertEquals("testInstantiate", Objects.requireNonNull(supportFragment.getArguments()).getString("key"));
 
         Fragment supportFragment2 = Fragmentx.instantiate(Fragment.class);
         Assert.assertEquals(Fragment.class.getName(), supportFragment2.getClass().getName());
@@ -213,7 +215,7 @@ public class FragmentxTest {
             setContentView(R.layout.at_view_pager);
 
             ViewPager viewPager = findViewById(R.id.viewPagerAt_viewPager);
-            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 @NotNull
                 @Override
                 public Fragment getItem(int p0) {
@@ -244,7 +246,7 @@ public class FragmentxTest {
             super.onViewCreated(view, savedInstanceState);
 
             ViewPager viewPager = view.findViewById(R.id.viewPagerAt_viewPager);
-            viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+            viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 @NotNull
                 @Override
                 public Fragment getItem(int p0) {
@@ -270,7 +272,7 @@ public class FragmentxTest {
         public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            ((TextView) view).setText("position: " + getArguments().getString("position"));
+            ((TextView) view).setText("position: " + Objects.requireNonNull(getArguments()).getString("position"));
         }
     }
 }

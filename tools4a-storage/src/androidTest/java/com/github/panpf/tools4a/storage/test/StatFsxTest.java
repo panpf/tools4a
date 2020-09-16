@@ -19,7 +19,7 @@ package com.github.panpf.tools4a.storage.test;
 import android.os.Environment;
 import android.os.StatFs;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.panpf.tools4a.storage.StatFsx;
 

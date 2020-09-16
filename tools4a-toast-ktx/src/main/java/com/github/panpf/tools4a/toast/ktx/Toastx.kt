@@ -20,9 +20,7 @@ package com.github.panpf.tools4a.toast.ktx
 
 import android.content.Context
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.StringRes
-import com.github.panpf.tools4a.run.Runx
 import com.github.panpf.tools4a.toast.Toastx
 
 /*

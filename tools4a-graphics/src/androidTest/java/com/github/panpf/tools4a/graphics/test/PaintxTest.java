@@ -21,8 +21,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.graphics.Paintx;
 
@@ -35,7 +35,7 @@ public class PaintxTest {
 
     @Test
     public void testGetTextWidth() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String text = "0123456789";
 
         Paint paint = new Paint();
@@ -48,7 +48,7 @@ public class PaintxTest {
 
     @Test
     public void testGetTextHeight() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Paint paint = new Paint();
         paint.setTextSize(dp2px(context, 14));
@@ -65,7 +65,7 @@ public class PaintxTest {
 
     @Test
     public void testGetTextBounds() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String text = "0123456789";
 
         Paint paint = new Paint();
@@ -79,7 +79,7 @@ public class PaintxTest {
 
     @Test
     public void testGetDrawTextVerticalCenterBaseLine() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         Paint paint = new Paint();
         paint.setTextSize(dp2px(context, 14));

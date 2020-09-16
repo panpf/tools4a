@@ -42,7 +42,7 @@ public class Argsx {
     }
 
     // todo Support multiple argName
-    
+
     /* ************************************* Activity Intent Args ***************************************** */
 
 

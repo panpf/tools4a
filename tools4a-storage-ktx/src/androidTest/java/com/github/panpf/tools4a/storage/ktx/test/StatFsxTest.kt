@@ -18,7 +18,7 @@ package com.github.panpf.tools4a.storage.ktx.test
 
 import android.os.Environment
 import android.os.StatFs
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.panpf.tools4a.storage.ktx.availableBytesCompat
 import com.github.panpf.tools4a.storage.ktx.freeBytesCompat
 import com.github.panpf.tools4a.storage.ktx.totalBytesCompat

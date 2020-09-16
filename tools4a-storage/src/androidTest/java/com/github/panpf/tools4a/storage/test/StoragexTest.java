@@ -20,8 +20,8 @@ import android.content.Context;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.github.panpf.tools4a.storage.StorageVolumeCompat;
 import com.github.panpf.tools4a.storage.Storagex;
@@ -71,7 +71,7 @@ public class StoragexTest {
 
     @Test
     public void testVolumeState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         StorageVolumeCompat volumeCompat = Storagex.getVolume(context, Storagex.getExternalStorageDirectory());
         File volumeFile = volumeCompat != null ? volumeCompat.getPathFile() : null;
@@ -83,7 +83,7 @@ public class StoragexTest {
 
     @Test
     public void testVolumeAttr() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File[] volumeFiles = Storagex.getVolumeFiles(context);
 
@@ -109,7 +109,7 @@ public class StoragexTest {
 
     @Test
     public void testVolumes() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         assertTrue(Storagex.getVolumes(context).length >= 1);
         assertTrue(Storagex.getMountedVolumes(context).length >= 1);
@@ -125,7 +125,7 @@ public class StoragexTest {
 
     @Test
     public void testExternalStorageState() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         assertEquals(Storagex.getExternalStorageState(), Environment.MEDIA_MOUNTED);
         assertEquals(Storagex.getExternalStorageState(context, Storagex.getExternalStorageDirectory()), Environment.MEDIA_MOUNTED);
         assertTrue(Storagex.isExternalStorageMounted());
@@ -134,7 +134,7 @@ public class StoragexTest {
 
     @Test
     public void testExternalStorageAttr() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         File[] storageDirectorys = Storagex.getExternalStorageDirectorys(context);
 
@@ -163,14 +163,14 @@ public class StoragexTest {
 
     @Test
     public void testExternalStorageDirectory() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         assertNotNull(Storagex.getExternalStorageDirectory());
         assertNotNull(Storagex.getMountedExternalStorageDirectory(context));
     }
 
     @Test
     public void testExternalStorageDirectorys() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         final File sdcard = Environment.getExternalStorageDirectory();
         assertNotNull(Arrayx.find(Storagex.getExternalStorageDirectorys(context), new Predicate<File>() {
             @Override
@@ -220,7 +220,7 @@ public class StoragexTest {
 
     @Test
     public void testExternalStorageDirectorysWithPath() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String childPath = "Download";
         final File sdcard = new File(Environment.getExternalStorageDirectory(), childPath);
         assertNotNull(Arrayx.find(Storagex.getExternalStorageDirectorysWithPath(context, childPath), new Predicate<File>() {
@@ -271,7 +271,7 @@ public class StoragexTest {
 
     @Test
     public void testAppCacheDir() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         /*
          * appExternalCacheDir
@@ -355,7 +355,7 @@ public class StoragexTest {
 
     @Test
     public void testAppFilesDir() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         /*
          * appExternalFilesDir
@@ -439,7 +439,7 @@ public class StoragexTest {
 
     @Test
     public void testAppObbDir() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         /*
          * appObbDir
@@ -486,14 +486,14 @@ public class StoragexTest {
 
     @Test
     public void testFilterByMinBytes() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         assertNotNull(Storagex.filterByMinBytes(Storagex.getExternalStorageDirectorys(context), 1024));
         assertNull(Storagex.filterByMinBytes(Storagex.getExternalStorageDirectorys(context), Long.MAX_VALUE));
     }
 
     @Test
     public void testGetFileIn() {
-        final Context context = InstrumentationRegistry.getContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
         assertNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "test.jpeg", 1024 * 1024 * 8, true));
         assertNotNull(Storagex.getFileIn(Storagex.getAppExternalCacheDirs(context), "test.jpeg", 1024 * 1024 * 8));
     }

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.os.storage.StorageManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -21,8 +21,8 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.fileprovider.ktx.getShareFileUri
 import com.github.panpf.tools4a.packages.PackageFilter
 import com.github.panpf.tools4a.packages.PackageFilterFlags
@@ -43,7 +43,7 @@ class PackagexTest {
 
     @Test
     fun testIsPackageInstalled() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         Assert.assertTrue(context.isPackageInstalled(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         Assert.assertFalse(context.isPackageInstalled(context.packageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES))
@@ -54,7 +54,7 @@ class PackagexTest {
 
     @Test
     fun testIsSystemPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
         val selfAppPackageName = context.packageName
@@ -100,7 +100,7 @@ class PackagexTest {
 
     @Test
     fun testIsDebuggablePackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
         val userAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
@@ -155,7 +155,7 @@ class PackagexTest {
 
     @Test
     fun testIsJUnitTestPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
         val userAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
@@ -206,7 +206,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testCreateInstallPackageIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val file = context.getPackageApkFile(context.packageName)
 
@@ -233,7 +233,7 @@ class PackagexTest {
 
     @Test
     fun testCreateUninstallPackageIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val uninstallAppIntent = context.createUninstallPackageIntent(context.packageName)
         Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.action)
@@ -245,7 +245,7 @@ class PackagexTest {
 
     @Test
     fun testCreateLaunchPackageIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
         val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
@@ -260,7 +260,7 @@ class PackagexTest {
 
     @Test
     fun testCreateApplicationDetailsSettingsIntent() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
         val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
@@ -278,7 +278,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val selfAppPackage = Premisex.requireNotNull(context.getPackage(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage.packageName)
@@ -320,7 +320,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetVersionCode() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
                 PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
@@ -356,7 +356,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetLongVersionCode() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
                 PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
@@ -391,7 +391,7 @@ class PackagexTest {
 
     @Test
     fun testGetVersionName() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
                 PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
@@ -448,7 +448,7 @@ class PackagexTest {
 
     @Test
     fun testGetFirstPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val selfPackageName = context.packageName
         val errorPackageName = selfPackageName + "_nonono"
         val firstPackageName = context.listPackageName()[0]
@@ -478,7 +478,7 @@ class PackagexTest {
 
     @Test
     fun testListPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val allPackagesSize = context.listPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         val startsWithPackagesSize = context.listPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
@@ -557,7 +557,7 @@ class PackagexTest {
 
     @Test
     fun testGetVersionCodeMap() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilter(null, 0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
@@ -654,7 +654,7 @@ class PackagexTest {
 
     @Test
     fun testListPackageName() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         Assert.assertTrue(Collectionx.all(context.listPackageNameByFilter(null, 0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
@@ -751,7 +751,7 @@ class PackagexTest {
 
     @Test
     fun testCountPackage() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         val allPackageNameSize = context.countPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         val startsWithPackageNameSize = context.countPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
@@ -831,7 +831,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetPackageApkFile() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val selfPackageName = context.packageName
         val errorPackageName = selfPackageName + "_nonono"
 
@@ -853,7 +853,7 @@ class PackagexTest {
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetAppSignatureBytes() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val selfPackageName = context.packageName
         val errorPackageName = selfPackageName + "_nonono"
 
@@ -870,7 +870,7 @@ class PackagexTest {
 
     @Test
     fun testGetPackageIconDrawable() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         val selfPackageName = context.packageName
         val errorPackageName = selfPackageName + "_nonono"
 
@@ -907,7 +907,7 @@ class PackagexTest {
     @Test
     @Throws(IOException::class)
     fun testGetApkIcon() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
 
         var selfApkFile: File? = null
         try {

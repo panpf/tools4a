@@ -18,8 +18,8 @@ package com.github.panpf.tools4a.permission.ktx.test
 
 import android.Manifest
 import android.os.Build
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.permission.ktx.filterDeniedPermissions
 import com.github.panpf.tools4a.permission.ktx.isGrantPermissions
 import org.junit.Assert
@@ -31,13 +31,13 @@ class PermissionxTest {
 
     @Test
     fun testSinglePermission() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertTrue(context.isGrantPermissions(Manifest.permission.INTERNET))
     }
 
     @Test
     fun testSingleNoPermission() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val result = TestUtils.getDeviceIdOr(context, "defaultValue")
             if ("defaultValue" == result) {
@@ -52,13 +52,13 @@ class PermissionxTest {
 
     @Test
     fun testMultiPermission() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         Assert.assertTrue(context.filterDeniedPermissions(Manifest.permission.INTERNET, Manifest.permission.VIBRATE).isEmpty())
     }
 
     @Test
     fun testMultiNoPermission() {
-        val context = InstrumentationRegistry.getContext()
+        val context = InstrumentationRegistry.getInstrumentation().getContext()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val deviceIdResult = TestUtils.getDeviceIdOr(context, "defaultValue")
             val macAddressResult = TestUtils.getMacAddressOr(context, "defaultValue")
