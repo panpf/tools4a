@@ -121,7 +121,7 @@ Dependencies:
 ## Modules
 
 ### tools4a-activity
-* Activityx: [Activityx.java] ([Test][ActivityxTest.kt]) | [Activityx.kt] ([Test][ActivityxKtxTest.kt])
+* Activityx: [Activityx.java] ([Test][ActivityxTest.java]) | [Activityx.kt] ([Test][ActivityxTest.kt])
     * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat,
     * getImplFromParent, canStart, start, startByClass, safeStart, safeStartByClass
 
@@ -146,7 +146,7 @@ Dependencies:
     * addPrimaryClipChangedListener, removePrimaryClipChangedListener, clear
 
 ### tools4a-context
-* Context: [Contextx.java] ([Test][ContextxTest.kt]) | [Contextx.kt] ([Test][ContextxKtxTest.kt])
+* Contextx: [Contextx.java] ([Test][ContextxTest.java]) | [Contextx.kt] ([Test][ContextxTest.kt])
     * appContext, requireContext, requireAppContext, systemService, systemServiceOrNull,
     * systemServiceOnUiThread, systemServiceOrNullOnUiThread, \*Manager
 
@@ -161,7 +161,7 @@ Dependencies:
     * getIMEIOrNull, getIMSIOr, getIMSIOrThrow, getIMSIOrNull, getMacAddressOr, getMacAddress
 
 ### tools4a-dialog
-* Dialog: [Dialogx.java] ([Test][DialogxTest.java]) | [Dialogx.kt] ([Test][DialogxTest.kt])
+* Dialogx: [Dialogx.java] ([Test][DialogxTest.java]) | [Dialogx.kt] ([Test][DialogxTest.kt])
     * setClickButtonClosable, showProgressDialog
 
 ### tools4a-dimen
@@ -407,9 +407,9 @@ Please view the [CHANGELOG.md] file
 [CHANGELOG.md]: CHANGELOG.md
 
 [Activityx.java]: tools4a-activity/src/main/java/com/github/panpf/tools4a/activity/Activityx.java
-[ActivityxTest.kt]: tools4a-activity/src/androidTest/java/com/github/panpf/tools4a/activity/test/ActivityxTest.kt
+[ActivityxTest.kt]: tools4a-activity/src/androidTest/java/com/github/panpf/tools4a/activity/test/ActivityxTest.java
 [Activityx.kt]: tools4a-activity-ktx/src/main/java/com/github/panpf/tools4a/activity/ktx/Activityx.kt
-[ActivityxKtxTest.kt]: tools4a-activity-ktx/src/androidTest/java/com/github/panpf/tools4a/activity/ktx/test/ActivityxTest.kt
+[ActivityxTest.kt]: tools4a-activity-ktx/src/androidTest/java/com/github/panpf/tools4a/activity/ktx/test/ActivityxTest.kt
 
 [Argsx.java]: tools4a-args/src/main/java/com/github/panpf/tools4a/args/Argsx.java
 [ArgsxTest.java]: tools4a-args/src/androidTest/java/com/github/panpf/tools4a/args/test/ArgsxTest.java
@@ -428,9 +428,9 @@ Please view the [CHANGELOG.md] file
 [ClipboardxTest.kt]: tools4a-clipboard-ktx/src/androidTest/java/com/github/panpf/tools4a/clipboard/ktx/test/ClipboardxTest.kt
 
 [Contextx.java]: tools4a-context/src/main/java/com/github/panpf/tools4a/context/Contextx.java
-[ContextxTest.kt]: tools4a-context/src/androidTest/java/com/github/panpf/tools4a/context/test/ContextxTest.kt
+[ContextxTest.kt]: tools4a-context/src/androidTest/java/com/github/panpf/tools4a/context/test/ContextxTest.java
 [Contextx.kt]: tools4a-context-ktx/src/main/java/com/github/panpf/tools4a/context/ktx/Contextx.kt
-[ContextxKtxTest.kt]: tools4a-context-ktx/src/androidTest/java/com/github/panpf/tools4a/context/ktx/test/ContextxTest.kt
+[ContextxTest.kt]: tools4a-context-ktx/src/androidTest/java/com/github/panpf/tools4a/context/ktx/test/ContextxTest.kt
 
 [Devicex.java]: tools4a-device/src/main/java/com/github/panpf/tools4a/device/Devicex.java
 [DevicexTest.java]: tools4a-device/src/androidTest/java/com/github/panpf/tools4a/device/test/DevicexTest.java

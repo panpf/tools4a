@@ -20,98 +20,110 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.dimen.ktx.*
+import com.github.panpf.tools4a.test.ktx.*
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DimenxTest {
 
-    @get:Rule
-    val activityTestRule = ActivityTestRule(TestActivity::class.java)
-
     @Test
-    fun testContext() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+    fun testDp2px() {
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity: TestActivity ->
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), activity.dp2px(10f).toLong())
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), activity.dp2px(10).toLong())
+            Assert.assertEquals(0, activity.dp2px(0f).toLong())
+            Assert.assertEquals(0, activity.dp2px(0).toLong())
 
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), context.dp2px(10f).toLong())
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), context.dp2px(10).toLong())
-        Assert.assertEquals(0.toLong(), context.dp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), context.dp2px(0).toLong())
+            val fragment = activity.fragment
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), fragment.dp2px(10f).toLong())
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), fragment.dp2px(10).toLong())
+            Assert.assertEquals(0, fragment.dp2px(0f).toLong())
+            Assert.assertEquals(0, fragment.dp2px(0).toLong())
 
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.density + 0.5f, context.px2dp(100), 0f)
-        Assert.assertEquals(0f, context.px2dp(0), 0f)
-
-        Assert.assertEquals((10f * context.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), context.sp2px(10f).toLong())
-        Assert.assertEquals((10.toFloat() * context.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), context.sp2px(10).toLong())
-        Assert.assertEquals(0.toLong(), context.sp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), context.sp2px(0).toLong())
-
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.scaledDensity + 0.5f, context.px2sp(100), 0f)
-        Assert.assertEquals(0f, context.px2sp(0), 0f)
-
-        Assert.assertEquals(10f * context.resources.displayMetrics.scaledDensity, context.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
-        Assert.assertEquals(10.toFloat() * context.resources.displayMetrics.scaledDensity, context.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+            val view = activity.view
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), view.dp2px(10f).toLong())
+            Assert.assertEquals((10f * activity.resources.displayMetrics.density + 0.5f).toInt().toLong(), view.dp2px(10).toLong())
+            Assert.assertEquals(0, view.dp2px(0f).toLong())
+            Assert.assertEquals(0, view.dp2px(0).toLong())
+        }
     }
 
     @Test
-    fun testFragment() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+    fun testPx2dp() {
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity: TestActivity ->
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.density + 0.5f, activity.px2dp(100), 0f)
+            Assert.assertEquals(0f, activity.px2dp(0), 0f)
 
-        val supportFragment = activityTestRule.activity.supportFragment
+            val fragment = activity.fragment
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.density + 0.5f, fragment.px2dp(100), 0f)
+            Assert.assertEquals(0f, fragment.px2dp(0), 0f)
 
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), supportFragment.dp2px(10f).toLong())
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), supportFragment.dp2px(10).toLong())
-        Assert.assertEquals(0.toLong(), supportFragment.dp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), supportFragment.dp2px(0).toLong())
-
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.density + 0.5f, supportFragment.px2dp(100), 0f)
-        Assert.assertEquals(0f, supportFragment.px2dp(0), 0f)
-
-        Assert.assertEquals((10f * context.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), supportFragment.sp2px(10f).toLong())
-        Assert.assertEquals((10.toFloat() * context.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), supportFragment.sp2px(10).toLong())
-        Assert.assertEquals(0.toLong(), supportFragment.sp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), supportFragment.sp2px(0).toLong())
-
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.scaledDensity + 0.5f, supportFragment.px2sp(100), 0f)
-        Assert.assertEquals(0f, supportFragment.px2sp(0), 0f)
-
-        Assert.assertEquals(10f * context.resources.displayMetrics.scaledDensity, supportFragment.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
-        Assert.assertEquals(10.toFloat() * context.resources.displayMetrics.scaledDensity, supportFragment.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+            val view = activity.view
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.density + 0.5f, view.px2dp(100), 0f)
+            Assert.assertEquals(0f, view.px2dp(0), 0f)
+        }
     }
 
     @Test
-    fun testView() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+    fun testSp2px() {
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity: TestActivity ->
+            Assert.assertEquals((10f * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), activity.sp2px(10f).toLong())
+            Assert.assertEquals((10.toFloat() * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), activity.sp2px(10).toLong())
+            Assert.assertEquals(0, activity.sp2px(0f).toLong())
+            Assert.assertEquals(0, activity.sp2px(0).toLong())
 
-        val view = activityTestRule.activity.view
+            val fragment = activity.fragment
+            Assert.assertEquals((10f * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), fragment.sp2px(10f).toLong())
+            Assert.assertEquals((10.toFloat() * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), fragment.sp2px(10).toLong())
+            Assert.assertEquals(0, fragment.sp2px(0f).toLong())
+            Assert.assertEquals(0, fragment.sp2px(0).toLong())
 
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), view.dp2px(10f).toLong())
-        Assert.assertEquals((10f * context.resources.displayMetrics.density + 0.5f).toInt().toLong(), view.dp2px(10).toLong())
-        Assert.assertEquals(0.toLong(), view.dp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), view.dp2px(0).toLong())
+            val view = activity.view
+            Assert.assertEquals((10f * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), view.sp2px(10f).toLong())
+            Assert.assertEquals((10.toFloat() * activity.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), view.sp2px(10).toLong())
+            Assert.assertEquals(0, view.sp2px(0f).toLong())
+            Assert.assertEquals(0, view.sp2px(0).toLong())
+        }
+    }
 
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.density + 0.5f, view.px2dp(100), 0f)
-        Assert.assertEquals(0f, view.px2dp(0), 0f)
+    @Test
+    fun testPx2sp() {
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity: TestActivity ->
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.scaledDensity + 0.5f, activity.px2sp(100), 0f)
+            Assert.assertEquals(0f, activity.px2sp(0), 0f)
 
-        Assert.assertEquals((10f * context.resources.displayMetrics.scaledDensity + 0.5f).toInt().toLong(), view.sp2px(10f).toLong())
-        Assert.assertEquals(0.toLong(), view.sp2px(0f).toLong())
-        Assert.assertEquals(0.toLong(), view.sp2px(0).toLong())
+            val fragment = activity.fragment
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.scaledDensity + 0.5f, fragment.px2sp(100), 0f)
+            Assert.assertEquals(0f, fragment.px2sp(0), 0f)
 
-        Assert.assertEquals(100.toFloat() / context.resources.displayMetrics.scaledDensity + 0.5f, view.px2sp(100), 0f)
-        Assert.assertEquals(0f, view.px2sp(0), 0f)
+            val view = activity.view
+            Assert.assertEquals(100.toFloat() / activity.resources.displayMetrics.scaledDensity + 0.5f, view.px2sp(100), 0f)
+            Assert.assertEquals(0f, view.px2sp(0), 0f)
+        }
+    }
 
-        Assert.assertEquals(10f * context.resources.displayMetrics.scaledDensity, view.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
-        Assert.assertEquals(10.toFloat() * context.resources.displayMetrics.scaledDensity, view.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+    @Test
+    fun testApplyDimension() {
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity: TestActivity ->
+            Assert.assertEquals(10f * activity.resources.displayMetrics.scaledDensity, activity.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
+            Assert.assertEquals(10.toFloat() * activity.resources.displayMetrics.scaledDensity, activity.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+
+            val fragment = activity.fragment
+            Assert.assertEquals(10f * activity.resources.displayMetrics.scaledDensity, fragment.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
+            Assert.assertEquals(10.toFloat() * activity.resources.displayMetrics.scaledDensity, fragment.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+
+            val view = activity.view
+            Assert.assertEquals(10f * activity.resources.displayMetrics.scaledDensity, view.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10f), 0f)
+            Assert.assertEquals(10.toFloat() * activity.resources.displayMetrics.scaledDensity, view.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10), 0f)
+        }
     }
 
     class TestActivity : androidx.fragment.app.FragmentActivity() {
 
-        val supportFragment: androidx.fragment.app.Fragment
+        val fragment: androidx.fragment.app.Fragment
             get() = supportFragmentManager.findFragmentById(R.id.multiFrameAt_frame2)!!
 
         val view: View

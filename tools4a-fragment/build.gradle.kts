@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation("com.github.panpf.tools4j:tools4j-premise:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-lang:${property("TOOLS4J")}")
     androidTestImplementation(project(":tools4a-run"))
+    androidTestImplementation(project(":tools4a-test"))
 }
 
 /*

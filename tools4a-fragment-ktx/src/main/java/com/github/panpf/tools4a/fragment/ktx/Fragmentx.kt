@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE", "DEPRECATION")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.github.panpf.tools4a.fragment.ktx
 

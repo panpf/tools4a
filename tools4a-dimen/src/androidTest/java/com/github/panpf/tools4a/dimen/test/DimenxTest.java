@@ -16,7 +16,6 @@
 
 package com.github.panpf.tools4a.dimen.test;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,101 +25,109 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.dimen.Dimenx;
+import com.github.panpf.tools4a.test.Testx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class DimenxTest {
 
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityTestRule = new ActivityTestRule<>(TestActivity.class);
+    @Test
+    public void testDp2px() {
+        Testx.launchAndOnActivityWithUse(TestActivity.class, activity -> {
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(activity, 10f));
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(activity, 10));
+            Assert.assertEquals(0, Dimenx.dp2px(activity, 0f));
+            Assert.assertEquals(0, Dimenx.dp2px(activity, 0));
 
-    @Rule
-    @NonNull
-    public ActivityTestRule<TestActivity> getActivityTestRule() {
-        return activityTestRule;
+            Fragment fragment = activity.getFragment();
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(fragment, 10f));
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(fragment, 10));
+            Assert.assertEquals(0, Dimenx.dp2px(fragment, 0f));
+            Assert.assertEquals(0, Dimenx.dp2px(fragment, 0));
+
+            View view = activity.getView();
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(view, 10f));
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(view, 10));
+            Assert.assertEquals(0, Dimenx.dp2px(view, 0f));
+            Assert.assertEquals(0, Dimenx.dp2px(view, 0));
+        });
     }
 
     @Test
-    public void testContext() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    public void testPx2dp() {
+        Testx.launchAndOnActivityWithUse(TestActivity.class, activity -> {
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(activity, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2dp(activity, 0), 0f);
 
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(context, 10f));
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(context, 10));
-        Assert.assertEquals(0, Dimenx.dp2px(context, 0f));
-        Assert.assertEquals(0, Dimenx.dp2px(context, 0));
+            Fragment fragment = activity.getFragment();
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(fragment, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2dp(fragment, 0), 0f);
 
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(context, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2dp(context, 0), 0f);
-
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(context, 10f));
-        Assert.assertEquals((int) ((float) 10 * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(context, 10));
-        Assert.assertEquals(0, Dimenx.sp2px(context, 0f));
-        Assert.assertEquals(0, Dimenx.sp2px(context, 0));
-
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(context, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2sp(context, 0), 0f);
-
-        Assert.assertEquals(10f * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(context, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
-        Assert.assertEquals(((float) 10) * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(context, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
+            View view = activity.getView();
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(view, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2dp(view, 0), 0f);
+        });
     }
 
     @Test
-    public void testFragment() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        Fragment supportFragment = activityTestRule.getActivity().getSupportFragment();
+    public void testSp2px() {
+        Testx.launchAndOnActivityWithUse(TestActivity.class, activity -> {
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(activity, 10f));
+            Assert.assertEquals((int) ((float) 10 * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(activity, 10));
+            Assert.assertEquals(0, Dimenx.sp2px(activity, 0f));
+            Assert.assertEquals(0, Dimenx.sp2px(activity, 0));
 
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(supportFragment, 10f));
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(supportFragment, 10));
-        Assert.assertEquals(0, Dimenx.dp2px(supportFragment, 0f));
-        Assert.assertEquals(0, Dimenx.dp2px(supportFragment, 0));
+            Fragment fragment = activity.getFragment();
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(fragment, 10f));
+            Assert.assertEquals((int) ((float) 10 * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(fragment, 10));
+            Assert.assertEquals(0, Dimenx.sp2px(fragment, 0f));
+            Assert.assertEquals(0, Dimenx.sp2px(fragment, 0));
 
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(supportFragment, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2dp(supportFragment, 0), 0f);
-
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(supportFragment, 10f));
-        Assert.assertEquals((int) ((float) 10 * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(supportFragment, 10));
-        Assert.assertEquals(0, Dimenx.sp2px(supportFragment, 0f));
-        Assert.assertEquals(0, Dimenx.sp2px(supportFragment, 0));
-
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(supportFragment, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2sp(supportFragment, 0), 0f);
-
-        Assert.assertEquals(10f * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(supportFragment, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
-        Assert.assertEquals(((float) 10) * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(supportFragment, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
+            View view = activity.getView();
+            Assert.assertEquals((int) (10f * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(view, 10f));
+            Assert.assertEquals((int) ((float) 10 * activity.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(view, 10));
+            Assert.assertEquals(0, Dimenx.sp2px(view, 0f));
+            Assert.assertEquals(0, Dimenx.sp2px(view, 0));
+        });
     }
 
     @Test
-    public void testView() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    public void testPx2sp() {
+        Testx.launchAndOnActivityWithUse(TestActivity.class, activity -> {
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(activity, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2sp(activity, 0), 0f);
 
-        View view = activityTestRule.getActivity().getView();
+            Fragment fragment = activity.getFragment();
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(fragment, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2sp(fragment, 0), 0f);
 
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(view, 10f));
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().density + 0.5f), Dimenx.dp2px(view, 10));
-        Assert.assertEquals(0, Dimenx.dp2px(view, 0f));
-        Assert.assertEquals(0, Dimenx.dp2px(view, 0));
+            View view = activity.getView();
+            Assert.assertEquals(((float) 100) / activity.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(view, 100), 0f);
+            Assert.assertEquals(0f, Dimenx.px2sp(view, 0), 0f);
+        });
+    }
 
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().density + 0.5f, Dimenx.px2dp(view, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2dp(view, 0), 0f);
+    @Test
+    public void testApplyDimension() {
+        Testx.launchAndOnActivityWithUse(TestActivity.class, activity -> {
+            Assert.assertEquals(10f * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(activity, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
+            Assert.assertEquals(((float) 10) * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(activity, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
 
-        Assert.assertEquals((int) (10f * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(view, 10f));
-        Assert.assertEquals((int) ((float) 10 * context.getResources().getDisplayMetrics().scaledDensity + 0.5f), Dimenx.sp2px(view, 10));
-        Assert.assertEquals(0, Dimenx.sp2px(view, 0f));
-        Assert.assertEquals(0, Dimenx.sp2px(view, 0));
+            Fragment fragment = activity.getFragment();
+            Assert.assertEquals(10f * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(fragment, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
+            Assert.assertEquals(((float) 10) * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(fragment, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
 
-        Assert.assertEquals(((float) 100) / context.getResources().getDisplayMetrics().scaledDensity + 0.5f, Dimenx.px2sp(view, 100), 0f);
-        Assert.assertEquals(0f, Dimenx.px2sp(view, 0), 0f);
-
-        Assert.assertEquals(10f * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(view, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
-        Assert.assertEquals(((float) 10) * context.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(view, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
+            View view = activity.getView();
+            Assert.assertEquals(10f * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(view, TypedValue.COMPLEX_UNIT_SP, 10f), 0f);
+            Assert.assertEquals(((float) 10) * activity.getResources().getDisplayMetrics().scaledDensity, Dimenx.applyDimension(view, TypedValue.COMPLEX_UNIT_SP, 10), 0f);
+        });
     }
 
     public static class TestActivity extends FragmentActivity {
@@ -136,8 +143,8 @@ public class DimenxTest {
         }
 
         @NonNull
-        public Fragment getSupportFragment() {
-            return getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2);
+        public Fragment getFragment() {
+            return Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2));
         }
 
         @NonNull

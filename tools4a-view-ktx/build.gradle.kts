@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")
     androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
     androidTestImplementation(project(":tools4a-run-ktx"))
+    androidTestImplementation(project(":tools4a-test-ktx"))
 }
 
 /*

@@ -41,6 +41,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:${property("ANDROIDX_TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")
     androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
+    androidTestImplementation(project(":tools4a-test"))
 }
 
 /*

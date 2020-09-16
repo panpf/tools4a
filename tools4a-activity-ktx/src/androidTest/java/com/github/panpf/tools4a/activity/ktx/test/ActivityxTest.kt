@@ -16,7 +16,6 @@
 
 package com.github.panpf.tools4a.activity.ktx.test
 
-import android.R
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -42,7 +41,7 @@ class ActivityxTest {
 
     @Test
     fun testIsDestroyedCompat() {
-        launchActivityWithUse(TestFragmentActivity::class.java) { scenario ->
+        launchActivityWithUse(TestActivity::class.java) { scenario ->
             val activity = scenario.getActivitySync()
             runOnUiThreadAndWait { Assert.assertFalse(activity.isDestroyedCompat()) }
             scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -52,7 +51,7 @@ class ActivityxTest {
 
     @Test
     fun testConvertTranslucent() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Assert.assertTrue(activity.convertToTranslucentCompat())
                 Assert.assertTrue(activity.convertFromTranslucentCompat())
@@ -65,9 +64,9 @@ class ActivityxTest {
 
     @Test
     fun testGetImplWithParent() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
             Assert.assertNull(activity.getImplFromParent(ImplTestInterface::class.java))
-            Assert.assertEquals(TestFragmentActivity::class.java, activity.getImplFromParent(ViewModelStoreOwner::class.java)!!.javaClass)
+            Assert.assertEquals(TestActivity::class.java, activity.getImplFromParent(ViewModelStoreOwner::class.java)!!.javaClass)
         }
     }
 
@@ -75,28 +74,28 @@ class ActivityxTest {
     fun testCanStart() {
         val context = InstrumentationRegistry.getInstrumentation().context
         Assert.assertFalse(context.canStartActivity(Intent(context, ActivityxTest::class.java)))
-        Assert.assertTrue(context.canStartActivity(Intent(context, TestFragmentActivity::class.java)))
+        Assert.assertTrue(context.canStartActivity(Intent(context, TestActivity::class.java)))
     }
 
     @Test
     fun testStart() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
             assertNoThrow {
-                activity.startActivity(Intent(activity, TestFragmentActivity::class.java))
+                activity.startActivity(Intent(activity, TestActivity::class.java))
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.applicationContext.startActivity(Intent(activity, ActivityxTest::class.java))
             }
 
             assertNoThrow {
-                activity.fragment.startActivity(Intent(activity, TestFragmentActivity::class.java))
+                activity.fragment.startActivity(Intent(activity, TestActivity::class.java))
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.fragment.startActivity(Intent(activity, ActivityxTest::class.java))
             }
 
             assertNoThrow {
-                activity.view.startActivity(Intent(activity, TestFragmentActivity::class.java))
+                activity.view.startActivity(Intent(activity, TestActivity::class.java))
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.view.startActivity(Intent(activity, ActivityxTest::class.java))
@@ -106,32 +105,32 @@ class ActivityxTest {
 
     @Test
     fun testStartByClass() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
             assertNoThrow {
-                activity.startActivityByClass(TestFragmentActivity::class.java, null)
+                activity.startActivityByClass(TestActivity::class.java, null)
             }
             assertNoThrow {
-                activity.startActivityByClass(TestFragmentActivity::class.java)
+                activity.startActivityByClass(TestActivity::class.java)
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.applicationContext.startActivityByClass(NoRegisterTestActivity::class.java)
             }
 
             assertNoThrow {
-                activity.fragment.startActivityByClass(TestFragmentActivity::class.java, null)
+                activity.fragment.startActivityByClass(TestActivity::class.java, null)
             }
             assertNoThrow {
-                activity.fragment.startActivityByClass(TestFragmentActivity::class.java)
+                activity.fragment.startActivityByClass(TestActivity::class.java)
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.fragment.startActivityByClass(NoRegisterTestActivity::class.java)
             }
 
             assertNoThrow {
-                activity.view.startActivityByClass(TestFragmentActivity::class.java, null)
+                activity.view.startActivityByClass(TestActivity::class.java, null)
             }
             assertNoThrow {
-                activity.view.startActivityByClass(TestFragmentActivity::class.java)
+                activity.view.startActivityByClass(TestActivity::class.java)
             }
             assertThrow(ActivityNotFoundException::class) {
                 activity.view.startActivityByClass(NoRegisterTestActivity::class.java)
@@ -141,55 +140,55 @@ class ActivityxTest {
 
     @Test
     fun testSafeStart() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
-            Assert.assertTrue(activity.safeStartActivity(Intent(activity, TestFragmentActivity::class.java)))
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+            Assert.assertTrue(activity.safeStartActivity(Intent(activity, TestActivity::class.java)))
             Assert.assertFalse(activity.applicationContext.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
 
-            Assert.assertTrue(activity.fragment.safeStartActivity(Intent(activity, TestFragmentActivity::class.java)))
+            Assert.assertTrue(activity.fragment.safeStartActivity(Intent(activity, TestActivity::class.java)))
             Assert.assertFalse(activity.fragment.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
 
-            Assert.assertTrue(activity.fragment.safeStartActivity(Intent(activity, TestFragmentActivity::class.java)))
+            Assert.assertTrue(activity.fragment.safeStartActivity(Intent(activity, TestActivity::class.java)))
             Assert.assertFalse(activity.fragment.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
 
-            Assert.assertTrue(activity.view.safeStartActivity(Intent(activity, TestFragmentActivity::class.java)))
+            Assert.assertTrue(activity.view.safeStartActivity(Intent(activity, TestActivity::class.java)))
             Assert.assertFalse(activity.view.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
         }
     }
 
     @Test
     fun testSafeStartByClass() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
-            Assert.assertTrue(activity.safeStartActivityByClass(TestFragmentActivity::class.java, null))
-            Assert.assertTrue(activity.safeStartActivityByClass(TestFragmentActivity::class.java))
+        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+            Assert.assertTrue(activity.safeStartActivityByClass(TestActivity::class.java, null))
+            Assert.assertTrue(activity.safeStartActivityByClass(TestActivity::class.java))
             Assert.assertFalse(activity.applicationContext.safeStartActivityByClass(NoRegisterTestActivity::class.java))
 
-            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestFragmentActivity::class.java, null))
-            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestFragmentActivity::class.java))
+            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestActivity::class.java, null))
+            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestActivity::class.java))
             Assert.assertFalse(activity.fragment.safeStartActivityByClass(NoRegisterTestActivity::class.java))
 
-            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestFragmentActivity::class.java, null))
-            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestFragmentActivity::class.java))
+            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestActivity::class.java, null))
+            Assert.assertTrue(activity.fragment.safeStartActivityByClass(TestActivity::class.java))
             Assert.assertFalse(activity.fragment.safeStartActivityByClass(NoRegisterTestActivity::class.java))
 
-            Assert.assertTrue(activity.view.safeStartActivityByClass(TestFragmentActivity::class.java, null))
-            Assert.assertTrue(activity.view.safeStartActivityByClass(TestFragmentActivity::class.java))
+            Assert.assertTrue(activity.view.safeStartActivityByClass(TestActivity::class.java, null))
+            Assert.assertTrue(activity.view.safeStartActivityByClass(TestActivity::class.java))
             Assert.assertFalse(activity.view.safeStartActivityByClass(NoRegisterTestActivity::class.java))
         }
     }
 
     interface ImplTestInterface
 
-    class TestFragmentActivity : FragmentActivity() {
+    class TestActivity : FragmentActivity() {
 
         val fragment: Fragment
-            get() = supportFragmentManager.findFragmentById(R.id.content)!!
+            get() = supportFragmentManager.findFragmentById(android.R.id.content)!!
 
         val view: View
-            get() = findViewById(R.id.content)!!
+            get() = findViewById(android.R.id.content)!!
 
         public override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            supportFragmentManager.beginTransaction().replace(R.id.content, Fragment()).commit()
+            supportFragmentManager.beginTransaction().replace(android.R.id.content, Fragment()).commit()
         }
     }
 

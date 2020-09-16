@@ -3,30 +3,27 @@ package com.github.panpf.tools4a.dialog.test;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.dialog.Dialogx;
-import com.github.panpf.tools4a.run.Runx;
+import com.github.panpf.tools4a.test.Testx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class DialogxTest {
 
-    @Rule
-    public final ActivityTestRule<TestFragmentActivity> mFragmentActivityTestRule =
-            new ActivityTestRule<>(TestFragmentActivity.class);
-
     @Test
     public void testSetClickButtonClosable() {
-        Runx.runOnUiThreadAndWait(() -> {
-            TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
+        Testx.launchAndOnActivityWithUse(TestFragmentActivity.class, activity -> {
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), true));
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), false));
         });
@@ -34,18 +31,13 @@ public class DialogxTest {
 
     @Test
     public void testShowProgressDialog() {
-        Runx.runOnUiThreadAndWait(() -> {
-            TestFragmentActivity activity = mFragmentActivityTestRule.getActivity();
-            androidx.fragment.app.Fragment supportFragment = mFragmentActivityTestRule.getActivity()
-                    .getSupportFragmentManager()
-                    .findFragmentById(android.R.id.content);
-
+        Testx.launchAndOnActivityWithUse(TestFragmentActivity.class, activity -> {
             Assert.assertNotNull(Dialogx.showProgressDialog(activity, "by activity"));
             Assert.assertNotNull(Dialogx.showProgressDialog(activity, android.R.string.ok));
 
-            assert supportFragment != null;
-            Assert.assertNotNull(Dialogx.showProgressDialog(supportFragment, "by supportFragment"));
-            Assert.assertNotNull(Dialogx.showProgressDialog(supportFragment, android.R.string.yes));
+            Fragment fragment = activity.getFragment();
+            Assert.assertNotNull(Dialogx.showProgressDialog(fragment, "by supportFragment"));
+            Assert.assertNotNull(Dialogx.showProgressDialog(fragment, android.R.string.yes));
         });
     }
 
@@ -60,6 +52,12 @@ public class DialogxTest {
                     .commit();
         }
 
+        @NonNull
+        public Fragment getFragment() {
+            return Objects.requireNonNull(getSupportFragmentManager().findFragmentById(android.R.id.content));
+        }
+
+        @NonNull
         public Dialog getDialog() {
             return new Dialog(this);
         }
