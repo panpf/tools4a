@@ -28,7 +28,7 @@ implementation "com.github.panpf.tools4a:tools4a-ktx:$LAST_VERSION" // Kotlin ex
 
 Please replace `$LAST_VERSION` with the latest version: [![Download][version_java_icon]][version_java_link]
 
-The "com.github.panpf.tools4a:tools4a:$LAST_VERSION" dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
+The "com.github.panpf.tools4a\:tools4a\:$LAST_VERSION" dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
 ```groovy
 implementation "com.github.panpf.tools4a:tools4a-activity:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-activity-ktx:$LAST_VERSION" // Kotlin extension, not required
@@ -122,14 +122,13 @@ Dependencies:
 
 ### tools4a-activity
 * Activityx: [Activityx.java] ([Test][ActivityxTest.java]) | [Activityx.kt] ([Test][ActivityxTest.kt])
-    * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat,
-    * getImplFromParent, canStart, start, startByClass, safeStart, safeStartByClass
+    * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat, getImplFromParent
+    * canStart, start, startByClass, safeStart, safeStartByClass
 
 ### tools4a-args
 * Argsx: [Argsx.java] ([Test][ArgsxTest.java]) | [Argsx.kt] ([Test][ArgsxTest.kt])
-    * read\*ArgOrThrow, read\*ArgOr, read\*ArgOrNull,
-    * read\*UriArgOrThrow, read\*UriArgOr, read\*UriArgOrNull,
-    * read\*IntentUriArgOrThrow, read\*IntentUriArgOr,read\*IntentUriArgOrNull,
+    * read\*ArgOrThrow, read\*ArgOr, read\*ArgOrNull, read\*UriArgOrThrow, read\*UriArgOr,
+    * read\*UriArgOrNull, read\*IntentUriArgOrThrow, read\*IntentUriArgOr,read\*IntentUriArgOrNull,
     * read\*UriIntentArgOrThrow, read\*UriIntentArgOr, read\*UriIntentArgOrNull
 * ArgsBinder: [ArgsBinder.kt] ([Test][ArgsBinderTest.kt])
     * bind\*Arg, bind\*ArgOr, bind\*UriArg, bind\*UriArgOr, bind\*IntentUriArg,
@@ -184,13 +183,12 @@ Dependencies:
     * getApplication, requireApplication, isDestroyedCompat, getImplFromParent, instantiate,
     * findUserVisibleChildFragment, findFragmentByViewPagerCurrentItem
 
-### graphics
+### tools4a-graphics
 * Drawablex: [Drawablex.java] ([Test][DrawablexTest.java]) | [Drawablex.kt] ([Test][DrawablexTest.kt])
     * toBitmapWithIntrinsicSize, toBitmapWithBoundsSize, changeColor, changeResDrawableColor
 * Bitmapx: [Bitmapx.java] ([Test][BitmapxTest.java]) | [Bitmapx.kt] ([Test][BitmapxTest.kt])
-    * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor,
-    * toByteArray, writeToFile, readBitmap, toDrawable, use, calculateSamplingSize,
-    * calculateSamplingSizeForRegion, textToBitmap
+    * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor, toByteArray,
+    * writeToFile, readBitmap, toDrawable, use, calculateSamplingSize, calculateSamplingSizeForRegion, textToBitmap
 * Imagex: [Imagex.java] ([Test][ImagexTest.java]) | [Imagex.kt] ([Test][ImagexTest.kt])
     * getMimeType, getMimeSubType
 * Colorx: [Colorx.java] ([Test][ColorxTest.java]) | [Colorx.kt] ([Test][ColorxTest.kt])
@@ -209,24 +207,21 @@ Dependencies:
 
 ### tools4a-inputmethod
 * InputMethodx: [InputMethodx.java] ([Test][InputMethodxTest.java]) | [InputMethodx.kt] ([Test][InputMethodxTest.kt])
-    * showSoftInput, delayShowSoftInput, hideSoftInput, moveCursorToEnd,
-    * moveCursorToStart, moveCursorTo
+    * showSoftInput, delayShowSoftInput, hideSoftInput, moveCursorToEnd, moveCursorToStart, moveCursorTo
 
 ### tools4a-intent
 * Intentx: [Intentx.java] ([Test][IntentxTest.java]) | [Intentx.kt] ([Test][IntentxTest.kt])
-    * createRecordingIntent, createLaunchDialingIntent, createCallPhoneIntent,
-    * createLaunchSendSmsIntent, createLaunchWebBrowserIntent, createScanFileBroadcastIntent,
-    * createActivityIntentByResolveInfo, createTakePhotoIntent, createPickImageIntent,
-    * createCropImageIntent, createSendTextIntent, createSendTextFileIntent,
-    * createSendImageFileIntent, createSendFileIntent
+    * createRecordingIntent, createLaunchDialingIntent, createCallPhoneIntent, createLaunchSendSmsIntent,
+    * createLaunchWebBrowserIntent, createScanFileBroadcastIntent, createActivityIntentByResolveInfo,
+    * createTakePhotoIntent, createPickImageIntent, createCropImageIntent, createSendTextIntent,
+    * createSendTextFileIntent, createSendImageFileIntent, createSendFileIntent
 
 ### tools4a-network
-* Network: [Networkx.java] ([Test][NetworkxTest.java]) | [Networkx.kt] ([Test][NetworkxTest.kt])
+* Networkx: [Networkx.java] ([Test][NetworkxTest.java]) | [Networkx.kt] ([Test][NetworkxTest.kt])
     * getState, isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
     * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
-    & getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity,
-    * getWifiState, isWifiEnabled, setWifiEnabled, isMobileEnabled, setMobileEnabled,
-    * getGateway, getDNS1, getDNS2
+    * getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity, getWifiState,
+    * isWifiEnabled, setWifiEnabled, isMobileEnabled, setMobileEnabled, getGateway, getDNS1, getDNS2
 * NetworkState: [NetworkState.java] ([Test][NetworkStateTest.java])
     * isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
     * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
@@ -234,19 +229,16 @@ Dependencies:
 
 ### tools4a-packages
 * Packagex: [Packagex.java] ([Test][PackagexTest.java]) | [Packagex.kt] ([Test][PackagexTest.kt])
-    * isPackageInstalled, isSystemPackage, isSystemPackageOr, isDebuggablePackage,
-    * isDebuggablePackageOr, isJunitTestPackage, isJunitTestPackageOr,
-    * createInstallPackageIntent, createUninstallPackageIntent, createLaunchPackageIntent,
-    * createApplicationDetailsSettingsIntent, requestInstallPackage, requestUninstallPackage,
-    * getPackage, getPackageOrNull, getPackageVersionCode, getPackageVersionCodeOr,
-    * getPackageLongVersionCode, getPackageLongVersionCodeOr, getPackageVersionName,
-    * getPackageVersionNameOr, getPackageVersionNameOrEmpty, getPackageVersionNameOrNull,
-    * getFirstPackageByFilter, getFirstPackageByFilterFlags, getFirstPackage,
-    * listPackageInfo, listPackageByFilter, listPackageByFilterFlags, listPackage,
-    * listPackageVersionCodeToMapByFilter, listPackageVersionCodeToMapByFilterFlags,
-    * listPackageVersionCodeToMap, listPackageNameByFilter, listPackageNameByFilterFlags,
-    * listPackageName, countPackageByFilter, countPackageByFilterFlags, countPackage,
-    * getPackageApkFile, getPackageApkFileOrNull, getPackageSignatureBytes,
+    * isPackageInstalled, isSystemPackage, isSystemPackageOr, isDebuggablePackage, isDebuggablePackageOr,
+    * isJunitTestPackage, isJunitTestPackageOr, createInstallPackageIntent, createUninstallPackageIntent,
+    * createLaunchPackageIntent, createApplicationDetailsSettingsIntent, requestInstallPackage, requestUninstallPackage,
+    * getPackage, getPackageOrNull, getPackageVersionCode, getPackageVersionCodeOr, getPackageLongVersionCode,
+    * getPackageLongVersionCodeOr, getPackageVersionName, getPackageVersionNameOr, getPackageVersionNameOrEmpty,
+    * getPackageVersionNameOrNull, getFirstPackageByFilter, getFirstPackageByFilterFlags, getFirstPackage,
+    * listPackageInfo, listPackageByFilter, listPackageByFilterFlags, listPackage, listPackageVersionCodeToMapByFilter,
+    * listPackageVersionCodeToMapByFilterFlags, listPackageVersionCodeToMap, listPackageNameByFilter,
+    * listPackageNameByFilterFlags, listPackageName, countPackageByFilter, countPackageByFilterFlags,
+    * countPackage, getPackageApkFile, getPackageApkFileOrNull, getPackageSignatureBytes,
     * getPackageSignatureBytesOrNull, getPackageIconDrawable, getPackageIconDrawableOrNull,
     * getApkIconDrawable, getApkIconDrawableOrNull
 * PackageInfox: [PackageInfox.java] ([Test][PackageInfoxTest.java]) | [PackageInfox.kt] ([Test][PackageInfoxTest.kt])
@@ -274,9 +266,8 @@ Dependencies:
 
 ### tools4a-rom
 * Romx: [Romx.java] ([Test][RomxTest.java])
-    * getType, isType, isMiuiType, isEmuiType, isFlymeType, isColorType,
-    * isFuntouchOSType, isSmartisanOSType, isH2OSType, getTypeName,
-    * getVersionName, getVersionCode, getVersionIncremental
+    * getType, isType, isMiuiType, isEmuiType, isFlymeType, isColorType, isFuntouchOSType, isSmartisanOSType,
+    * isH2OSType, getTypeName, getVersionName, getVersionCode, getVersionIncremental
 
 ### tools4a-root
 * Rootx: [Rootx.java] ([Test][RootxTest.java])
@@ -284,11 +275,9 @@ Dependencies:
 
 ### tools4a-run
 * Runx: [Runx.java] ([Test][RunxTest.java]) | [Runx.kt] ([Test][RunxTest.kt])
-    * getMainHandler, isOnMainThread, isOnNotMainThread, checkMainThread,
-    * checkNotMainThread, runOnMainThread, runOnMainThreadSync,
-    * runOnMainThreadSyncResult, runOnMainThreadSyncResultNullable,
-    * isOnMainProcess, isOnNotMainProcess, getOnProcessNameOrNull,
-    * getOnProcessNameSuffixOrNull
+    * getMainHandler, isOnMainThread, isOnNotMainThread, checkMainThread, checkNotMainThread, runOnMainThread,
+    * runOnMainThreadSync, runOnMainThreadSyncResult, runOnMainThreadSyncResultNullable, isOnMainProcess,
+    * isOnNotMainProcess, getOnProcessNameOrNull, getOnProcessNameSuffixOrNull
 
 ### tools4a-service
 * Servicex: [Servicex.java] ([Test][ServicexTest.java]) | [Servicex.kt] ([Test][ServicexTest.kt])
@@ -296,9 +285,8 @@ Dependencies:
 
 ### tools4a-settings
 * Settingsx: [Settingsx.java] ([Test][SettingsxTest.java])  | [Settingsx.kt] ([Test][SettingsxTest.kt])
-    * isScreenBrightnessModeAutomatic, setScreenBrightnessModeAutomatic, getScreenBrightness,
-    * setScreenBrightness, getScreenOffTimeout, setScreenOffTimeout, isAirplaneModeOn,
-    * setAirplaneModeOn, isBluetoothOn, setBluetoothOn
+    * isScreenBrightnessModeAutomatic, setScreenBrightnessModeAutomatic, getScreenBrightness, setScreenBrightness,
+    * getScreenOffTimeout, setScreenOffTimeout, isAirplaneModeOn, setAirplaneModeOn, isBluetoothOn, setBluetoothOn
 
 ### tools4a-storage
 * Storagex: [Storagex.java] ([Test][StoragexTest.java]) | [Storagex.kt] ([Test][StoragexTest.kt])
@@ -316,9 +304,9 @@ Dependencies:
     * getAppObbDir, getAppObbDirs, lengthAppObbDirs, cleanAppObbDirs, filterByMinBytes, getFileIn
 * StatFs: [StatFsx.java] ([Test][StatFsxTest.java]) | [StatFsx.kt] ([Test][StatFsxTest.kt])
     * getCompatAvailableBytes, getCompatFreeBytes, getCompatTotalBytes
-* StorageManagerCompat: [StorageManagerCompat.java] ([Test][StorageManagerCompatTest.java]) | [StorageManagerCompat.kt] ([Test][StorageManagerCompatTest.kt])
+* StorageManagerCompat: [StorageManagerCompat.java] ([Test][StorageManagerCompatTest.java])
     * getVolumeList, getVolumes, getVolumePaths, getVolumeState, getVolume
-* StorageVolumeCompat: [StorageVolumeCompat.java] ([Test][StorageVolumeCompatTest.java]) | [StorageVolumeCompat.kt] ([Test][StorageVolumeCompatTest.kt])
+* StorageVolumeCompat: [StorageVolumeCompat.java] ([Test][StorageVolumeCompatTest.java])
     * getPath, getPathFile, isPrimary, isRemovable, isEmulated, getState, allowMassStorage, getMaxFileSize,
 
 ### tools4a-systemproperties
@@ -409,7 +397,7 @@ Please view the [CHANGELOG.md] file
 [CHANGELOG.md]: CHANGELOG.md
 
 [Activityx.java]: tools4a-activity/src/main/java/com/github/panpf/tools4a/activity/Activityx.java
-[ActivityxTest.kt]: tools4a-activity/src/androidTest/java/com/github/panpf/tools4a/activity/test/ActivityxTest.java
+[ActivityxTest.java]: tools4a-activity/src/androidTest/java/com/github/panpf/tools4a/activity/test/ActivityxTest.java
 [Activityx.kt]: tools4a-activity-ktx/src/main/java/com/github/panpf/tools4a/activity/ktx/Activityx.kt
 [ActivityxTest.kt]: tools4a-activity-ktx/src/androidTest/java/com/github/panpf/tools4a/activity/ktx/test/ActivityxTest.kt
 
@@ -430,7 +418,7 @@ Please view the [CHANGELOG.md] file
 [ClipboardxTest.kt]: tools4a-clipboard-ktx/src/androidTest/java/com/github/panpf/tools4a/clipboard/ktx/test/ClipboardxTest.kt
 
 [Contextx.java]: tools4a-context/src/main/java/com/github/panpf/tools4a/context/Contextx.java
-[ContextxTest.kt]: tools4a-context/src/androidTest/java/com/github/panpf/tools4a/context/test/ContextxTest.java
+[ContextxTest.java]: tools4a-context/src/androidTest/java/com/github/panpf/tools4a/context/test/ContextxTest.java
 [Contextx.kt]: tools4a-context-ktx/src/main/java/com/github/panpf/tools4a/context/ktx/Contextx.kt
 [ContextxTest.kt]: tools4a-context-ktx/src/androidTest/java/com/github/panpf/tools4a/context/ktx/test/ContextxTest.kt
 
@@ -631,9 +619,9 @@ Please view the [CHANGELOG.md] file
 [Preferencex.kt]: other-ktx/src/main/java/com/github/panpf/tools4a/other/ktx/Preferencex.kt
 [PreferencexTest.kt]: other-ktx/src/androidTest/java/com/github/panpf/tools4a/other/ktx/test/PreferencexTest.kt
 
-[Textx.java]: tools4a-other/src/main/java/com/github/panpf/tools4a/other/Textx.java
-[TextxTest.java]: tools4a-other/src/androidTest/java/com/github/panpf/tools4a/other/test/TextxTest.java
-[Textx.kt]: tools4a-other-ktx/src/main/java/com/github/panpf/tools4a/other/ktx/Textx.kt
-[TextxTest.kt]: tools4a-other-ktx/src/androidTest/java/com/github/panpf/tools4a/other/ktx/test/TextxTest.kt
+[Textx.java]: other/src/main/java/com/github/panpf/tools4a/other/Textx.java
+[TextxTest.java]: other/src/androidTest/java/com/github/panpf/tools4a/other/test/TextxTest.java
+[Textx.kt]: other-ktx/src/main/java/com/github/panpf/tools4a/other/ktx/Textx.kt
+[TextxTest.kt]: other-ktx/src/androidTest/java/com/github/panpf/tools4a/other/ktx/test/TextxTest.kt
 
 [SingletonLazy.java]: other/src/main/java/com/github/panpf/tools4a/other/SingletonLazy.java
