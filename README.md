@@ -323,7 +323,8 @@ Dependencies:
 
 ### tools4a-toast
 * Toastx: [Toastx.java] ([Test][ToastxTest.java]) | [Toastx.kt] ([Test][ToastxTest.kt])
-    * showLong, showWithFormatLong, showShort, showWithFormatShort, showLongWithView, showShortWithView
+    * showLong, showWithFormatLong, showShort, showWithFormatShort,
+    * showLongWithView, showShortWithView
 
 ### tools4a-test
 * Testx: [Testx.java] | [Testx.kt]
