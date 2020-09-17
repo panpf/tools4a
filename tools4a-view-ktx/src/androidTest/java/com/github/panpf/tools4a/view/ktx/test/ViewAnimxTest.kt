@@ -23,7 +23,7 @@ import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.github.panpf.tools4a.run.ktx.runOnUiThread
+import com.github.panpf.tools4a.run.ktx.runOnMainThread
 import com.github.panpf.tools4a.view.ViewAnimx
 import com.github.panpf.tools4a.view.ktx.*
 import org.junit.Rule
@@ -59,28 +59,28 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.animAlpha(1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+        runOnMainThread { view.animAlpha(1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animAlpha(1.0f, 0.0f, invisibleListener)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animAlpha(1.0f, 0.0f, true)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animAlpha(1.0f, 0.0f, 500)
         }
         Thread.sleep(500)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animAlpha(1.0f, 0.0f)
         }
@@ -106,34 +106,34 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.animTranslate(0f, 300f, 0f, 300f, 0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+        runOnMainThread { view.animTranslate(0f, 300f, 0f, 300f, 0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animTranslate(0f, 300f, 0f, 300f, invisibleListener)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animTranslate(0f, 300f, 0f, 300f, true)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animTranslate(0f, 300f, 0f, 300f, 500)
         }
         Thread.sleep(500)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animTranslate(0f, 300f, 0f, 300f, 3f)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.animTranslate(0f, 300f, 0f, 300f)
         }
@@ -159,22 +159,22 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.shakeLandscape(10f, 7f, 700, true, invisibleListener) }
+        runOnMainThread { view.shakeLandscape(10f, 7f, 700, true, invisibleListener) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakeLandscape(invisibleListener) }
+        runOnMainThread { view.shakeLandscape(invisibleListener) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakeLandscape(true) }
+        runOnMainThread { view.shakeLandscape(true) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakeLandscape(500L) }
+        runOnMainThread { view.shakeLandscape(500L) }
         Thread.sleep(500L)
 
-        runOnUiThread { view.shakeLandscape(15f) }
+        runOnMainThread { view.shakeLandscape(15f) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakeLandscape() }
+        runOnMainThread { view.shakeLandscape() }
         Thread.sleep(700)
     }
 
@@ -197,22 +197,22 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.shakePortrait(10f, 7f, 700, true, invisibleListener) }
+        runOnMainThread { view.shakePortrait(10f, 7f, 700, true, invisibleListener) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakePortrait(invisibleListener) }
+        runOnMainThread { view.shakePortrait(invisibleListener) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakePortrait(true) }
+        runOnMainThread { view.shakePortrait(true) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakePortrait(500L) }
+        runOnMainThread { view.shakePortrait(500L) }
         Thread.sleep(500L)
 
-        runOnUiThread { view.shakePortrait(15f) }
+        runOnMainThread { view.shakePortrait(15f) }
         Thread.sleep(700)
 
-        runOnUiThread { view.shakePortrait() }
+        runOnMainThread { view.shakePortrait() }
         Thread.sleep(700)
     }
 
@@ -235,22 +235,22 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.startAnimFromRes(R.anim.view_anim_test, true, invisibleListener) }
+        runOnMainThread { view.startAnimFromRes(R.anim.view_anim_test, true, invisibleListener) }
         Thread.sleep(1000)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.startAnimFromRes(R.anim.view_anim_test, invisibleListener)
         }
         Thread.sleep(1000)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.startAnimFromRes(R.anim.view_anim_test, true)
         }
         Thread.sleep(1000)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.startAnimFromRes(R.anim.view_anim_test)
         }
@@ -276,28 +276,28 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.invisibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+        runOnMainThread { view.invisibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.invisibleByAnimAlpha(invisibleListener)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.invisibleByAnimAlpha(true)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.invisibleByAnimAlpha(500)
         }
         Thread.sleep(500)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.invisibleByAnimAlpha()
         }
@@ -323,28 +323,28 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.goneByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+        runOnMainThread { view.goneByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.goneByAnimAlpha(invisibleListener)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.goneByAnimAlpha(true)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.goneByAnimAlpha(500)
         }
         Thread.sleep(500)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.goneByAnimAlpha()
         }
@@ -370,28 +370,28 @@ class ViewAnimxTest {
             }
         }
 
-        runOnUiThread { view.visibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+        runOnMainThread { view.visibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.visibleByAnimAlpha(invisibleListener)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.visibleByAnimAlpha(true)
         }
         Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.visibleByAnimAlpha(500)
         }
         Thread.sleep(500)
 
-        runOnUiThread {
+        runOnMainThread {
             view.visibility = View.VISIBLE
             view.visibleByAnimAlpha()
         }

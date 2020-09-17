@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class Runx {
 
@@ -40,10 +39,48 @@ public class Runx {
         return MainHandlerHolder.MAIN_HANDLER;
     }
 
+
+    /**
+     * Is on main thread?
+     */
+    public static boolean isOnMainThread() {
+        return Looper.getMainLooper().getThread() == Thread.currentThread();
+    }
+
+    /**
+     * Is on not main thread?
+     */
+    public static boolean isOnNotMainThread() {
+        return Looper.getMainLooper().getThread() != Thread.currentThread();
+    }
+
+    /**
+     * Checks if the current thread is the main thread, otherwise throws.
+     *
+     * @throws IllegalStateException if current thread is not the main thread.
+     */
+    public static void checkMainThread() {
+        if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
+            throw new IllegalStateException("Method cannot be called on the not main application thread (on: " + Thread.currentThread().getName() + ")");
+        }
+    }
+
+    /**
+     * Checks if the current thread is not the main thread, otherwise throws.
+     *
+     * @throws IllegalStateException if current thread is the main thread.
+     */
+    public static void checkNotMainThread() {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+            throw new IllegalStateException("Method cannot be called on the main application thread (on: " + Thread.currentThread().getName() + ")");
+        }
+    }
+
+
     /**
      * Execute the specified code block in the main thread
      */
-    public static void runOnUiThread(@NonNull Runnable block) {
+    public static void runOnMainThread(@NonNull Runnable block) {
         if (isOnMainThread()) {
             block.run();
         } else {
@@ -54,127 +91,65 @@ public class Runx {
     /**
      * Execute the specified code block in the main thread
      */
-    // todo rename to runOnUiThreadSync
-    public static void runOnUiThreadAndWait(@NonNull final Runnable block) {
+    public static void runOnMainThreadSync(@NonNull final Runnable block) {
         if (isOnMainThread()) {
             block.run();
         } else {
-            final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(() -> {
-                block.run();
-                countDownLatch.countDown();
-            });
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            final SyncRunnable syncRunnable = new SyncRunnable(block);
+            getMainHandler().post(syncRunnable);
+            syncRunnable.waitForComplete();
         }
     }
-
-    // todo 优化 sync 代码
-//    private static final class SyncRunnable implements Runnable {
-//        private final Runnable mTarget;
-//        private boolean mComplete;
-//
-//        public SyncRunnable(Runnable target) {
-//            mTarget = target;
-//        }
-//
-//        public void run() {
-//            mTarget.run();
-//            synchronized (this) {
-//                mComplete = true;
-//                notifyAll();
-//            }
-//        }
-//
-//        public void waitForComplete() {
-//            synchronized (this) {
-//                while (!mComplete) {
-//                    try {
-//                        wait();
-//                    } catch (InterruptedException e) {
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     /**
      * Execute the specified code block in the main thread
      */
-    // todo rename to runOnUiThreadSyncResult
     @NonNull
-    public static <T> T runOnUiThreadAndWaitResult(@NonNull final ResultRunnable<T> block) {
+    public static <T> T runOnMainThreadSyncResult(@NonNull final ResultRunnable<T> block) {
         if (isOnMainThread()) {
             return block.run();
         } else {
-            final Object[] results = new Object[1];
-            final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(() -> {
-                results[0] = block.run();
-                countDownLatch.countDown();
-            });
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //noinspection unchecked
-            T result = (T) results[0];
-            if (result != null) {
-                return result;
-            } else {
-                throw new IllegalArgumentException("return result cannot be null");
-            }
+            final SyncResultRunnable<T> syncRunnable = new SyncResultRunnable<>(block);
+            getMainHandler().post(syncRunnable);
+            return syncRunnable.waitForComplete();
         }
     }
 
     /**
      * Execute the specified code block in the main thread
      */
-    // todo rename to runOnUiThreadSyncNullableResult
     @Nullable
-    public static <T> T runOnUiThreadAndWaitNullableResult(@NonNull final ResultNullableRunnable<T> block) {
+    public static <T> T runOnMainThreadSyncResultNullable(@NonNull final ResultNullableRunnable<T> block) {
         if (isOnMainThread()) {
             return block.run();
         } else {
-            final Object[] results = new Object[1];
-            final CountDownLatch countDownLatch = new CountDownLatch(1);
-            getMainHandler().post(() -> {
-                results[0] = block.run();
-                countDownLatch.countDown();
-            });
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //noinspection unchecked
-            return (T) results[0];
+            final SyncResultNullableRunnable<T> syncRunnable = new SyncResultNullableRunnable<>(block);
+            getMainHandler().post(syncRunnable);
+            return syncRunnable.waitForComplete();
         }
     }
 
-    /**
-     * Is on main thread?
-     */
-    public static boolean isOnMainThread() {
-        return Looper.getMainLooper().getThread() == Thread.currentThread();
-    }
 
     /**
      * Is on main process?
      */
     public static boolean isOnMainProcess(@NonNull Context context) {
-        return context.getPackageName().equals(getProcessName(context));
+        return context.getPackageName().equals(getOnProcessNameOrNull(context));
     }
+
+    /**
+     * Is on not main process?
+     */
+    public static boolean isOnNotMainProcess(@NonNull Context context) {
+        return !context.getPackageName().equals(getOnProcessNameOrNull(context));
+    }
+
 
     /**
      * Get the name of the current process
      */
     @Nullable
-    public static String getProcessName(@NonNull Context context) {
+    public static String getOnProcessNameOrNull(@NonNull Context context) {
         final int myPid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> processInfoList = activityManager.getRunningAppProcesses();
@@ -189,16 +164,21 @@ public class Runx {
     }
 
     /**
-     * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
+     * Get the suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​'push'
      */
     @Nullable
-    public static String getProcessNameSuffix(@NonNull Context context) {
-        String processName = getProcessName(context);
+    public static String getOnProcessNameSuffixOrNull(@NonNull Context context) {
+        String processName = getOnProcessNameOrNull(context);
         if (processName == null) return null;
         String packageName = context.getPackageName();
         int lastIndex = processName.lastIndexOf(packageName, 0);
-        return lastIndex != -1 ? processName.substring(lastIndex + packageName.length()) : null;
+        String result = lastIndex != -1 ? processName.substring(lastIndex + packageName.length()) : null;
+        if (result != null && result.startsWith(":")) {
+            result = result.substring(1);
+        }
+        return result != null && !"".equals(result) ? result : null;
     }
+
 
     private static class MainHandlerHolder {
         private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());

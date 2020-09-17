@@ -26,7 +26,7 @@ import android.widget.EditText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.inputmethod.ktx.*
-import com.github.panpf.tools4a.run.ktx.runOnUiThread
+import com.github.panpf.tools4a.run.ktx.runOnMainThread
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -50,13 +50,13 @@ class InputMethodxTest {
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
-            runOnUiThread { activity.hideSoftInput() }
+            runOnMainThread { activity.hideSoftInput() }
             Thread.sleep(500)
             Assert.assertFalse(activity.isSoftInputShowing())
         }
 
         // show
-        runOnUiThread { originEditText.showSoftInput() }
+        runOnMainThread { originEditText.showSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
     }
@@ -69,23 +69,23 @@ class InputMethodxTest {
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
-            runOnUiThread { activity.hideSoftInput() }
+            runOnMainThread { activity.hideSoftInput() }
             Thread.sleep(500)
             Assert.assertFalse(activity.isSoftInputShowing())
         }
 
         // show
-        runOnUiThread { supportEditText.delayShowSoftInput() }
+        runOnMainThread { supportEditText.delayShowSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
 
         // hide
-        runOnUiThread { activity.hideSoftInput() }
+        runOnMainThread { activity.hideSoftInput() }
         Thread.sleep(500)
         Assert.assertFalse(activity.isSoftInputShowing())
 
         // show
-        runOnUiThread { supportEditText.delayShowSoftInput(500) }
+        runOnMainThread { supportEditText.delayShowSoftInput(500) }
         Thread.sleep((500 + 500).toLong())
         Assert.assertTrue(activity.isSoftInputShowing())
     }
@@ -98,28 +98,28 @@ class InputMethodxTest {
 
         // ensure hide
         if (activity.isSoftInputShowing()) {
-            runOnUiThread { activity.hideSoftInput() }
+            runOnMainThread { activity.hideSoftInput() }
             Thread.sleep(500)
             Assert.assertFalse(activity.isSoftInputShowing())
         }
 
         // show
-        runOnUiThread { supportEditText.showSoftInput() }
+        runOnMainThread { supportEditText.showSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
 
         // hide
-        runOnUiThread { activity.supportFragment.hideSoftInput() }
+        runOnMainThread { activity.supportFragment.hideSoftInput() }
         Thread.sleep(500)
         Assert.assertFalse(activity.isSoftInputShowing())
 
         // show
-        runOnUiThread { supportEditText.showSoftInput() }
+        runOnMainThread { supportEditText.showSoftInput() }
         Thread.sleep(500)
         Assert.assertTrue(activity.isSoftInputShowing())
 
         // hide
-        runOnUiThread { supportEditText.hideSoftInput() }
+        runOnMainThread { supportEditText.hideSoftInput() }
         Thread.sleep(500)
         Assert.assertFalse(activity.isSoftInputShowing())
     }
@@ -130,15 +130,15 @@ class InputMethodxTest {
         val activity = activityRule.activity
         val originEditText = activity.supportFragmentEditTxt
 
-        runOnUiThread { originEditText.moveCursorToEnd() }
+        runOnMainThread { originEditText.moveCursorToEnd() }
         Thread.sleep(100)
         Assert.assertEquals(originEditText.length().toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runOnUiThread { originEditText.moveCursorToStart() }
+        runOnMainThread { originEditText.moveCursorToStart() }
         Thread.sleep(100)
         Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runOnUiThread { originEditText.moveCursorTo(originEditText.length() / 2) }
+        runOnMainThread { originEditText.moveCursorTo(originEditText.length() / 2) }
         Thread.sleep(100)
         Assert.assertEquals((originEditText.length() / 2).toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
     }

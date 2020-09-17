@@ -39,6 +39,7 @@ dependencies {
     api(project(":tools4a-run"))
 
     testImplementation("junit:junit:${property("JUNIT")}")
+    androidTestImplementation("com.github.panpf.tools4j:tools4j-test-ktx:${property("TOOLS4J")}")
     androidTestImplementation("androidx.test:runner:${property("ANDROIDX_TEST_RUNNER")}")
     androidTestImplementation("androidx.test:rules:${property("ANDROIDX_TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")

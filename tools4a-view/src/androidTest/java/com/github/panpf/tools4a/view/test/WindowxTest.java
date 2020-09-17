@@ -56,7 +56,7 @@ public class WindowxTest {
 
         try {
             final float newWindowBrightnessValue = windowBrightness * -1;
-            Runx.runOnUiThread(new Runnable() {
+            Runx.runOnMainThread(new Runnable() {
                 @Override
                 public void run() {
                     Windowx.setBrightness(activity.getWindow(), newWindowBrightnessValue);
@@ -77,7 +77,7 @@ public class WindowxTest {
 
             Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f);
         } finally {
-            Runx.runOnUiThread(new Runnable() {
+            Runx.runOnMainThread(new Runnable() {
                 @Override
                 public void run() {
                     Windowx.setBrightness(activity.getWindow(), windowBrightness);

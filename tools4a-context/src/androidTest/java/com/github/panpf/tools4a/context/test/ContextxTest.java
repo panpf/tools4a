@@ -51,7 +51,7 @@ public class ContextxTest {
             Fragment fragment = activity.getFragment();
             View view = activity.getView();
 
-            Runx.runOnUiThreadAndWait(() -> {
+            Runx.runOnMainThreadSync(() -> {
                 Assert.assertTrue(Contextx.appContext(activity) instanceof Application);
                 Assert.assertFalse(Contextx.appContext(activity) instanceof Activity);
                 Assert.assertNotNull(Contextx.requireContext(fragment));

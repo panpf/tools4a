@@ -284,9 +284,11 @@ Dependencies:
 
 ### tools4a-run
 * Runx: [Runx.java] ([Test][RunxTest.java]) | [Runx.kt] ([Test][RunxTest.kt])
-    * getMainHandler, runOnUiThread, runOnUiThreadAndWait, runOnUiThreadAndWaitResult,
-    * runOnUiThreadAndWaitNullableResult, isOnMainThread, isOnMainProcess,
-    * getProcessName, getProcessNameSuffix
+    * getMainHandler, isOnMainThread, isOnNotMainThread, checkMainThread,
+    * checkNotMainThread, runOnMainThread, runOnMainThreadSync,
+    * runOnMainThreadSyncResult, runOnMainThreadSyncResultNullable,
+    * isOnMainProcess, isOnNotMainProcess, getOnProcessNameOrNull,
+    * getOnProcessNameSuffixOrNull
 
 ### tools4a-service
 * Servicex: [Servicex.java] ([Test][ServicexTest.java]) | [Servicex.kt] ([Test][ServicexTest.kt])

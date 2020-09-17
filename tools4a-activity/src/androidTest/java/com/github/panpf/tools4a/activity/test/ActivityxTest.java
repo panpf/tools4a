@@ -50,11 +50,11 @@ public class ActivityxTest {
     public void testIsDestroyedCompat() {
         Testx.launchActivityWithUse(TestActivity.class, scenario -> {
             TestActivity activity = Testx.getActivitySync(scenario);
-            Runx.runOnUiThreadAndWait(() -> {
+            Runx.runOnMainThreadSync(() -> {
                 Assert.assertFalse(Activityx.isDestroyedCompat(activity));
             });
             scenario.moveToState(Lifecycle.State.DESTROYED);
-            Runx.runOnUiThreadAndWait(() -> {
+            Runx.runOnMainThreadSync(() -> {
                 Assert.assertTrue(Activityx.isDestroyedCompat(activity));
             });
         });

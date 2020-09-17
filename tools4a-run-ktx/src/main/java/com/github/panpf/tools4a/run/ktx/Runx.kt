@@ -19,32 +19,16 @@
 package com.github.panpf.tools4a.run.ktx
 
 import android.content.Context
+import android.os.Handler
 import com.github.panpf.tools4a.run.ResultNullableRunnable
 import com.github.panpf.tools4a.run.ResultRunnable
 import com.github.panpf.tools4a.run.Runx
 
-/**
- * Execute the specified code block in the main thread
- */
-inline fun runOnUiThread(block: Runnable) = Runx.runOnUiThread(block)
-
 
 /**
- * Execute the specified code block in the main thread
+ * Get the main thread Handler
  */
-inline fun runOnUiThreadAndWait(block: Runnable) = Runx.runOnUiThreadAndWait(block)
-
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun <T> runOnUiThreadAndWaitResult(block: ResultRunnable<T>): T = Runx.runOnUiThreadAndWaitResult(block)
-
-
-/**
- * Execute the specified code block in the main thread
- */
-inline fun <T> runOnUiThreadAndWaitNullableResult(block: ResultNullableRunnable<T>): T? = Runx.runOnUiThreadAndWaitNullableResult(block)
+inline fun getMainHandler(): Handler = Runx.getMainHandler()
 
 
 /**
@@ -53,16 +37,63 @@ inline fun <T> runOnUiThreadAndWaitNullableResult(block: ResultNullableRunnable<
 inline fun isOnMainThread(): Boolean = Runx.isOnMainThread()
 
 /**
+ * Is on not main thread?
+ */
+inline fun isOnNotMainThread(): Boolean = Runx.isOnNotMainThread()
+
+/**
+ * Checks if the current thread is the main thread, otherwise throws.
+ *
+ * @throws IllegalStateException if current thread is not the main thread.
+ */
+inline fun checkMainThread() = Runx.checkMainThread()
+
+/**
+ * Checks if the current thread is not the main thread, otherwise throws.
+ *
+ * @throws IllegalStateException if current thread is the main thread.
+ */
+inline fun checkNotMainThread() = Runx.checkNotMainThread()
+
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun runOnMainThread(block: Runnable) = Runx.runOnMainThread(block)
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun runOnMainThreadSync(block: Runnable) = Runx.runOnMainThreadSync(block)
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun <T> runOnMainThreadSyncResult(block: ResultRunnable<T>): T = Runx.runOnMainThreadSyncResult(block)
+
+/**
+ * Execute the specified code block in the main thread
+ */
+inline fun <T> runOnMainThreadSyncResultNullable(block: ResultNullableRunnable<T>): T? = Runx.runOnMainThreadSyncResultNullable(block)
+
+
+/**
  * Is on main process?
  */
 inline fun Context.isOnMainProcess(): Boolean = Runx.isOnMainProcess(this)
 
 /**
- * Get name of the current process
+ * Is on not main process?
  */
-inline fun Context.getProcessName(): String? = Runx.getProcessName(this)
+inline fun Context.isOnNotMainProcess(): Boolean = Runx.isOnNotMainProcess(this)
+
 
 /**
- * Get suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​':push'
+ * Get name of the current process
  */
-inline fun Context.getProcessNameSuffix(): String? = Runx.getProcessNameSuffix(this)
+inline fun Context.getOnProcessNameOrNull(): String? = Runx.getOnProcessNameOrNull(this)
+
+/**
+ * Get suffix of the current process name, for example, the process name is 'com.my.app:push', then the suffix is ​​'push'
+ */
+inline fun Context.getOnProcessNameSuffixOrNull(): String? = Runx.getOnProcessNameSuffixOrNull(this)

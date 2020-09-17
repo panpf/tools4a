@@ -331,7 +331,7 @@ public class Contextx {
     @NonNull
     public static <T> T systemServiceOnUiThread(@NonNull final Context context, @NonNull final String serviceName) {
         final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
-        return Runx.runOnUiThreadAndWaitResult(() -> {
+        return Runx.runOnMainThreadSyncResult(() -> {
             Context nowContext = contextWeakReference.get();
             if (nowContext == null) throw new IllegalStateException("Context has death");
             //noinspection unchecked
@@ -405,7 +405,7 @@ public class Contextx {
     @Nullable
     public static <T> T systemServiceOrNullOnUiThread(@NonNull final Context context, @NonNull final String serviceName) {
         final WeakReference<Context> contextWeakReference = new WeakReference<>(context);
-        return Runx.runOnUiThreadAndWaitNullableResult(() -> {
+        return Runx.runOnMainThreadSyncResultNullable(() -> {
             Context nowContext = contextWeakReference.get();
             //noinspection unchecked
             return nowContext != null ? (T) nowContext.getSystemService(serviceName) : null;

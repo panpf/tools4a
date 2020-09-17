@@ -17,17 +17,20 @@
 package com.github.panpf.tools4a.run.test;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.github.panpf.tools4a.run.ResultNullableRunnable;
+import com.github.panpf.tools4a.run.ResultRunnable;
 import com.github.panpf.tools4a.run.Runx;
+import com.github.panpf.tools4a.run.SyncRunnable;
+import com.github.panpf.tools4j.test.Assertx;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.concurrent.CountDownLatch;
 
 @RunWith(AndroidJUnit4.class)
 public class RunxTest {
@@ -35,50 +38,140 @@ public class RunxTest {
     @Test
     public void testGetMainHandler() {
         Assert.assertNotNull(Runx.getMainHandler());
-    }
-
-    @Test
-    public void testRunOnUiThread() {
-        final String[] results = new String[1];
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Runx.runOnUiThread(() -> {
-            results[0] = Runx.isOnMainThread() ? "MainThread1" : "NoMainThread1";
-            countDownLatch.countDown();
-        });
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Assert.assertEquals(results[0], "MainThread1");
-
-        Runx.runOnUiThreadAndWait(() -> results[0] = Runx.isOnMainThread() ? "MainThread2" : "NoMainThread2");
-        Assert.assertEquals(results[0], "MainThread2");
-
-        results[0] = Runx.runOnUiThreadAndWaitResult(() -> Runx.isOnMainThread() ? "MainThread3" : "NoMainThread3");
-        Assert.assertEquals(results[0], "MainThread3");
-
-        results[0] = Runx.runOnUiThreadAndWaitNullableResult(() -> Runx.isOnMainThread() ? "MainThread4" : null);
-        Assert.assertEquals(results[0], "MainThread4");
+        Assert.assertSame(Looper.getMainLooper(), Runx.getMainHandler().getLooper());
+        Assert.assertSame(Runx.getMainHandler(), Runx.getMainHandler());
     }
 
     @Test
     public void testIsOnMainThread() {
         Assert.assertFalse(Runx.isOnMainThread());
+
+        final SyncRunnable syncRunnable = new SyncRunnable(() ->
+                Assert.assertTrue(Runx.isOnMainThread())
+        );
+        Runx.getMainHandler().post(syncRunnable);
+        syncRunnable.waitForComplete();
+    }
+
+    @Test
+    public void testIsOnNotMainThread() {
+        Assert.assertTrue(Runx.isOnNotMainThread());
+
+        final SyncRunnable syncRunnable = new SyncRunnable(() ->
+                Assert.assertFalse(Runx.isOnNotMainThread())
+        );
+        Runx.getMainHandler().post(syncRunnable);
+        syncRunnable.waitForComplete();
+    }
+
+    @Test
+    public void testCheckMainThread() {
+        Assertx.assertThrow(IllegalStateException.class, Runx::checkMainThread);
+
+        final SyncRunnable syncRunnable = new SyncRunnable(() ->
+                Assertx.assertNoThrow(Runx::checkMainThread)
+        );
+        Runx.getMainHandler().post(syncRunnable);
+        syncRunnable.waitForComplete();
+    }
+
+    @Test
+    public void testCheckNotMainThread() {
+        Assertx.assertNoThrow(Runx::checkNotMainThread);
+
+        final SyncRunnable syncRunnable = new SyncRunnable(() ->
+                Assertx.assertThrow(IllegalStateException.class, Runx::checkNotMainThread)
+        );
+        Runx.getMainHandler().post(syncRunnable);
+        syncRunnable.waitForComplete();
+    }
+
+    @Test
+    public void testRunOnMainThread() {
+        final SyncRunnable syncRunnable = new SyncRunnable(Runx::checkMainThread);
+        Runx.runOnMainThread(syncRunnable);
+        syncRunnable.waitForComplete();
+
+        final SyncRunnable syncRunnable1 = new SyncRunnable(() -> Runx.runOnMainThread(Runx::checkMainThread));
+        Runx.getMainHandler().post(syncRunnable1);
+        syncRunnable1.waitForComplete();
+    }
+
+    @Test
+    public void testRunOnMainThreadSync() {
+        Runx.runOnMainThreadSync(Runx::checkMainThread);
+
+        final SyncRunnable syncRunnable = new SyncRunnable(() ->
+                Runx.runOnMainThreadSync(Runx::checkMainThread)
+        );
+        Runx.getMainHandler().post(syncRunnable);
+        syncRunnable.waitForComplete();
+    }
+
+    @Test
+    public void testRunOnMainThreadSyncResult() {
+        final ResultRunnable<String> resultRunnable = () -> {
+            Runx.checkMainThread();
+            return "testRunOnMainThreadSyncResult";
+        };
+        Assert.assertEquals("testRunOnMainThreadSyncResult", Runx.runOnMainThreadSyncResult(resultRunnable));
+
+        final SyncRunnable syncRunnable1 = new SyncRunnable(() ->
+                Assert.assertEquals("testRunOnMainThreadSyncResult", Runx.runOnMainThreadSyncResult(resultRunnable))
+        );
+        Runx.getMainHandler().post(syncRunnable1);
+        syncRunnable1.waitForComplete();
+
+        final ResultRunnable<String> resultRunnable1 = () -> {
+            Runx.checkMainThread();
+            //noinspection ConstantConditions
+            return null;
+        };
+        Assertx.assertThrow(IllegalArgumentException.class, () -> Runx.runOnMainThreadSyncResult(resultRunnable1));
+    }
+
+    @Test
+    public void testRunOnMainThreadSyncResultNullable() {
+        final ResultNullableRunnable<String> resultNullableRunnable = () -> {
+            Runx.checkMainThread();
+            return "testRunOnMainThreadSyncResultNullable";
+        };
+        Assert.assertEquals("testRunOnMainThreadSyncResultNullable", Runx.runOnMainThreadSyncResultNullable(resultNullableRunnable));
+
+        final SyncRunnable syncRunnable1 = new SyncRunnable(() ->
+                Assert.assertEquals("testRunOnMainThreadSyncResultNullable", Runx.runOnMainThreadSyncResultNullable(resultNullableRunnable))
+        );
+        Runx.getMainHandler().post(syncRunnable1);
+        syncRunnable1.waitForComplete();
+
+        final ResultNullableRunnable<String> resultNullableRunnable1 = () -> {
+            Runx.checkMainThread();
+            return null;
+        };
+        Assert.assertNull(Runx.runOnMainThreadSyncResultNullable(resultNullableRunnable1));
     }
 
     @Test
     public void testIsOnMainProcess() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-
         Assert.assertTrue(Runx.isOnMainProcess(context));
     }
 
     @Test
-    public void testGetProcessName() {
+    public void testIsOnNotMainProcess() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Assert.assertFalse(Runx.isOnNotMainProcess(context));
+    }
 
-        Assert.assertNotNull(Runx.getProcessName(context));
-        Assert.assertEquals(Runx.getProcessNameSuffix(context), "");
+    @Test
+    public void testGetOnProcessNameOrNull() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Assert.assertEquals(context.getPackageName(), Runx.getOnProcessNameOrNull(context));
+    }
+
+    @Test
+    public void testGetOnProcessNameSuffixOrNull() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Assert.assertNull(Runx.getOnProcessNameSuffixOrNull(context));
     }
 }

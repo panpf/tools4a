@@ -19,7 +19,7 @@ package com.github.panpf.tools4a.view.ktx.test
 import android.app.Activity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.github.panpf.tools4a.run.ktx.runOnUiThread
+import com.github.panpf.tools4a.run.ktx.runOnMainThread
 import com.github.panpf.tools4a.view.ktx.getBrightness
 import com.github.panpf.tools4a.view.ktx.isBrightnessFlowSystem
 import com.github.panpf.tools4a.view.ktx.setBrightness
@@ -52,7 +52,7 @@ class WindowxTest {
 
         try {
             val newWindowBrightnessValue = windowBrightness * -1
-            runOnUiThread { activity.window.setBrightness(newWindowBrightnessValue) }
+            runOnMainThread { activity.window.setBrightness(newWindowBrightnessValue) }
             try {
                 Thread.sleep(1000)
             } catch (e: InterruptedException) {
@@ -69,7 +69,7 @@ class WindowxTest {
 
             Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f)
         } finally {
-            runOnUiThread { activity.window.setBrightness(windowBrightness) }
+            runOnMainThread { activity.window.setBrightness(windowBrightness) }
             try {
                 Thread.sleep(1000)
             } catch (e: InterruptedException) {

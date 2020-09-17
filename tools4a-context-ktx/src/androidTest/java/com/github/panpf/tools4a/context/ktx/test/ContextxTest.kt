@@ -48,7 +48,7 @@ class ContextxTest {
             val fragment = activity.supportFragment
             val view = activity.view
 
-            Runx.runOnUiThreadAndWait {
+            Runx.runOnMainThreadSync {
                 Assert.assertTrue(activity.appContext() is Application)
                 Assert.assertFalse(activity.appContext() is Activity)
 

@@ -29,7 +29,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.activity.ktx.*
-import com.github.panpf.tools4a.run.ktx.runOnUiThreadAndWait
+import com.github.panpf.tools4a.run.ktx.runOnMainThreadSync
 import com.github.panpf.tools4a.test.ktx.*
 import com.github.panpf.tools4j.test.ktx.*
 import org.junit.Assert
@@ -43,9 +43,9 @@ class ActivityxTest {
     fun testIsDestroyedCompat() {
         launchActivityWithUse(TestActivity::class.java) { scenario ->
             val activity = scenario.getActivitySync()
-            runOnUiThreadAndWait { Assert.assertFalse(activity.isDestroyedCompat()) }
+            runOnMainThreadSync { Assert.assertFalse(activity.isDestroyedCompat()) }
             scenario.moveToState(Lifecycle.State.DESTROYED)
-            runOnUiThreadAndWait { Assert.assertTrue(activity.isDestroyedCompat()) }
+            runOnMainThreadSync { Assert.assertTrue(activity.isDestroyedCompat()) }
         }
     }
 

@@ -5,16 +5,8 @@ Upgrade:
 * upgrade: Upgrade target sdk to 30
 
 Change:
-* change: All methods in Runx are renamed as follows:
-    * runOnUIThread rename to runOnUiThread
-    * runOnUIThreadAndWait rename to runOnUiThreadAndWait
-    * runOnUIThreadAndWaitResult rename to runOnUiThreadAndWaitResult
-    * runOnUIThreadAndWaitNullableResult rename to runOnUiThreadAndWaitNullableResult
-    * isOnTheMainThread rename to isOnMainThread
-    * isOnTheMainProcess rename to isOnMainProcess
-    * getTheProcessName rename to getProcessName
-    * getTheProcessNameSuffix rename to getProcessNameSuffix
-* change: Contextx.wifiRttManager() mtehod now returns nullable WifiRttManager
+* change: All methods in Runx are renamed
+* change: Contextx.wifiRttManager() method now returns nullable WifiRttManager
 * change: Contextx.wifiRttManager() rename to wifiRttManagerOrNull()
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
 * change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
@@ -22,6 +14,7 @@ Change:
 New:
 * new: Devivex added isEmulator method
 * new: Added 'tools4a-test' and 'tools4a-test-ktx' module
+* new: Runx added isOnNotMainThread, checkMainThread, checkNotMainThread, isOnNotMainProcess method
 
 Improve:
 * improve: Buildx adapts to android 11
