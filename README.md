@@ -28,7 +28,7 @@ implementation "com.github.panpf.tools4a:tools4a-ktx:$LAST_VERSION" // Kotlin ex
 
 Please replace `$LAST_VERSION` with the latest version: [![Download][version_java_icon]][version_java_link]
 
-The "com.github.panpf.tools4a\:tools4a\:$LAST_VERSION" dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
+The `com.github.panpf.tools4a:tools4a:$LAST_VERSION` dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
 ```groovy
 implementation "com.github.panpf.tools4a:tools4a-activity:$LAST_VERSION"
 implementation "com.github.panpf.tools4a:tools4a-activity-ktx:$LAST_VERSION" // Kotlin extension, not required
@@ -188,7 +188,8 @@ Dependencies:
     * toBitmapWithIntrinsicSize, toBitmapWithBoundsSize, changeColor, changeResDrawableColor
 * Bitmapx: [Bitmapx.java] ([Test][BitmapxTest.java]) | [Bitmapx.kt] ([Test][BitmapxTest.kt])
     * crop, cropTo, centerCrop, centerCropTo, circular, circularTo, tint, createByColor, toByteArray,
-    * writeToFile, readBitmap, toDrawable, use, calculateSamplingSize, calculateSamplingSizeForRegion, textToBitmap
+    * writeToFile, readBitmap, toDrawable, use, calculateSamplingSize,
+    * calculateSamplingSizeForRegion, textToBitmap
 * Imagex: [Imagex.java] ([Test][ImagexTest.java]) | [Imagex.kt] ([Test][ImagexTest.kt])
     * getMimeType, getMimeSubType
 * Colorx: [Colorx.java] ([Test][ColorxTest.java]) | [Colorx.kt] ([Test][ColorxTest.kt])
@@ -229,13 +230,15 @@ Dependencies:
 
 ### tools4a-packages
 * Packagex: [Packagex.java] ([Test][PackagexTest.java]) | [Packagex.kt] ([Test][PackagexTest.kt])
-    * isPackageInstalled, isSystemPackage, isSystemPackageOr, isDebuggablePackage, isDebuggablePackageOr,
-    * isJunitTestPackage, isJunitTestPackageOr, createInstallPackageIntent, createUninstallPackageIntent,
-    * createLaunchPackageIntent, createApplicationDetailsSettingsIntent, requestInstallPackage, requestUninstallPackage,
-    * getPackage, getPackageOrNull, getPackageVersionCode, getPackageVersionCodeOr, getPackageLongVersionCode,
-    * getPackageLongVersionCodeOr, getPackageVersionName, getPackageVersionNameOr, getPackageVersionNameOrEmpty,
-    * getPackageVersionNameOrNull, getFirstPackageByFilter, getFirstPackageByFilterFlags, getFirstPackage,
-    * listPackageInfo, listPackageByFilter, listPackageByFilterFlags, listPackage, listPackageVersionCodeToMapByFilter,
+    * isPackageInstalled, isSystemPackage, isSystemPackageOr, isDebuggablePackage,
+    * isDebuggablePackageOr, isJunitTestPackage, isJunitTestPackageOr, createInstallPackageIntent,
+    * createUninstallPackageIntent, createLaunchPackageIntent, createApplicationDetailsSettingsIntent,
+    * requestInstallPackage, requestUninstallPackage, getPackage, getPackageOrNull,
+    * getPackageVersionCode, getPackageVersionCodeOr, getPackageLongVersionCode,
+    * getPackageLongVersionCodeOr, getPackageVersionName, getPackageVersionNameOr,
+    * getPackageVersionNameOrEmpty, getPackageVersionNameOrNull, getFirstPackageByFilter,
+    * getFirstPackageByFilterFlags, getFirstPackage, listPackageInfo, listPackageByFilter,
+    * listPackageByFilterFlags, listPackage, listPackageVersionCodeToMapByFilter,
     * listPackageVersionCodeToMapByFilterFlags, listPackageVersionCodeToMap, listPackageNameByFilter,
     * listPackageNameByFilterFlags, listPackageName, countPackageByFilter, countPackageByFilterFlags,
     * countPackage, getPackageApkFile, getPackageApkFileOrNull, getPackageSignatureBytes,
@@ -244,8 +247,9 @@ Dependencies:
 * PackageInfox: [PackageInfox.java] ([Test][PackageInfoxTest.java]) | [PackageInfox.kt] ([Test][PackageInfoxTest.kt])
     * findActivityInfo, findActivityInfoByName, findServiceInfo, findServiceInfoByName
     * findReceiverInfo, findReceiverInfoByName, findProviderInfo, findProviderInfoByName
-    * findPermissionInfo, findPermissionInfoByName, findRequestedPermission, findRequestedPermissionByName
-    * findMetaDataWithName, findMetaDataByName, findMetaDataWithValue, findMetaDataByValue
+    * findPermissionInfo, findPermissionInfoByName, findRequestedPermission,
+    * findRequestedPermissionByName, findMetaDataWithName, findMetaDataByName,
+    * findMetaDataWithValue, findMetaDataByValue
 
 ### tools4a-permission
 * Permissionx: [Permissionx.java] ([Test][PermissionxTest.java]) | [Permissionx.kt] ([Test][PermissionxTest.kt])
@@ -266,8 +270,8 @@ Dependencies:
 
 ### tools4a-rom
 * Romx: [Romx.java] ([Test][RomxTest.java])
-    * getType, isType, isMiuiType, isEmuiType, isFlymeType, isColorType, isFuntouchOSType, isSmartisanOSType,
-    * isH2OSType, getTypeName, getVersionName, getVersionCode, getVersionIncremental
+    * isMiuiType, isEmuiType, isFlymeType, isColorType, isFuntouchOSType, isSmartisanOSType, isH2OSType,
+    * getType, isType, getTypeName, getVersionName, getVersionCode, getVersionIncremental
 
 ### tools4a-root
 * Rootx: [Rootx.java] ([Test][RootxTest.java])
@@ -275,9 +279,10 @@ Dependencies:
 
 ### tools4a-run
 * Runx: [Runx.java] ([Test][RunxTest.java]) | [Runx.kt] ([Test][RunxTest.kt])
-    * getMainHandler, isOnMainThread, isOnNotMainThread, checkMainThread, checkNotMainThread, runOnMainThread,
-    * runOnMainThreadSync, runOnMainThreadSyncResult, runOnMainThreadSyncResultNullable, isOnMainProcess,
-    * isOnNotMainProcess, getOnProcessNameOrNull, getOnProcessNameSuffixOrNull
+    * getMainHandler, isOnMainThread, isOnNotMainThread, checkMainThread, checkNotMainThread,
+    * runOnMainThread, runOnMainThreadSync, runOnMainThreadSyncResult,
+    * runOnMainThreadSyncResultNullable, isOnMainProcess, isOnNotMainProcess,
+    * getOnProcessNameOrNull, getOnProcessNameSuffixOrNull
 
 ### tools4a-service
 * Servicex: [Servicex.java] ([Test][ServicexTest.java]) | [Servicex.kt] ([Test][ServicexTest.kt])
@@ -285,29 +290,32 @@ Dependencies:
 
 ### tools4a-settings
 * Settingsx: [Settingsx.java] ([Test][SettingsxTest.java])  | [Settingsx.kt] ([Test][SettingsxTest.kt])
-    * isScreenBrightnessModeAutomatic, setScreenBrightnessModeAutomatic, getScreenBrightness, setScreenBrightness,
-    * getScreenOffTimeout, setScreenOffTimeout, isAirplaneModeOn, setAirplaneModeOn, isBluetoothOn, setBluetoothOn
+    * isScreenBrightnessModeAutomatic, setScreenBrightnessModeAutomatic,
+    * getScreenBrightness, setScreenBrightness, getScreenOffTimeout, setScreenOffTimeout,
+    * isAirplaneModeOn, setAirplaneModeOn, isBluetoothOn, setBluetoothOn
 
 ### tools4a-storage
 * Storagex: [Storagex.java] ([Test][StoragexTest.java]) | [Storagex.kt] ([Test][StoragexTest.kt])
-    * getFreeBytesOr, getTotalBytesOr, getAvailableBytesOr, getVolumeState, isVolumeMounted, isPrimaryVolume,
-    * isVolumeEmulated, isVolumeRemovable, getVolumePaths, getMountedVolumePaths, getVolumeFiles,
-    * getMountedVolumeFiles, getVolumeList, getMountedVolumeList, getVolumes, getMountedVolumes, getVolume,
-    * getExternalStorageState, isExternalStorageMounted, isPrimaryExternalStorage, isExternalStorageEmulated,
-    * isExternalStorageEmulated, isExternalStorageRemovable, isExternalStorageRemovable,
-    * getExternalStorageDirectory, getMountedExternalStorageDirectory, getExternalStorageDirectorys,
-    * getMountedExternalStorageDirectorys, getExternalStorageDirectorys, getMountedExternalStorageDirectorys,
-    * getExternalStorageDirectorysWithPath, getMountedExternalStorageDirectorysWithPath,
-    * getAppExternalCacheDir, getAppExternalCacheDirs, getAppInternalCacheDir, getAppCacheDirs,
-    * lengthAppCacheDirs, cleanAppCacheDirs, getAppExternalFilesDir, getAppExternalFilesDirs,
-    * getAppInternalFilesDir, getAppFilesDirs, lengthAppFilesDirs, cleanAppFilesDirs,
-    * getAppObbDir, getAppObbDirs, lengthAppObbDirs, cleanAppObbDirs, filterByMinBytes, getFileIn
+    * getFreeBytesOr, getTotalBytesOr, getAvailableBytesOr, getVolumeState, isVolumeMounted,
+    * isPrimaryVolume, isVolumeEmulated, isVolumeRemovable, getVolumePaths, getMountedVolumePaths,
+    * getVolumeFiles, getMountedVolumeFiles, getVolumeList, getMountedVolumeList,
+    * getVolumes, getMountedVolumes, getVolume, getExternalStorageState, isExternalStorageMounted,
+    * isPrimaryExternalStorage, isExternalStorageEmulated, isExternalStorageEmulated,
+    * isExternalStorageRemovable, isExternalStorageRemovable, getExternalStorageDirectory,
+    * getMountedExternalStorageDirectory, getExternalStorageDirectorys,
+    * getMountedExternalStorageDirectorys, getExternalStorageDirectorys,
+    * getMountedExternalStorageDirectorys, getExternalStorageDirectorysWithPath,
+    * getMountedExternalStorageDirectorysWithPath, getAppExternalCacheDir, getAppExternalCacheDirs,
+    * getAppInternalCacheDir, getAppCacheDirs, lengthAppCacheDirs, cleanAppCacheDirs,
+    * getAppExternalFilesDir, getAppExternalFilesDirs, getAppInternalFilesDir, getAppFilesDirs,
+    * lengthAppFilesDirs, cleanAppFilesDirs, getAppObbDir, getAppObbDirs, lengthAppObbDirs,
+    * cleanAppObbDirs, filterByMinBytes, getFileIn
 * StatFs: [StatFsx.java] ([Test][StatFsxTest.java]) | [StatFsx.kt] ([Test][StatFsxTest.kt])
     * getCompatAvailableBytes, getCompatFreeBytes, getCompatTotalBytes
 * StorageManagerCompat: [StorageManagerCompat.java] ([Test][StorageManagerCompatTest.java])
     * getVolumeList, getVolumes, getVolumePaths, getVolumeState, getVolume
 * StorageVolumeCompat: [StorageVolumeCompat.java] ([Test][StorageVolumeCompatTest.java])
-    * getPath, getPathFile, isPrimary, isRemovable, isEmulated, getState, allowMassStorage, getMaxFileSize,
+    * getPath, getPathFile, isPrimary, isRemovable, isEmulated, getState, allowMassStorage, getMaxFileSize
 
 ### tools4a-systemproperties
 * SystemPropertiesx: [SystemPropertiesx.java] ([Test][SystemPropertiesxTest.java])
@@ -338,14 +346,16 @@ Dependencies:
 
 ### tools4a-other（Not available for the time being）
 * Preferencex: [Preferencex.java] ([Test][PreferencexTest.java]) | [Preferencex.kt] ([Test][PreferencexTest.kt])
-    * getPreferences, getDefaultPreferences, putIntTo, putInt, putIntsTo, putInts, putLongTo, putLong, putLongsTo, putLongs,
-    * putBooleanTo, putBoolean, putBooleansTo, putBooleans, putFloatTo, putFloat, putFloatsTo, putFloats,
-    * putStringTo, putString, putStringsTo, putStrings, putStringSetTo, putStringSet, putStringSetsTo, putStringSets,
-    * getIntFrom, getInt, getLongFrom, getLong, getBooleanFrom, getBoolean, getFloatFrom, getFloat,
-    * getStringFrom, getStringOrNullFrom, getString, getStringOrNull, getStringSetFrom, getStringSetOrNullFrom,
-    * getStringSet, getStringSetOrNull, getAllFrom, getAll, removeFrom, remove, contains, containsAny, containsAll,
+    * getPreferences, getDefaultPreferences, putIntTo, putInt, putIntsTo, putInts,
+    * putLongTo, putLong, putLongsTo, putLongs, putBooleanTo, putBoolean, putBooleansTo, putBooleans,
+    * putFloatTo, putFloat, putFloatsTo, putFloats, putStringTo, putString, putStringsTo, putStrings,
+    * putStringSetTo, putStringSet, putStringSetsTo, putStringSets, getIntFrom, getInt, getLongFrom,
+    * getLong, getBooleanFrom, getBoolean, getFloatFrom, getFloat, getStringFrom, getStringOrNullFrom,
+    * getString, getStringOrNull, getStringSetFrom, getStringSetOrNullFrom, getStringSet,
+    * getStringSetOrNull, getAllFrom, getAll, removeFrom, remove, contains, containsAny, containsAll,
     * containsFrom, containsAnyFrom, containsAllFrom, isEmpty, isEmptyFrom, clear,
-    * registerOnChangeListener, registerOnChangeListenerTo, unregisterOnChangeListener, unregisterOnChangeListenerFrom
+    * registerOnChangeListener, registerOnChangeListenerTo, unregisterOnChangeListener,
+    * unregisterOnChangeListenerFrom
 * SingletonLazy: [SingletonLazy.java]
 * Textx: [Textx.java] ([Test][TextxTest.java]) | [Textx.kt] ([Test][TextxTest.kt])
     * changeColorByHtml, changeColorToRedByHtml, changeKeywordColorByHtml,
