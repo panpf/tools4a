@@ -405,17 +405,17 @@ public class BitmapxTest {
         Bitmap bitmapIcon = null;
         Bitmap bitmapIconCompact = null;
         try {
-            bitmap = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14));
+            bitmap = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(14));
             Assert.assertFalse(bitmap.isRecycled());
 
-            bitmapCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), true);
+            bitmapCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(14), true);
             Assert.assertFalse(bitmapCompact.isRecycled());
 
             icon = Bitmapx.readBitmap(context.getResources(), R.drawable.ic_opera);
-            bitmapIcon = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), icon);
+            bitmapIcon = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(14), icon);
             Assert.assertFalse(bitmapIcon.isRecycled());
 
-            bitmapIconCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(context, 14), true, icon);
+            bitmapIconCompact = Bitmapx.textToBitmap("测试 : My ijk : 1234567890", Color.BLACK, Dimenx.dp2px(14), true, icon);
             Assert.assertFalse(bitmapIconCompact.isRecycled());
 
             Assert.assertTrue(bitmap.getHeight() > bitmapCompact.getHeight());

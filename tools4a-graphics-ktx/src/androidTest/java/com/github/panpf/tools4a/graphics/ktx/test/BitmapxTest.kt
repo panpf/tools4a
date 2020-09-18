@@ -53,7 +53,7 @@ class BitmapxTest {
             try {
                 rectFileInputStream = context.resources.openRawResource(R.drawable.rect)
                 rectFileOutputStream = file.outputStream()
-                rectFileInputStream!!.copyTo(rectFileOutputStream)
+                rectFileInputStream.copyTo(rectFileOutputStream)
             } finally {
                 rectFileOutputStream.closeQuietly()
                 rectFileInputStream.closeQuietly()
@@ -308,17 +308,17 @@ class BitmapxTest {
         var bitmapIcon: Bitmap? = null
         var bitmapIconCompact: Bitmap? = null
         try {
-            bitmap = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat())
+            bitmap = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, 14.dp2px)
             Assert.assertFalse(bitmap.isRecycled)
 
-            bitmapCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), true)
+            bitmapCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, 14.dp2px, true)
             Assert.assertFalse(bitmapCompact.isRecycled)
 
             icon = Bitmapx.readBitmap(context.resources, R.drawable.ic_opera)
-            bitmapIcon = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), icon)
+            bitmapIcon = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, 14.dp2px, icon)
             Assert.assertFalse(bitmapIcon.isRecycled)
 
-            bitmapIconCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, context.dp2px(14).toFloat(), true, icon)
+            bitmapIconCompact = "测试 : My ijk : 1234567890".textToBitmap(Color.BLACK, 14.dp2px, true, icon)
             Assert.assertFalse(bitmapIconCompact.isRecycled)
 
             Assert.assertTrue(bitmap.height > bitmapCompact.height)

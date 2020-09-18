@@ -18,77 +18,55 @@
 
 package com.github.panpf.tools4a.dimen.ktx
 
-import android.content.Context
-import android.view.View
 import com.github.panpf.tools4a.dimen.Dimenx
 
 
-/* ************************************* Context ***************************************** */
+inline val Float.dp2px: Float get() = Dimenx.dp2px(this)
+inline val Int.dp2px: Float get() = Dimenx.dp2px(this)
 
-inline fun Context.dp2px(dpValue: Float): Int = Dimenx.dp2px(this, dpValue)
-
-inline fun Context.dp2px(dpValue: Int): Int = Dimenx.dp2px(this, dpValue)
-
-
-inline fun Context.px2dp(px: Int): Float = Dimenx.px2dp(this, px)
+inline val Float.dp2pxInt: Int get() = Dimenx.dp2pxInt(this)
+inline val Int.dp2pxInt: Int get() = Dimenx.dp2pxInt(this)
 
 
-inline fun Context.sp2px(dpValue: Float): Int = Dimenx.sp2px(this, dpValue)
+inline val Float.sp2px: Float get() = Dimenx.sp2px(this)
+inline val Int.sp2px: Float get() = Dimenx.sp2px(this)
 
-inline fun Context.sp2px(dpValue: Int): Int = Dimenx.sp2px(this, dpValue)
-
-
-inline fun Context.px2sp(px: Int): Float = Dimenx.px2sp(this, px)
-
-
-inline fun Context.applyDimension(@Dimenx.DimenUnit unit: Int, value: Float): Float = Dimenx.applyDimension(this, unit, value)
-
-inline fun Context.applyDimension(@Dimenx.DimenUnit unit: Int, value: Int): Float = Dimenx.applyDimension(this, unit, value)
+inline val Float.sp2pxInt: Int get() = Dimenx.sp2pxInt(this)
+inline val Int.sp2pxInt: Int get() = Dimenx.sp2pxInt(this)
 
 
-/* ************************************* androidx.fragment.app.Fragment ***************************************** */
+inline val Float.pt2px: Float get() = Dimenx.pt2px(this)
+inline val Int.pt2px: Float get() = Dimenx.pt2px(this)
+
+inline val Float.pt2pxInt: Int get() = Dimenx.pt2pxInt(this)
+inline val Int.pt2pxInt: Int get() = Dimenx.pt2pxInt(this)
 
 
-inline fun androidx.fragment.app.Fragment.dp2px(dpValue: Float): Int = Dimenx.dp2px(this, dpValue)
+inline val Float.in2px: Float get() = Dimenx.in2px(this)
+inline val Int.in2px: Float get() = Dimenx.in2px(this)
 
-inline fun androidx.fragment.app.Fragment.dp2px(dpValue: Int): Int = Dimenx.dp2px(this, dpValue)
-
-
-inline fun androidx.fragment.app.Fragment.px2dp(px: Int): Float = Dimenx.px2dp(this, px)
-
-
-inline fun androidx.fragment.app.Fragment.sp2px(dpValue: Float): Int = Dimenx.sp2px(this, dpValue)
-
-inline fun androidx.fragment.app.Fragment.sp2px(dpValue: Int): Int = Dimenx.sp2px(this, dpValue)
+inline val Float.in2pxInt: Int get() = Dimenx.in2pxInt(this)
+inline val Int.in2pxInt: Int get() = Dimenx.in2pxInt(this)
 
 
-inline fun androidx.fragment.app.Fragment.px2sp(px: Int): Float = Dimenx.px2sp(this, px)
+inline val Float.mm2px: Float get() = Dimenx.mm2px(this)
+inline val Int.mm2px: Float get() = Dimenx.mm2px(this)
+
+inline val Float.mm2pxInt: Int get() = Dimenx.mm2pxInt(this)
+inline val Int.mm2pxInt: Int get() = Dimenx.mm2pxInt(this)
 
 
-inline fun androidx.fragment.app.Fragment.applyDimension(@Dimenx.DimenUnit unit: Int, value: Float): Float = Dimenx.applyDimension(this, unit, value)
+inline val Float.px2dp: Float get() = Dimenx.px2dp(this)
+inline val Int.px2dp: Float get() = Dimenx.px2dp(this)
 
-inline fun androidx.fragment.app.Fragment.applyDimension(@Dimenx.DimenUnit unit: Int, value: Int): Float = Dimenx.applyDimension(this, unit, value)
+inline val Float.px2sp: Float get() = Dimenx.px2sp(this)
+inline val Int.px2sp: Float get() = Dimenx.px2sp(this)
 
+inline val Float.px2pt: Float get() = Dimenx.px2pt(this)
+inline val Int.px2pt: Float get() = Dimenx.px2pt(this)
 
-/* ************************************* View ***************************************** */
+inline val Float.px2in: Float get() = Dimenx.px2in(this)
+inline val Int.px2in: Float get() = Dimenx.px2in(this)
 
-
-inline fun View.dp2px(dpValue: Float): Int = Dimenx.dp2px(this, dpValue)
-
-inline fun View.dp2px(dpValue: Int): Int = Dimenx.dp2px(this, dpValue)
-
-
-inline fun View.px2dp(px: Int): Float = Dimenx.px2dp(this, px)
-
-
-inline fun View.sp2px(dpValue: Float): Int = Dimenx.sp2px(this, dpValue)
-
-inline fun View.sp2px(dpValue: Int): Int = Dimenx.sp2px(this, dpValue)
-
-
-inline fun View.px2sp(px: Int): Float = Dimenx.px2sp(this, px)
-
-
-inline fun View.applyDimension(@Dimenx.DimenUnit unit: Int, value: Float): Float = Dimenx.applyDimension(this, unit, value)
-
-inline fun View.applyDimension(@Dimenx.DimenUnit unit: Int, value: Int): Float = Dimenx.applyDimension(this, unit, value)
+inline val Float.px2mm: Float get() = Dimenx.px2mm(this)
+inline val Int.px2mm: Float get() = Dimenx.px2mm(this)

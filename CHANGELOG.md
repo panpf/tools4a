@@ -11,9 +11,10 @@ Change:
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
 * change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
 * change: Contextx.isDestroyedCompat rename to isDestroyed
+* change: Dimenx completely refactored
 
 New:
-* new: Devivex added isEmulator method
+* new: Devicex added isEmulator method
 * new: Added 'tools4a-test' and 'tools4a-test-ktx' module
 * new: Runx added isOnNotMainThread, checkMainThread, checkNotMainThread, isOnNotMainProcess method
 

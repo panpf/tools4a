@@ -165,7 +165,8 @@ Dependencies:
 
 ### tools4a-dimen
 * Dimenx: [Dimenx.java] ([Test][DimenxTest.java]) | [Dimenx.kt] ([Test][DimenxTest.kt])
-    * dp2px, px2dp, sp2px, px2sp, applyDimension
+    * dp2px, dp2pxInt, sp2px, sp2pxInt, pt2px, pt2pxInt, in2px, in2pxInt, mm2px, mm2pxInt
+    * px2dp, px2sp, px2pt, px2in, px2mm
 
 ### tools4a-display
 * Displayx: [Displayx.java] ([Test][DisplayxTest.java]) | [Displayx.kt] ([Test][DisplayxTest.kt])
