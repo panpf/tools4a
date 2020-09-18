@@ -31,12 +31,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.settings.Settingsx;
+import com.github.panpf.tools4a.test.Testx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,33 +45,18 @@ import java.util.concurrent.CountDownLatch;
 @RunWith(AndroidJUnit4.class)
 public class SettingsxTest {
 
-    @NonNull
-    private final ActivityTestRule<RequestPermissionTestActivity> requestPermissionActivityRule = new ActivityTestRule<>(RequestPermissionTestActivity.class);
-    @NonNull
-    private final ActivityTestRule<RequestNotificationPolicyTestActivity> requestNotificationPolicyActivityRule = new ActivityTestRule<>(RequestNotificationPolicyTestActivity.class);
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getRequestPermissionActivityRule() {
-        return this.requestPermissionActivityRule;
-    }
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getRequestNotificationPolicyActivityRule() {
-        return this.requestNotificationPolicyActivityRule;
-    }
-
     @Test
     public void testScreenBrightnessMode() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
-            RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
-            try {
-                activity.countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Testx.launchActivityWithUse(RequestPermissionTestActivity.class, scenario -> {
+                RequestPermissionTestActivity activity = Testx.getActivitySync(scenario);
+                try {
+                    activity.countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
 
             if (!Settingsx.canWrite(context)) {
                 Assert.fail("No write settings permission");
@@ -94,12 +78,14 @@ public class SettingsxTest {
     public void testScreenBrightness() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
-            RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
-            try {
-                activity.countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Testx.launchActivityWithUse(RequestPermissionTestActivity.class, scenario -> {
+                RequestPermissionTestActivity activity = Testx.getActivitySync(scenario);
+                try {
+                    activity.countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
 
             if (!Settingsx.canWrite(context)) {
                 Assert.fail("No write settings permission");
@@ -121,12 +107,14 @@ public class SettingsxTest {
     public void testScreenOffTimeout() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
-            RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
-            try {
-                activity.countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Testx.launchActivityWithUse(RequestPermissionTestActivity.class, scenario -> {
+                RequestPermissionTestActivity activity = Testx.getActivitySync(scenario);
+                try {
+                    activity.countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
 
             if (!Settingsx.canWrite(context)) {
                 Assert.fail("No write settings permission");
@@ -150,12 +138,14 @@ public class SettingsxTest {
 
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         if (!Settingsx.canWrite(context)) {
-            RequestPermissionTestActivity activity = requestPermissionActivityRule.getActivity();
-            try {
-                activity.countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Testx.launchActivityWithUse(RequestPermissionTestActivity.class, scenario -> {
+                RequestPermissionTestActivity activity = Testx.getActivitySync(scenario);
+                try {
+                    activity.countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
 
             if (!Settingsx.canWrite(context)) {
                 Assert.fail("No write settings permission");
@@ -196,7 +186,8 @@ public class SettingsxTest {
 
     public static class RequestPermissionTestActivity extends Activity {
 
-        private CountDownLatch countDownLatch = new CountDownLatch(1);
+        @NonNull
+        private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -227,55 +218,7 @@ public class SettingsxTest {
         }
 
         private static class FinishTask implements Runnable {
-            private WeakReference<Activity> activityWeakReference;
-
-            FinishTask(WeakReference<Activity> activityWeakReference) {
-                this.activityWeakReference = activityWeakReference;
-            }
-
-            @Override
-            public void run() {
-                Activity activity = activityWeakReference.get();
-                if (activity != null) {
-                    activity.finish();
-                }
-            }
-        }
-    }
-
-    public static class RequestNotificationPolicyTestActivity extends Activity {
-
-        private CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            if (!Settingsx.isNotificationPolicyAccessGranted(this)) {
-                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                startActivityForResult(intent, 1);
-
-                Toast.makeText(this, "请允许修改请勿打扰状态并关闭此页面", Toast.LENGTH_LONG).show();
-                new Handler(Looper.getMainLooper()).postDelayed(new FinishTask(new WeakReference<>(this)), 10 * 1000);
-            } else {
-                finish();
-            }
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            finish();
-        }
-
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            countDownLatch.countDown();
-        }
-
-        private static class FinishTask implements Runnable {
-            private WeakReference<Activity> activityWeakReference;
+            private final WeakReference<Activity> activityWeakReference;
 
             FinishTask(WeakReference<Activity> activityWeakReference) {
                 this.activityWeakReference = activityWeakReference;

@@ -180,7 +180,7 @@ Dependencies:
 
 ### tools4a-fragment
 * Fragmentx: [Fragmentx.java] ([Test][FragmentxTest.java]) | [Fragmentx.kt] ([Test][FragmentxTest.kt])
-    * getApplication, requireApplication, isDestroyedCompat, getImplFromParent, instantiate,
+    * getApplication, requireApplication, isDestroyed, getImplFromParent, instantiate,
     * findUserVisibleChildFragment, findFragmentByViewPagerCurrentItem
 
 ### tools4a-graphics
@@ -328,7 +328,9 @@ Dependencies:
 
 ### tools4a-test
 * Testx: [Testx.java] | [Testx.kt]
-    * getActivitySync, getActivityOrNullSync, launchAndOnActivityWithUse, launchActivityWithUse
+    * launchActivity, launchActivityWithOn, launchActivityWithOnUse, launchActivityWithUse,
+    * getActivitySync, getActivityOrNullSync, launchFragment, launchFragmentInContainer,
+    * launchFragmentWithOn, launchFragmentInContainerWithOn, getFragmentSync
 
 ### tools4a-utils
 * LifecycleBroadcastReceiver: [LifecycleBroadcastReceiver.java] ([Test][LifecycleBroadcastReceiverTest.java])

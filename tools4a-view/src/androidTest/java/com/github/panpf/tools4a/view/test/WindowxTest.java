@@ -18,81 +18,61 @@ package com.github.panpf.tools4a.view.test;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.run.Runx;
+import com.github.panpf.tools4a.test.Testx;
 import com.github.panpf.tools4a.view.Windowx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class WindowxTest {
 
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getActivityRule() {
-        return this.activityRule;
-    }
-
     @Test
     public void testBrightness() {
-        final TestActivity activity = activityRule.getActivity();
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            final float windowBrightness = Windowx.getBrightness(activity.getWindow());
 
-        final float windowBrightness = Windowx.getBrightness(activity.getWindow());
-
-        if (windowBrightness < 0) {
-            Assert.assertTrue(Windowx.isBrightnessFlowSystem(activity.getWindow()));
-        } else {
-            Assert.assertFalse(Windowx.isBrightnessFlowSystem(activity.getWindow()));
-        }
-
-        try {
-            final float newWindowBrightnessValue = windowBrightness * -1;
-            Runx.runOnMainThread(new Runnable() {
-                @Override
-                public void run() {
-                    Windowx.setBrightness(activity.getWindow(), newWindowBrightnessValue);
-                }
-            });
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            float newWindowBrightnessValueFromSettings = Windowx.getBrightness(activity.getWindow());
-
-            if (newWindowBrightnessValueFromSettings < 0) {
+            if (windowBrightness < 0) {
                 Assert.assertTrue(Windowx.isBrightnessFlowSystem(activity.getWindow()));
             } else {
                 Assert.assertFalse(Windowx.isBrightnessFlowSystem(activity.getWindow()));
             }
 
-            Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f);
-        } finally {
-            Runx.runOnMainThread(new Runnable() {
-                @Override
-                public void run() {
-                    Windowx.setBrightness(activity.getWindow(), windowBrightness);
-                }
-            });
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                final float newWindowBrightnessValue = windowBrightness * -1;
+                Runx.runOnMainThread(() -> Windowx.setBrightness(activity.getWindow(), newWindowBrightnessValue));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                float newWindowBrightnessValueFromSettings = Windowx.getBrightness(activity.getWindow());
+
+                if (newWindowBrightnessValueFromSettings < 0) {
+                    Assert.assertTrue(Windowx.isBrightnessFlowSystem(activity.getWindow()));
+                } else {
+                    Assert.assertFalse(Windowx.isBrightnessFlowSystem(activity.getWindow()));
+                }
+
+                Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f);
+            } finally {
+                Runx.runOnMainThread(() -> Windowx.setBrightness(activity.getWindow(), windowBrightness));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
+
     }
 
     public static class TestActivity extends Activity {
-
 
     }
 }

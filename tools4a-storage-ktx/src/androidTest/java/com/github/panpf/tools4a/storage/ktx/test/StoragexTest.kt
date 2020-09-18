@@ -57,7 +57,7 @@ class StoragexTest {
 
     @Test
     fun testVolumeState() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val volumeCompat = context.getVolume(getExternalStorageDirectory())
         val volumeFile = volumeCompat?.pathFile
@@ -69,7 +69,7 @@ class StoragexTest {
 
     @Test
     fun testVolumeAttr() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val volumeFiles = context.getVolumeFiles()
 
@@ -95,7 +95,7 @@ class StoragexTest {
 
     @Test
     fun testVolumes() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         assertTrue(context.getVolumes().isNotEmpty())
         assertTrue(context.getMountedVolumes().isNotEmpty())
@@ -111,7 +111,7 @@ class StoragexTest {
 
     @Test
     fun testExternalStorageState() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         assertEquals(getExternalStorageState(), Environment.MEDIA_MOUNTED)
         assertEquals(context.getExternalStorageState(getExternalStorageDirectory()), Environment.MEDIA_MOUNTED)
         assertTrue(isExternalStorageMounted())
@@ -120,7 +120,7 @@ class StoragexTest {
 
     @Test
     fun testExternalStorageAttr() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val storageDirectorys = context.getExternalStorageDirectorys()
 
@@ -149,14 +149,14 @@ class StoragexTest {
 
     @Test
     fun testExternalStorageDirectory() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         assertNotNull(getExternalStorageDirectory())
         assertNotNull(context.getMountedExternalStorageDirectory())
     }
 
     @Test
     fun testExternalStorageDirectorys() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val sdcard = Environment.getExternalStorageDirectory()
         assertNotNull(context.getExternalStorageDirectorys().find {
             try {
@@ -194,7 +194,7 @@ class StoragexTest {
 
     @Test
     fun testExternalStorageDirectorysWithPath() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val childPath = "Download"
         val sdcard = File(Environment.getExternalStorageDirectory(), childPath)
         assertNotNull(context.getExternalStorageDirectorysWithPath(childPath).find {
@@ -233,7 +233,7 @@ class StoragexTest {
 
     @Test
     fun testAppCacheDir() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         /*
          * appExternalCacheDir
@@ -299,7 +299,7 @@ class StoragexTest {
 
     @Test
     fun testAppFilesDir() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         /*
          * appExternalFilesDir
@@ -365,7 +365,7 @@ class StoragexTest {
 
     @Test
     fun testAppObbDir() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         /*
          * appObbDir
@@ -406,14 +406,14 @@ class StoragexTest {
 
     @Test
     fun testFilterByMinBytes() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         assertNotNull(context.getExternalStorageDirectorys().filterByMinBytes(1024))
         assertNull(context.getExternalStorageDirectorys().filterByMinBytes(java.lang.Long.MAX_VALUE))
     }
 
     @Test
     fun testGetFileIn() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         assertNotNull(context.getAppExternalCacheDirs().getFileIn("test.jpeg", 1024 * 1024 * 8, true))
         assertNotNull(context.getAppExternalCacheDirs().getFileIn("test.jpeg", 1024 * 1024 * 8))
     }

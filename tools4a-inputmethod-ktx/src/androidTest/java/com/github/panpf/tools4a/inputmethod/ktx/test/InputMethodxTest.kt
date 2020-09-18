@@ -24,123 +24,120 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.inputmethod.ktx.*
 import com.github.panpf.tools4a.run.ktx.runOnMainThread
+import com.github.panpf.tools4a.test.ktx.getActivitySync
+import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class InputMethodxTest {
 
-    private val activityRule = ActivityTestRule(TestActivity::class.java)
-
-    @Rule
-    fun getActivityRule(): ActivityTestRule<*> {
-        return this.activityRule
-    }
-
     @Test
-    @Throws(InterruptedException::class)
     fun testShowSoftInput() {
-        val activity = activityRule.activity
-        val originEditText = activity.supportFragmentEditTxt
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val activity = scenario.getActivitySync()
+            val originEditText = activity.supportFragmentEditTxt
 
-        // ensure hide
-        if (activity.isSoftInputShowing()) {
-            runOnMainThread { activity.hideSoftInput() }
+            // ensure hide
+            if (activity.isSoftInputShowing()) {
+                runOnMainThread { activity.hideSoftInput() }
+                Thread.sleep(500)
+                Assert.assertFalse(activity.isSoftInputShowing())
+            }
+
+            // show
+            runOnMainThread { originEditText.showSoftInput() }
             Thread.sleep(500)
-            Assert.assertFalse(activity.isSoftInputShowing())
+            Assert.assertTrue(activity.isSoftInputShowing())
         }
-
-        // show
-        runOnMainThread { originEditText.showSoftInput() }
-        Thread.sleep(500)
-        Assert.assertTrue(activity.isSoftInputShowing())
     }
 
     @Test
-    @Throws(InterruptedException::class)
     fun testDelayShowSoftInput() {
-        val activity = activityRule.activity
-        val supportEditText = activity.supportFragmentEditTxt
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val activity = scenario.getActivitySync()
+            val supportEditText = activity.supportFragmentEditTxt
 
-        // ensure hide
-        if (activity.isSoftInputShowing()) {
+            // ensure hide
+            if (activity.isSoftInputShowing()) {
+                runOnMainThread { activity.hideSoftInput() }
+                Thread.sleep(500)
+                Assert.assertFalse(activity.isSoftInputShowing())
+            }
+
+            // show
+            runOnMainThread { supportEditText.delayShowSoftInput() }
+            Thread.sleep(500)
+            Assert.assertTrue(activity.isSoftInputShowing())
+
+            // hide
             runOnMainThread { activity.hideSoftInput() }
             Thread.sleep(500)
             Assert.assertFalse(activity.isSoftInputShowing())
+
+            // show
+            runOnMainThread { supportEditText.delayShowSoftInput(500) }
+            Thread.sleep((500 + 500).toLong())
+            Assert.assertTrue(activity.isSoftInputShowing())
         }
-
-        // show
-        runOnMainThread { supportEditText.delayShowSoftInput() }
-        Thread.sleep(500)
-        Assert.assertTrue(activity.isSoftInputShowing())
-
-        // hide
-        runOnMainThread { activity.hideSoftInput() }
-        Thread.sleep(500)
-        Assert.assertFalse(activity.isSoftInputShowing())
-
-        // show
-        runOnMainThread { supportEditText.delayShowSoftInput(500) }
-        Thread.sleep((500 + 500).toLong())
-        Assert.assertTrue(activity.isSoftInputShowing())
     }
 
     @Test
-    @Throws(InterruptedException::class)
     fun testHideSoftInput() {
-        val activity = activityRule.activity
-        val supportEditText = activity.supportFragmentEditTxt
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val activity = scenario.getActivitySync()
+            val supportEditText = activity.supportFragmentEditTxt
 
-        // ensure hide
-        if (activity.isSoftInputShowing()) {
-            runOnMainThread { activity.hideSoftInput() }
+            // ensure hide
+            if (activity.isSoftInputShowing()) {
+                runOnMainThread { activity.hideSoftInput() }
+                Thread.sleep(500)
+                Assert.assertFalse(activity.isSoftInputShowing())
+            }
+
+            // show
+            runOnMainThread { supportEditText.showSoftInput() }
+            Thread.sleep(500)
+            Assert.assertTrue(activity.isSoftInputShowing())
+
+            // hide
+            runOnMainThread { activity.supportFragment.hideSoftInput() }
+            Thread.sleep(500)
+            Assert.assertFalse(activity.isSoftInputShowing())
+
+            // show
+            runOnMainThread { supportEditText.showSoftInput() }
+            Thread.sleep(500)
+            Assert.assertTrue(activity.isSoftInputShowing())
+
+            // hide
+            runOnMainThread { supportEditText.hideSoftInput() }
             Thread.sleep(500)
             Assert.assertFalse(activity.isSoftInputShowing())
         }
-
-        // show
-        runOnMainThread { supportEditText.showSoftInput() }
-        Thread.sleep(500)
-        Assert.assertTrue(activity.isSoftInputShowing())
-
-        // hide
-        runOnMainThread { activity.supportFragment.hideSoftInput() }
-        Thread.sleep(500)
-        Assert.assertFalse(activity.isSoftInputShowing())
-
-        // show
-        runOnMainThread { supportEditText.showSoftInput() }
-        Thread.sleep(500)
-        Assert.assertTrue(activity.isSoftInputShowing())
-
-        // hide
-        runOnMainThread { supportEditText.hideSoftInput() }
-        Thread.sleep(500)
-        Assert.assertFalse(activity.isSoftInputShowing())
     }
 
     @Test
-    @Throws(InterruptedException::class)
     fun testMoveCursor() {
-        val activity = activityRule.activity
-        val originEditText = activity.supportFragmentEditTxt
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val activity = scenario.getActivitySync()
+            val originEditText = activity.supportFragmentEditTxt
 
-        runOnMainThread { originEditText.moveCursorToEnd() }
-        Thread.sleep(100)
-        Assert.assertEquals(originEditText.length().toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
+            runOnMainThread { originEditText.moveCursorToEnd() }
+            Thread.sleep(100)
+            Assert.assertEquals(originEditText.length().toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runOnMainThread { originEditText.moveCursorToStart() }
-        Thread.sleep(100)
-        Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.text).toLong())
+            runOnMainThread { originEditText.moveCursorToStart() }
+            Thread.sleep(100)
+            Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.text).toLong())
 
-        runOnMainThread { originEditText.moveCursorTo(originEditText.length() / 2) }
-        Thread.sleep(100)
-        Assert.assertEquals((originEditText.length() / 2).toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
+            runOnMainThread { originEditText.moveCursorTo(originEditText.length() / 2) }
+            Thread.sleep(100)
+            Assert.assertEquals((originEditText.length() / 2).toLong(), Selection.getSelectionEnd(originEditText.text).toLong())
+        }
     }
 
     class TestActivity : androidx.fragment.app.FragmentActivity() {

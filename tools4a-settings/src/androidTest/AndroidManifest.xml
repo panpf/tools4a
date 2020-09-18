@@ -7,6 +7,5 @@
 
     <application>
         <activity android:name=".SettingsxTest$RequestPermissionTestActivity" />
-        <activity android:name=".SettingsxTest$RequestNotificationPolicyTestActivity" />
     </application>
 </manifest>

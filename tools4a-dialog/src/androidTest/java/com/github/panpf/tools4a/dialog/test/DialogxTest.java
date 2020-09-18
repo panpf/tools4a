@@ -23,7 +23,7 @@ public class DialogxTest {
 
     @Test
     public void testSetClickButtonClosable() {
-        Testx.launchAndOnActivityWithUse(TestFragmentActivity.class, activity -> {
+        Testx.launchActivityWithOnUse(TestFragmentActivity.class, activity -> {
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), true));
             Assert.assertTrue(Dialogx.setClickButtonClosable(activity.getDialog(), false));
         });
@@ -31,7 +31,7 @@ public class DialogxTest {
 
     @Test
     public void testShowProgressDialog() {
-        Testx.launchAndOnActivityWithUse(TestFragmentActivity.class, activity -> {
+        Testx.launchActivityWithOnUse(TestFragmentActivity.class, activity -> {
             Assert.assertNotNull(Dialogx.showProgressDialog(activity, "by activity"));
             Assert.assertNotNull(Dialogx.showProgressDialog(activity, android.R.string.ok));
 

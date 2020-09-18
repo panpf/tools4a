@@ -26,561 +26,573 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.run.Runx;
+import com.github.panpf.tools4a.test.Testx;
 import com.github.panpf.tools4a.view.ViewAnimx;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class ViewAnimxTest {
 
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getActivityRule() {
-        return this.activityRule;
-    }
-
     @Test
-    public void testAnimAlpha() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testAnimAlpha() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.animAlpha(view, 1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener));
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.animAlpha(view, 1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
-            }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animAlpha(view, 1.0f, 0.0f, invisibleListener);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animAlpha(view, 1.0f, 0.0f, true);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animAlpha(view, 1.0f, 0.0f, 500);
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(500);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animAlpha(view, 1.0f, 0.0f);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
     }
 
     @Test
-    public void testAnimTranslate() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testAnimTranslate() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, 0, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener));
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, 0, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
-            }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, invisibleListener);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, true);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, 500);
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(500);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f, 3f);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.animTranslate(view, 0f, 300f, 0f, 300f);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
     }
 
     @Test
-    public void testShakeLandscape() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testShakeLandscape() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view, 10f, 7, 700, true, invisibleListener));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view, invisibleListener));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view, true));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view, 10f, 7, 700, true, invisibleListener);
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view, 500L));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(700);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view, invisibleListener);
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view, 15f));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(700);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view, true);
-            }
-        });
-        Thread.sleep(700);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view, 500L);
-            }
-        });
-        Thread.sleep(500L);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view, 15f);
-            }
-        });
-        Thread.sleep(700);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakeLandscape(view);
+            Runx.runOnMainThread(() -> ViewAnimx.shakeLandscape(view));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(700);
     }
 
     @Test
-    public void testShakePortrait() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testShakePortrait() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view, 10f, 7, 700, true, invisibleListener));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view, invisibleListener));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view, true));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view, 10f, 7, 700, true, invisibleListener);
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view, 500L));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(700);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view, invisibleListener);
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view, 15f));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(700);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view, true);
-            }
-        });
-        Thread.sleep(700);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view, 500L);
-            }
-        });
-        Thread.sleep(500L);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view, 15f);
-            }
-        });
-        Thread.sleep(700);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.shakePortrait(view);
+            Runx.runOnMainThread(() -> ViewAnimx.shakePortrait(view));
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(700);
     }
 
     @Test
-    public void testStartAnimFromRes() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testStartAnimFromRes() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test, true, invisibleListener));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test, true, invisibleListener);
-            }
-        });
-        Thread.sleep(1000);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test, invisibleListener);
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(1000);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test, true);
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(1000);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.startAnimFromRes(view, R.anim.view_anim_test);
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(1000);
     }
 
     @Test
-    public void testInvisibleByAnimAlpha() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testInvisibleByAnimAlpha() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.invisibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener));
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.invisibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
-            }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.invisibleByAnimAlpha(view, invisibleListener);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.invisibleByAnimAlpha(view, true);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.invisibleByAnimAlpha(view, 500);
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(500);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.invisibleByAnimAlpha(view);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
     }
 
     @Test
-    public void testGoneByAnimAlpha() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testGoneByAnimAlpha() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.goneByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener));
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.goneByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
-            }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.goneByAnimAlpha(view, invisibleListener);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.goneByAnimAlpha(view, true);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.goneByAnimAlpha(view, 500);
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(500);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.goneByAnimAlpha(view);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
     }
 
     @Test
-    public void testVisibleByAnimAlpha() throws InterruptedException {
-        final View view = activityRule.getActivity().getView();
+    public void testVisibleByAnimAlpha() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            final View view = Testx.getActivitySync(scenario).getView();
 
-        final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            final Animation.AnimationListener invisibleListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            };
+
+            Runx.runOnMainThread(() -> ViewAnimx.visibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener));
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ViewAnimx.visibleByAnimAlpha(view, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener);
-            }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
-
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.visibleByAnimAlpha(view, invisibleListener);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.visibleByAnimAlpha(view, true);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.visibleByAnimAlpha(view, 500);
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        Thread.sleep(500);
 
-        Runx.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
+            Runx.runOnMainThread(() -> {
                 view.setVisibility(View.VISIBLE);
                 ViewAnimx.visibleByAnimAlpha(view);
+            });
+            try {
+                Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION);
     }
 
     public static class TestActivity extends FragmentActivity {
@@ -595,6 +607,7 @@ public class ViewAnimxTest {
             viewGroup.addView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
+        @NonNull
         public View getView() {
             return ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
         }

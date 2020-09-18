@@ -54,8 +54,9 @@ public class Fragmentx {
     /**
      * Return true if the fragment has been destroyed
      */
-    public static boolean isDestroyedCompat(@NonNull Fragment fragment) {
-        return fragment.getLifecycle().getCurrentState() == Lifecycle.State.DESTROYED || fragment.getLifecycle().getCurrentState() == Lifecycle.State.INITIALIZED;
+    public static boolean isDestroyed(@NonNull Fragment fragment) {
+        return fragment.getLifecycle().getCurrentState() == Lifecycle.State.DESTROYED
+                || fragment.getLifecycle().getCurrentState() == Lifecycle.State.INITIALIZED;
     }
 
 
@@ -89,6 +90,7 @@ public class Fragmentx {
     /**
      * Instantiate a Fragment and set arguments
      */
+    @NonNull
     public static <T extends Fragment> T instantiate(@NonNull Class<? extends T> clazz, @Nullable Bundle arguments) {
         T fragment;
         try {
@@ -107,6 +109,7 @@ public class Fragmentx {
     /**
      * Instantiate a Fragment and set arguments
      */
+    @NonNull
     public static <T extends Fragment> T instantiate(@NonNull Class<? extends T> clazz) {
         return instantiate(clazz, null);
     }

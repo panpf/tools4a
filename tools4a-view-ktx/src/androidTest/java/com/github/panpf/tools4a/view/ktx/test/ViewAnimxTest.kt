@@ -22,380 +22,381 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.run.ktx.runOnMainThread
+import com.github.panpf.tools4a.test.ktx.getActivitySync
+import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
 import com.github.panpf.tools4a.view.ViewAnimx
 import com.github.panpf.tools4a.view.ktx.*
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ViewAnimxTest {
 
-    private val activityRule = ActivityTestRule(TestActivity::class.java)
-
-    @Rule
-    fun getActivityRule(): ActivityTestRule<*> {
-        return this.activityRule
-    }
-
     @Test
     @Throws(InterruptedException::class)
     fun testAnimAlpha() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.animAlpha(1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animAlpha(1.0f, 0.0f, invisibleListener)
             }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animAlpha(1.0f, 0.0f, true)
             }
-        }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread { view.animAlpha(1.0f, 0.0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animAlpha(1.0f, 0.0f, 500)
+            }
+            Thread.sleep(500)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animAlpha(1.0f, 0.0f, invisibleListener)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animAlpha(1.0f, 0.0f)
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
         }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animAlpha(1.0f, 0.0f, true)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animAlpha(1.0f, 0.0f, 500)
-        }
-        Thread.sleep(500)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animAlpha(1.0f, 0.0f)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testAnimTranslate() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.animTranslate(0f, 300f, 0f, 300f, 0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animTranslate(0f, 300f, 0f, 300f, invisibleListener)
             }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animTranslate(0f, 300f, 0f, 300f, true)
             }
-        }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread { view.animTranslate(0f, 300f, 0f, 300f, 0f, ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animTranslate(0f, 300f, 0f, 300f, 500)
+            }
+            Thread.sleep(500)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animTranslate(0f, 300f, 0f, 300f, invisibleListener)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animTranslate(0f, 300f, 0f, 300f, 3f)
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animTranslate(0f, 300f, 0f, 300f, true)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.animTranslate(0f, 300f, 0f, 300f)
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
         }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animTranslate(0f, 300f, 0f, 300f, 500)
-        }
-        Thread.sleep(500)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animTranslate(0f, 300f, 0f, 300f, 3f)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.animTranslate(0f, 300f, 0f, 300f)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testShakeLandscape() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
-            }
+            runOnMainThread { view.shakeLandscape(10f, 7f, 700, true, invisibleListener) }
+            Thread.sleep(700)
 
-            override fun onAnimationRepeat(animation: Animation) {
+            runOnMainThread { view.shakeLandscape(invisibleListener) }
+            Thread.sleep(700)
 
-            }
+            runOnMainThread { view.shakeLandscape(true) }
+            Thread.sleep(700)
+
+            runOnMainThread { view.shakeLandscape(500L) }
+            Thread.sleep(500L)
+
+            runOnMainThread { view.shakeLandscape(15f) }
+            Thread.sleep(700)
+
+            runOnMainThread { view.shakeLandscape() }
+            Thread.sleep(700)
         }
-
-        runOnMainThread { view.shakeLandscape(10f, 7f, 700, true, invisibleListener) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakeLandscape(invisibleListener) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakeLandscape(true) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakeLandscape(500L) }
-        Thread.sleep(500L)
-
-        runOnMainThread { view.shakeLandscape(15f) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakeLandscape() }
-        Thread.sleep(700)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testShakePortrait() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
-            }
+            runOnMainThread { view.shakePortrait(10f, 7f, 700, true, invisibleListener) }
+            Thread.sleep(700)
 
-            override fun onAnimationRepeat(animation: Animation) {
+            runOnMainThread { view.shakePortrait(invisibleListener) }
+            Thread.sleep(700)
 
-            }
+            runOnMainThread { view.shakePortrait(true) }
+            Thread.sleep(700)
+
+            runOnMainThread { view.shakePortrait(500L) }
+            Thread.sleep(500L)
+
+            runOnMainThread { view.shakePortrait(15f) }
+            Thread.sleep(700)
+
+            runOnMainThread { view.shakePortrait() }
+            Thread.sleep(700)
         }
-
-        runOnMainThread { view.shakePortrait(10f, 7f, 700, true, invisibleListener) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakePortrait(invisibleListener) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakePortrait(true) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakePortrait(500L) }
-        Thread.sleep(500L)
-
-        runOnMainThread { view.shakePortrait(15f) }
-        Thread.sleep(700)
-
-        runOnMainThread { view.shakePortrait() }
-        Thread.sleep(700)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testStartAnimFromRes() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.startAnimFromRes(R.anim.view_anim_test, true, invisibleListener) }
+            Thread.sleep(1000)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.startAnimFromRes(R.anim.view_anim_test, invisibleListener)
             }
+            Thread.sleep(1000)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.startAnimFromRes(R.anim.view_anim_test, true)
             }
-        }
+            Thread.sleep(1000)
 
-        runOnMainThread { view.startAnimFromRes(R.anim.view_anim_test, true, invisibleListener) }
-        Thread.sleep(1000)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.startAnimFromRes(R.anim.view_anim_test, invisibleListener)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.startAnimFromRes(R.anim.view_anim_test)
+            }
+            Thread.sleep(1000)
         }
-        Thread.sleep(1000)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.startAnimFromRes(R.anim.view_anim_test, true)
-        }
-        Thread.sleep(1000)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.startAnimFromRes(R.anim.view_anim_test)
-        }
-        Thread.sleep(1000)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testInvisibleByAnimAlpha() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.invisibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.invisibleByAnimAlpha(invisibleListener)
             }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.invisibleByAnimAlpha(true)
             }
-        }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread { view.invisibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.invisibleByAnimAlpha(500)
+            }
+            Thread.sleep(500)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.invisibleByAnimAlpha(invisibleListener)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.invisibleByAnimAlpha()
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
         }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.invisibleByAnimAlpha(true)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.invisibleByAnimAlpha(500)
-        }
-        Thread.sleep(500)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.invisibleByAnimAlpha()
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testGoneByAnimAlpha() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.goneByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.goneByAnimAlpha(invisibleListener)
             }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.goneByAnimAlpha(true)
             }
-        }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread { view.goneByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.goneByAnimAlpha(500)
+            }
+            Thread.sleep(500)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.goneByAnimAlpha(invisibleListener)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.goneByAnimAlpha()
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
         }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.goneByAnimAlpha(true)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.goneByAnimAlpha(500)
-        }
-        Thread.sleep(500)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.goneByAnimAlpha()
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
     }
 
     @Test
     @Throws(InterruptedException::class)
     fun testVisibleByAnimAlpha() {
-        val view = activityRule.activity.view
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val view = scenario.getActivitySync().view
+            val invisibleListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-        val invisibleListener = object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+                }
 
+                override fun onAnimationEnd(animation: Animation) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
             }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.visibility = View.INVISIBLE
+            runOnMainThread { view.visibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.visibleByAnimAlpha(invisibleListener)
             }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-            override fun onAnimationRepeat(animation: Animation) {
-
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.visibleByAnimAlpha(true)
             }
-        }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
 
-        runOnMainThread { view.visibleByAnimAlpha(ViewAnimx.DEFAULT_ANIMATION_DURATION, true, invisibleListener) }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.visibleByAnimAlpha(500)
+            }
+            Thread.sleep(500)
 
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.visibleByAnimAlpha(invisibleListener)
+            runOnMainThread {
+                view.visibility = View.VISIBLE
+                view.visibleByAnimAlpha()
+            }
+            Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
         }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.visibleByAnimAlpha(true)
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.visibleByAnimAlpha(500)
-        }
-        Thread.sleep(500)
-
-        runOnMainThread {
-            view.visibility = View.VISIBLE
-            view.visibleByAnimAlpha()
-        }
-        Thread.sleep(ViewAnimx.DEFAULT_ANIMATION_DURATION)
     }
 
     class TestActivity : androidx.fragment.app.FragmentActivity() {

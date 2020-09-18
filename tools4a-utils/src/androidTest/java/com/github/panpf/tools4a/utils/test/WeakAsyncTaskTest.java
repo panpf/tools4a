@@ -21,27 +21,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
+import com.github.panpf.tools4a.test.Testx;
 import com.github.panpf.tools4a.utils.WeakAsyncTask;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class WeakAsyncTaskTest {
-
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityTestRule = new ActivityTestRule<>(TestActivity.class);
-
-    @Rule
-    @NonNull
-    public ActivityTestRule<TestActivity> getActivityTestRule() {
-        return activityTestRule;
-    }
 
     @Test
     public void testError() {
@@ -82,30 +73,29 @@ public class WeakAsyncTaskTest {
 
     @Test
     public void testDestroyed() {
-        TestActivity activity = activityTestRule.getActivity();
-
-        activityTestRule.finishActivity();
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Assert.assertEquals(activity.result, "None");
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            scenario.moveToState(Lifecycle.State.DESTROYED);
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals(activity.result, "None");
+        });
     }
 
     @Test
     public void testNormal() {
-        TestActivity activity = activityTestRule.getActivity();
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Assert.assertEquals(activity.result, "onPostExecute");
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals(activity.result, "onPostExecute");
+        });
     }
 
     @SuppressWarnings("deprecation")

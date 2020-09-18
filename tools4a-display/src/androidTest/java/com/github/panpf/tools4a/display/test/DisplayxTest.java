@@ -19,6 +19,7 @@ package com.github.panpf.tools4a.display.test;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Surface;
@@ -31,26 +32,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.display.Displayx;
+import com.github.panpf.tools4a.test.Testx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Objects;
+
 @RunWith(AndroidJUnit4.class)
 public class DisplayxTest {
-
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getActivityRule() {
-        return this.activityRule;
-    }
 
     @Test
     public void testGetScreenSize() {
@@ -98,99 +91,102 @@ public class DisplayxTest {
 
     @Test
     public void testGetRotation() {
-        TestActivity activity = activityRule.getActivity();
-        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-
-        switch (windowManager.getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_0:
-                Assert.assertEquals(0, Displayx.getRotation(activity));
-                break;
-            case Surface.ROTATION_90:
-                Assert.assertEquals(90, Displayx.getRotation(activity));
-                break;
-            case Surface.ROTATION_180:
-                Assert.assertEquals(180, Displayx.getRotation(activity));
-                break;
-            case Surface.ROTATION_270:
-                Assert.assertEquals(270, Displayx.getRotation(activity));
-                break;
-        }
-
-        switch (windowManager.getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_0:
-                Assert.assertEquals(0, Displayx.getRotation(activity.getSupportFragment()));
-                break;
-            case Surface.ROTATION_90:
-                Assert.assertEquals(90, Displayx.getRotation(activity.getSupportFragment()));
-                break;
-            case Surface.ROTATION_180:
-                Assert.assertEquals(180, Displayx.getRotation(activity.getSupportFragment()));
-                break;
-            case Surface.ROTATION_270:
-                Assert.assertEquals(270, Displayx.getRotation(activity.getSupportFragment()));
-                break;
-        }
-
-        switch (windowManager.getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_0:
-                Assert.assertEquals(0, Displayx.getRotation(activity.getView()));
-                break;
-            case Surface.ROTATION_90:
-                Assert.assertEquals(90, Displayx.getRotation(activity.getView()));
-                break;
-            case Surface.ROTATION_180:
-                Assert.assertEquals(180, Displayx.getRotation(activity.getView()));
-                break;
-            case Surface.ROTATION_270:
-                Assert.assertEquals(270, Displayx.getRotation(activity.getView()));
-                break;
-        }
+        Testx.launchActivityWithOnUse(TestActivity.class, activity -> {
+            int rotation;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                rotation = activity.getDisplay().getRotation();
+            } else {
+                rotation = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            }
+            switch (rotation) {
+                case Surface.ROTATION_0:
+                    Assert.assertEquals(0, Displayx.getRotation(activity));
+                    break;
+                case Surface.ROTATION_90:
+                    Assert.assertEquals(90, Displayx.getRotation(activity));
+                    break;
+                case Surface.ROTATION_180:
+                    Assert.assertEquals(180, Displayx.getRotation(activity));
+                    break;
+                case Surface.ROTATION_270:
+                    Assert.assertEquals(270, Displayx.getRotation(activity));
+                    break;
+            }
+            switch (rotation) {
+                case Surface.ROTATION_0:
+                    Assert.assertEquals(0, Displayx.getRotation(activity.getSupportFragment()));
+                    break;
+                case Surface.ROTATION_90:
+                    Assert.assertEquals(90, Displayx.getRotation(activity.getSupportFragment()));
+                    break;
+                case Surface.ROTATION_180:
+                    Assert.assertEquals(180, Displayx.getRotation(activity.getSupportFragment()));
+                    break;
+                case Surface.ROTATION_270:
+                    Assert.assertEquals(270, Displayx.getRotation(activity.getSupportFragment()));
+                    break;
+            }
+            switch (rotation) {
+                case Surface.ROTATION_0:
+                    Assert.assertEquals(0, Displayx.getRotation(activity.getView()));
+                    break;
+                case Surface.ROTATION_90:
+                    Assert.assertEquals(90, Displayx.getRotation(activity.getView()));
+                    break;
+                case Surface.ROTATION_180:
+                    Assert.assertEquals(180, Displayx.getRotation(activity.getView()));
+                    break;
+                case Surface.ROTATION_270:
+                    Assert.assertEquals(270, Displayx.getRotation(activity.getView()));
+                    break;
+            }
+        });
     }
 
     @Test
     public void testGetOrientation() {
-        TestActivity activity = activityRule.getActivity();
-
-        if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity));
-            Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity.getSupportFragment()));
-            Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity.getView()));
-            Assert.assertTrue(Displayx.isOrientationPortrait(activity));
-            Assert.assertTrue(Displayx.isOrientationPortrait(activity.getSupportFragment()));
-            Assert.assertTrue(Displayx.isOrientationPortrait(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity.getView()));
-        } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity));
-            Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity.getSupportFragment()));
-            Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity.getView()));
-            Assert.assertTrue(Displayx.isOrientationLandscape(activity));
-            Assert.assertTrue(Displayx.isOrientationLandscape(activity.getSupportFragment()));
-            Assert.assertTrue(Displayx.isOrientationLandscape(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationUndefined(activity.getView()));
-        } else {
-            Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity));
-            Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity.getSupportFragment()));
-            Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationPortrait(activity.getView()));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity.getSupportFragment()));
-            Assert.assertFalse(Displayx.isOrientationLandscape(activity.getView()));
-            Assert.assertTrue(Displayx.isOrientationUndefined(activity));
-            Assert.assertTrue(Displayx.isOrientationUndefined(activity.getSupportFragment()));
-            Assert.assertTrue(Displayx.isOrientationUndefined(activity.getView()));
-        }
+        Testx.launchActivityWithOnUse(TestActivity.class, activity -> {
+            if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity));
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity.getSupportFragment()));
+                Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT, Displayx.getOrientation(activity.getView()));
+                Assert.assertTrue(Displayx.isOrientationPortrait(activity));
+                Assert.assertTrue(Displayx.isOrientationPortrait(activity.getSupportFragment()));
+                Assert.assertTrue(Displayx.isOrientationPortrait(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity.getView()));
+            } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity));
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity.getSupportFragment()));
+                Assert.assertEquals(Configuration.ORIENTATION_LANDSCAPE, Displayx.getOrientation(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity.getView()));
+                Assert.assertTrue(Displayx.isOrientationLandscape(activity));
+                Assert.assertTrue(Displayx.isOrientationLandscape(activity.getSupportFragment()));
+                Assert.assertTrue(Displayx.isOrientationLandscape(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationUndefined(activity.getView()));
+            } else {
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity));
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity.getSupportFragment()));
+                Assert.assertEquals(Configuration.ORIENTATION_UNDEFINED, Displayx.getOrientation(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationPortrait(activity.getView()));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity.getSupportFragment()));
+                Assert.assertFalse(Displayx.isOrientationLandscape(activity.getView()));
+                Assert.assertTrue(Displayx.isOrientationUndefined(activity));
+                Assert.assertTrue(Displayx.isOrientationUndefined(activity.getSupportFragment()));
+                Assert.assertTrue(Displayx.isOrientationUndefined(activity.getView()));
+            }
+        });
     }
 
     @Test
@@ -228,7 +224,7 @@ public class DisplayxTest {
 
         @NonNull
         public Fragment getSupportFragment() {
-            return getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2);
+            return Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2));
         }
 
         public View getView() {

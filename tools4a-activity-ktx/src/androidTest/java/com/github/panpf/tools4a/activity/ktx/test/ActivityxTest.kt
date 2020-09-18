@@ -51,7 +51,7 @@ class ActivityxTest {
 
     @Test
     fun testConvertTranslucent() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Assert.assertTrue(activity.convertToTranslucentCompat())
                 Assert.assertTrue(activity.convertFromTranslucentCompat())
@@ -64,7 +64,7 @@ class ActivityxTest {
 
     @Test
     fun testGetImplWithParent() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             Assert.assertNull(activity.getImplFromParent(ImplTestInterface::class.java))
             Assert.assertEquals(TestActivity::class.java, activity.getImplFromParent(ViewModelStoreOwner::class.java)!!.javaClass)
         }
@@ -79,7 +79,7 @@ class ActivityxTest {
 
     @Test
     fun testStart() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             assertNoThrow {
                 activity.startActivity(Intent(activity, TestActivity::class.java))
             }
@@ -105,7 +105,7 @@ class ActivityxTest {
 
     @Test
     fun testStartByClass() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             assertNoThrow {
                 activity.startActivityByClass(TestActivity::class.java, null)
             }
@@ -140,7 +140,7 @@ class ActivityxTest {
 
     @Test
     fun testSafeStart() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             Assert.assertTrue(activity.safeStartActivity(Intent(activity, TestActivity::class.java)))
             Assert.assertFalse(activity.applicationContext.safeStartActivity(Intent(activity, ActivityxTest::class.java)))
 
@@ -157,7 +157,7 @@ class ActivityxTest {
 
     @Test
     fun testSafeStartByClass() {
-        launchAndOnActivityWithUse(TestActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestActivity::class.java) { activity ->
             Assert.assertTrue(activity.safeStartActivityByClass(TestActivity::class.java, null))
             Assert.assertTrue(activity.safeStartActivityByClass(TestActivity::class.java))
             Assert.assertFalse(activity.applicationContext.safeStartActivityByClass(NoRegisterTestActivity::class.java))

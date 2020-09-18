@@ -36,7 +36,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testIsRunning() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         try {
             context.startService(TestService::class.java)
@@ -55,7 +55,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testStart() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         try {
             Assert.assertFalse(context.isServiceRunning(TestService::class.java))
@@ -96,7 +96,7 @@ class ServicexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testStop() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         try {
             context.startService(TestService::class.java)
@@ -116,7 +116,7 @@ class ServicexTest {
 
     @Test
     fun testIsAccessibilityServiceEnabled() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         Assert.assertFalse(context.isAccessibilityServiceEnabled(AccessibilityService::class.java))
         Assert.assertFalse(context.isAccessibilityServiceEnabled(AccessibilityService::class.java, context.packageName))

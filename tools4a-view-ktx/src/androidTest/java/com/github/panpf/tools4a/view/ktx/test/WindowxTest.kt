@@ -18,64 +18,57 @@ package com.github.panpf.tools4a.view.ktx.test
 
 import android.app.Activity
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.run.ktx.runOnMainThread
+import com.github.panpf.tools4a.test.ktx.getActivitySync
+import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
 import com.github.panpf.tools4a.view.ktx.getBrightness
 import com.github.panpf.tools4a.view.ktx.isBrightnessFlowSystem
 import com.github.panpf.tools4a.view.ktx.setBrightness
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class WindowxTest {
 
-    private val activityRule = ActivityTestRule(TestActivity::class.java)
-
-    @Rule
-    fun getActivityRule(): ActivityTestRule<*> {
-        return this.activityRule
-    }
-
     @Test
     fun testBrightness() {
-        val activity = activityRule.activity
+        launchActivityWithUse(TestActivity::class) { scenario ->
+            val activity = scenario.getActivitySync()
+            val windowBrightness = activity.window.getBrightness()
 
-        val windowBrightness = activity.window.getBrightness()
-
-        if (windowBrightness < 0) {
-            Assert.assertTrue(activity.window.isBrightnessFlowSystem())
-        } else {
-            Assert.assertFalse(activity.window.isBrightnessFlowSystem())
-        }
-
-        try {
-            val newWindowBrightnessValue = windowBrightness * -1
-            runOnMainThread { activity.window.setBrightness(newWindowBrightnessValue) }
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-
-            val newWindowBrightnessValueFromSettings = activity.window.getBrightness()
-
-            if (newWindowBrightnessValueFromSettings < 0) {
+            if (windowBrightness < 0) {
                 Assert.assertTrue(activity.window.isBrightnessFlowSystem())
             } else {
                 Assert.assertFalse(activity.window.isBrightnessFlowSystem())
             }
 
-            Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f)
-        } finally {
-            runOnMainThread { activity.window.setBrightness(windowBrightness) }
             try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
+                val newWindowBrightnessValue = windowBrightness * -1
+                runOnMainThread { activity.window.setBrightness(newWindowBrightnessValue) }
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
 
+                val newWindowBrightnessValueFromSettings = activity.window.getBrightness()
+
+                if (newWindowBrightnessValueFromSettings < 0) {
+                    Assert.assertTrue(activity.window.isBrightnessFlowSystem())
+                } else {
+                    Assert.assertFalse(activity.window.isBrightnessFlowSystem())
+                }
+
+                Assert.assertEquals(newWindowBrightnessValue, newWindowBrightnessValueFromSettings, 0f)
+            } finally {
+                runOnMainThread { activity.window.setBrightness(windowBrightness) }
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

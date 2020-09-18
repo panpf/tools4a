@@ -34,7 +34,7 @@ class PreferencexTest {
     @Test
     @Throws(NoSuchFieldException::class)
     fun testGetPreferences() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val preferences = context.getSharedPreferences("testGetPreferences")
         Assert.assertEquals("testGetPreferences.xml", (preferences.getFieldValue("mFile") as File?)!!.name)
@@ -45,7 +45,7 @@ class PreferencexTest {
 
     @Test
     fun testPutAndGet() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val name = "testPutAndGet"
 
         context.clearPreferences()
@@ -191,7 +191,7 @@ class PreferencexTest {
 
     @Test
     fun testGetAll() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val name = "testGetAll"
 
         context.clearPreferences()
@@ -225,7 +225,7 @@ class PreferencexTest {
 
     @Test
     fun testRemoveAndContains() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val name = "testRemoveAndContains"
 
         context.clearPreferences()
@@ -277,7 +277,7 @@ class PreferencexTest {
     @Test
     @Throws(InterruptedException::class)
     fun testListener() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val name = "testListener"
 
         context.clearPreferences()

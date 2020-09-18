@@ -33,7 +33,7 @@ class ImagexTest {
 
     @Test
     fun testMimeType() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val operaFile = context.getAppExternalCacheDirs().getFileIn("ic_opera.png", 0).requireNotNull()
         val rectFile = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()
@@ -81,7 +81,7 @@ class ImagexTest {
 
     @Test
     fun testMimeSubType() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val operaFile = context.getAppExternalCacheDirs().getFileIn("ic_opera.png", 0).requireNotNull()
         val rectFile = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()

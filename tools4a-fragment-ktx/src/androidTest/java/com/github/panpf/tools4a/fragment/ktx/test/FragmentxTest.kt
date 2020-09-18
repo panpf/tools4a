@@ -22,141 +22,100 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.fragment.ktx.*
-import com.github.panpf.tools4a.run.ktx.runOnMainThreadSync
-import com.github.panpf.tools4a.run.ktx.runOnMainThreadSyncResult
-import com.github.panpf.tools4j.premise.ktx.requireNotNull
+import com.github.panpf.tools4a.test.ktx.*
+import com.github.panpf.tools4j.test.ktx.*
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class FragmentxTest {
 
-    @get:Rule
-    val activityTestRule = ActivityTestRule(TestActivity::class.java)
-
-    @get:Rule
-    val findUserVisibleChildActivityRule = ActivityTestRule(TestFindUserVisibleChildActivity::class.java)
-
     @Test
     fun testGetApplication() {
-        val supportFragment = activityTestRule.activity.getSupportFragment()
+        val scenario = launchFragmentInContainer(Fragment::class)
+        val fragment = scenario.getFragmentSync()
+        Assert.assertNotNull(fragment.getApplication())
+        scenario.moveToState(Lifecycle.State.DESTROYED)
+        Assert.assertNull(fragment.getApplication())
+    }
 
-        Assert.assertNotNull(supportFragment.getApplication())
-
-        Assert.assertNull(Fragment().getApplication())
-
-        try {
-            Fragment().requireApplication()
-            Assert.fail()
-        } catch (ignored: Exception) {
-        }
-
+    @Test
+    fun testRequireApplication() {
+        val scenario = launchFragmentInContainer(Fragment::class)
+        val fragment = scenario.getFragmentSync()
+        assertNoThrow { fragment.requireApplication() }
+        scenario.moveToState(Lifecycle.State.DESTROYED)
+        assertThrow(IllegalStateException::class) { fragment.requireApplication() }
     }
 
     @Test
     fun testDestroyed() {
-        val supportFragment = activityTestRule.activity.getSupportFragment()
-
-        Assert.assertFalse(supportFragment.isDestroyedCompat())
-
-        activityTestRule.finishActivity()
-        Thread.sleep(2000)
-
-        Assert.assertTrue(supportFragment.isDestroyedCompat())
+        val scenario = launchFragmentInContainer(Fragment::class)
+        val fragment = scenario.getFragmentSync()
+        Assert.assertFalse(fragment.isDestroyed())
+        scenario.moveToState(Lifecycle.State.DESTROYED)
+        Assert.assertTrue(fragment.isDestroyed())
+        Assert.assertTrue(Fragment().isDestroyed())
     }
 
     @Test
     fun testGetImplWithParent() {
-        val supportFragment = activityTestRule.activity.getSupportFragment() as TestImplSupportFragment
-
-        Assert.assertEquals(supportFragment.getImplFromParent(ImplTestInterface::class.java).requireNotNull()::class.java, TestImplSupportFragment::class.java)
-
-        Assert.assertEquals(supportFragment.getChildFragment().getImplFromParent(ImplTestInterface::class.java).requireNotNull()::class.java, TestImplSupportFragment::class.java)
-
-        runOnMainThreadSync {
-            activityTestRule.activity.convertChildFragment()
-        }
-
-        val supportFragment2 = runOnMainThreadSyncResult { activityTestRule.activity.getSupportFragment() as TestImplSupportFragment2 }
-
-        Assert.assertEquals(supportFragment2.getImplFromParent(ImplTestInterface::class.java).requireNotNull()::class.java, TestActivity::class.java)
-
+        val scenario = launchFragmentInContainer(TestImplSupportFragment::class)
+        val fragment = scenario.getFragmentSync()
+        Assert.assertEquals(
+                TestImplSupportFragment::class.java,
+                fragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass
+        )
+        Assert.assertEquals(
+                TestImplSupportFragment::class.java,
+                fragment.childFragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass
+        )
+        val scenario2 = launchFragmentInContainer(TestImplSupportFragment2::class)
+        val fragment2 = scenario2.getFragmentSync()
+        Assert.assertNull(fragment2.getImplFromParent(ImplTestInterface::class.java))
         Assert.assertNull(TestImplSupportFragment2().getImplFromParent(ImplTestInterface::class.java))
     }
 
     @Test
     fun testInstantiate() {
-        val supportFragment = Fragment::class.java.instantiate(Bundle().apply {
-            putString("key", "testInstantiate")
-        })
-        Assert.assertEquals(Fragment::class.java.name, supportFragment::class.java.name)
-        Assert.assertEquals("testInstantiate", supportFragment.arguments?.getString("key"))
-
-        val supportFragment2 = Fragment::class.java.instantiate()
-        Assert.assertEquals(Fragment::class.java.name, supportFragment2::class.java.name)
+        val fragment = Fragment::class.java.instantiate(BundleBuilder().putString("key", "testInstantiate").build())
+        Assert.assertEquals(Fragment::class.java.name, fragment.javaClass.name)
+        Assert.assertEquals("testInstantiate", fragment.arguments!!.getString("key"))
+        val fragment1 = Fragment::class.java.instantiate()
+        Assert.assertEquals(Fragment::class.java.name, fragment1.javaClass.name)
     }
 
     @Test
     fun testFindUserVisibleChildFragment() {
-        val activity = findUserVisibleChildActivityRule.activity
-        // 定义多少个 ActivityTestRule 测试方法执行的时候就会启动多少个 ActivityTestRule 为了让 findUserVisibleChildActivityRule 处于 resumed 状态
-        activityTestRule.finishActivity()
-        // 此测试要求手机处于屏幕解锁状态
-
-        val fragmentFromActivity = activity.findUserVisibleChildFragment().requireNotNull()
-        Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromActivity::class.java.name)
-
-        val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragment().requireNotNull()
-        Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromList::class.java.name)
-
-        val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleChildFragment
-        val fragmentFromChildFragment = fragmentFromActivity2.findUserVisibleChildFragment().requireNotNull()
-        Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
+        launchActivityWithOnUse(TestFindUserVisibleChildActivity::class) { activity: TestFindUserVisibleChildActivity ->
+            val fragmentFromActivity = activity.findUserVisibleChildFragment()!!
+            Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromActivity.javaClass.name)
+            val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragment()!!
+            Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromList.javaClass.name)
+            val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleChildFragment
+            val fragmentFromChildFragment = fragmentFromActivity2.findUserVisibleChildFragment()!!
+            Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
+        }
     }
 
     @Test
     fun testFindFragmentByViewPagerCurrentItem() {
-        val activity = findUserVisibleChildActivityRule.activity
-        // 定义多少个 ActivityTestRule 测试方法执行的时候就会启动多少个 ActivityTestRule 为了让 findUserVisibleChildActivityRule 处于 resumed 状态
-        activityTestRule.finishActivity()
-        // 此测试要求手机处于屏幕解锁状态
-
-        val fragmentFromActivity = activity.findFragmentByViewPagerCurrentItem(2).requireNotNull()
-        Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromActivity::class.java.name)
-        Assert.assertTrue(fragmentFromActivity.tag, fragmentFromActivity.tag.orEmpty().startsWith("android:switcher") && fragmentFromActivity.tag.orEmpty().endsWith(":2"))
-
-        val fragmentFromList = activity.supportFragmentManager.fragments.findFragmentByViewPagerCurrentItem(2).requireNotNull()
-        Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromList::class.java.name)
-        Assert.assertTrue(fragmentFromList.tag, fragmentFromList.tag.orEmpty().startsWith("android:switcher") && fragmentFromList.tag.orEmpty().endsWith(":2"))
-
-        val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleChildFragment
-        val fragmentFromChildFragment = fragmentFromActivity2.findFragmentByViewPagerCurrentItem(3).requireNotNull()
-        Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
-    }
-
-    class TestActivity : androidx.fragment.app.FragmentActivity(), ImplTestInterface {
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.at_multi_frame)
-
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.multiFrameAt_frame2, TestImplSupportFragment())
-                    .commit()
-        }
-
-        fun getSupportFragment(): Fragment =
-                supportFragmentManager.findFragmentById(R.id.multiFrameAt_frame2).requireNotNull()
-
-        fun convertChildFragment() {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.multiFrameAt_frame2, TestImplSupportFragment2())
-                    .commit()
+        launchActivityWithOnUse(TestFindUserVisibleChildActivity::class) { activity: TestFindUserVisibleChildActivity ->
+            val fragmentFromActivity = activity.findFragmentByViewPagerCurrentItem(2)!!
+            Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromActivity.javaClass.name)
+            Assert.assertTrue(fragmentFromActivity.tag, fragmentFromActivity.tag.orEmpty().startsWith("android:switcher") && fragmentFromActivity.tag.orEmpty().endsWith(":2"))
+            val fragmentFromList = activity.supportFragmentManager.fragments.findFragmentByViewPagerCurrentItem(2)!!
+            Assert.assertEquals(TestFindUserVisibleChildFragment::class.java.name, fragmentFromList.javaClass.name)
+            Assert.assertTrue(fragmentFromList.tag, fragmentFromList.tag.orEmpty().startsWith("android:switcher") && fragmentFromList.tag.orEmpty().endsWith(":2"))
+            val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleChildFragment
+            val fragmentFromChildFragment = fragmentFromActivity2.findFragmentByViewPagerCurrentItem(3)!!
+            Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
         }
     }
 
@@ -174,19 +133,19 @@ class FragmentxTest {
                     .commit()
         }
 
-        fun getChildFragment(): Fragment =
-                childFragmentManager.findFragmentById(R.id.testAt_frame).requireNotNull()
+        val childFragment: Fragment
+            get() = childFragmentManager.findFragmentById(R.id.testAt_frame)!!
     }
 
     class TestImplSupportFragment2 : Fragment()
 
-    class TestFindUserVisibleChildActivity : androidx.fragment.app.FragmentActivity() {
+    class TestFindUserVisibleChildActivity : FragmentActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.at_view_pager)
 
             val viewPager = findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : androidx.fragment.app.FragmentPagerAdapter(supportFragmentManager) {
+            viewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getItem(p0: Int): Fragment {
                     return if (p0 == 2) {
                         TestFindUserVisibleChildFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
@@ -210,7 +169,7 @@ class FragmentxTest {
             super.onViewCreated(view, savedInstanceState)
 
             val viewPager = view.findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : androidx.fragment.app.FragmentPagerAdapter(childFragmentManager) {
+            viewPager.adapter = object : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getItem(p0: Int): Fragment =
                         TestFindUserVisibleChildFragment2::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
 

@@ -29,123 +29,179 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.github.panpf.tools4a.inputmethod.InputMethodx;
 import com.github.panpf.tools4a.run.Runx;
+import com.github.panpf.tools4a.test.Testx;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class InputMethodxTest {
 
-    @NonNull
-    private final ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
+    @Test
+    public void testShowSoftInput() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            final EditText originEditText = activity.getSupportFragmentEditTxt();
 
-    @Rule
-    @NonNull
-    public final ActivityTestRule getActivityRule() {
-        return this.activityRule;
+            // ensure hide
+            if (InputMethodx.isSoftInputShowing(activity)) {
+                Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
+            }
+
+            // show
+            Runx.runOnMainThread(() -> InputMethodx.showSoftInput(originEditText));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+        });
     }
 
     @Test
-    public void testShowSoftInput() throws InterruptedException {
-        final TestActivity activity = activityRule.getActivity();
-        final EditText originEditText = activity.getSupportFragmentEditTxt();
+    public void testDelayShowSoftInput() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            final EditText supportEditText = activity.getSupportFragmentEditTxt();
 
-        // ensure hide
-        if (InputMethodx.isSoftInputShowing(activity)) {
+            // ensure hide
+            if (InputMethodx.isSoftInputShowing(activity)) {
+                Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
+            }
+
+            // show
+            Runx.runOnMainThread(() -> InputMethodx.delayShowSoftInput(supportEditText));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+
+            // hide
             Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
-            Thread.sleep(500);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-        }
 
-        // show
-        Runx.runOnMainThread(() -> InputMethodx.showSoftInput(originEditText));
-        Thread.sleep(500);
-        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+            // show
+            Runx.runOnMainThread(() -> InputMethodx.delayShowSoftInput(supportEditText, 500));
+            try {
+                Thread.sleep(500 + 500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+        });
     }
 
     @Test
-    public void testDelayShowSoftInput() throws InterruptedException {
-        final TestActivity activity = activityRule.getActivity();
-        final EditText supportEditText = activity.getSupportFragmentEditTxt();
+    public void testHideSoftInput() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            final EditText supportEditText = activity.getSupportFragmentEditTxt();
 
-        // ensure hide
-        if (InputMethodx.isSoftInputShowing(activity)) {
-            Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
-            Thread.sleep(500);
+            // ensure hide
+            if (InputMethodx.isSoftInputShowing(activity)) {
+                Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
+            }
+
+            // show
+            Runx.runOnMainThread(() -> InputMethodx.showSoftInput(supportEditText));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+
+            // hide
+            Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity.getSupportFragment()));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-        }
 
-        // show
-        Runx.runOnMainThread(() -> InputMethodx.delayShowSoftInput(supportEditText));
-        Thread.sleep(500);
-        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+            // show
+            Runx.runOnMainThread(() -> InputMethodx.showSoftInput(supportEditText));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
 
-        // hide
-        Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
-        Thread.sleep(500);
-        Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-
-        // show
-        Runx.runOnMainThread(() -> InputMethodx.delayShowSoftInput(supportEditText, 500));
-        Thread.sleep(500 + 500);
-        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+            // hide
+            Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(supportEditText));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
+        });
     }
 
     @Test
-    public void testHideSoftInput() throws InterruptedException {
-        final TestActivity activity = activityRule.getActivity();
-        final EditText supportEditText = activity.getSupportFragmentEditTxt();
+    public void testMoveCursor() {
+        Testx.launchActivityWithUse(TestActivity.class, scenario -> {
+            TestActivity activity = Testx.getActivitySync(scenario);
+            final EditText originEditText = activity.getSupportFragmentEditTxt();
 
-        // ensure hide
-        if (InputMethodx.isSoftInputShowing(activity)) {
-            Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity));
-            Thread.sleep(500);
-            Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-        }
+            Runx.runOnMainThread(() -> InputMethodx.moveCursorToEnd(originEditText));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals(originEditText.length(), Selection.getSelectionEnd(originEditText.getText()));
 
-        // show
-        Runx.runOnMainThread(() -> InputMethodx.showSoftInput(supportEditText));
-        Thread.sleep(500);
-        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
+            Runx.runOnMainThread(() -> InputMethodx.moveCursorToStart(originEditText));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.getText()));
 
-        // hide
-        Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(activity.getSupportFragment()));
-        Thread.sleep(500);
-        Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-
-        // show
-        Runx.runOnMainThread(() -> InputMethodx.showSoftInput(supportEditText));
-        Thread.sleep(500);
-        Assert.assertTrue(InputMethodx.isSoftInputShowing(activity));
-
-        // hide
-        Runx.runOnMainThread(() -> InputMethodx.hideSoftInput(supportEditText));
-        Thread.sleep(500);
-        Assert.assertFalse(InputMethodx.isSoftInputShowing(activity));
-    }
-
-    @Test
-    public void testMoveCursor() throws InterruptedException {
-        final TestActivity activity = activityRule.getActivity();
-        final EditText originEditText = activity.getSupportFragmentEditTxt();
-
-        Runx.runOnMainThread(() -> InputMethodx.moveCursorToEnd(originEditText));
-        Thread.sleep(100);
-        Assert.assertEquals(originEditText.length(), Selection.getSelectionEnd(originEditText.getText()));
-
-        Runx.runOnMainThread(() -> InputMethodx.moveCursorToStart(originEditText));
-        Thread.sleep(100);
-        Assert.assertEquals(0, Selection.getSelectionEnd(originEditText.getText()));
-
-        Runx.runOnMainThread(() -> InputMethodx.moveCursorTo(originEditText, originEditText.length() / 2));
-        Thread.sleep(100);
-        Assert.assertEquals(originEditText.length() / 2, Selection.getSelectionEnd(originEditText.getText()));
+            Runx.runOnMainThread(() -> InputMethodx.moveCursorTo(originEditText, originEditText.length() / 2));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals(originEditText.length() / 2, Selection.getSelectionEnd(originEditText.getText()));
+        });
     }
 
     public static class TestActivity extends FragmentActivity {
@@ -165,12 +221,12 @@ public class InputMethodxTest {
 
         @NonNull
         public Fragment getSupportFragment() {
-            return getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2);
+            return Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.multiFrameAt_frame2));
         }
 
         @NonNull
         public EditText getSupportFragmentEditTxt() {
-            return (EditText) getSupportFragment().getView();
+            return (EditText) Objects.requireNonNull(getSupportFragment().getView());
         }
     }
 

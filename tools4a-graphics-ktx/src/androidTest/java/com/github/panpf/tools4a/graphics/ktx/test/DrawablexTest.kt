@@ -34,7 +34,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsic() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
         val bitmap = drawable.toBitmapWithIntrinsicSize()
@@ -43,7 +43,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsicReuse() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
 
@@ -54,7 +54,7 @@ class DrawablexTest {
 
     @Test
     fun testIntrinsicConfig() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera)
 
@@ -139,7 +139,7 @@ class DrawablexTest {
 
     @Test
     fun testChangeColor() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val drawable = context.resources.getDrawable(R.drawable.ic_opera).changeColor(Color.parseColor("#0000FF"))
         val bitmap = drawable.toBitmapWithIntrinsicSize()

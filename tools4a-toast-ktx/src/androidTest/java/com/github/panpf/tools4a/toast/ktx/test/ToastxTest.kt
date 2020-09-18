@@ -21,68 +21,69 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
+import com.github.panpf.tools4a.test.ktx.launchActivityWithOnUse
 import com.github.panpf.tools4a.toast.ktx.*
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ToastxTest {
 
-    @get:Rule
-    val fragmentActivityRule: ActivityTestRule<TestFragmentActivity> = ActivityTestRule<TestFragmentActivity>(TestFragmentActivity::class.java)
-
     @Test
     fun testContextToast() {
-        val activity = fragmentActivityRule.activity
+        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+            activity.showLongToast("今天是2018年10月18号")
+            activity.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            activity.showLongToast(R.string.toast_test)
+            activity.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
-        activity.showLongToast("今天是2018年10月18号")
-        activity.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        activity.showLongToast(R.string.toast_test)
-        activity.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
-
-        activity.showShortToast("今天是2018年10月18号")
-        activity.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        activity.showShortToast(R.string.toast_test)
-        activity.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+            activity.showShortToast("今天是2018年10月18号")
+            activity.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            activity.showShortToast(R.string.toast_test)
+            activity.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+        }
     }
 
     @Test
     fun testSupportFragmentToast() {
-        val fragment = fragmentActivityRule.activity.fragment
+        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+            val fragment = activity.fragment
 
-        fragment.showLongToast("今天是2018年10月18号")
-        fragment.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        fragment.showLongToast(R.string.toast_test)
-        fragment.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+            fragment.showLongToast("今天是2018年10月18号")
+            fragment.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            fragment.showLongToast(R.string.toast_test)
+            fragment.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
-        fragment.showShortToast("今天是2018年10月18号")
-        fragment.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        fragment.showShortToast(R.string.toast_test)
-        fragment.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+            fragment.showShortToast("今天是2018年10月18号")
+            fragment.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            fragment.showShortToast(R.string.toast_test)
+            fragment.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+        }
     }
 
     @Test
     fun testViewToast() {
-        val view = fragmentActivityRule.activity.view
+        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+            val view = activity.view
 
-        view.showLongToast("今天是2018年10月18号")
-        view.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        view.showLongToast(R.string.toast_test)
-        view.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+            view.showLongToast("今天是2018年10月18号")
+            view.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            view.showLongToast(R.string.toast_test)
+            view.showLongToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
 
-        view.showShortToast("今天是2018年10月18号")
-        view.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
-        view.showShortToast(R.string.toast_test)
-        view.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+            view.showShortToast("今天是2018年10月18号")
+            view.showShortToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
+            view.showShortToast(R.string.toast_test)
+            view.showShortToastWithFormat(R.string.toast_test_tp, 2018, 10, 18)
+        }
     }
 
     @Test
     fun testWithViewToast() {
-        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false).showLongToastWithSelf()
-
-        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false).showShortToastWithSelf()
+        @Suppress("DEPRECATION")
+        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().context).inflate(R.layout.view_toast, null, false).showLongToastWithSelf()
+        @Suppress("DEPRECATION")
+        LayoutInflater.from(InstrumentationRegistry.getInstrumentation().context).inflate(R.layout.view_toast, null, false).showShortToastWithSelf()
     }
 
     class TestFragmentActivity : androidx.fragment.app.FragmentActivity() {

@@ -27,10 +27,10 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.github.panpf.tools4a.settings.ktx.*
+import com.github.panpf.tools4a.test.ktx.getActivitySync
+import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
 import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.lang.ref.WeakReference
@@ -39,21 +39,17 @@ import java.util.concurrent.CountDownLatch
 @RunWith(AndroidJUnit4::class)
 class SettingsxTest {
 
-    @get:Rule
-    val requestPermissionActivityRule = ActivityTestRule(RequestPermissionTestActivity::class.java)
-
-    @get:Rule
-    val requestNotificationPolicyActivityRule = ActivityTestRule(RequestNotificationPolicyTestActivity::class.java)
-
     @Test
     fun testScreenBrightnessMode() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            val activity = requestPermissionActivityRule.activity
-            try {
-                activity.countDownLatch.await()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
+            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+                val activity = scenario.getActivitySync()
+                try {
+                    activity.countDownLatch.await()
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
 
             if (!context.canWrite()) {
@@ -74,13 +70,15 @@ class SettingsxTest {
 
     @Test
     fun testScreenBrightness() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            val activity = requestPermissionActivityRule.activity
-            try {
-                activity.countDownLatch.await()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
+            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+                val activity = scenario.getActivitySync()
+                try {
+                    activity.countDownLatch.await()
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
 
             if (!context.canWrite()) {
@@ -101,13 +99,15 @@ class SettingsxTest {
 
     @Test
     fun testScreenOffTimeout() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            val activity = requestPermissionActivityRule.activity
-            try {
-                activity.countDownLatch.await()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
+            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+                val activity = scenario.getActivitySync()
+                try {
+                    activity.countDownLatch.await()
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
 
             if (!context.canWrite()) {
@@ -130,13 +130,15 @@ class SettingsxTest {
     fun testAirplaneModeOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) return
 
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            val activity = requestPermissionActivityRule.activity
-            try {
-                activity.countDownLatch.await()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
+            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+                val activity = scenario.getActivitySync()
+                try {
+                    activity.countDownLatch.await()
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
 
             if (!context.canWrite()) {
@@ -184,44 +186,7 @@ class SettingsxTest {
             countDownLatch.countDown()
         }
 
-        private class FinishTask internal constructor(private val activityWeakReference: WeakReference<Activity>) : Runnable {
-
-            override fun run() {
-                val activity = activityWeakReference.get()
-                activity?.finish()
-            }
-        }
-    }
-
-    class RequestNotificationPolicyTestActivity : Activity() {
-
-        private val countDownLatch = CountDownLatch(1)
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-            if (!isNotificationPolicyAccessGranted()) {
-                val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-                startActivityForResult(intent, 1)
-
-                Toast.makeText(this, "请允许修改请勿打扰状态并关闭此页面", Toast.LENGTH_LONG).show()
-                Handler(Looper.getMainLooper()).postDelayed(FinishTask(WeakReference(this)), (10 * 1000).toLong())
-            } else {
-                finish()
-            }
-        }
-
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-            super.onActivityResult(requestCode, resultCode, data)
-            finish()
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
-            countDownLatch.countDown()
-        }
-
-        private class FinishTask internal constructor(private val activityWeakReference: WeakReference<Activity>) : Runnable {
+        private class FinishTask constructor(private val activityWeakReference: WeakReference<Activity>) : Runnable {
 
             override fun run() {
                 val activity = activityWeakReference.get()

@@ -31,13 +31,13 @@ class PermissionxTest {
 
     @Test
     fun testSinglePermission() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         Assert.assertTrue(context.isGrantPermissions(Manifest.permission.INTERNET))
     }
 
     @Test
     fun testSingleNoPermission() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val result = TestUtils.getDeviceIdOr(context, "defaultValue")
             if ("defaultValue" == result) {
@@ -52,13 +52,13 @@ class PermissionxTest {
 
     @Test
     fun testMultiPermission() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         Assert.assertTrue(context.filterDeniedPermissions(Manifest.permission.INTERNET, Manifest.permission.VIBRATE).isEmpty())
     }
 
     @Test
     fun testMultiNoPermission() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val deviceIdResult = TestUtils.getDeviceIdOr(context, "defaultValue")
             val macAddressResult = TestUtils.getMacAddressOr(context, "defaultValue")

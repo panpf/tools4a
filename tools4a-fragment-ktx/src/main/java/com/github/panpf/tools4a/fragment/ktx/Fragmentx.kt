@@ -36,7 +36,7 @@ inline fun androidx.fragment.app.Fragment.requireApplication(): Application = Fr
 /**
  * Return true if the fragment has been destroyed
  */
-inline fun androidx.fragment.app.Fragment.isDestroyedCompat(): Boolean = Fragmentx.isDestroyedCompat(this)
+inline fun androidx.fragment.app.Fragment.isDestroyed(): Boolean = Fragmentx.isDestroyed(this)
 
 
 /**

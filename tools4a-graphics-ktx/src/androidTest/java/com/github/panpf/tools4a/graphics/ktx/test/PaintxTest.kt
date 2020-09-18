@@ -31,7 +31,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextWidth() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val text = "0123456789"
 
         val paint = Paint()
@@ -43,7 +43,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextHeight() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val paint = Paint()
         paint.textSize = dp2px(context, 14).toFloat()
@@ -58,7 +58,7 @@ class PaintxTest {
 
     @Test
     fun testGetTextBounds() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val text = "0123456789"
 
         val paint = Paint()
@@ -71,7 +71,7 @@ class PaintxTest {
 
     @Test
     fun testGetDrawTextVerticalCenterBaseLine() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val paint = Paint()
         paint.textSize = dp2px(context, 14).toFloat()

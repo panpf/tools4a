@@ -28,7 +28,7 @@ class OpenGlxTest {
 
     @Test
     fun testGetVersion() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         Assert.assertNotNull(context.getOpenGlVersion())
     }
 }

@@ -44,7 +44,7 @@ class BitmapxTest {
     @Test
     @Throws(IOException::class)
     fun testRead() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val file = context.getAppExternalCacheDirs().getFileIn("rect.jpeg", 0).requireNotNull()
 
         try {
@@ -164,7 +164,7 @@ class BitmapxTest {
 
     @Test
     fun testWriteToFile() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val bitmap = Bitmapx.createByColor(200, 200, Bitmap.Config.ARGB_8888, Colorx.FUCHSIA)
         val saveFile = context.getAppExternalCacheDirs().getFileIn("testWriteToFile.jpeg", 0).requireNotNull()
@@ -208,7 +208,7 @@ class BitmapxTest {
 
     @Test
     fun tesToDrawable() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val sourceBitmap = Bitmapx.createByColor(100, 100, Color.parseColor("#FF0000"))
         try {
@@ -224,7 +224,7 @@ class BitmapxTest {
 
     @Test
     fun testCircular() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
 
@@ -248,7 +248,7 @@ class BitmapxTest {
 
     @Test
     fun testCrop() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
         val srcRect = Rect(0, 0, rectBitmap.width / 2, rectBitmap.height / 2)
@@ -271,7 +271,7 @@ class BitmapxTest {
 
     @Test
     fun testCenterCrop() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val rectBitmap = context.resources.readBitmap(R.drawable.rect).requireNotNull()
 
@@ -289,7 +289,7 @@ class BitmapxTest {
 
     @Test
     fun testTint() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
 
         val operaBitmap = context.resources.readBitmap(R.drawable.ic_opera).requireNotNull()
 
@@ -301,7 +301,7 @@ class BitmapxTest {
 
     @Test
     fun testTextToBitmap() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         var bitmap: Bitmap? = null
         var bitmapCompact: Bitmap? = null
         var icon: Bitmap? = null

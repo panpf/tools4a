@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.panpf.tools4a.dialog.ktx.setClickButtonClosable
 import com.github.panpf.tools4a.dialog.ktx.showProgressDialog
-import com.github.panpf.tools4a.test.ktx.launchAndOnActivityWithUse
+import com.github.panpf.tools4a.test.ktx.launchActivityWithOnUse
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +16,7 @@ class DialogxTest {
 
     @Test
     fun testSetClickButtonClosable() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
             Assert.assertTrue(activity.dialog.setClickButtonClosable(true))
             Assert.assertTrue(activity.dialog.setClickButtonClosable(false))
         }
@@ -24,7 +24,7 @@ class DialogxTest {
 
     @Test
     fun testShowProgressDialog() {
-        launchAndOnActivityWithUse(TestFragmentActivity::class.java) { activity ->
+        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
             Assert.assertNotNull(activity.showProgressDialog("by activity"))
             Assert.assertNotNull(activity.showProgressDialog(android.R.string.ok))
 

@@ -10,6 +10,7 @@ Change:
 * change: Contextx.wifiRttManager() rename to wifiRttManagerOrNull()
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
 * change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
+* change: Contextx.isDestroyedCompat rename to isDestroyed
 
 New:
 * new: Devivex added isEmulator method

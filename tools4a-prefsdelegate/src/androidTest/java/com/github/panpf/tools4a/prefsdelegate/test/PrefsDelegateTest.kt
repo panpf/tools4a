@@ -30,7 +30,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testDefaultValue() {
-        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().context
         val prefsService = DefaultValueTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()
@@ -91,7 +91,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testValue() {
-        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().context
         val prefsService = ValueTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()
@@ -272,7 +272,7 @@ class PrefsDelegateTest {
 
     @Test
     fun testPrefsName() {
-        val context = androidx.test.InstrumentationRegistry.getInstrumentation().getContext()
+        val context = androidx.test.InstrumentationRegistry.getInstrumentation().context
         val prefsService = PrefsNameTestPrefsService(context)
         try {
             prefsService.clearDefaultPrefs()

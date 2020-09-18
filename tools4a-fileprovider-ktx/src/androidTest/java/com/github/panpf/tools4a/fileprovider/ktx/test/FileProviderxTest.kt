@@ -32,7 +32,7 @@ class FileProviderxTest {
     @Test
     @Throws(IOException::class)
     fun testGetShareFileUri() {
-        val context = InstrumentationRegistry.getInstrumentation().getContext()
+        val context = InstrumentationRegistry.getInstrumentation().context
         val file = File(context.getExternalFilesDir(null), "testGetShareFileUri.txt")
         val authority = "com.github.panpf.tools4a.fileprovider.ktx.test.file.provider"
         try {

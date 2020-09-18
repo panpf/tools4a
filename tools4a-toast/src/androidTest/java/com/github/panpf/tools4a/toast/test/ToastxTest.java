@@ -16,7 +16,6 @@
 
 package com.github.panpf.tools4a.toast.test;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,74 +26,72 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 
+import com.github.panpf.tools4a.test.Testx;
 import com.github.panpf.tools4a.toast.Toastx;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class ToastxTest {
 
-    @NonNull
-    private final ActivityTestRule<TestFragmentActivity> fragmentActivityRule = new ActivityTestRule<>(TestFragmentActivity.class);
-
-    @Rule
-    @NonNull
-    public final ActivityTestRule getFragmentActivityRule() {
-        return this.fragmentActivityRule;
-    }
-
     @Test
     public final void testContextToast() {
-        Activity activity = this.fragmentActivityRule.getActivity();
+        Testx.launchActivityWithOnUse(TestFragmentActivity.class, activity -> {
+            Toastx.showLong(activity, "今天是2018年10月18号");
+            Toastx.showLong(activity, R.string.toast_test);
+            Toastx.showLongWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showLongWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
 
-        Toastx.showLong(activity, "今天是2018年10月18号");
-        Toastx.showLong(activity, R.string.toast_test);
-        Toastx.showLongWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showLongWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
-
-        Toastx.showShort(activity, "今天是2018年10月18号");
-        Toastx.showShort(activity, R.string.toast_test);
-        Toastx.showShortWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showShortWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
+            Toastx.showShort(activity, "今天是2018年10月18号");
+            Toastx.showShort(activity, R.string.toast_test);
+            Toastx.showShortWithFormat(activity, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showShortWithFormat(activity, R.string.toast_test_tp, 2018, 10, 18);
+        });
     }
 
     @Test
     public final void testSupportFragmentToast() {
-        Fragment fragment = fragmentActivityRule.getActivity().getFragment();
+        Testx.launchActivityWithOnUse(TestFragmentActivity.class, activity -> {
+            Fragment fragment = activity.getFragment();
 
-        Toastx.showLong(fragment, "今天是2018年10月18号");
-        Toastx.showLong(fragment, R.string.toast_test);
-        Toastx.showLongWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showLongWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
+            Toastx.showLong(fragment, "今天是2018年10月18号");
+            Toastx.showLong(fragment, R.string.toast_test);
+            Toastx.showLongWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showLongWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
 
-        Toastx.showShort(fragment, "今天是2018年10月18号");
-        Toastx.showShort(fragment, R.string.toast_test);
-        Toastx.showShortWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showShortWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
+            Toastx.showShort(fragment, "今天是2018年10月18号");
+            Toastx.showShort(fragment, R.string.toast_test);
+            Toastx.showShortWithFormat(fragment, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showShortWithFormat(fragment, R.string.toast_test_tp, 2018, 10, 18);
+        });
     }
 
     @Test
     public final void testViewToast() {
-        View view = this.fragmentActivityRule.getActivity().getView();
+        Testx.launchActivityWithOnUse(TestFragmentActivity.class, activity -> {
+            View view = activity.getView();
 
-        Toastx.showLong(view, "今天是2018年10月18号");
-        Toastx.showLong(view, R.string.toast_test);
-        Toastx.showLongWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showLongWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
+            Toastx.showLong(view, "今天是2018年10月18号");
+            Toastx.showLong(view, R.string.toast_test);
+            Toastx.showLongWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showLongWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
 
-        Toastx.showShort(view, "今天是2018年10月18号");
-        Toastx.showShort(view, R.string.toast_test);
-        Toastx.showShortWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
-        Toastx.showShortWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
+            Toastx.showShort(view, "今天是2018年10月18号");
+            Toastx.showShort(view, R.string.toast_test);
+            Toastx.showShortWithFormat(view, "今天是%d年%d月%d号", 2018, 10, 18);
+            Toastx.showShortWithFormat(view, R.string.toast_test_tp, 2018, 10, 18);
+        });
     }
 
     @Test
     public final void testWithViewToast() {
+        //noinspection deprecation
         Toastx.showLongWithView(LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false));
+        //noinspection deprecation
         Toastx.showShortWithView(LayoutInflater.from(InstrumentationRegistry.getInstrumentation().getContext()).inflate(R.layout.view_toast, null, false));
     }
 
@@ -107,7 +104,7 @@ public class ToastxTest {
 
         @NonNull
         public Fragment getFragment() {
-            return getSupportFragmentManager().findFragmentById(android.R.id.content);
+            return Objects.requireNonNull(getSupportFragmentManager().findFragmentById(android.R.id.content));
         }
 
         public View getView() {

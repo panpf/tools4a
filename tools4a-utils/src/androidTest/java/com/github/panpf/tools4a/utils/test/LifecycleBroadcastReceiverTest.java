@@ -25,13 +25,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
+import com.github.panpf.tools4a.test.Testx;
 import com.github.panpf.tools4a.utils.LifecycleBroadcastReceiver;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,42 +40,53 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class LifecycleBroadcastReceiverTest {
-    private static String INTENT_ACTION = "com.github.panpf.tools4a.utils.test.LifecycleBroadcastReceiverTest";
 
-    @NonNull
-    private final ActivityTestRule<TestFragmentActivity> activityTestRule = new ActivityTestRule<>(TestFragmentActivity.class);
-
-    @Rule
-    @NonNull
-    public ActivityTestRule<TestFragmentActivity> getActivityTestRule() {
-        return activityTestRule;
-    }
+    private static final String INTENT_ACTION = "com.github.panpf.tools4a.utils.test.LifecycleBroadcastReceiverTest";
 
     @Test
-    public void test() throws InterruptedException {
-        TestFragmentActivity activity = activityTestRule.getActivity();
-        TestFragment fragment = activity.getTestFragment();
-        assert fragment != null;
+    public void test() {
 
-        activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "send1"));
-        Thread.sleep(1000);
-        Assert.assertEquals("[send1]", activity.createReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", activity.startReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", fragment.createReceiver.getEventArrayString());
+        Testx.launchActivityWithUse(TestFragmentActivity.class, scenario -> {
+            TestFragmentActivity activity = Testx.getActivitySync(scenario);
+            TestFragment fragment = activity.getTestFragment();
+            assert fragment != null;
 
-        activityTestRule.finishActivity();
-        Thread.sleep(1000);
-        activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "send2"));
-        Thread.sleep(1000);
-        Assert.assertEquals("[send1]", activity.createReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", activity.startReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
-        Assert.assertEquals("[send1]", fragment.createReceiver.getEventArrayString());
+            activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "send1"));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals("[send1]", activity.createReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", activity.startReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", fragment.createReceiver.getEventArrayString());
 
-        activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "throwCrash"));
-        Thread.sleep(1000);
+            scenario.moveToState(Lifecycle.State.DESTROYED);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "send2"));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Assert.assertEquals("[send1]", activity.createReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", activity.startReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", activity.resumeReceiver.getEventArrayString());
+            Assert.assertEquals("[send1]", fragment.createReceiver.getEventArrayString());
+
+            activity.sendBroadcast(new Intent(INTENT_ACTION).putExtra("event", "throwCrash"));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static class TestFragmentActivity extends FragmentActivity {
@@ -132,7 +143,8 @@ public class LifecycleBroadcastReceiverTest {
     }
 
     public static class TestBroadcastReceiver extends LifecycleBroadcastReceiver {
-        private List<String> eventList = new LinkedList<>();
+
+        private final List<String> eventList = new LinkedList<>();
 
         public TestBroadcastReceiver(@NonNull Fragment fragment) {
             super(fragment.requireContext(), fragment);
