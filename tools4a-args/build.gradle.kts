@@ -43,6 +43,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
     androidTestImplementation("com.github.panpf.tools4j:tools4j-lang:${property("TOOLS4J")}")
+    androidTestImplementation(project(":tools4a-test"))
 }
 
 /*

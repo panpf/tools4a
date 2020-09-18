@@ -2,68 +2,17 @@
     package="com.github.panpf.tools4a.args.test">
 
     <application>
-        <activity android:name="ArgsxTest$TestActivity" />
-        <activity android:name="ArgsxTest$ResTestActivity" />
-        <activity android:name="ArgsxTest$NoExtraActivity" />
-        <activity android:name="ArgsxTest$TestOnlyUriNoIntentActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx/uri"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity android:name="ArgsxTest$TestOnlyIntentNoUriActivity" />
-        <activity android:name="ArgsxTest$TestBothIntentUriActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx/uri/intent"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity android:name="ArgsxTest$TestNoIntentUriActivity" />
-        <activity android:name="ArgsxTest$ResTestOnlyUriNoIntentActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx/res/uri"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name="ArgsxTest$ResTestOnlyIntentNoUriActivity" />
-        <activity android:name="ArgsxTest$ResTestBothIntentUriActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx/res/uri/intent"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity android:name="ArgsxTest$ResTestNoIntentUriActivity" />
-        <activity android:name="ArgsxTest$TestUriActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name="ArgsxTest$ResTestUriActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="github.com"
-                    android:path="/panpf/androidx/res"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
+        <activity android:name="read.TestActivity" />
+        <activity android:name="read.ResTestActivity" />
+        <activity android:name="read.NoExtraActivity" />
+        <activity android:name="read.TestOnlyUriNoIntentActivity" />
+        <activity android:name="read.TestOnlyIntentNoUriActivity" />
+        <activity android:name="read.TestBothIntentUriActivity" />
+        <activity android:name="read.TestNoIntentUriActivity" />
+        <activity android:name="read.ResTestOnlyUriNoIntentActivity" />
+        <activity android:name="read.ResTestBothIntentUriActivity" />
+        <activity android:name="read.ResTestNoIntentUriActivity" />
+        <activity android:name="read.TestUriActivity" />
+        <activity android:name="read.ResTestUriActivity" />
     </application>
 </manifest>
