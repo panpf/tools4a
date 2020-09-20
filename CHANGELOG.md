@@ -3,6 +3,7 @@
 Upgrade:
 * upgrade: Upgrade androidx.core to 1.3.1
 * upgrade: Upgrade target sdk to 30
+* upgrade: Upgrade kotlin to 1.4.10
 
 Change:
 * change: All methods in Runx are renamed

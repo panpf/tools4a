@@ -115,7 +115,7 @@ Dependencies:
 * [androidx.core:core:1.3.1][core_versions]
 * [androidx.collection:collection:1.1.0][collection_versions]
 * [androidx.lifecycle:lifecycle-common:2.2.0][lifecycle_versions]
-* [org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0][kotlin_versions]（Only the '*-ktx' library dependencies it）
+* [org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10][kotlin_versions]（Only the '*-ktx' library dependencies it）
 
 
 ## Modules
