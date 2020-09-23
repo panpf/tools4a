@@ -220,10 +220,9 @@ Dependencies:
 
 ### tools4a-network
 * Networkx: [Networkx.java] ([Test][NetworkxTest.java]) | [Networkx.kt] ([Test][NetworkxTest.kt])
-    * getState, isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
-    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
-    * getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity, getWifiState,
-    * isWifiEnabled, setWifiEnabled, isMobileEnabled, setMobileEnabled, getGateway, getDNS1, getDNS2
+    * connectivity, activeNetwork, networkCapabilitiesCompat, isConnected, isWifiConnected,
+    * isCellularConnected, isNotMetered, isMetered, isNotRoaming, isRoaming, getTransportNames,
+    * getCapabilityNames, getWifiState, isWifiEnabled, setWifiEnabled, getWifiGateway, getDNS1, getDNS2
 * NetworkState: [NetworkState.java] ([Test][NetworkStateTest.java])
     * isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
     * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,

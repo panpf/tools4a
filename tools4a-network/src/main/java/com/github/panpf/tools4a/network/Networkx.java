@@ -17,150 +17,173 @@
 package com.github.panpf.tools4a.network;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
-import android.net.NetworkInfo;
+import android.net.Network;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 import com.github.panpf.tools4a.systemproperties.SystemPropertiesx;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
 
 public class Networkx {
 
     private Networkx() {
     }
 
+
     /**
-     * Get network state
+     * Get network connection manager
+     *
+     * @param context {@link Context}. App context
+     * @return {@link ConnectivityManager}. Network connection manager
      */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static NetworkState getState(@NonNull Context context) {
-        return NetworkState.get(context);
+    @NonNull
+    public static ConnectivityManager connectivity(@NonNull Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            throw new IllegalArgumentException("Not found service '" + Context.CONNECTIVITY_SERVICE + "'");
+        }
+        return connectivity;
     }
 
     /**
-     * Return true if any type of network is currently available
+     * Get the currently active network
+     *
+     * @param connectivity {@link ConnectivityManager}. Network connection manager
+     * @return {@link Network}. Describe network related information
      */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isActivated(@NonNull Context context) {
-        return NetworkState.get(context).isActivated();
+    @Nullable
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    public static Network activeNetwork(@NonNull ConnectivityManager connectivity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return connectivity.getActiveNetwork();
+        } else {
+            Network[] networks = connectivity.getAllNetworks();
+            return networks != null && networks.length > 0 ? networks[0] : null;
+        }
     }
 
     /**
-     * Return true if the currently available network type is WIFI
+     * Get the currently active network
+     *
+     * @param context {@link Context}. App context
+     * @return {@link Network}. Describe network related information
      */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isWifiActivated(@NonNull Context context) {
-        return NetworkState.get(context).isWifiActivated();
+    @Nullable
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    public static Network activeNetwork(@NonNull Context context) {
+        ConnectivityManager connectivity = connectivity(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return connectivity.getActiveNetwork();
+        } else {
+            Network[] networks = connectivity.getAllNetworks();
+            return networks != null && networks.length > 0 ? networks[0] : null;
+        }
     }
 
     /**
-     * Return true if the currently available network type is not metered WIFI
+     * Return NetworkCapabilitiesCompat, provides NetworkCapabilities support for versions below L
+     *
+     * @param context {@link Context}. App context
+     * @return {@link NetworkCapabilitiesCompat}. Provides NetworkCapabilities support for versions below L
+     */
+    @NonNull
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+    public static NetworkCapabilitiesCompat networkCapabilitiesCompat(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return new NetworkCapabilities21Impl(context);
+        } else {
+            return new NetworkCapabilities1Impl(context);
+        }
+    }
+
+
+    /**
+     * Return true if any type of network is currently connected
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isNoMeteredWifiActivated(@NonNull Context context) {
-        return NetworkState.get(context).isNoMeteredWifiActivated();
+    public static boolean isConnected(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).isConnected();
     }
 
     /**
-     * Return true if the type of currently available network is mobile data
+     * Indicates that currently connected network has wi-fi transport
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isMobileActivated(@NonNull Context context) {
-        return NetworkState.get(context).isMobileActivated();
+    public static boolean isWifiConnected(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).isWifiConnected();
     }
 
     /**
-     * Return true if the currently available network type is Bluetooth
+     * Indicates that currently connected network has cellular transport
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isBluetoothActivated(@NonNull Context context) {
-        return NetworkState.get(context).isBluetoothActivated();
+    public static boolean isCellularConnected(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).isCellularConnected();
+    }
+
+
+    /**
+     * Indicates that currently connected network is unmetered.
+     */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+    public static boolean isNotMetered(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).hasNotMeteredCapability();
     }
 
     /**
-     * Return true if the currently available network type is VPN
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isVPNActivated(@NonNull Context context) {
-        return NetworkState.get(context).isVPNActivated();
-    }
-
-    /**
-     * Return true if the currently available network is metered
+     * Indicates that currently connected network is metered.
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isMetered(@NonNull Context context) {
-        return NetworkState.get(context).isMetered();
+        return networkCapabilitiesCompat(context).hasMeteredCapability();
     }
 
     /**
-     * Return true if the type of currently available network is roaming
+     * Indicates that currently connected network is not roaming.
+     */
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+    public static boolean isNotRoaming(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).hasNotRoamingCapability();
+    }
+
+    /**
+     * Indicates that currently connected network is roaming.
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isRoaming(@NonNull Context context) {
-        return NetworkState.get(context).isRoaming();
+        return networkCapabilitiesCompat(context).hasRoamingCapability();
     }
 
-    /**
-     * Return true if the currently available network is automatically transferred after a failure
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isFailover(@NonNull Context context) {
-        return NetworkState.get(context).isFailover();
-    }
 
     /**
-     * Get the type of network currently available
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static int getType(@NonNull Context context) {
-        return NetworkState.get(context).getType();
-    }
-
-    /**
-     * Get the name of the type of currently available network
-     */
-    @NonNull
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static String getTypeName(@NonNull Context context) {
-        return NetworkState.get(context).getTypeName();
-    }
-
-    /**
-     * Get the name of the subtype of the currently available network
-     */
-    @NonNull
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static String getSubtypeName(@NonNull Context context) {
-        return NetworkState.get(context).getSubtypeName();
-    }
-
-    /**
-     * Get additional information about the currently available network
-     */
-    @NonNull
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static String getExtraInfo(@NonNull Context context) {
-        return NetworkState.get(context).getExtraInfo();
-    }
-
-    /**
-     * Get information about currently available networks
+     * Returns the names of the current network all transport,
+     * for example: 'CELLULAR&WIFI&BLUETOOTH&ETHERNET&VPN&WIFI_AWARE&LOWPAN&TEST'
      */
     @Nullable
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static NetworkInfo getNetworkInfo(@NonNull Context context) {
-        return NetworkState.get(context).getNetworkInfo();
+    public static String getTransportNames(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).getTransportNames();
     }
+
+    /**
+     * Returns the names of the current network all capability,
+     * for example: 'INTERNET&TRUSTED&NOT_METERED&NOT_VPN&VALIDATED&...'
+     */
+    @Nullable
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+    public static String getCapabilityNames(@NonNull Context context) {
+        return networkCapabilitiesCompat(context).getCapabilityNames();
+    }
+
 
     /**
      * Get the status of Wi-Fi
@@ -179,105 +202,60 @@ public class Networkx {
     @RequiresPermission(Manifest.permission.ACCESS_WIFI_STATE)
     public static boolean isWifiEnabled(@NonNull Context context) {
         int state = getWifiState(context);
-        return state == WifiManager.WIFI_STATE_ENABLED || state == WifiManager.WIFI_STATE_ENABLING;
+        return state == WifiManager.WIFI_STATE_ENABLED;
     }
 
     /**
      * Turn Wi-Fi on or off
+     *
+     * @deprecated Starting with Build.VERSION_CODES#Q, applications are not allowed to
+     * enable/disable Wi-Fi.
      */
+    @Deprecated
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE})
     public static boolean setWifiEnabled(@NonNull Context context, boolean enable) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifiManager != null && wifiManager.setWifiEnabled(enable);
     }
 
-    /**
-     * Return true if mobile network is turned on
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    public static boolean isMobileEnabled(@NonNull Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        return networkInfo != null && networkInfo.isConnected();
-    }
 
     /**
-     * Turn mobile network on or off
+     * Return wi-fi gateway
      */
-    @RequiresPermission(Manifest.permission.CHANGE_NETWORK_STATE)
-    public static boolean setMobileEnabled(@NonNull Context context, boolean enabled) {
-        try {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            Method method = getDeclaredMethodRecursive(connectivityManager.getClass(), "setMobileDataEnabled", Boolean.class);
-            method.setAccessible(true);
-            return (boolean) method.invoke(connectivityManager, enabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Gateway
-     */
-    @NonNull
+    @Nullable
     @RequiresPermission(Manifest.permission.ACCESS_WIFI_STATE)
-    public static String getGateway(@NonNull Context context) {
+    public static String getWifiGateway(@NonNull Context context) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         DhcpInfo dhcpInfo = wifiManager != null ? wifiManager.getDhcpInfo() : null;
-        if (dhcpInfo == null) return "";
-        long longIPV4Value = dhcpInfo.gateway;
-        return String.valueOf((int) (longIPV4Value & 0xff)) +
-                '.' +
-                (int) ((longIPV4Value >> 8) & 0xff) +
-                '.' +
-                (int) ((longIPV4Value >> 16) & 0xff) +
-                '.' +
-                (int) ((longIPV4Value >> 24) & 0xff);
+        long longIPV4Value = dhcpInfo != null ? dhcpInfo.gateway : 0;
+        if (longIPV4Value != 0) {
+            return String.valueOf((int) (longIPV4Value & 0xff)) +
+                    '.' +
+                    (int) ((longIPV4Value >> 8) & 0xff) +
+                    '.' +
+                    (int) ((longIPV4Value >> 16) & 0xff) +
+                    '.' +
+                    (int) ((longIPV4Value >> 24) & 0xff);
+        } else {
+            return null;
+        }
     }
 
     /**
      * DNS1
      */
-    @SuppressLint("PrivateApi")
-    @NonNull
+    @Nullable
     public static String getDNS1() {
-        return SystemPropertiesx.get("net.dns1");
+        String dns1 = SystemPropertiesx.get("net.dns1");
+        return !dns1.isEmpty() ? dns1 : null;
     }
 
     /**
      * DNS2
      */
-    @SuppressLint("PrivateApi")
-    @NonNull
+    @Nullable
     public static String getDNS2() {
-        return SystemPropertiesx.get("net.dns2");
-    }
-
-    /**
-     * Get the declared method with the specified name from the specified class
-     */
-    @NonNull
-    private static Method getDeclaredMethodRecursive(@NonNull Class<?> clazz, @SuppressWarnings("SameParameterValue") @NonNull String methodName,
-                                                     @Nullable Class<?>... params) throws NoSuchMethodException {
-        Method method = null;
-
-        Class<?> currentClazz = clazz;
-        while (method == null && currentClazz != null) {
-            try {
-                method = currentClazz.getDeclaredMethod(methodName, params);
-            } catch (NoSuchMethodException ignored) {
-            }
-
-            if (method == null) {
-                currentClazz = currentClazz.getSuperclass();
-            }
-        }
-
-        if (method == null) {
-            throw new NoSuchMethodException(String.format("No such method by name '%s' and params '%s' in class '%s' and its parent class", methodName, Arrays.toString(params), clazz.getName()));
-        } else {
-            return method;
-        }
+        String dns2 = SystemPropertiesx.get("net.dns2");
+        return !dns2.isEmpty() ? dns2 : null;
     }
 }

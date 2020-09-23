@@ -12,7 +12,8 @@ Change:
 * move: Textx from 'tools4a-utils' move to 'tools4a-other'
 * change: Contextx.systemService\*InUI rename to Contextx.systemService\*OnUiThread
 * change: Contextx.isDestroyedCompat rename to isDestroyed
-* change: Dimenx completely refactored
+* change: 'tools4a-dimen' completely refactored
+* change: 'tools4a-network' completely refactored
 
 New:
 * new: Devicex added isEmulator method

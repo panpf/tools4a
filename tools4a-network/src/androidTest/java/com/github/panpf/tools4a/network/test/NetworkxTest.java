@@ -18,13 +18,18 @@ package com.github.panpf.tools4a.network.test;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.github.panpf.tools4a.network.NetworkCapabilities1Impl;
+import com.github.panpf.tools4a.network.NetworkCapabilities21Impl;
+import com.github.panpf.tools4a.network.NetworkCapabilitiesCompat;
 import com.github.panpf.tools4a.network.Networkx;
+import com.github.panpf.tools4j.net.Netx;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,180 +39,120 @@ import org.junit.runner.RunWith;
 public class NetworkxTest {
 
     @Test
-    public void testGetNetworkState() {
+    public void testConnectivity() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        Assert.assertNotNull(Networkx.getState(context));
+        Assert.assertNotNull(Networkx.connectivity(context));
     }
 
     @Test
-    public void testIsActivated() {
+    public void testActiveNetwork() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Assert.assertTrue(Networkx.isActivated(context));
-            if (Networkx.isWifiEnabled(context) && Networkx.setWifiEnabled(context, false)) {
-                Assert.assertFalse(Networkx.isActivated(context));
-                Networkx.setWifiEnabled(context, true);
-            } else if (Networkx.isMobileEnabled(context) && Networkx.setMobileEnabled(context, false)) {
-                Assert.assertFalse(Networkx.isActivated(context));
-                Networkx.setMobileEnabled(context, true);
-            }
-        } else {
-            Assert.assertFalse(Networkx.isActivated(context));
-        }
-    }
-
-    @Test
-    public void testIsWifiActivated() throws InterruptedException {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            Assert.assertTrue(Networkx.isWifiActivated(context));
-            if (Networkx.isWifiEnabled(context) && Networkx.setWifiEnabled(context, false)) {
-                Thread.sleep(1000);
-                try {
-                    Assert.assertFalse(Networkx.isActivated(context));
-                } finally {
-                    Networkx.setWifiEnabled(context, true);
-                }
-            }
-        } else {
-            Assert.assertFalse(Networkx.isWifiActivated(context));
-        }
-    }
-
-    @Test
-    public void testIsNoMeteredWifiActivated() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            if (!connectivityManager.isActiveNetworkMetered()) {
-                Assert.assertTrue(Networkx.isNoMeteredWifiActivated(context));
+        ConnectivityManager connectivity = Networkx.connectivity(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Network[] networks = connectivity.getAllNetworks();
+            if (networks != null && networks.length > 0) {
+                Assert.assertNotNull(Networkx.activeNetwork(context));
+                Assert.assertNotNull(Networkx.activeNetwork(connectivity));
             } else {
-                Assert.assertFalse(Networkx.isNoMeteredWifiActivated(context));
+                Assert.assertNull(Networkx.activeNetwork(context));
+                Assert.assertNull(Networkx.activeNetwork(connectivity));
             }
-        } else {
-            Assert.assertFalse(Networkx.isNoMeteredWifiActivated(context));
         }
     }
 
     @Test
-    public void testIsMobileActivated() {
+    public void testNetworkCapabilitiesCompat() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-            Assert.assertTrue(Networkx.isMobileActivated(context));
-            if (Networkx.isMobileEnabled(context) && Networkx.setMobileEnabled(context, false)) {
-                Assert.assertFalse(Networkx.isActivated(context));
-                Networkx.setMobileEnabled(context, true);
-            }
+        NetworkCapabilitiesCompat networkCapabilitiesCompat = Networkx.networkCapabilitiesCompat(context);
+        Assert.assertNotNull(networkCapabilitiesCompat);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Assert.assertTrue(networkCapabilitiesCompat instanceof NetworkCapabilities21Impl);
         } else {
-            Assert.assertFalse(Networkx.isMobileActivated(context));
+            Assert.assertTrue(networkCapabilitiesCompat instanceof NetworkCapabilities1Impl);
         }
     }
 
     @Test
-    public void testIsBluetoothActivated() {
+    public void testIsConnected() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_BLUETOOTH) {
-            Assert.assertTrue(Networkx.isBluetoothActivated(context));
-        } else {
-            Assert.assertFalse(Networkx.isBluetoothActivated(context));
-        }
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).isConnected(),
+                Networkx.isConnected(context));
     }
 
     @Test
-    public void testIsVPNActivated() {
+    public void testIsWifiConnected() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_VPN) {
-            Assert.assertTrue(Networkx.isVPNActivated(context));
-        } else {
-            Assert.assertFalse(Networkx.isVPNActivated(context));
-        }
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).isWifiConnected(),
+                Networkx.isWifiConnected(context));
+    }
+
+    @Test
+    public void testIsCellularConnected() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).isCellularConnected(),
+                Networkx.isCellularConnected(context));
+    }
+
+
+    @Test
+    public void testIsNotMetered() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).hasNotMeteredCapability(),
+                Networkx.isNotMetered(context));
     }
 
     @Test
     public void testIsMetered() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.isActiveNetworkMetered()) {
-            Assert.assertTrue(Networkx.isMetered(context));
-        } else {
-            Assert.assertFalse(Networkx.isMetered(context));
-        }
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).hasMeteredCapability(),
+                Networkx.isMetered(context));
+    }
+
+
+    @Test
+    public void testIsNotRoaming() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).hasNotRoamingCapability(),
+                Networkx.isNotRoaming(context));
     }
 
     @Test
     public void testIsRoaming() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isRoaming()) {
-            Assert.assertTrue(Networkx.isRoaming(context));
-        } else {
-            Assert.assertFalse(Networkx.isRoaming(context));
-        }
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).hasRoamingCapability(),
+                Networkx.isRoaming(context));
     }
 
     @Test
-    public void testGetType() {
+    public void testGetTransportNames() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        if (Networkx.isWifiActivated(context)) {
-            Assert.assertEquals(ConnectivityManager.TYPE_WIFI, Networkx.getType(context));
-        } else if (Networkx.isMobileActivated(context)) {
-            Assert.assertEquals(ConnectivityManager.TYPE_MOBILE, Networkx.getType(context));
-        } else if (Networkx.isBluetoothActivated(context)) {
-            Assert.assertEquals(ConnectivityManager.TYPE_BLUETOOTH, Networkx.getType(context));
-        } else if (Networkx.isVPNActivated(context)) {
-            Assert.assertEquals(ConnectivityManager.TYPE_VPN, Networkx.getType(context));
-        } else if (!Networkx.isActivated(context)) {
-            Assert.assertEquals(-1, Networkx.getType(context));
-        }
+
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).getTransportNames(),
+                Networkx.getTransportNames(context));
     }
 
     @Test
-    public void testGetTypeName() {
+    public void testGetCapabilityNames() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        if (Networkx.isWifiActivated(context)) {
-            Assert.assertEquals("WIFI", Networkx.getTypeName(context));
-        } else if (Networkx.isMobileActivated(context)) {
-            Assert.assertEquals("MOBILE", Networkx.getTypeName(context));
-        } else if (Networkx.isBluetoothActivated(context)) {
-            Assert.assertEquals("BLUETOOTH", Networkx.getTypeName(context));
-        } else if (Networkx.isVPNActivated(context)) {
-            Assert.assertEquals("VPN", Networkx.getTypeName(context));
-        } else if (!Networkx.isActivated(context)) {
-            Assert.assertEquals("unknown", Networkx.getTypeName(context));
-        }
-    }
 
-    @Test
-    public void testGetSubTypeName() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        String subtypeName = Networkx.getSubtypeName(context);
-        if (Networkx.isActivated(context)) {
-            Assert.assertNotNull(subtypeName);
-        } else {
-            Assert.assertTrue(subtypeName, "unknown".equals(subtypeName) || "".equals(subtypeName));
-        }
-    }
-
-    @Test
-    public void testGetExtraInfo() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        if (Networkx.isActivated(context)) {
-            Assert.assertNotNull(Networkx.getExtraInfo(context));
-        } else {
-            Assert.assertEquals("unknown", Networkx.getExtraInfo(context));
-        }
+        Assert.assertEquals(
+                Networkx.networkCapabilitiesCompat(context).getCapabilityNames(),
+                Networkx.getCapabilityNames(context));
     }
 
     @Test
@@ -218,26 +163,39 @@ public class NetworkxTest {
     }
 
     @Test
-    public void testIsFailover() {
+    public void testIsWifiEnabled() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() && networkInfo.isFailover()) {
-            Assert.assertTrue(Networkx.isFailover(context));
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        int wifiState = wifiManager != null ? wifiManager.getWifiState() : WifiManager.WIFI_STATE_UNKNOWN;
+        if (wifiState == WifiManager.WIFI_STATE_ENABLED) {
+            Assert.assertTrue(Networkx.isWifiEnabled(context));
         } else {
-            Assert.assertFalse(Networkx.isFailover(context));
+            Assert.assertFalse(Networkx.isWifiEnabled(context));
         }
     }
 
     @Test
     public void testGateway() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        Assert.assertNotNull(Networkx.getGateway(context));
+        String wifiGateway = Networkx.getWifiGateway(context);
+        if (Networkx.isWifiConnected(context)) {
+            Assert.assertNotNull(wifiGateway);
+            Assert.assertTrue(Netx.isIPV4(wifiGateway) || Netx.isIPV6(wifiGateway));
+        } else {
+            Assert.assertNull(wifiGateway);
+        }
     }
 
     @Test
     public void testDNS() {
-        Assert.assertNotNull(Networkx.getDNS1());
-        Assert.assertNotNull(Networkx.getDNS2());
+        String dns1 = Networkx.getDNS1();
+        if (dns1 != null) {
+            Assert.assertTrue(Netx.isIPV4(dns1) || Netx.isIPV6(dns1));
+        }
+
+        String dns2 = Networkx.getDNS2();
+        if (dns2 != null) {
+            Assert.assertTrue(Netx.isIPV4(dns2) || Netx.isIPV6(dns2));
+        }
     }
 }
