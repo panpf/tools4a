@@ -26,6 +26,9 @@ Improve:
 Remove:
 * remove: Remove 'tools4a-utils-ktx' module
 
+Fix:
+* bug: Fix the bug that the Contextx wifiManagerOrNull() method did not convert the incoming Context to ApplicationContext
+
 ## v1.0.0-beta02
 upgrade: Kotlin upgraded to 1.4.0
 

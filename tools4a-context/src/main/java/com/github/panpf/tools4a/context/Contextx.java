@@ -530,7 +530,7 @@ public class Contextx {
 
     @NonNull
     public static WifiManager wifiManager(@NonNull Context context) {
-        return systemService(context, Context.WIFI_SERVICE);
+        return systemService(context.getApplicationContext(), Context.WIFI_SERVICE);
     }
 
     @Nullable
