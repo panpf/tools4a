@@ -94,14 +94,14 @@ public interface NetworkCapabilitiesCompat {
 
     /**
      * Returns the names of the current network all transport,
-     * for example: 'CELLULAR&WIFI&BLUETOOTH&ETHERNET&VPN&WIFI_AWARE&LOWPAN&TEST'
+     * for example: CELLULAR&#38;WIFI&#38;BLUETOOTH&#38;ETHERNET&#38;VPN&#38;WIFI_AWARE&#38;LOWPAN&#38;TEST'
      */
     @Nullable
     String getTransportNames();
 
     /**
      * Returns the names of the current network all capability,
-     * for example: 'INTERNET&TRUSTED&NOT_METERED&NOT_VPN&VALIDATED&...'
+     * for example: 'INTERNET&#38;TRUSTED&#38;NOT_METERED&#38;NOT_VPN&#38;VALIDATED&#38;...'
      */
     @Nullable
     String getCapabilityNames();
