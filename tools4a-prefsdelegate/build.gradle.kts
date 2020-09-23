@@ -4,7 +4,6 @@ plugins {
     id("jacoco")
 }
 
-// todo module 改名为 tools4a-prefsdelegate-kt
 android {
     compileSdkVersion(property("COMPILE_SDK_VERSION").toString().toInt())
 
