@@ -57,25 +57,46 @@ inline fun <T : androidx.fragment.app.Fragment> Class<out T>.instantiate(): T = 
 
 
 /**
- * Find the visible fragments visible to the current user from the fragment list
+ * Find the user visible fragment by UserVisibleHint from the FragmentActivity
  */
-// todo rename to findUserVisibleChildFragmentByUserVisibleHint
-inline fun List<androidx.fragment.app.Fragment>?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
+@Suppress("DEPRECATION")
+@Deprecated(
+        message = "Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead",
+        replaceWith = ReplaceWith("findUserVisibleChildFragmentByResumed()"))
+inline fun List<androidx.fragment.app.Fragment>?.findUserVisibleChildFragmentByUserVisibleHint(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(this)
 
 /**
- * Find the visible fragments visible to the current user from the FragmentActivity
+ * Find the user visible fragment by UserVisibleHint from the FragmentActivity
  */
-// todo rename to findUserVisibleChildFragmentByUserVisibleHint
-inline fun androidx.fragment.app.FragmentActivity?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
+@Suppress("DEPRECATION")
+@Deprecated(
+        message = "Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead",
+        replaceWith = ReplaceWith("findUserVisibleChildFragmentByResumed()"))
+inline fun androidx.fragment.app.FragmentActivity?.findUserVisibleChildFragmentByUserVisibleHint(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(this)
 
 /**
- * Find the visible fragments visible to the current user from the fragment
+ * Find the user visible fragment by UserVisibleHint from the FragmentActivity
  */
-// todo rename to findUserVisibleChildFragmentByUserVisibleHint
-inline fun androidx.fragment.app.Fragment?.findUserVisibleChildFragment(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragment(this)
+@Suppress("DEPRECATION")
+@Deprecated(
+        message = "Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead",
+        replaceWith = ReplaceWith("findUserVisibleChildFragmentByResumed()"))
+inline fun androidx.fragment.app.Fragment?.findUserVisibleChildFragmentByUserVisibleHint(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(this)
 
+/**
+ * Find the user visible fragment by resumed from the FragmentActivity
+ */
+inline fun List<androidx.fragment.app.Fragment>?.findUserVisibleChildFragmentByResumed(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByResumed(this)
 
-// todo add findUserVisibleChildFragmentByResumed
+/**
+ * Find the user visible fragment by resumed from the FragmentActivity
+ */
+inline fun androidx.fragment.app.FragmentActivity?.findUserVisibleChildFragmentByResumed(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByResumed(this)
+
+/**
+ * Find the user visible fragment by resumed from the FragmentActivity
+ */
+inline fun androidx.fragment.app.Fragment?.findUserVisibleChildFragmentByResumed(): androidx.fragment.app.Fragment? = Fragmentx.findUserVisibleChildFragmentByResumed(this)
 
 
 /**

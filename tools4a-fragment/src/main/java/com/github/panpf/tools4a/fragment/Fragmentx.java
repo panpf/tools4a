@@ -116,11 +116,13 @@ public class Fragmentx {
 
 
     /**
-     * Find the visible fragments visible to the current user from the fragment list
+     * Find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleChildFragmentByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
      */
-    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
-    public static Fragment findUserVisibleChildFragment(@Nullable List<Fragment> fragmentList) {
+    @Deprecated
+    public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable List<Fragment> fragmentList) {
         Fragment userVisibleFragment = null;
         if (fragmentList != null) {
             for (Fragment childFragment : fragmentList) {
@@ -130,7 +132,8 @@ public class Fragmentx {
                         userVisibleFragment = childFragment;
                     } else {
                         List<Fragment> childFragmentList = childFragment.getChildFragmentManager().getFragments();
-                        userVisibleFragment = findUserVisibleChildFragment(childFragmentList);
+                        //noinspection deprecation
+                        userVisibleFragment = findUserVisibleChildFragmentByUserVisibleHint(childFragmentList);
                     }
                     if (userVisibleFragment != null) {
                         break;
@@ -142,24 +145,68 @@ public class Fragmentx {
     }
 
     /**
-     * Find the visible fragments visible to the current user from the FragmentActivity
+     * Find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleChildFragmentByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
      */
-    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
-    public static Fragment findUserVisibleChildFragment(@Nullable FragmentActivity fragmentActivity) {
-        return findUserVisibleChildFragment(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+    @Deprecated
+    public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable FragmentActivity fragmentActivity) {
+        //noinspection deprecation
+        return findUserVisibleChildFragmentByUserVisibleHint(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
     }
 
     /**
-     * Find the visible fragments visible to the current user from the fragment
+     * Find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleChildFragmentByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
      */
-    // todo rename to findUserVisibleChildFragmentByUserVisibleHint
     @Nullable
-    public static Fragment findUserVisibleChildFragment(@Nullable Fragment fragment) {
-        return findUserVisibleChildFragment(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+    @Deprecated
+    public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable Fragment fragment) {
+        //noinspection deprecation
+        return findUserVisibleChildFragmentByUserVisibleHint(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
     }
 
-    // todo add findUserVisibleChildFragmentByResumed
+    /**
+     * Find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleChildFragmentByResumed(@Nullable List<Fragment> fragmentList) {
+        Fragment userVisibleFragment = null;
+        if (fragmentList != null) {
+            for (Fragment childFragment : fragmentList) {
+                if (childFragment != null) {
+                    if (childFragment.isResumed()) {
+                        userVisibleFragment = childFragment;
+                    } else {
+                        List<Fragment> childFragmentList = childFragment.getChildFragmentManager().getFragments();
+                        userVisibleFragment = findUserVisibleChildFragmentByResumed(childFragmentList);
+                    }
+                    if (userVisibleFragment != null) {
+                        break;
+                    }
+                }
+            }
+        }
+        return userVisibleFragment;
+    }
+
+    /**
+     * Find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleChildFragmentByResumed(@Nullable FragmentActivity fragmentActivity) {
+        return findUserVisibleChildFragmentByResumed(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+    }
+
+    /**
+     * Find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleChildFragmentByResumed(@Nullable Fragment fragment) {
+        return findUserVisibleChildFragmentByResumed(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+    }
 
     /**
      * Find the target fragment from the specified fragment list based on the current Item of ViewPager

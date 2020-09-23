@@ -2,7 +2,7 @@
     package="com.github.panpf.tools4a.fragment.test">
 
     <application>
-        <activity android:name=".FragmentxTest$TestActivity" />
-        <activity android:name=".FragmentxTest$TestFindUserVisibleChildActivity" />
+        <activity android:name=".FragmentxTest$TestFindUserVisibleByUserVisibleHintActivity" />
+        <activity android:name=".FragmentxTest$TestFindUserVisibleByResumedActivity" />
     </application>
 </manifest>

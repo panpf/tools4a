@@ -113,32 +113,48 @@ public class FragmentxTest {
     }
 
     @Test
-    public void testFindUserVisibleChildFragment() {
-        Testx.launchActivityWithOnUse(TestFindUserVisibleChildActivity.class, activity -> {
-            Fragment fragmentFromActivity = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragment(activity));
-            Assert.assertEquals(TestFindUserVisibleChildFragment.class.getName(), fragmentFromActivity.getClass().getName());
+    @SuppressWarnings("deprecation")
+    public void testFindUserVisibleChildFragmentByUserVisibleHint() {
+        Testx.launchActivityWithOnUse(TestFindUserVisibleByUserVisibleHintActivity.class, activity -> {
+            Fragment fragmentFromActivity = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(activity));
+            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment.class.getName(), fragmentFromActivity.getClass().getName());
 
-            Fragment fragmentFromList = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragment(activity.getSupportFragmentManager().getFragments()));
-            Assert.assertEquals(TestFindUserVisibleChildFragment.class.getName(), fragmentFromList.getClass().getName());
+            Fragment fragmentFromList = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(activity.getSupportFragmentManager().getFragments()));
+            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment.class.getName(), fragmentFromList.getClass().getName());
 
-            TestFindUserVisibleChildFragment fragmentFromActivity2 = (TestFindUserVisibleChildFragment) fragmentFromActivity;
-            Fragment fragmentFromChildFragment = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragment(fragmentFromActivity2));
+            TestFindUserVisibleByUserVisibleHintFragment fragmentFromActivity2 = (TestFindUserVisibleByUserVisibleHintFragment) fragmentFromActivity;
+            Fragment fragmentFromChildFragment = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(fragmentFromActivity2));
+            Assert.assertTrue(fragmentFromChildFragment.getTag(), Stringx.orEmpty(fragmentFromChildFragment.getTag()).startsWith("android:switcher") && Stringx.orEmpty(fragmentFromChildFragment.getTag()).endsWith(":3"));
+        });
+    }
+
+    @Test
+    public void testFindUserVisibleChildFragmentByResumed() {
+        Testx.launchActivityWithOnUse(TestFindUserVisibleByResumedActivity.class, activity -> {
+            Fragment fragmentFromActivity = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByResumed(activity));
+            Assert.assertEquals(TestFindUserVisibleByResumedFragment.class.getName(), fragmentFromActivity.getClass().getName());
+
+            Fragment fragmentFromList = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByResumed(activity.getSupportFragmentManager().getFragments()));
+            Assert.assertEquals(TestFindUserVisibleByResumedFragment.class.getName(), fragmentFromList.getClass().getName());
+
+            TestFindUserVisibleByResumedFragment fragmentFromActivity2 = (TestFindUserVisibleByResumedFragment) fragmentFromActivity;
+            Fragment fragmentFromChildFragment = Premisex.requireNotNull(Fragmentx.findUserVisibleChildFragmentByResumed(fragmentFromActivity2));
             Assert.assertTrue(fragmentFromChildFragment.getTag(), Stringx.orEmpty(fragmentFromChildFragment.getTag()).startsWith("android:switcher") && Stringx.orEmpty(fragmentFromChildFragment.getTag()).endsWith(":3"));
         });
     }
 
     @Test
     public void testFindFragmentByViewPagerCurrentItem() {
-        Testx.launchActivityWithOnUse(TestFindUserVisibleChildActivity.class, activity -> {
+        Testx.launchActivityWithOnUse(TestFindUserVisibleByUserVisibleHintActivity.class, activity -> {
             Fragment fragmentFromActivity = Premisex.requireNotNull(Fragmentx.findFragmentByViewPagerCurrentItem(activity, 2));
-            Assert.assertEquals(TestFindUserVisibleChildFragment.class.getName(), fragmentFromActivity.getClass().getName());
+            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment.class.getName(), fragmentFromActivity.getClass().getName());
             Assert.assertTrue(fragmentFromActivity.getTag(), Stringx.orEmpty(fragmentFromActivity.getTag()).startsWith("android:switcher") && Stringx.orEmpty(fragmentFromActivity.getTag()).endsWith(":2"));
 
             Fragment fragmentFromList = Premisex.requireNotNull(Fragmentx.findFragmentByViewPagerCurrentItem(activity.getSupportFragmentManager().getFragments(), 2));
-            Assert.assertEquals(TestFindUserVisibleChildFragment.class.getName(), fragmentFromList.getClass().getName());
+            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment.class.getName(), fragmentFromList.getClass().getName());
             Assert.assertTrue(fragmentFromList.getTag(), Stringx.orEmpty(fragmentFromList.getTag()).startsWith("android:switcher") && Stringx.orEmpty(fragmentFromList.getTag()).endsWith(":2"));
 
-            TestFindUserVisibleChildFragment fragmentFromActivity2 = (TestFindUserVisibleChildFragment) fragmentFromActivity;
+            TestFindUserVisibleByUserVisibleHintFragment fragmentFromActivity2 = (TestFindUserVisibleByUserVisibleHintFragment) fragmentFromActivity;
             Fragment fragmentFromChildFragment = Premisex.requireNotNull(Fragmentx.findFragmentByViewPagerCurrentItem(fragmentFromActivity2, 3));
             Assert.assertTrue(fragmentFromChildFragment.getTag(), Stringx.orEmpty(fragmentFromChildFragment.getTag()).startsWith("android:switcher") && Stringx.orEmpty(fragmentFromChildFragment.getTag()).endsWith(":3"));
         });
@@ -171,7 +187,7 @@ public class FragmentxTest {
 
     }
 
-    public static class TestFindUserVisibleChildActivity extends FragmentActivity {
+    public static class TestFindUserVisibleByUserVisibleHintActivity extends FragmentActivity {
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -179,14 +195,15 @@ public class FragmentxTest {
             setContentView(R.layout.at_view_pager);
 
             ViewPager viewPager = findViewById(R.id.viewPagerAt_viewPager);
-            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            //noinspection deprecation
+            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
                 @NotNull
                 @Override
                 public Fragment getItem(int p0) {
                     if (p0 == 2) {
-                        return Fragmentx.instantiate(TestFindUserVisibleChildFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                        return Fragmentx.instantiate(TestFindUserVisibleByUserVisibleHintFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
                     } else {
-                        return Fragmentx.instantiate(TestFindUserVisibleChildFragment2.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                        return Fragmentx.instantiate(TextFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
                     }
                 }
 
@@ -199,7 +216,63 @@ public class FragmentxTest {
         }
     }
 
-    public static class TestFindUserVisibleChildFragment extends Fragment {
+    public static class TestFindUserVisibleByResumedActivity extends FragmentActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.at_view_pager);
+
+            ViewPager viewPager = findViewById(R.id.viewPagerAt_viewPager);
+            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                @NotNull
+                @Override
+                public Fragment getItem(int p0) {
+                    if (p0 == 2) {
+                        return Fragmentx.instantiate(TestFindUserVisibleByResumedFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                    } else {
+                        return Fragmentx.instantiate(TextFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                    }
+                }
+
+                @Override
+                public int getCount() {
+                    return 5;
+                }
+            });
+            viewPager.setCurrentItem(2);
+        }
+    }
+
+    public static class TestFindUserVisibleByUserVisibleHintFragment extends Fragment {
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.at_view_pager, container, false);
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            ViewPager viewPager = view.findViewById(R.id.viewPagerAt_viewPager);
+            //noinspection deprecation
+            viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
+                @NotNull
+                @Override
+                public Fragment getItem(int p0) {
+                    return Fragmentx.instantiate(TextFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                }
+
+                @Override
+                public int getCount() {
+                    return 5;
+                }
+            });
+            viewPager.setCurrentItem(3);
+        }
+    }
+
+    public static class TestFindUserVisibleByResumedFragment extends Fragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             return inflater.inflate(R.layout.at_view_pager, container, false);
@@ -214,7 +287,7 @@ public class FragmentxTest {
                 @NotNull
                 @Override
                 public Fragment getItem(int p0) {
-                    return Fragmentx.instantiate(TestFindUserVisibleChildFragment2.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
+                    return Fragmentx.instantiate(TextFragment.class, new BundleBuilder().putString("position", String.valueOf(p0)).build());
                 }
 
                 @Override
@@ -226,7 +299,7 @@ public class FragmentxTest {
         }
     }
 
-    public static class TestFindUserVisibleChildFragment2 extends Fragment {
+    public static class TextFragment extends Fragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             return new TextView(getContext());

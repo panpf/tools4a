@@ -14,11 +14,14 @@ Change:
 * change: Contextx.isDestroyedCompat rename to isDestroyed
 * change: 'tools4a-dimen' completely refactored
 * change: 'tools4a-network' completely refactored
+* change: Mark the Fragmentx findUserVisibleChildFragment method as deprecated
+* change: Fragmentx findUserVisibleChildFragment method rename to findUserVisibleChildFragmentByUserVisibleHint
 
 New:
 * new: Devicex added isEmulator method
 * new: Added 'tools4a-test' and 'tools4a-test-ktx' module
 * new: Runx added isOnNotMainThread, checkMainThread, checkNotMainThread, isOnNotMainProcess method
+* new: Fragmentx added findUserVisibleChildFragmentByResumed method
 
 Improve:
 * improve: Buildx adapts to android 11
