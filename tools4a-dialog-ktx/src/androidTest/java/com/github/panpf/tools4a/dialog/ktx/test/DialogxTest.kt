@@ -16,7 +16,7 @@ class DialogxTest {
 
     @Test
     fun testSetClickButtonClosable() {
-        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+        TestFragmentActivity::class.launchActivityWithOnUse { activity ->
             Assert.assertTrue(activity.dialog.setClickButtonClosable(true))
             Assert.assertTrue(activity.dialog.setClickButtonClosable(false))
         }
@@ -24,7 +24,7 @@ class DialogxTest {
 
     @Test
     fun testShowProgressDialog() {
-        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+        TestFragmentActivity::class.launchActivityWithOnUse { activity ->
             Assert.assertNotNull(activity.showProgressDialog("by activity"))
             Assert.assertNotNull(activity.showProgressDialog(android.R.string.ok))
 

@@ -33,107 +33,125 @@ import com.github.panpf.tools4a.test.Testx
 import kotlin.reflect.KClass
 
 
-fun <T : Activity> launchActivity(activityClass: KClass<T>): ActivityScenario<T> = Testx.launchActivity(activityClass.java)
+inline fun <T : Activity> KClass<T>.launchActivity(): ActivityScenario<T> =
+        Testx.launchActivity(this.java)
 
-fun <T : Activity> launchActivity(activityClass: KClass<T>, activityOptions: Bundle?): ActivityScenario<T> = Testx.launchActivity(activityClass.java, activityOptions)
+inline fun <T : Activity> KClass<T>.launchActivity(activityOptions: Bundle?): ActivityScenario<T> =
+        Testx.launchActivity(this.java, activityOptions)
 
-fun <T : Activity> launchActivity(activityIntent: Intent): ActivityScenario<T> = Testx.launchActivity(activityIntent)
+inline fun <T : Activity> Intent.launchActivity(): ActivityScenario<T> =
+        Testx.launchActivity(this)
 
-fun <T : Activity> launchActivity(activityIntent: Intent, activityOptions: Bundle?): ActivityScenario<T> = Testx.launchActivity(activityIntent, activityOptions)
-
-
-fun <T : Activity> launchActivityWithOn(
-        activityClass: KClass<T>, action: ActivityScenarioAction<T>): ActivityScenario<T> = Testx.launchActivityWithOn(activityClass.java, action)
-
-fun <T : Activity> launchActivityWithOn(
-        activityClass: KClass<T>, activityOptions: Bundle?, action: ActivityScenarioAction<T>): ActivityScenario<T> = Testx.launchActivityWithOn(activityClass.java, activityOptions, action)
-
-fun <T : Activity> launchActivityWithOn(
-        activityIntent: Intent, action: ActivityScenarioAction<T>): ActivityScenario<T> = Testx.launchActivityWithOn(activityIntent, action)
-
-fun <T : Activity> launchActivityWithOn(
-        activityIntent: Intent, activityOptions: Bundle?, action: ActivityScenarioAction<T>): ActivityScenario<T> = Testx.launchActivityWithOn(activityIntent, activityOptions, action)
+inline fun <T : Activity> Intent.launchActivity(activityOptions: Bundle?): ActivityScenario<T> =
+        Testx.launchActivity(this, activityOptions)
 
 
-fun <T : Activity> launchActivityWithOnUse(
-        activityClass: KClass<T>, action: ActivityAction<T>) = Testx.launchActivityWithOnUse(activityClass.java, action)
+inline fun <T : Activity> KClass<T>.launchActivityWithOn(action: ActivityScenarioAction<T>): ActivityScenario<T> =
+        Testx.launchActivityWithOn(this.java, action)
 
-fun <T : Activity> launchActivityWithOnUse(
-        activityClass: KClass<T>, activityOptions: Bundle?, action: ActivityAction<T>) = Testx.launchActivityWithOnUse(activityClass.java, activityOptions, action)
+inline fun <T : Activity> KClass<T>.launchActivityWithOn(activityOptions: Bundle?, action: ActivityScenarioAction<T>): ActivityScenario<T> =
+        Testx.launchActivityWithOn(this.java, activityOptions, action)
 
-fun <T : Activity> launchActivityWithOnUse(
-        activityIntent: Intent, action: ActivityAction<T>) = Testx.launchActivityWithOnUse(activityIntent, action)
+inline fun <T : Activity> Intent.launchActivityWithOn(action: ActivityScenarioAction<T>): ActivityScenario<T> =
+        Testx.launchActivityWithOn(this, action)
 
-fun <T : Activity> launchActivityWithOnUse(
-        activityIntent: Intent, activityOptions: Bundle?, action: ActivityAction<T>) = Testx.launchActivityWithOnUse(activityIntent, activityOptions, action)
-
-
-fun <T : Activity> launchActivityWithUse(
-        activityClass: KClass<T>, action: ActivityScenarioAction<T>) = Testx.launchActivityWithUse(activityClass.java, action)
-
-fun <T : Activity> launchActivityWithUse(
-        activityClass: KClass<T>, activityOptions: Bundle?, action: ActivityScenarioAction<T>) = Testx.launchActivityWithUse(activityClass.java, activityOptions, action)
-
-fun <T : Activity> launchActivityWithUse(
-        activityIntent: Intent, action: ActivityScenarioAction<T>) = Testx.launchActivityWithUse(activityIntent, action)
-
-fun <T : Activity> launchActivityWithUse(
-        activityIntent: Intent, activityOptions: Bundle?, action: ActivityScenarioAction<T>) = Testx.launchActivityWithUse(activityIntent, activityOptions, action)
+inline fun <T : Activity> Intent.launchActivityWithOn(activityOptions: Bundle?, action: ActivityScenarioAction<T>): ActivityScenario<T> =
+        Testx.launchActivityWithOn(this, activityOptions, action)
 
 
-fun <T : Activity> ActivityScenario<T>.getActivitySync(): T = Testx.getActivitySync(this)
+inline fun <T : Activity> KClass<T>.launchActivityWithOnUse(action: ActivityAction<T>) =
+        Testx.launchActivityWithOnUse(this.java, action)
 
-fun <T : Activity> ActivityScenario<T>?.getActivityOrNullSync(): T? = Testx.getActivityOrNullSync(this)
+inline fun <T : Activity> KClass<T>.launchActivityWithOnUse(activityOptions: Bundle?, action: ActivityAction<T>) =
+        Testx.launchActivityWithOnUse(this.java, activityOptions, action)
 
+inline fun <T : Activity> Intent.launchActivityWithOnUse(action: ActivityAction<T>) =
+        Testx.launchActivityWithOnUse(this, action)
 
-fun <T : Fragment> launchFragment(fragmentClass: KClass<T>): FragmentScenario<T> = Testx.launchFragment(fragmentClass.java)
-
-fun <T : Fragment> launchFragment(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?): FragmentScenario<T> = Testx.launchFragment(fragmentClass.java, fragmentArgs)
-
-fun <T : Fragment> launchFragment(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, factory: FragmentFactory?): FragmentScenario<T> = Testx.launchFragment(fragmentClass.java, fragmentArgs, factory)
-
-fun <T : Fragment> launchFragment(fragmentClass: KClass<T>, fragmentArgs: Bundle?,
-                                  @StyleRes themeResId: Int, factory: FragmentFactory?): FragmentScenario<T> = Testx.launchFragment(fragmentClass.java, fragmentArgs, themeResId, factory)
+inline fun <T : Activity> Intent.launchActivityWithOnUse(activityOptions: Bundle?, action: ActivityAction<T>) =
+        Testx.launchActivityWithOnUse(this, activityOptions, action)
 
 
-fun <T : Fragment> launchFragmentInContainer(fragmentClass: KClass<T>): FragmentScenario<T> = Testx.launchFragmentInContainer(fragmentClass.java)
+inline fun <T : Activity> KClass<T>.launchActivityWithUse(action: ActivityScenarioAction<T>) =
+        Testx.launchActivityWithUse(this.java, action)
 
-fun <T : Fragment> launchFragmentInContainer(fragmentClass: KClass<T>, fragmentArgs: Bundle?): FragmentScenario<T> = Testx.launchFragmentInContainer(fragmentClass.java, fragmentArgs)
+inline fun <T : Activity> KClass<T>.launchActivityWithUse(activityOptions: Bundle?, action: ActivityScenarioAction<T>) =
+        Testx.launchActivityWithUse(this.java, activityOptions, action)
 
-fun <T : Fragment> launchFragmentInContainer(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, factory: FragmentFactory?): FragmentScenario<T> = Testx.launchFragmentInContainer(fragmentClass.java, fragmentArgs, factory)
+inline fun <T : Activity> Intent.launchActivityWithUse(action: ActivityScenarioAction<T>) =
+        Testx.launchActivityWithUse(this, action)
 
-fun <T : Fragment> launchFragmentInContainer(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?,
-        @StyleRes themeResId: Int, factory: FragmentFactory?): FragmentScenario<T> = Testx.launchFragmentInContainer(fragmentClass.java, fragmentArgs, themeResId, factory)
-
-
-fun <T : Fragment> launchFragmentWithOn(fragmentClass: KClass<T>, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentWithOn(fragmentClass.java, action)
-
-fun <T : Fragment> launchFragmentWithOn(fragmentClass: KClass<T>, fragmentArgs: Bundle?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentWithOn(fragmentClass.java, fragmentArgs, action)
-
-fun <T : Fragment> launchFragmentWithOn(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentWithOn(fragmentClass.java, fragmentArgs, factory, action)
-
-fun <T : Fragment> launchFragmentWithOn(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, @StyleRes themeResId: Int,
-        factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentWithOn(fragmentClass.java, fragmentArgs, themeResId, factory, action)
+inline fun <T : Activity> Intent.launchActivityWithUse(activityOptions: Bundle?, action: ActivityScenarioAction<T>) =
+        Testx.launchActivityWithUse(this, activityOptions, action)
 
 
-fun <T : Fragment> launchFragmentInContainerWithOn(
-        fragmentClass: KClass<T>, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentInContainerWithOn(fragmentClass.java, action)
+inline fun <T : Activity> ActivityScenario<T>.getActivitySync(): T =
+        Testx.getActivitySync(this)
 
-fun <T : Fragment> launchFragmentInContainerWithOn(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentInContainerWithOn(fragmentClass.java, fragmentArgs, action)
-
-fun <T : Fragment> launchFragmentInContainerWithOn(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentInContainerWithOn(fragmentClass.java, fragmentArgs, factory, action)
-
-fun <T : Fragment> launchFragmentInContainerWithOn(
-        fragmentClass: KClass<T>, fragmentArgs: Bundle?, @StyleRes themeResId: Int,
-        factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> = Testx.launchFragmentInContainerWithOn(fragmentClass.java, fragmentArgs, themeResId, factory, action)
+inline fun <T : Activity> ActivityScenario<T>?.getActivityOrNullSync(): T? =
+        Testx.getActivityOrNullSync(this)
 
 
-fun <T : Fragment> FragmentScenario<T>.getFragmentSync(): T = Testx.getFragmentSync(this)
+inline fun <T : Fragment> KClass<T>.launchFragment(fragmentClass: KClass<T>): FragmentScenario<T> =
+        Testx.launchFragment(this.java)
+
+inline fun <T : Fragment> KClass<T>.launchFragment(
+        fragmentArgs: Bundle?): FragmentScenario<T> = Testx.launchFragment(this.java, fragmentArgs)
+
+inline fun <T : Fragment> KClass<T>.launchFragment(fragmentArgs: Bundle?, factory: FragmentFactory?): FragmentScenario<T> =
+        Testx.launchFragment(this.java, fragmentArgs, factory)
+
+inline fun <T : Fragment> KClass<T>.launchFragment(
+        fragmentArgs: Bundle?, @StyleRes themeResId: Int, factory: FragmentFactory?): FragmentScenario<T> =
+        Testx.launchFragment(this.java, fragmentArgs, themeResId, factory)
+
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainer(): FragmentScenario<T> =
+        Testx.launchFragmentInContainer(this.java)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainer(fragmentArgs: Bundle?): FragmentScenario<T> =
+        Testx.launchFragmentInContainer(this.java, fragmentArgs)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainer(
+        fragmentArgs: Bundle?, factory: FragmentFactory?): FragmentScenario<T> =
+        Testx.launchFragmentInContainer(this.java, fragmentArgs, factory)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainer(
+        fragmentArgs: Bundle?, @StyleRes themeResId: Int, factory: FragmentFactory?): FragmentScenario<T> =
+        Testx.launchFragmentInContainer(this.java, fragmentArgs, themeResId, factory)
+
+
+inline fun <T : Fragment> KClass<T>.launchFragmentWithOn(action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentWithOn(this.java, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentWithOn(fragmentArgs: Bundle?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentWithOn(this.java, fragmentArgs, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentWithOn(
+        fragmentArgs: Bundle?, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentWithOn(this.java, fragmentArgs, factory, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentWithOn(
+        fragmentArgs: Bundle?, @StyleRes themeResId: Int, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentWithOn(this.java, fragmentArgs, themeResId, factory, action)
+
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainerWithOn(
+        action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentInContainerWithOn(this.java, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainerWithOn(
+        fragmentArgs: Bundle?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentInContainerWithOn(this.java, fragmentArgs, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainerWithOn(
+        fragmentArgs: Bundle?, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentInContainerWithOn(this.java, fragmentArgs, factory, action)
+
+inline fun <T : Fragment> KClass<T>.launchFragmentInContainerWithOn(
+        fragmentArgs: Bundle?, @StyleRes themeResId: Int, factory: FragmentFactory?, action: FragmentAction<T>): FragmentScenario<T> =
+        Testx.launchFragmentInContainerWithOn(this.java, fragmentArgs, themeResId, factory, action)
+
+
+inline fun <T : Fragment> FragmentScenario<T>.getFragmentSync(): T =
+        Testx.getFragmentSync(this)

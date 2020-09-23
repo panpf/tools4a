@@ -201,6 +201,7 @@ public class Activityx {
 
     /* ************************************* start ***************************************** */
 
+    // todo Remove
 
     /**
      * Start the activity of the specified intent
@@ -277,6 +278,7 @@ public class Activityx {
 
     /* ************************************* safeStart ***************************************** */
 
+    // todo rename to startOrCatch
 
     /**
      * Safely launch an Activity, catch ActivityNotFoundException and return false
@@ -289,6 +291,7 @@ public class Activityx {
         try {
             context.startActivity(intent);
             return true;
+            // todo change to Exception
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
             return false;

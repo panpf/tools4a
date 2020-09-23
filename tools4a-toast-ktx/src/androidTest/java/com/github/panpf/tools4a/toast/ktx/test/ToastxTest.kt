@@ -31,7 +31,7 @@ class ToastxTest {
 
     @Test
     fun testContextToast() {
-        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+        TestFragmentActivity::class.launchActivityWithOnUse { activity ->
             activity.showLongToast("今天是2018年10月18号")
             activity.showLongToastWithFormat("今天是%d年%d月%d号", 2018, 10, 18)
             activity.showLongToast(R.string.toast_test)
@@ -46,7 +46,7 @@ class ToastxTest {
 
     @Test
     fun testSupportFragmentToast() {
-        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+        TestFragmentActivity::class.launchActivityWithOnUse { activity ->
             val fragment = activity.fragment
 
             fragment.showLongToast("今天是2018年10月18号")
@@ -63,7 +63,7 @@ class ToastxTest {
 
     @Test
     fun testViewToast() {
-        launchActivityWithOnUse(TestFragmentActivity::class) { activity ->
+        TestFragmentActivity::class.launchActivityWithOnUse { activity ->
             val view = activity.view
 
             view.showLongToast("今天是2018年10月18号")

@@ -42,7 +42,7 @@ class ViewxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testSetLayoutSize() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val view = activity.view
             try {
@@ -123,7 +123,7 @@ class ViewxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testAddLayoutSize() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val view = activity.view
             runOnMainThread { view.setLayoutSize(100, 300) }
@@ -156,7 +156,7 @@ class ViewxTest {
 
     @Test
     fun testToBitmap() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val view = activity.view
             val bitmap = view.toBitmap(Bitmap.Config.ARGB_8888)
@@ -200,7 +200,7 @@ class ViewxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testInflateLayout() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val contentView = activity.contentView
             val contentViewChildCount = contentView.childCount
@@ -231,7 +231,7 @@ class ViewxTest {
 
     @Test
     fun testAddPaddingTopByStatusBarHeight() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val contentView = activity.contentView
             val oldTopPadding = contentView.paddingTop

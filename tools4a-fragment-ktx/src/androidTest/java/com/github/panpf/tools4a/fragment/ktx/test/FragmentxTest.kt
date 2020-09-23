@@ -41,7 +41,7 @@ class FragmentxTest {
 
     @Test
     fun testGetApplication() {
-        val scenario = launchFragmentInContainer(Fragment::class)
+        val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
         Assert.assertNotNull(fragment.getApplication())
         scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -50,7 +50,7 @@ class FragmentxTest {
 
     @Test
     fun testRequireApplication() {
-        val scenario = launchFragmentInContainer(Fragment::class)
+        val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
         assertNoThrow { fragment.requireApplication() }
         scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -59,7 +59,7 @@ class FragmentxTest {
 
     @Test
     fun testDestroyed() {
-        val scenario = launchFragmentInContainer(Fragment::class)
+        val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
         Assert.assertFalse(fragment.isDestroyed())
         scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -69,7 +69,7 @@ class FragmentxTest {
 
     @Test
     fun testGetImplWithParent() {
-        val scenario = launchFragmentInContainer(TestImplSupportFragment::class)
+        val scenario = TestImplSupportFragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
         Assert.assertEquals(
                 TestImplSupportFragment::class.java,
@@ -79,7 +79,7 @@ class FragmentxTest {
                 TestImplSupportFragment::class.java,
                 fragment.childFragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass
         )
-        val scenario2 = launchFragmentInContainer(TestImplSupportFragment2::class)
+        val scenario2 = TestImplSupportFragment2::class.launchFragmentInContainer()
         val fragment2 = scenario2.getFragmentSync()
         Assert.assertNull(fragment2.getImplFromParent(ImplTestInterface::class.java))
         Assert.assertNull(TestImplSupportFragment2().getImplFromParent(ImplTestInterface::class.java))
@@ -97,7 +97,7 @@ class FragmentxTest {
     @Test
     @Suppress("DEPRECATION")
     fun testFindUserVisibleChildFragmentByUserVisibleHint() {
-        launchActivityWithOnUse(TestFindUserVisibleByUserVisibleHintActivity::class) { activity: TestFindUserVisibleByUserVisibleHintActivity ->
+        TestFindUserVisibleByUserVisibleHintActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByUserVisibleHintActivity ->
             val fragmentFromActivity = activity.findUserVisibleChildFragmentByUserVisibleHint()!!
             Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
             val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragmentByUserVisibleHint()!!
@@ -110,7 +110,7 @@ class FragmentxTest {
 
     @Test
     fun testFindUserVisibleChildFragmentByResumed() {
-        launchActivityWithOnUse(TestFindUserVisibleByResumedActivity::class) { activity: TestFindUserVisibleByResumedActivity ->
+        TestFindUserVisibleByResumedActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByResumedActivity ->
             val fragmentFromActivity = activity.findUserVisibleChildFragmentByResumed()!!
             Assert.assertEquals(TestFindUserVisibleByResumedFragment::class.java.name, fragmentFromActivity.javaClass.name)
             val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragmentByResumed()!!
@@ -123,7 +123,7 @@ class FragmentxTest {
 
     @Test
     fun testFindFragmentByViewPagerCurrentItem() {
-        launchActivityWithOnUse(TestFindUserVisibleByUserVisibleHintActivity::class) { activity: TestFindUserVisibleByUserVisibleHintActivity ->
+        TestFindUserVisibleByUserVisibleHintActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByUserVisibleHintActivity ->
             val fragmentFromActivity = activity.findFragmentByViewPagerCurrentItem(2)!!
             Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
             Assert.assertTrue(fragmentFromActivity.tag, fragmentFromActivity.tag.orEmpty().startsWith("android:switcher") && fragmentFromActivity.tag.orEmpty().endsWith(":2"))

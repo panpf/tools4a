@@ -32,12 +32,12 @@ class ArgsBinderTest21 {
 
     @Test
     fun testBindSupportFragment21() {
-        launchFragmentInContainerWithOn(TestSupportFragment21::class, TestSupportFragment21.createArguments(), TestSupportFragment21::checkParams)
+        TestSupportFragment21::class.launchFragmentInContainerWithOn(TestSupportFragment21.createArguments(), TestSupportFragment21::checkParams)
     }
 
     @Test
     fun testBindResSupportFragment21() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchFragmentInContainerWithOn(ResTestSupportFragment21::class, ResTestSupportFragment21.createArguments(context), ResTestSupportFragment21::checkParams)
+        ResTestSupportFragment21::class.launchFragmentInContainerWithOn(ResTestSupportFragment21.createArguments(context), ResTestSupportFragment21::checkParams)
     }
 }

@@ -29,86 +29,86 @@ class ArgsBinderTest {
     @Test
     fun testBindSupportActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestActivity.createIntent(context), TestActivity::checkParams)
+        TestActivity.createIntent(context).launchActivityWithOnUse(TestActivity::checkParams)
     }
 
     @Test
     fun testBindNoExtrasActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestNoExtrasActivity.createIntent(context), TestNoExtrasActivity::checkParams)
+        TestNoExtrasActivity.createIntent(context).launchActivityWithOnUse(TestNoExtrasActivity::checkParams)
     }
 
 
     @Test
     fun testBindResActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestActivity.createIntent(context), ResTestActivity::checkParams)
+        ResTestActivity.createIntent(context).launchActivityWithOnUse(ResTestActivity::checkParams)
     }
 
     @Test
     fun testUriOnlyActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestOnlyUriNoIntentActivity.createIntentWithUri(context), TestOnlyUriNoIntentActivity::checkParamsByUri)
+        TestOnlyUriNoIntentActivity.createIntentWithUri(context).launchActivityWithOnUse(TestOnlyUriNoIntentActivity::checkParamsByUri)
     }
 
     @Test
     fun testIntentOnlyActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestOnlyIntentNoUriActivity.createIntentWithExtras(context), TestOnlyIntentNoUriActivity::checkParamsByIntent)
+        TestOnlyIntentNoUriActivity.createIntentWithExtras(context).launchActivityWithOnUse(TestOnlyIntentNoUriActivity::checkParamsByIntent)
     }
 
     @Test
     fun testUriIntentActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestBothIntentUriActivity.createIntentWithUriAndExtras(context), TestBothIntentUriActivity::checkParamsByUriIntent)
+        TestBothIntentUriActivity.createIntentWithUriAndExtras(context).launchActivityWithOnUse(TestBothIntentUriActivity::checkParamsByUriIntent)
     }
 
     @Test
     fun testNothingActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestNoIntentUriActivity.createIntentWithNothing(context), TestNoIntentUriActivity::checkParamsByNothing)
+        TestNoIntentUriActivity.createIntentWithNothing(context).launchActivityWithOnUse(TestNoIntentUriActivity::checkParamsByNothing)
     }
 
     @Test
     fun testResUriOnlyActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestOnlyUriNoIntentActivity.createIntentWithUri(context), ResTestOnlyUriNoIntentActivity::checkParamsByUri)
+        ResTestOnlyUriNoIntentActivity.createIntentWithUri(context).launchActivityWithOnUse(ResTestOnlyUriNoIntentActivity::checkParamsByUri)
     }
 
     @Test
     fun testResIntentOnlyActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestOnlyIntentNoUriActivity.createIntentWithExtras(context), ResTestOnlyIntentNoUriActivity::checkParamsByIntent)
+        ResTestOnlyIntentNoUriActivity.createIntentWithExtras(context).launchActivityWithOnUse(ResTestOnlyIntentNoUriActivity::checkParamsByIntent)
     }
 
     @Test
     fun testResUriIntentActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestBothIntentUriActivity.createIntentWithUriAndExtras(context), ResTestBothIntentUriActivity::checkParamsByUriIntent)
+        ResTestBothIntentUriActivity.createIntentWithUriAndExtras(context).launchActivityWithOnUse(ResTestBothIntentUriActivity::checkParamsByUriIntent)
     }
 
     @Test
     fun testResNothingActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestNoIntentUriActivity.createIntentWithNothing(context), ResTestNoIntentUriActivity::checkParamsByNothing)
+        ResTestNoIntentUriActivity.createIntentWithNothing(context).launchActivityWithOnUse(ResTestNoIntentUriActivity::checkParamsByNothing)
     }
 
     @Test
     fun testUriActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(TestUriActivity.createIntent(context), TestUriActivity::checkParams)
+        TestUriActivity.createIntent(context).launchActivityWithOnUse(TestUriActivity::checkParams)
     }
 
     @Test
     fun testResUriActivity() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse(ResTestUriActivity.createIntent(context), ResTestUriActivity::checkParams)
+        ResTestUriActivity.createIntent(context).launchActivityWithOnUse(ResTestUriActivity::checkParams)
     }
 
     @Test
     fun testBindSupportFragment() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse<TestActivity>(TestActivity.createIntent(context)) { activity ->
+        TestActivity.createIntent(context).launchActivityWithOnUse<TestActivity> { activity ->
             activity.fragment.checkParams()
         }
     }
@@ -116,7 +116,7 @@ class ArgsBinderTest {
     @Test
     fun testBindResSupportFragment() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        launchActivityWithOnUse<ResTestActivity>(ResTestActivity.createIntent(context)) { activity ->
+        ResTestActivity.createIntent(context).launchActivityWithOnUse<ResTestActivity> { activity ->
             activity.fragment.checkParams()
         }
     }

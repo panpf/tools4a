@@ -80,7 +80,7 @@ class DisplayxTest {
 
     @Test
     fun testGetRotation() {
-        launchActivityWithOnUse(TestActivity::class) { activity ->
+        TestActivity::class.launchActivityWithOnUse { activity ->
             val rotation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 activity.display!!.rotation
             } else {
@@ -110,7 +110,7 @@ class DisplayxTest {
 
     @Test
     fun testGetOrientation() {
-        launchActivityWithOnUse(TestActivity::class) { activity ->
+        TestActivity::class.launchActivityWithOnUse { activity ->
             when (activity.resources.configuration.orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> {
                     Assert.assertEquals(Configuration.ORIENTATION_PORTRAIT.toLong(), activity.getDisplayOrientation().toLong())

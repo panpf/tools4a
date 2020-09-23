@@ -43,7 +43,7 @@ class SettingsxTest {
     fun testScreenBrightnessMode() {
         val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+            RequestPermissionTestActivity::class.launchActivityWithUse { scenario ->
                 val activity = scenario.getActivitySync()
                 try {
                     activity.countDownLatch.await()
@@ -72,7 +72,7 @@ class SettingsxTest {
     fun testScreenBrightness() {
         val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+            RequestPermissionTestActivity::class.launchActivityWithUse { scenario ->
                 val activity = scenario.getActivitySync()
                 try {
                     activity.countDownLatch.await()
@@ -101,7 +101,7 @@ class SettingsxTest {
     fun testScreenOffTimeout() {
         val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+            RequestPermissionTestActivity::class.launchActivityWithUse { scenario ->
                 val activity = scenario.getActivitySync()
                 try {
                     activity.countDownLatch.await()
@@ -132,7 +132,7 @@ class SettingsxTest {
 
         val context = InstrumentationRegistry.getInstrumentation().context
         if (!context.canWrite()) {
-            launchActivityWithUse(RequestPermissionTestActivity::class) { scenario ->
+            RequestPermissionTestActivity::class.launchActivityWithUse { scenario ->
                 val activity = scenario.getActivitySync()
                 try {
                     activity.countDownLatch.await()

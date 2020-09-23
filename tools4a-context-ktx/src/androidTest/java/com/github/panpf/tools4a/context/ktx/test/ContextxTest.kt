@@ -43,7 +43,7 @@ class ContextxTest {
 
     @Test
     fun testAppContext() {
-        launchActivityWithUse(TestActivity::class.java) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val fragment = activity.supportFragment
             val view = activity.view

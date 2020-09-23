@@ -33,7 +33,7 @@ class WindowxTest {
 
     @Test
     fun testBrightness() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val windowBrightness = activity.window.getBrightness()
 

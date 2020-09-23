@@ -37,7 +37,7 @@ class InputMethodxTest {
 
     @Test
     fun testShowSoftInput() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val originEditText = activity.supportFragmentEditTxt
 
@@ -57,7 +57,7 @@ class InputMethodxTest {
 
     @Test
     fun testDelayShowSoftInput() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val supportEditText = activity.supportFragmentEditTxt
 
@@ -87,7 +87,7 @@ class InputMethodxTest {
 
     @Test
     fun testHideSoftInput() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val supportEditText = activity.supportFragmentEditTxt
 
@@ -122,7 +122,7 @@ class InputMethodxTest {
 
     @Test
     fun testMoveCursor() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val activity = scenario.getActivitySync()
             val originEditText = activity.supportFragmentEditTxt
 

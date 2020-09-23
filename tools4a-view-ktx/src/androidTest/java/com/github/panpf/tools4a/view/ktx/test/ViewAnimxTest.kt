@@ -36,7 +36,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testAnimAlpha() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -84,7 +84,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testAnimTranslate() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -138,7 +138,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testShakeLandscape() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -177,7 +177,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testShakePortrait() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -216,7 +216,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testStartAnimFromRes() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -258,7 +258,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testInvisibleByAnimAlpha() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -306,7 +306,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testGoneByAnimAlpha() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
@@ -354,7 +354,7 @@ class ViewAnimxTest {
     @Test
     @Throws(InterruptedException::class)
     fun testVisibleByAnimAlpha() {
-        launchActivityWithUse(TestActivity::class) { scenario ->
+        TestActivity::class.launchActivityWithUse { scenario ->
             val view = scenario.getActivitySync().view
             val invisibleListener = object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation) {
