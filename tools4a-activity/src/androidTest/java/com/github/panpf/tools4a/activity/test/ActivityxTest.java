@@ -89,67 +89,6 @@ public class ActivityxTest {
     }
 
     @Test
-    public void testStart() {
-        Testx.launchActivityWithOnUse(TestActivity.class, activity -> {
-            Assertx.assertNoThrow(() -> {
-                Activityx.start(activity, new Intent(activity, TestActivity.class));
-            });
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.start(activity.getApplicationContext(), new Intent(activity, ActivityxTest.class));
-            });
-
-            Assertx.assertNoThrow(() -> {
-                Activityx.start(activity.getFragment(), new Intent(activity, TestActivity.class));
-            });
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.start(activity.getFragment(), new Intent(activity, ActivityxTest.class));
-            });
-
-            Assertx.assertNoThrow(() -> {
-                Activityx.start(activity.getView(), new Intent(activity, TestActivity.class));
-            });
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.start(activity.getView(), new Intent(activity, ActivityxTest.class));
-            });
-        });
-    }
-
-    @Test
-    public void testStartByClass() {
-        Testx.launchActivityWithOnUse(TestActivity.class, activity -> {
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity, TestActivity.class, null);
-            });
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity, TestActivity.class);
-            });
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.startByClass(activity.getApplicationContext(), NoRegisterTestActivity.class);
-            });
-
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity.getFragment(), TestActivity.class, null);
-            });
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity.getFragment(), TestActivity.class);
-            });
-
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.startByClass(activity.getFragment(), NoRegisterTestActivity.class);
-            });
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity.getView(), TestActivity.class, null);
-            });
-            Assertx.assertNoThrow(() -> {
-                Activityx.startByClass(activity.getView(), TestActivity.class);
-            });
-            Assertx.assertThrow(ActivityNotFoundException.class, () -> {
-                Activityx.startByClass(activity.getView(), NoRegisterTestActivity.class);
-            });
-        });
-    }
-
-    @Test
     public void testSafeStart() {
         Testx.launchActivityWithOnUse(TestActivity.class, activity -> {
             Assert.assertTrue(Activityx.safeStart(activity, new Intent(activity, TestActivity.class)));

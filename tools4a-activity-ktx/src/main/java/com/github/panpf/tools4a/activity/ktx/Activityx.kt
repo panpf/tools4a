@@ -34,11 +34,6 @@ import com.github.panpf.tools4a.activity.Activityx
 inline fun Activity.isDestroyedCompat(): Boolean = Activityx.isDestroyedCompat(this)
 
 /**
- * Return true if the activity has been destroyed
- */
-inline fun androidx.fragment.app.FragmentActivity.isDestroyedCompat(): Boolean = Activityx.isDestroyedCompat(this)
-
-/**
  * Convert a translucent themed Activity
  * [android.R.attr.windowIsTranslucent] back from opaque to
  * translucent following a call to
@@ -76,50 +71,13 @@ inline fun Activity.convertFromTranslucentCompat(): Boolean = Activityx.convertF
 inline fun <T> Activity.getImplFromParent(clazz: Class<T>): T? = Activityx.getImplFromParent(this, clazz)
 
 
-/* ************************************* start ***************************************** */
+/* ************************************* canStart ***************************************** */
 
 
 /**
  * Test if you can start Activity
  */
 inline fun Context.canStartActivity(intent: Intent): Boolean = Activityx.canStart(this, intent)
-
-
-/**
- * Start the activity of the specified Class
- */
-inline fun View.startActivity(intent: Intent) = Activityx.start(this, intent)
-
-
-/**
- * Start the activity of the specified Class
- */
-inline fun Context.startActivityByClass(clazz: Class<out Activity>, args: Bundle?) = Activityx.startByClass(this, clazz, args)
-
-/**
- * Start the activity of the specified Class
- */
-inline fun Context.startActivityByClass(clazz: Class<out Activity>) = Activityx.startByClass(this, clazz)
-
-/**
- * Start the activity of the specified Class
- */
-inline fun Fragment.startActivityByClass(clazz: Class<out Activity>, args: Bundle?) = Activityx.startByClass(this, clazz, args)
-
-/**
- * Start the activity of the specified Class
- */
-inline fun Fragment.startActivityByClass(clazz: Class<out Activity>) = Activityx.startByClass(this, clazz)
-
-/**
- * Start the activity of the specified Class
- */
-inline fun View.startActivityByClass(clazz: Class<out Activity>, args: Bundle?) = Activityx.startByClass(this, clazz, args)
-
-/**
- * Start the activity of the specified Class
- */
-inline fun View.startActivityByClass(clazz: Class<out Activity>) = Activityx.startByClass(this, clazz)
 
 
 /* ************************************* safeStart ***************************************** */

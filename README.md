@@ -123,7 +123,7 @@ Dependencies:
 ### tools4a-activity
 * Activityx: [Activityx.java] ([Test][ActivityxTest.java]) | [Activityx.kt] ([Test][ActivityxTest.kt])
     * isDestroyedCompat, convertToTranslucentCompat, convertFromTranslucentCompat, getImplFromParent
-    * canStart, start, startByClass, safeStart, safeStartByClass
+    * canStart, safeStart, safeStartByClass
 
 ### tools4a-args
 * Argsx: [Argsx.java] ([Test][ArgsxTest.java]) | [Argsx.kt] ([Test][ArgsxTest.kt])

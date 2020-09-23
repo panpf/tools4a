@@ -56,13 +56,6 @@ public class Activityx {
         }
     }
 
-    /**
-     * Return true if the activity has been destroyed
-     */
-    public static boolean isDestroyedCompat(@NonNull FragmentActivity activity) {
-        return activity.getLifecycle().getCurrentState() == Lifecycle.State.DESTROYED;
-    }
-
 
     /**
      * Convert a translucent themed Activity
@@ -199,86 +192,7 @@ public class Activityx {
     }
 
 
-    /* ************************************* start ***************************************** */
-
-    // todo Remove
-
-    /**
-     * Start the activity of the specified intent
-     */
-    public static void start(@NonNull Context context, @NonNull Intent intent) {
-        context.startActivity(intent);
-    }
-
-    /**
-     * Start the activity of the specified intent
-     */
-    public static void start(@NonNull Fragment fragment, @NonNull Intent intent) {
-        fragment.startActivity(intent);
-    }
-
-    /**
-     * Start the activity of the specified intent
-     */
-    public static void start(@NonNull View view, @NonNull Intent intent) {
-        view.getContext().startActivity(intent);
-    }
-
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull Context context, @NonNull Class<? extends Activity> clazz, @Nullable Bundle args) {
-        Intent intent = new Intent(context, clazz);
-        if (args != null) intent.putExtras(args);
-        context.startActivity(intent);
-    }
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull Context context, @NonNull Class<? extends Activity> clazz) {
-        startByClass(context, clazz, null);
-    }
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull Fragment fragment,
-                                    @NonNull Class<? extends Activity> clazz, @Nullable Bundle args) {
-        Intent intent = new Intent(fragment.requireContext(), clazz);
-        if (args != null) intent.putExtras(args);
-        fragment.startActivity(intent);
-    }
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull Fragment fragment,
-                                    @NonNull Class<? extends Activity> clazz) {
-        startByClass(fragment, clazz, null);
-    }
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull View view, @NonNull Class<? extends Activity> clazz, @Nullable Bundle args) {
-        Intent intent = new Intent(view.getContext(), clazz);
-        if (args != null) intent.putExtras(args);
-        view.getContext().startActivity(intent);
-    }
-
-    /**
-     * Start the activity of the specified Class
-     */
-    public static void startByClass(@NonNull View view, @NonNull Class<? extends Activity> clazz) {
-        startByClass(view, clazz, null);
-    }
-
-
     /* ************************************* safeStart ***************************************** */
-
-    // todo rename to startOrCatch
 
     /**
      * Safely launch an Activity, catch ActivityNotFoundException and return false
@@ -291,8 +205,7 @@ public class Activityx {
         try {
             context.startActivity(intent);
             return true;
-            // todo change to Exception
-        } catch (ActivityNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

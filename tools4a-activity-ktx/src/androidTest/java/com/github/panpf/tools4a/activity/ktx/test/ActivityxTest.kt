@@ -78,67 +78,6 @@ class ActivityxTest {
     }
 
     @Test
-    fun testStart() {
-        TestActivity::class.launchActivityWithOnUse { activity ->
-            assertNoThrow {
-                activity.startActivity(Intent(activity, TestActivity::class.java))
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.applicationContext.startActivity(Intent(activity, ActivityxTest::class.java))
-            }
-
-            assertNoThrow {
-                activity.fragment.startActivity(Intent(activity, TestActivity::class.java))
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.fragment.startActivity(Intent(activity, ActivityxTest::class.java))
-            }
-
-            assertNoThrow {
-                activity.view.startActivity(Intent(activity, TestActivity::class.java))
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.view.startActivity(Intent(activity, ActivityxTest::class.java))
-            }
-        }
-    }
-
-    @Test
-    fun testStartByClass() {
-        TestActivity::class.launchActivityWithOnUse { activity ->
-            assertNoThrow {
-                activity.startActivityByClass(TestActivity::class.java, null)
-            }
-            assertNoThrow {
-                activity.startActivityByClass(TestActivity::class.java)
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.applicationContext.startActivityByClass(NoRegisterTestActivity::class.java)
-            }
-
-            assertNoThrow {
-                activity.fragment.startActivityByClass(TestActivity::class.java, null)
-            }
-            assertNoThrow {
-                activity.fragment.startActivityByClass(TestActivity::class.java)
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.fragment.startActivityByClass(NoRegisterTestActivity::class.java)
-            }
-
-            assertNoThrow {
-                activity.view.startActivityByClass(TestActivity::class.java, null)
-            }
-            assertNoThrow {
-                activity.view.startActivityByClass(TestActivity::class.java)
-            }
-            assertThrow(ActivityNotFoundException::class) {
-                activity.view.startActivityByClass(NoRegisterTestActivity::class.java)
-            }
-        }
-    }
-
-    @Test
     fun testSafeStart() {
         TestActivity::class.launchActivityWithOnUse { activity ->
             Assert.assertTrue(activity.safeStartActivity(Intent(activity, TestActivity::class.java)))
