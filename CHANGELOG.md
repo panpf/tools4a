@@ -1,4 +1,4 @@
-## new
+## v1.0.0-rc01
 
 Upgrade:
 * upgrade: Upgrade androidx.core to 1.3.1
