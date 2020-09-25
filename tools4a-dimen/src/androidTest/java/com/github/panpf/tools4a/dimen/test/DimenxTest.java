@@ -33,100 +33,75 @@ public class DimenxTest {
     public void testDp2px() {
         float density = Resources.getSystem().getDisplayMetrics().density;
 
-        Assert.assertEquals(7f * density, Dimenx.dp2px(7f), 0f);
-        Assert.assertEquals((float) 7 * density, Dimenx.dp2px(7), 0f);
-        Assert.assertEquals(0f, Dimenx.dp2px(0f), 0f);
-        Assert.assertEquals(0f, Dimenx.dp2px(0), 0f);
-    }
+        Assert.assertEquals((int) (7f * density + 0.5f), Dimenx.dp2px(7f));
+        Assert.assertEquals((int) ((float) 7 * density + 0.5f), Dimenx.dp2px(7));
+        Assert.assertEquals(0, Dimenx.dp2px(0f));
+        Assert.assertEquals(0, Dimenx.dp2px(0));
 
-    @Test
-    public void testDp2pxInt() {
-        float density = Resources.getSystem().getDisplayMetrics().density;
-
-        Assert.assertEquals((int) (7f * density + 0.5f), Dimenx.dp2pxInt(7f));
-        Assert.assertEquals((int) ((float) 7 * density + 0.5f), Dimenx.dp2pxInt(7));
-        Assert.assertEquals(0, Dimenx.dp2pxInt(0f));
-        Assert.assertEquals(0, Dimenx.dp2pxInt(0));
+        Assert.assertEquals(7f * density, Dimenx.dp2pxF(7f), 0f);
+        Assert.assertEquals((float) 7 * density, Dimenx.dp2pxF(7), 0f);
+        Assert.assertEquals(0f, Dimenx.dp2pxF(0f), 0f);
+        Assert.assertEquals(0f, Dimenx.dp2pxF(0), 0f);
     }
 
     @Test
     public void testSp2px() {
         float scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity;
 
-        Assert.assertEquals(7f * scaledDensity, Dimenx.sp2px(7f), 0f);
-        Assert.assertEquals((float) 7 * scaledDensity, Dimenx.sp2px(7), 0f);
-        Assert.assertEquals(0f, Dimenx.sp2px(0f), 0f);
-        Assert.assertEquals(0f, Dimenx.sp2px(0), 0f);
-    }
+        Assert.assertEquals((int) (7f * scaledDensity + 0.5f), Dimenx.sp2px(7f));
+        Assert.assertEquals((int) ((float) 7 * scaledDensity + 0.5f), Dimenx.sp2px(7));
+        Assert.assertEquals(0, Dimenx.sp2px(0f));
+        Assert.assertEquals(0, Dimenx.sp2px(0));
 
-    @Test
-    public void testSp2pxInt() {
-        float scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity;
-
-        Assert.assertEquals((int) (7f * scaledDensity + 0.5f), Dimenx.sp2pxInt(7f));
-        Assert.assertEquals((int) ((float) 7 * scaledDensity + 0.5f), Dimenx.sp2pxInt(7));
-        Assert.assertEquals(0, Dimenx.sp2pxInt(0f));
-        Assert.assertEquals(0, Dimenx.sp2pxInt(0));
+        Assert.assertEquals(7f * scaledDensity, Dimenx.sp2pxF(7f), 0f);
+        Assert.assertEquals((float) 7 * scaledDensity, Dimenx.sp2pxF(7), 0f);
+        Assert.assertEquals(0f, Dimenx.sp2pxF(0f), 0f);
+        Assert.assertEquals(0f, Dimenx.sp2pxF(0), 0f);
     }
 
     @Test
     public void testPt2px() {
         float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
 
-        Assert.assertEquals(7f * xdpi * (1.0f / 72), Dimenx.pt2px(7f), 0f);
-        Assert.assertEquals((float) 7 * xdpi * (1.0f / 72), Dimenx.pt2px(7), 0f);
-        Assert.assertEquals(0f, Dimenx.pt2px(0f), 0f);
-        Assert.assertEquals(0f, Dimenx.pt2px(0), 0f);
-    }
+        Assert.assertEquals((int) (7f * xdpi * (1.0f / 72) + 0.5f), Dimenx.pt2px(7f));
+        Assert.assertEquals((int) ((float) 7 * xdpi * (1.0f / 72) + 0.5f), Dimenx.pt2px(7));
+        Assert.assertEquals(0, Dimenx.pt2px(0f));
+        Assert.assertEquals(0, Dimenx.pt2px(0));
 
-    @Test
-    public void testPt2pxInt() {
-        float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
-
-        Assert.assertEquals((int) (7f * xdpi * (1.0f / 72) + 0.5f), Dimenx.pt2pxInt(7f));
-        Assert.assertEquals((int) ((float) 7 * xdpi * (1.0f / 72) + 0.5f), Dimenx.pt2pxInt(7));
-        Assert.assertEquals(0, Dimenx.pt2pxInt(0f));
-        Assert.assertEquals(0, Dimenx.pt2pxInt(0));
+        Assert.assertEquals(7f * xdpi * (1.0f / 72), Dimenx.pt2pxF(7f), 0f);
+        Assert.assertEquals((float) 7 * xdpi * (1.0f / 72), Dimenx.pt2pxF(7), 0f);
+        Assert.assertEquals(0f, Dimenx.pt2pxF(0f), 0f);
+        Assert.assertEquals(0f, Dimenx.pt2pxF(0), 0f);
     }
 
     @Test
     public void testIn2px() {
         float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
 
-        Assert.assertEquals(7f * xdpi, Dimenx.in2px(7f), 0f);
-        Assert.assertEquals((float) 7 * xdpi, Dimenx.in2px(7), 0f);
-        Assert.assertEquals(0f, Dimenx.in2px(0f), 0f);
-        Assert.assertEquals(0f, Dimenx.in2px(0), 0f);
-    }
+        Assert.assertEquals((int) (7f * xdpi + 0.5f), Dimenx.in2px(7f));
+        Assert.assertEquals((int) ((float) 7 * xdpi + 0.5f), Dimenx.in2px(7));
+        Assert.assertEquals(0, Dimenx.in2px(0f));
+        Assert.assertEquals(0, Dimenx.in2px(0));
 
-    @Test
-    public void testIn2pxInt() {
-        float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
-
-        Assert.assertEquals((int) (7f * xdpi + 0.5f), Dimenx.in2pxInt(7f));
-        Assert.assertEquals((int) ((float) 7 * xdpi + 0.5f), Dimenx.in2pxInt(7));
-        Assert.assertEquals(0, Dimenx.in2pxInt(0f));
-        Assert.assertEquals(0, Dimenx.in2pxInt(0));
+        Assert.assertEquals(7f * xdpi, Dimenx.in2pxF(7f), 0f);
+        Assert.assertEquals((float) 7 * xdpi, Dimenx.in2pxF(7), 0f);
+        Assert.assertEquals(0f, Dimenx.in2pxF(0f), 0f);
+        Assert.assertEquals(0f, Dimenx.in2pxF(0), 0f);
     }
 
     @Test
     public void testMm2px() {
         float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
 
-        Assert.assertEquals(7f * xdpi * (1.0f / 25.4f), Dimenx.mm2px(7f), 0f);
-        Assert.assertEquals((float) 7 * xdpi * (1.0f / 25.4f), Dimenx.mm2px(7), 0f);
-        Assert.assertEquals(0f, Dimenx.mm2px(0f), 0f);
-        Assert.assertEquals(0f, Dimenx.mm2px(0), 0f);
-    }
+        Assert.assertEquals((int) (7f * xdpi * (1.0f / 25.4f) + 0.5f), Dimenx.mm2px(7f));
+        Assert.assertEquals((int) ((float) 7 * xdpi * (1.0f / 25.4f) + 0.5f), Dimenx.mm2px(7));
+        Assert.assertEquals(0, Dimenx.mm2px(0f));
+        Assert.assertEquals(0, Dimenx.mm2px(0));
 
-    @Test
-    public void testMm2pxInt() {
-        float xdpi = Resources.getSystem().getDisplayMetrics().xdpi;
-
-        Assert.assertEquals((int) (7f * xdpi * (1.0f / 25.4f) + 0.5f), Dimenx.mm2pxInt(7f));
-        Assert.assertEquals((int) ((float) 7 * xdpi * (1.0f / 25.4f) + 0.5f), Dimenx.mm2pxInt(7));
-        Assert.assertEquals(0, Dimenx.mm2pxInt(0f));
-        Assert.assertEquals(0, Dimenx.mm2pxInt(0));
+        Assert.assertEquals(7f * xdpi * (1.0f / 25.4f), Dimenx.mm2pxF(7f), 0f);
+        Assert.assertEquals((float) 7 * xdpi * (1.0f / 25.4f), Dimenx.mm2pxF(7), 0f);
+        Assert.assertEquals(0f, Dimenx.mm2pxF(0f), 0f);
+        Assert.assertEquals(0f, Dimenx.mm2pxF(0), 0f);
     }
 
     @Test

@@ -30,100 +30,75 @@ class DimenxTest {
     fun testDp2px() {
         val density = Resources.getSystem().displayMetrics.density
 
-        Assert.assertEquals(7f * density, 7f.dp2px, 0f)
-        Assert.assertEquals(7.toFloat() * density, 7.dp2px, 0f)
-        Assert.assertEquals(0f, 0f.dp2px, 0f)
-        Assert.assertEquals(0f, 0.dp2px, 0f)
-    }
+        Assert.assertEquals((7f * density + 0.5f).toLong(), 7f.dp2px.toLong())
+        Assert.assertEquals((7.toFloat() * density + 0.5f).toLong(), 7.dp2px.toLong())
+        Assert.assertEquals(0, 0f.dp2px.toLong())
+        Assert.assertEquals(0, 0.dp2px.toLong())
 
-    @Test
-    fun testDp2pxInt() {
-        val density = Resources.getSystem().displayMetrics.density
-
-        Assert.assertEquals((7f * density + 0.5f).toLong(), 7f.dp2pxInt.toLong())
-        Assert.assertEquals((7.toFloat() * density + 0.5f).toLong(), 7.dp2pxInt.toLong())
-        Assert.assertEquals(0, 0f.dp2pxInt.toLong())
-        Assert.assertEquals(0, 0.dp2pxInt.toLong())
+        Assert.assertEquals(7f * density, 7f.dp2pxF, 0f)
+        Assert.assertEquals(7.toFloat() * density, 7.dp2pxF, 0f)
+        Assert.assertEquals(0f, 0f.dp2pxF, 0f)
+        Assert.assertEquals(0f, 0.dp2pxF, 0f)
     }
 
     @Test
     fun testSp2px() {
         val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
 
-        Assert.assertEquals(7f * scaledDensity, 7f.sp2px, 0f)
-        Assert.assertEquals(7.toFloat() * scaledDensity, 7.sp2px, 0f)
-        Assert.assertEquals(0f, 0f.sp2px, 0f)
-        Assert.assertEquals(0f, 0.sp2px, 0f)
-    }
+        Assert.assertEquals((7f * scaledDensity + 0.5f).toLong(), 7f.sp2px.toLong())
+        Assert.assertEquals((7.toFloat() * scaledDensity + 0.5f).toLong(), 7.sp2px.toLong())
+        Assert.assertEquals(0, 0f.sp2px.toLong())
+        Assert.assertEquals(0, 0.sp2px.toLong())
 
-    @Test
-    fun testSp2pxInt() {
-        val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
-
-        Assert.assertEquals((7f * scaledDensity + 0.5f).toLong(), 7f.sp2pxInt.toLong())
-        Assert.assertEquals((7.toFloat() * scaledDensity + 0.5f).toLong(), 7.sp2pxInt.toLong())
-        Assert.assertEquals(0, 0f.sp2pxInt.toLong())
-        Assert.assertEquals(0, 0.sp2pxInt.toLong())
+        Assert.assertEquals(7f * scaledDensity, 7f.sp2pxF, 0f)
+        Assert.assertEquals(7.toFloat() * scaledDensity, 7.sp2pxF, 0f)
+        Assert.assertEquals(0f, 0f.sp2pxF, 0f)
+        Assert.assertEquals(0f, 0.sp2pxF, 0f)
     }
 
     @Test
     fun testPt2px() {
         val xdpi = Resources.getSystem().displayMetrics.xdpi
 
-        Assert.assertEquals(7f * xdpi * (1.0f / 72), 7f.pt2px, 0f)
-        Assert.assertEquals(7.toFloat() * xdpi * (1.0f / 72), 7.pt2px, 0f)
-        Assert.assertEquals(0f, 0f.pt2px, 0f)
-        Assert.assertEquals(0f, 0.pt2px, 0f)
-    }
+        Assert.assertEquals((7f * xdpi * (1.0f / 72) + 0.5f).toLong(), 7f.pt2px.toLong())
+        Assert.assertEquals((7.toFloat() * xdpi * (1.0f / 72) + 0.5f).toLong(), 7.pt2px.toLong())
+        Assert.assertEquals(0, 0f.pt2px.toLong())
+        Assert.assertEquals(0, 0.pt2px.toLong())
 
-    @Test
-    fun testPt2pxInt() {
-        val xdpi = Resources.getSystem().displayMetrics.xdpi
-
-        Assert.assertEquals((7f * xdpi * (1.0f / 72) + 0.5f).toLong(), 7f.pt2pxInt.toLong())
-        Assert.assertEquals((7.toFloat() * xdpi * (1.0f / 72) + 0.5f).toLong(), 7.pt2pxInt.toLong())
-        Assert.assertEquals(0, 0f.pt2pxInt.toLong())
-        Assert.assertEquals(0, 0.pt2pxInt.toLong())
+        Assert.assertEquals(7f * xdpi * (1.0f / 72), 7f.pt2pxF, 0f)
+        Assert.assertEquals(7.toFloat() * xdpi * (1.0f / 72), 7.pt2pxF, 0f)
+        Assert.assertEquals(0f, 0f.pt2pxF, 0f)
+        Assert.assertEquals(0f, 0.pt2pxF, 0f)
     }
 
     @Test
     fun testIn2px() {
         val xdpi = Resources.getSystem().displayMetrics.xdpi
 
-        Assert.assertEquals(7f * xdpi, 7f.in2px, 0f)
-        Assert.assertEquals(7.toFloat() * xdpi, 7.in2px, 0f)
-        Assert.assertEquals(0f, 0f.in2px, 0f)
-        Assert.assertEquals(0f, 0.in2px, 0f)
-    }
+        Assert.assertEquals((7f * xdpi + 0.5f).toLong(), 7f.in2px.toLong())
+        Assert.assertEquals((7.toFloat() * xdpi + 0.5f).toLong(), 7.in2px.toLong())
+        Assert.assertEquals(0, 0f.in2px.toLong())
+        Assert.assertEquals(0, 0.in2px.toLong())
 
-    @Test
-    fun testIn2pxInt() {
-        val xdpi = Resources.getSystem().displayMetrics.xdpi
-
-        Assert.assertEquals((7f * xdpi + 0.5f).toLong(), 7f.in2pxInt.toLong())
-        Assert.assertEquals((7.toFloat() * xdpi + 0.5f).toLong(), 7.in2pxInt.toLong())
-        Assert.assertEquals(0, 0f.in2pxInt.toLong())
-        Assert.assertEquals(0, 0.in2pxInt.toLong())
+        Assert.assertEquals(7f * xdpi, 7f.in2pxF, 0f)
+        Assert.assertEquals(7.toFloat() * xdpi, 7.in2pxF, 0f)
+        Assert.assertEquals(0f, 0f.in2pxF, 0f)
+        Assert.assertEquals(0f, 0.in2pxF, 0f)
     }
 
     @Test
     fun testMm2px() {
         val xdpi = Resources.getSystem().displayMetrics.xdpi
 
-        Assert.assertEquals(7f * xdpi * (1.0f / 25.4f), 7f.mm2px, 0f)
-        Assert.assertEquals(7.toFloat() * xdpi * (1.0f / 25.4f), 7.mm2px, 0f)
-        Assert.assertEquals(0f, 0f.mm2px, 0f)
-        Assert.assertEquals(0f, 0.mm2px, 0f)
-    }
+        Assert.assertEquals((7f * xdpi * (1.0f / 25.4f) + 0.5f).toLong(), 7f.mm2px.toLong())
+        Assert.assertEquals((7.toFloat() * xdpi * (1.0f / 25.4f) + 0.5f).toLong(), 7.mm2px.toLong())
+        Assert.assertEquals(0, 0f.mm2px.toLong())
+        Assert.assertEquals(0, 0.mm2px.toLong())
 
-    @Test
-    fun testMm2pxInt() {
-        val xdpi = Resources.getSystem().displayMetrics.xdpi
-
-        Assert.assertEquals((7f * xdpi * (1.0f / 25.4f) + 0.5f).toLong(), 7f.mm2pxInt.toLong())
-        Assert.assertEquals((7.toFloat() * xdpi * (1.0f / 25.4f) + 0.5f).toLong(), 7.mm2pxInt.toLong())
-        Assert.assertEquals(0, 0f.mm2pxInt.toLong())
-        Assert.assertEquals(0, 0.mm2pxInt.toLong())
+        Assert.assertEquals(7f * xdpi * (1.0f / 25.4f), 7f.mm2pxF, 0f)
+        Assert.assertEquals(7.toFloat() * xdpi * (1.0f / 25.4f), 7.mm2pxF, 0f)
+        Assert.assertEquals(0f, 0f.mm2pxF, 0f)
+        Assert.assertEquals(0f, 0.mm2pxF, 0f)
     }
 
     @Test

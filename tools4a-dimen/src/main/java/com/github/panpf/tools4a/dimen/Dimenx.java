@@ -24,99 +24,89 @@ public class Dimenx {
     }
 
 
-    public static float dp2px(float value) {
+    public static int dp2px(float value) {
+        return (int) ((value * Resources.getSystem().getDisplayMetrics().density) + 0.5f);
+    }
+
+    public static int dp2px(int value) {
+        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().density) + 0.5f);
+    }
+
+    public static float dp2pxF(float value) {
         return value * Resources.getSystem().getDisplayMetrics().density;
     }
 
-    public static float dp2px(int value) {
+    public static float dp2pxF(int value) {
         return (float) value * Resources.getSystem().getDisplayMetrics().density;
     }
 
 
-    public static int dp2pxInt(float value) {
-        return (int) ((value * Resources.getSystem().getDisplayMetrics().density) + 0.5f);
+    public static int sp2px(float value) {
+        return (int) ((value * Resources.getSystem().getDisplayMetrics().scaledDensity) + 0.5f);
     }
 
-    public static int dp2pxInt(int value) {
-        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().density) + 0.5f);
+    public static int sp2px(int value) {
+        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().scaledDensity) + 0.5f);
     }
 
-
-
-    public static float sp2px(float value) {
+    public static float sp2pxF(float value) {
         return value * Resources.getSystem().getDisplayMetrics().scaledDensity;
     }
 
-    public static float sp2px(int value) {
+    public static float sp2pxF(int value) {
         return (float) value * Resources.getSystem().getDisplayMetrics().scaledDensity;
     }
 
 
-    public static int sp2pxInt(float value) {
-        return (int) ((value * Resources.getSystem().getDisplayMetrics().scaledDensity) + 0.5f);
+    public static int pt2px(float value) {
+        return (int) ((value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72)) + 0.5f);
     }
 
-    public static int sp2pxInt(int value) {
-        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().scaledDensity) + 0.5f);
+    public static int pt2px(int value) {
+        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72)) + 0.5f);
     }
 
-
-
-    public static float pt2px(float value) {
+    public static float pt2pxF(float value) {
         return value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72);
     }
 
-    public static float pt2px(int value) {
+    public static float pt2pxF(int value) {
         return (float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72);
     }
 
 
-    public static int pt2pxInt(float value) {
-        return (int) ((value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72)) + 0.5f);
+    public static int in2px(float value) {
+        return (int) ((value * Resources.getSystem().getDisplayMetrics().xdpi) + 0.5f);
     }
 
-    public static int pt2pxInt(int value) {
-        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 72)) + 0.5f);
+    public static int in2px(int value) {
+        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().xdpi) + 0.5f);
     }
 
-
-
-    public static float in2px(float value) {
+    public static float in2pxF(float value) {
         return value * Resources.getSystem().getDisplayMetrics().xdpi;
     }
 
-    public static float in2px(int value) {
+    public static float in2pxF(int value) {
         return (float) value * Resources.getSystem().getDisplayMetrics().xdpi;
     }
 
 
-    public static int in2pxInt(float value) {
-        return (int) ((value * Resources.getSystem().getDisplayMetrics().xdpi) + 0.5f);
-    }
-
-    public static int in2pxInt(int value) {
-        return (int) (((float) value * Resources.getSystem().getDisplayMetrics().xdpi) + 0.5f);
-    }
-
-
-
-    public static float mm2px(float value) {
-        return value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f);
-    }
-
-    public static float mm2px(int value) {
-        return (float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f);
-    }
-
-
-    public static int mm2pxInt(float value) {
+    public static int mm2px(float value) {
         return (int) ((value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f)) + 0.5f);
     }
 
-    public static int mm2pxInt(int value) {
+    public static int mm2px(int value) {
         return (int) (((float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f)) + 0.5f);
     }
 
+    public static float mm2pxF(float value) {
+        return value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f);
+    }
+
+    public static float mm2pxF(int value) {
+        return (float) value * Resources.getSystem().getDisplayMetrics().xdpi * (1.0f / 25.4f);
+    }
 
 
     public static float px2dp(float value) {

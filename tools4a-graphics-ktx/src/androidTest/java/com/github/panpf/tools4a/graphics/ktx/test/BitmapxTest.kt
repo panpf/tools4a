@@ -22,7 +22,6 @@ import android.graphics.Color
 import android.graphics.Rect
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.github.panpf.tools4a.dimen.ktx.dp2px
 import com.github.panpf.tools4a.graphics.Bitmapx
 import com.github.panpf.tools4a.graphics.Colorx
 import com.github.panpf.tools4a.graphics.ktx.*

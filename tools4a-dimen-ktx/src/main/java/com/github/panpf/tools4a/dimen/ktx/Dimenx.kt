@@ -21,40 +21,30 @@ package com.github.panpf.tools4a.dimen.ktx
 import com.github.panpf.tools4a.dimen.Dimenx
 
 
-inline val Float.dp2px: Float get() = Dimenx.dp2px(this)
-inline val Int.dp2px: Float get() = Dimenx.dp2px(this)
+inline val Float.dp2px: Int get() = Dimenx.dp2px(this)
+inline val Int.dp2px: Int get() = Dimenx.dp2px(this)
+inline val Float.dp2pxF: Float get() = Dimenx.dp2pxF(this)
+inline val Int.dp2pxF: Float get() = Dimenx.dp2pxF(this)
 
-inline val Float.dp2pxInt: Int get() = Dimenx.dp2pxInt(this)
-inline val Int.dp2pxInt: Int get() = Dimenx.dp2pxInt(this)
+inline val Float.sp2px: Int get() = Dimenx.sp2px(this)
+inline val Int.sp2px: Int get() = Dimenx.sp2px(this)
+inline val Float.sp2pxF: Float get() = Dimenx.sp2pxF(this)
+inline val Int.sp2pxF: Float get() = Dimenx.sp2pxF(this)
 
+inline val Float.pt2px: Int get() = Dimenx.pt2px(this)
+inline val Int.pt2px: Int get() = Dimenx.pt2px(this)
+inline val Float.pt2pxF: Float get() = Dimenx.pt2pxF(this)
+inline val Int.pt2pxF: Float get() = Dimenx.pt2pxF(this)
 
-inline val Float.sp2px: Float get() = Dimenx.sp2px(this)
-inline val Int.sp2px: Float get() = Dimenx.sp2px(this)
+inline val Float.in2px: Int get() = Dimenx.in2px(this)
+inline val Int.in2px: Int get() = Dimenx.in2px(this)
+inline val Float.in2pxF: Float get() = Dimenx.in2pxF(this)
+inline val Int.in2pxF: Float get() = Dimenx.in2pxF(this)
 
-inline val Float.sp2pxInt: Int get() = Dimenx.sp2pxInt(this)
-inline val Int.sp2pxInt: Int get() = Dimenx.sp2pxInt(this)
-
-
-inline val Float.pt2px: Float get() = Dimenx.pt2px(this)
-inline val Int.pt2px: Float get() = Dimenx.pt2px(this)
-
-inline val Float.pt2pxInt: Int get() = Dimenx.pt2pxInt(this)
-inline val Int.pt2pxInt: Int get() = Dimenx.pt2pxInt(this)
-
-
-inline val Float.in2px: Float get() = Dimenx.in2px(this)
-inline val Int.in2px: Float get() = Dimenx.in2px(this)
-
-inline val Float.in2pxInt: Int get() = Dimenx.in2pxInt(this)
-inline val Int.in2pxInt: Int get() = Dimenx.in2pxInt(this)
-
-
-inline val Float.mm2px: Float get() = Dimenx.mm2px(this)
-inline val Int.mm2px: Float get() = Dimenx.mm2px(this)
-
-inline val Float.mm2pxInt: Int get() = Dimenx.mm2pxInt(this)
-inline val Int.mm2pxInt: Int get() = Dimenx.mm2pxInt(this)
-
+inline val Float.mm2px: Int get() = Dimenx.mm2px(this)
+inline val Int.mm2px: Int get() = Dimenx.mm2px(this)
+inline val Float.mm2pxF: Float get() = Dimenx.mm2pxF(this)
+inline val Int.mm2pxF: Float get() = Dimenx.mm2pxF(this)
 
 inline val Float.px2dp: Float get() = Dimenx.px2dp(this)
 inline val Int.px2dp: Float get() = Dimenx.px2dp(this)
