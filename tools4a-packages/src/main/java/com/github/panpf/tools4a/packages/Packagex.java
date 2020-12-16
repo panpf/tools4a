@@ -50,13 +50,12 @@ public class Packagex {
     }
 
 
-    /* ************************************* is ***************************************** */
-
+    /* ************************************* isPackageInstalled ***************************************** */
 
     /**
-     * Return true if the package with the specified packageName is installed
+     * Return true if the package with the specified packageName is installed by PackageInfoFlags
      */
-    public static boolean isPackageInstalled(
+    public static boolean isPackageInstalledByInfoFlags(
             @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) {
         try {
             context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
@@ -70,20 +69,18 @@ public class Packagex {
      * Return true if the package with the specified packageName is installed
      */
     public static boolean isPackageInstalled(@NonNull Context context, @NonNull String packageName) {
-        try {
-            context.getPackageManager().getPackageInfo(packageName, 0);
-            return true;
-        } catch (NameNotFoundException e) {
-            return false;
-        }
+        return isPackageInstalledByInfoFlags(context, packageName, 0);
     }
 
 
+    /* ************************************* isSystemPackage ***************************************** */
+
+
     /**
-     * Return true if the package with the specified packageName is the system package
+     * Return true if the package with the specified packageName is the system package by PackageInfoFlags
      */
-    public static boolean isSystemPackage(@NonNull Context context, @NonNull String packageName,
-                                          @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static boolean isSystemPackageByInfoFlags(@NonNull Context context, @NonNull String packageName,
+                                                     @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, packageInfoFlags);
         return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
@@ -92,15 +89,14 @@ public class Packagex {
      * Return true if the package with the specified packageName is the system package
      */
     public static boolean isSystemPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
-        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+        return isSystemPackageByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Return true if the package with the specified packageName is the system package, return to defaultValue if not installed
+     * Return true if the package with the specified packageName is the system package by PackageInfoFlags, return to defaultValue if not installed
      */
-    public static boolean isSystemPackageOr(@NonNull Context context, @NonNull String packageName,
-                                            @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
+    public static boolean isSystemPackageByInfoFlagsOr(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
         ApplicationInfo applicationInfo;
         try {
             applicationInfo = context.getPackageManager().getApplicationInfo(packageName, packageInfoFlags);
@@ -114,21 +110,18 @@ public class Packagex {
      * Return true if the package with the specified packageName is the system package, return to defaultValue if not installed
      */
     public static boolean isSystemPackageOr(@NonNull Context context, @NonNull String packageName, boolean defaultValue) {
-        ApplicationInfo applicationInfo;
-        try {
-            applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+        return isSystemPackageByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
 
+    /* ************************************* isDebuggablePackage ***************************************** */
+
+
     /**
-     * Return true if the package with the specified packageName is the debuggable package
+     * Return true if the package with the specified packageName is the debuggable package by PackageInfoFlags
      */
-    public static boolean isDebuggablePackage(@NonNull Context context, @NonNull String packageName,
-                                              @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static boolean isDebuggablePackageByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, packageInfoFlags);
         return (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
@@ -137,15 +130,14 @@ public class Packagex {
      * Return true if the package with the specified packageName is the debuggable package
      */
     public static boolean isDebuggablePackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
-        return (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return isDebuggablePackageByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Return true if the package with the specified packageName is the debuggable package, return to defaultValue if not installed
+     * Return true if the package with the specified packageName is the debuggable package by PackageInfoFlags, return to defaultValue if not installed
      */
-    public static boolean isDebuggablePackageOr(@NonNull Context context, @NonNull String packageName,
-                                                @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
+    public static boolean isDebuggablePackageByInfoFlagsOr(@NonNull Context context, @NonNull String packageName,
+                                                           @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
         ApplicationInfo applicationInfo;
         try {
             applicationInfo = context.getPackageManager().getApplicationInfo(packageName, packageInfoFlags);
@@ -159,21 +151,18 @@ public class Packagex {
      * Return true if the package with the specified packageName is the debuggable package, return to defaultValue if not installed
      */
     public static boolean isDebuggablePackageOr(@NonNull Context context, @NonNull String packageName, boolean defaultValue) {
-        ApplicationInfo applicationInfo;
-        try {
-            applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        return (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return isDebuggablePackageByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
 
+    /* ************************************* isJunitTestPackage ***************************************** */
+
+
     /**
-     * Return true if it is a junit test package
+     * Return true if it is a junit test package by PackageInfoFlags
      */
-    public static boolean isJunitTestPackage(@NonNull Context context, @NonNull String packageName,
-                                             @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static boolean isJunitTestPackageByInfoFlags(@NonNull Context context, @NonNull String packageName,
+                                                        @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
         boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
@@ -184,16 +173,14 @@ public class Packagex {
      * Return true if it is a junit test package
      */
     public static boolean isJunitTestPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
-        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        return isJunitTestPackageByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Return true if it is a junit test package
+     * Return true if it is a junit test package by PackageInfoFlags
      */
-    public static boolean isJunitTestPackageOr(@NonNull Context context, @NonNull String packageName,
-                                               @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
+    public static boolean isJunitTestPackageByInfoFlagsOr(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags, boolean defaultValue) {
         packageInfoFlags |= PackageManager.GET_INSTRUMENTATION;
         PackageInfo packageInfo;
         try {
@@ -209,178 +196,77 @@ public class Packagex {
      * Return true if it is a junit test package
      */
     public static boolean isJunitTestPackageOr(@NonNull Context context, @NonNull String packageName, boolean defaultValue) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_INSTRUMENTATION);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        boolean debuggable = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-        return debuggable && packageInfo.instrumentation != null && packageInfo.instrumentation.length > 0;
+        return isJunitTestPackageByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
 
-    /* ************************************* intent ***************************************** */
+    /* ************************************* getPackageInfo ***************************************** */
 
 
     /**
-     * Create an Intent that opens the specified package install page
-     *
-     * @param apkFileUri APK file uri
+     * Get PackageInfo about the package with the specified packageName by PackageInfoFlags
      */
     @NonNull
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-    public static Intent createInstallPackageIntent(@NonNull Uri apkFileUri) {
-        return new Intent(Intent.ACTION_VIEW).addCategory(Intent.CATEGORY_DEFAULT)
-                .setDataAndType(apkFileUri, "application/vnd.android.package-archive")
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // Prepare for FileProvider on Android N
+    public static PackageInfo getPackageInfoByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+        return context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
     }
 
     /**
-     * Create an Intent that opens the specified package install page
+     * Get PackageInfo about the package with the specified packageName
      */
     @NonNull
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-    public static Intent createInstallPackageIntent(@NonNull Context context, @NonNull File apkFile) {
-        return createInstallPackageIntent(FileProviderx.getShareFileUri(context, apkFile));
+    public static PackageInfo getPackageInfo(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
+        return getPackageInfoByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Create an Intent that opens the specified package uninstall page
-     *
-     * @param packageName package name
-     */
-    @NonNull
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_DELETE_PACKAGES, conditional = true)
-    public static Intent createUninstallPackageIntent(@NonNull String packageName) {
-        return new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", packageName, null));
-    }
-
-    /**
-     * Create an intent that opens the specified package
-     *
-     * @param packageName package name
+     * Get PackageInfo about the package with the specified packageName by PackageInfoFlags, return to null if not installed
      */
     @Nullable
-    public static Intent createLaunchPackageIntent(@NonNull Context context, @NonNull String packageName) {
-        return context.getPackageManager().getLaunchIntentForPackage(packageName);
+    public static PackageInfo getPackageInfoByInfoFlagsOrNull(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) {
+        try {
+            return context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
+        } catch (NameNotFoundException e) {
+            return null;
+        }
     }
 
     /**
-     * Create an Intent that opens the specified package details page
-     *
-     * @param packageName package name
+     * Get PackageInfo about the package with the specified packageName, return to null if not installed
+     */
+    @Nullable
+    public static PackageInfo getPackageInfoOrNull(@NonNull Context context, @NonNull String packageName) {
+        return getPackageInfoByInfoFlagsOrNull(context, packageName, 0);
+    }
+
+
+    /**
+     * Get SimplePackageInfo about the package with the specified packageName by PackageInfoFlags
      */
     @NonNull
-    public static Intent createApplicationDetailsSettingsIntent(@NonNull String packageName) {
-        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                .setData(Uri.fromParts("package", packageName, null));
-    }
-
-
-    /* ************************************* install/uninstall ***************************************** */
-
-
-    /**
-     * Request to install package
-     *
-     * @return false: Request failed
-     */
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-    public static boolean requestInstallPackage(@NonNull Context context, @NonNull Uri apkFileUri) {
-        Intent intent = new Intent(Intent.ACTION_VIEW).addCategory(Intent.CATEGORY_DEFAULT)
-                .setDataAndType(apkFileUri, "application/vnd.android.package-archive")
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        try {
-            context.startActivity(intent);
-            return true;
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Request to install package
-     *
-     * @return false: Request failed
-     */
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
-    public static boolean requestInstallPackage(@NonNull Context context, @NonNull File apkFile) {
-        Intent intent = createInstallPackageIntent(context, apkFile);
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        try {
-            context.startActivity(intent);
-            return true;
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    /**
-     * Request to uninstall package
-     *
-     * @return false: Request failed
-     */
-    @SuppressLint("InlinedApi")
-    @RequiresPermission(value = Manifest.permission.REQUEST_DELETE_PACKAGES, conditional = true)
-    public static boolean requestUninstallPackage(@NonNull Context context, @NonNull String packageName) {
-        Intent intent = createUninstallPackageIntent(packageName);
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        try {
-            context.startActivity(intent);
-            return true;
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    /* ************************************* get ***************************************** */
-
-
-    /**
-     * Get information about the package with the specified packageName
-     */
-    @NonNull
-    public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName,
-                                               @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static SimplePackageInfo getSimplePackageInfoByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo = packageManager.getPackageInfo(packageName, packageInfoFlags);
         return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
     }
 
     /**
-     * Get information about the package with the specified packageName
+     * Get SimplePackageInfo about the package with the specified packageName
      */
     @NonNull
-    public static SimplePackageInfo getPackage(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        PackageManager packageManager = context.getPackageManager();
-        PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
-        return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
+    public static SimplePackageInfo getSimplePackageInfo(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
+        return getSimplePackageInfoByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Get information about the package with the specified packageName, return to null if not installed
+     * Get SimplePackageInfo about the package with the specified packageName by PackageInfoFlags, return to null if not installed
      */
     @Nullable
-    public static SimplePackageInfo getPackageOrNull(@NonNull Context context, @NonNull String packageName,
-                                                     @PackageInfoFlags int packageInfoFlags) {
+    public static SimplePackageInfo getSimplePackageInfoByInfoFlagsOrNull(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         try {
@@ -392,26 +278,22 @@ public class Packagex {
     }
 
     /**
-     * Get information about the package with the specified packageName, return to null if not installed
+     * Get SimplePackageInfo about the package with the specified packageName, return to null if not installed
      */
     @Nullable
-    public static SimplePackageInfo getPackageOrNull(@NonNull Context context, @NonNull String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        PackageInfo packageInfo;
-        try {
-            packageInfo = packageManager.getPackageInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return null;
-        }
-        return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
+    public static SimplePackageInfo getSimplePackageInfoOrNull(@NonNull Context context, @NonNull String packageName) {
+        return getSimplePackageInfoByInfoFlagsOrNull(context, packageName, 0);
     }
 
 
+    /* ************************************* getPackageVersionCode ***************************************** */
+
+
     /**
-     * Get the versionCode of the package for the specified packageName
+     * Get the versionCode of the package for the specified packageName by PackageInfoFlags
      */
-    public static int getPackageVersionCode(@NonNull Context context, @NonNull String packageName,
-                                            @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static int getPackageVersionCodeByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
@@ -420,15 +302,14 @@ public class Packagex {
      * Get the versionCode of the package for the specified packageName
      */
     public static int getPackageVersionCode(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
+        return getPackageVersionCodeByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Get the versionCode of the package for the specified packageName, return to defaultValue if not installed
+     * Get the versionCode of the package for the specified packageName by PackageInfoFlags, return to defaultValue if not installed
      */
-    public static int getPackageVersionCodeOr(@NonNull Context context, @NonNull String packageName,
-                                              @PackageInfoFlags int packageInfoFlags, int defaultValue) {
+    public static int getPackageVersionCodeByInfoFlagsOr(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags, int defaultValue) {
         PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
@@ -442,20 +323,14 @@ public class Packagex {
      * Get the versionCode of the package for the specified packageName, return to defaultValue if not installed
      */
     public static int getPackageVersionCodeOr(@NonNull Context context, @NonNull String packageName, int defaultValue) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
+        return getPackageVersionCodeByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
     /**
-     * Get the longVersionCode of the package for the specified packageName
+     * Get the longVersionCode of the package for the specified packageName by PackageInfoFlags
      */
-    public static long getPackageLongVersionCode(@NonNull Context context, @NonNull String packageName,
-                                                 @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static long getPackageLongVersionCodeByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
     }
@@ -464,15 +339,14 @@ public class Packagex {
      * Get the longVersionCode of the package for the specified packageName
      */
     public static long getPackageLongVersionCode(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
+        return getPackageLongVersionCodeByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Get the longVersionCode of the package for the specified packageName, return to defaultValue if not installed
+     * Get the longVersionCode of the package for the specified packageName by PackageInfoFlags, return to defaultValue if not installed
      */
-    public static long getPackageLongVersionCodeOr(@NonNull Context context, @NonNull String packageName,
-                                                   @PackageInfoFlags int packageInfoFlags, long defaultValue) {
+    public static long getPackageLongVersionCodeByInfoFlagsOr(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags, long defaultValue) {
         PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
@@ -486,22 +360,19 @@ public class Packagex {
      * Get the longVersionCode of the package for the specified packageName, return to defaultValue if not installed
      */
     public static long getPackageLongVersionCodeOr(@NonNull Context context, @NonNull String packageName, long defaultValue) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
+        return getPackageLongVersionCodeByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
 
+    /* ************************************* getPackageVersionName ***************************************** */
+
+
     /**
-     * Get the versionName of the package for the specified packageName, return to defaultValue if not installed
+     * Get the versionName of the package for the specified packageName by PackageInfoFlags, return to defaultValue if not installed
      */
     @NonNull
-    public static String getPackageVersionName(@NonNull Context context, @NonNull String packageName,
-                                               @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
+    public static String getPackageVersionNameByInfoFlags(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) throws NameNotFoundException {
         PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
         return packageInfo.versionName != null ? packageInfo.versionName : "";
     }
@@ -511,16 +382,15 @@ public class Packagex {
      */
     @NonNull
     public static String getPackageVersionName(@NonNull Context context, @NonNull String packageName) throws NameNotFoundException {
-        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        return packageInfo.versionName != null ? packageInfo.versionName : "";
+        return getPackageVersionNameByInfoFlags(context, packageName, 0);
     }
 
     /**
-     * Get the versionName of the package for the specified packageName, return to defaultValue if not installed
+     * Get the versionName of the package for the specified packageName by PackageInfoFlags, return to defaultValue if not installed
      */
     @NonNull
-    public static String getPackageVersionNameOr(@NonNull Context context, @NonNull String packageName,
-                                                 @PackageInfoFlags int packageInfoFlags, @NonNull String defaultValue) {
+    public static String getPackageVersionNameByInfoFlagsOr(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags, @NonNull String defaultValue) {
         PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
@@ -535,21 +405,15 @@ public class Packagex {
      */
     @NonNull
     public static String getPackageVersionNameOr(@NonNull Context context, @NonNull String packageName, @NonNull String defaultValue) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return defaultValue;
-        }
-        return packageInfo.versionName != null ? packageInfo.versionName : "";
+        return getPackageVersionNameByInfoFlagsOr(context, packageName, 0, defaultValue);
     }
 
     /**
-     * Get the versionName of the package for the specified packageName, return to null if not installed
+     * Get the versionName of the package for the specified packageName by PackageInfoFlags, return to null if not installed
      */
     @NonNull
-    public static String getPackageVersionNameOrEmpty(@NonNull Context context, @NonNull String packageName,
-                                                      @PackageInfoFlags int packageInfoFlags) {
+    public static String getPackageVersionNameByInfoFlagsOrEmpty(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) {
         PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packageName, packageInfoFlags);
@@ -564,21 +428,15 @@ public class Packagex {
      */
     @NonNull
     public static String getPackageVersionNameOrEmpty(@NonNull Context context, @NonNull String packageName) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-        } catch (NameNotFoundException e) {
-            return "";
-        }
-        return packageInfo.versionName != null ? packageInfo.versionName : "";
+        return getPackageVersionNameByInfoFlagsOrEmpty(context, packageName, 0);
     }
 
     /**
-     * Get the versionName of the package for the specified packageName, return to null if not installed
+     * Get the versionName of the package for the specified packageName by PackageInfoFlags, return to null if not installed
      */
     @Nullable
-    public static String getPackageVersionNameOrNull(@NonNull Context context, @NonNull String packageName,
-                                                     @PackageInfoFlags int packageInfoFlags) {
+    public static String getPackageVersionNameByInfoFlagsOrNull(
+            @NonNull Context context, @NonNull String packageName, @PackageInfoFlags int packageInfoFlags) {
         try {
             return context.getPackageManager().getPackageInfo(packageName, packageInfoFlags).versionName;
         } catch (NameNotFoundException e) {
@@ -591,120 +449,102 @@ public class Packagex {
      */
     @Nullable
     public static String getPackageVersionNameOrNull(@NonNull Context context, @NonNull String packageName) {
-        try {
-            return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
-        } catch (NameNotFoundException e) {
-            return null;
-        }
+        return getPackageVersionNameByInfoFlagsOrNull(context, packageName, 0);
     }
 
 
-    /**
-     * Get information about the first package that meets the conditions
-     *
-     * @param packageInfoFlags see {@link PackageInfoFlags}
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackageByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter,
-            @PackageInfoFlags int packageInfoFlags) {
-        List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
-
-        PackageManager packageManager = context.getPackageManager();
-        for (PackageInfo packageInfo : packageInfoList) {
-            if (packageFilter == null || packageFilter.accept(packageInfo)) {
-                return SimplePackageInfo.fromPackageInfo(packageInfo, packageManager);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get information about the first package that meets the conditions
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackageByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter) {
-        return getFirstPackageByFilter(context, packageFilter, 0);
-    }
+    /* ************************************* listPackageInfo ***************************************** */
 
 
     /**
-     * Get information about the first package that meets the conditions
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     * @param packageInfoFlags   see {@link PackageInfoFlags}
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags,
-            @PackageInfoFlags int packageInfoFlags) {
-        return getFirstPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), packageInfoFlags);
-    }
-
-    /**
-     * Get information about the first package that meets the conditions
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags) {
-        return getFirstPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), 0);
-    }
-
-
-    /**
-     * Get information about the first package
-     *
-     * @param packageInfoFlags see {@link PackageInfoFlags}
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackage(
-            @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        return getFirstPackageByFilter(context, null, packageInfoFlags);
-    }
-
-    /**
-     * Get information about the first package
-     */
-    @Nullable
-    public static SimplePackageInfo getFirstPackage(@NonNull Context context) {
-        return getFirstPackageByFilter(context, null, 0);
-    }
-
-
-    /* ************************************* list ***************************************** */
-
-
-    /**
-     * List the PackageInfo of all installed package
+     * List PackageInfo for all installed package by PackageFilter and PackageInfoFlags
      *
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<PackageInfo> listPackageInfo(@NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        try {
-            return context.getPackageManager().getInstalledPackages(packageInfoFlags);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            // ApplicationPackageManager crashes internally on dazen X7 4.4.4 and Coolpad Y803-8 5.1 models
-            return new ArrayList<>(0);
-        }
-    }
-
-
-    /**
-     * List information for all installed package
-     *
-     * @param packageInfoFlags see {@link PackageInfoFlags}
-     */
-    @NonNull
-    public static List<SimplePackageInfo> listPackageByFilter(
+    @SuppressLint("QueryPermissionsNeeded")
+    public static List<PackageInfo> listPackageInfoByFilterInfoFlags(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
+        List<PackageInfo> packageInfoList = context.getPackageManager().getInstalledPackages(packageInfoFlags);
+        if (packageFilter != null) {
+            List<PackageInfo> newPackageInfoList = new ArrayList<>(packageInfoList.size());
+            for (PackageInfo packageInfo : packageInfoList) {
+                if (packageFilter.accept(packageInfo)) {
+                    newPackageInfoList.add(packageInfo);
+                }
+            }
+            return newPackageInfoList;
+        } else {
+            return packageInfoList;
+        }
+    }
+
+    /**
+     * List PackageInfo for all installed package by PackageTypeFlags and PackageInfoFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    public static List<PackageInfo> listPackageInfoByTypeInfoFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags, @PackageInfoFlags int packageInfoFlags) {
+        return listPackageInfoByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), packageInfoFlags);
+    }
+
+    /**
+     * List PackageInfo for all installed package by PackageFilter
+     */
+    @NonNull
+    public static List<PackageInfo> listPackageInfoByFilter(
+            @NonNull Context context, @Nullable PackageFilter packageFilter) {
+        return listPackageInfoByFilterInfoFlags(context, packageFilter, 0);
+    }
+
+
+    /**
+     * List PackageInfo for all installed package by PackageTypeFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     */
+    @NonNull
+    public static List<PackageInfo> listPackageInfoByTypeFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags) {
+        return listPackageInfoByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), 0);
+    }
+
+
+    /**
+     * List PackageInfo for all installed package by PackageInfoFlags
+     *
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    public static List<PackageInfo> listPackageInfoByInfoFlags(
+            @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
+        return listPackageInfoByFilterInfoFlags(context, null, packageInfoFlags);
+    }
+
+    /**
+     * List PackageInfo for all installed package
+     */
+    @NonNull
+    public static List<PackageInfo> listPackageInfo(@NonNull Context context) {
+        return listPackageInfoByFilterInfoFlags(context, null, 0);
+    }
+
+
+    /**
+     * List SimplePackageInfo for all installed package by PackageFilter and PackageInfoFlags
+     *
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    @SuppressLint("QueryPermissionsNeeded")
+    public static List<SimplePackageInfo> listSimplePackageInfoByFilterInfoFlags(
+            @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
+        List<PackageInfo> packageInfoList = context.getPackageManager().getInstalledPackages(packageInfoFlags);
         PackageManager packageManager = context.getPackageManager();
         ArrayList<SimplePackageInfo> packageArrayList = new ArrayList<>(packageInfoList.size());
         for (PackageInfo packageInfo : packageInfoList) {
@@ -716,134 +556,60 @@ public class Packagex {
     }
 
     /**
-     * List information for all installed package
+     * List SimplePackageInfo for all installed package by PackageTypeFlags and PackageInfoFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<SimplePackageInfo> listPackageByFilter(
+    public static List<SimplePackageInfo> listSimplePackageInfoByTypeInfoFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags, @PackageInfoFlags int packageInfoFlags) {
+        return listSimplePackageInfoByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), packageInfoFlags);
+    }
+
+    /**
+     * List SimplePackageInfo for all installed package by PackageFilter
+     */
+    @NonNull
+    public static List<SimplePackageInfo> listSimplePackageInfoByFilter(
             @NonNull Context context, @Nullable PackageFilter packageFilter) {
-        return listPackageByFilter(context, packageFilter, 0);
+        return listSimplePackageInfoByFilterInfoFlags(context, packageFilter, 0);
     }
 
-
     /**
-     * List information for all installed package
+     * List SimplePackageInfo for all installed package by PackageTypeFlags
      *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     * @param packageInfoFlags   see {@link PackageInfoFlags}
+     * @param packageTypeFlags see {@link PackageTypeFlags}
      */
     @NonNull
-    public static List<SimplePackageInfo> listPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), packageInfoFlags);
+    public static List<SimplePackageInfo> listSimplePackageInfoByTypeFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags) {
+        return listSimplePackageInfoByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), 0);
     }
 
     /**
-     * List information for all installed package
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     */
-    @NonNull
-    public static List<SimplePackageInfo> listPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags) {
-        return listPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), 0);
-    }
-
-
-    /**
-     * List information for all installed package
+     * List SimplePackageInfo for all installed package by PackageInfoFlags
      *
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<SimplePackageInfo> listPackage(
+    public static List<SimplePackageInfo> listSimplePackageInfoByInfoFlags(
             @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageByFilter(context, null, packageInfoFlags);
+        return listSimplePackageInfoByFilterInfoFlags(context, null, packageInfoFlags);
     }
 
     /**
-     * List information for all installed package
+     * List SimplePackageInfo for all installed package
      */
     @NonNull
-    public static List<SimplePackageInfo> listPackage(@NonNull Context context) {
-        return listPackageByFilter(context, null, 0);
+    public static List<SimplePackageInfo> listSimplePackageInfo(@NonNull Context context) {
+        return listSimplePackageInfoByFilterInfoFlags(context, null, 0);
     }
 
 
-    /**
-     * Get the packageName and versionCode of all installed package
-     *
-     * @param packageInfoFlags see {@link PackageInfoFlags}
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMapByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
-        ArrayMap<String, Integer> appsSet = new ArrayMap<>(packageInfoList.size());
-        for (PackageInfo packageInfo : packageInfoList) {
-            if (packageFilter == null || packageFilter.accept(packageInfo)) {
-                int versionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                        ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
-                appsSet.put(packageInfo.packageName, versionCode);
-            }
-        }
-        return appsSet;
-    }
-
-    /**
-     * Get the packageName and versionCode of all installed package
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMapByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter) {
-        return listPackageVersionCodeToMapByFilter(context, packageFilter, 0);
-    }
-
-
-    /**
-     * Get the packageName and versionCode of all installed package
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     * @param packageInfoFlags   see {@link PackageInfoFlags}
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMapByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageVersionCodeToMapByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), packageInfoFlags);
-    }
-
-    /**
-     * Get the packageName and versionCode of all installed package
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMapByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags) {
-        return listPackageVersionCodeToMapByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), 0);
-    }
-
-    /**
-     * Get the packageName and versionCode of all installed package
-     *
-     * @param packageInfoFlags see {@link PackageInfoFlags}
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMap(
-            @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageVersionCodeToMapByFilter(context, null, packageInfoFlags);
-    }
-
-    /**
-     * Get the packageName and versionCode of all installed package
-     */
-    @NonNull
-    public static ArrayMap<String, Integer> listPackageVersionCodeToMap(@NonNull Context context) {
-        return listPackageVersionCodeToMapByFilter(context, null, 0);
-    }
+    /* ************************************* listPackageName ***************************************** */
 
 
     /**
@@ -852,10 +618,10 @@ public class Packagex {
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<String> listPackageNameByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter,
-            @PackageInfoFlags int packageInfoFlags) {
-        List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
+    @SuppressLint("QueryPermissionsNeeded")
+    public static List<String> listPackageNameByFilterInfoFlags(
+            @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
+        List<PackageInfo> packageInfoList = context.getPackageManager().getInstalledPackages(packageInfoFlags);
 
         List<String> appsSet = new ArrayList<>(packageInfoList.size());
         for (PackageInfo packageInfo : packageInfoList) {
@@ -867,50 +633,46 @@ public class Packagex {
     }
 
     /**
-     * List the packageName of all installed package
-     */
-    @NonNull
-    public static List<String> listPackageNameByFilter(
-            @NonNull Context context, @Nullable PackageFilter packageFilter) {
-        return listPackageNameByFilter(context, packageFilter, 0);
-    }
-
-
-    /**
-     * List the packageName of all installed package
+     * List the packageName of all installed package by PackageTypeFlags and PackageInfoFlags
      *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     * @param packageInfoFlags   see {@link PackageInfoFlags}
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<String> listPackageNameByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageNameByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), packageInfoFlags);
+    public static List<String> listPackageNameByTypeInfoFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags, @PackageInfoFlags int packageInfoFlags) {
+        return listPackageNameByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), packageInfoFlags);
     }
 
     /**
-     * List the packageName of all installed package
+     * List the packageName of all installed package by PackageFilter
+     */
+    @NonNull
+    public static List<String> listPackageNameByFilter(@NonNull Context context, @Nullable PackageFilter packageFilter) {
+        return listPackageNameByFilterInfoFlags(context, packageFilter, 0);
+    }
+
+
+    /**
+     * List the packageName of all installed package by PackageTypeFlags
      *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
+     * @param packageTypeFlags see {@link PackageTypeFlags}
      */
     @NonNull
-    public static List<String> listPackageNameByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags) {
-        return listPackageNameByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), 0);
+    public static List<String> listPackageNameByTypeFlags(@NonNull Context context, @PackageTypeFlags int packageTypeFlags) {
+        return listPackageNameByFilterInfoFlags(context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), 0);
     }
 
 
     /**
-     * List the packageName of all installed package
+     * List the packageName of all installed package by PackageInfoFlags
      *
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
     @NonNull
-    public static List<String> listPackageName(
-            @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        return listPackageNameByFilter(context, null, packageInfoFlags);
+    public static List<String> listPackageNameByInfoFlags(@NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
+        return listPackageNameByFilterInfoFlags(context, null, packageInfoFlags);
     }
 
     /**
@@ -918,7 +680,7 @@ public class Packagex {
      */
     @NonNull
     public static List<String> listPackageName(@NonNull Context context) {
-        return listPackageNameByFilter(context, null, 0);
+        return listPackageNameByFilterInfoFlags(context, null, 0);
     }
 
 
@@ -926,13 +688,14 @@ public class Packagex {
 
 
     /**
-     * Get the number of installed package
+     * Get the number of installed package by PackageFilter and PackageInfoFlags
      *
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
-    public static int countPackageByFilter(
+    @SuppressLint("QueryPermissionsNeeded")
+    public static int countPackageByFilterInfoFlags(
             @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
-        List<PackageInfo> packageInfoList = listPackageInfo(context, packageInfoFlags);
+        List<PackageInfo> packageInfoList = context.getPackageManager().getInstalledPackages(packageInfoFlags);
         if (packageFilter != null) {
             int count = 0;
             for (PackageInfo packageInfo : packageInfoList) {
@@ -947,49 +710,123 @@ public class Packagex {
     }
 
     /**
-     * Get the number of installed package
+     * Get the number of installed package by PackageTypeFlags and PackageInfoFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    public static int countPackageByTypeInfoFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags, @PackageInfoFlags int packageInfoFlags) {
+        return countPackageByFilterInfoFlags(context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), packageInfoFlags);
+    }
+
+    /**
+     * Get the number of installed package by PackageFilter
      */
     public static int countPackageByFilter(@NonNull Context context, @Nullable PackageFilter packageFilter) {
-        return countPackageByFilter(context, packageFilter, 0);
+        return countPackageByFilterInfoFlags(context, packageFilter, 0);
     }
 
-
     /**
-     * Get the number of installed package
-     *
-     * @param packageFilterFlags see {@link PackageFilterFlags}
-     * @param packageInfoFlags   see {@link PackageInfoFlags}
+     * Get the number of installed package by PackageTypeFlags
      */
-    public static int countPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags, @PackageInfoFlags int packageInfoFlags) {
-        return countPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), packageInfoFlags);
+    public static int countPackageByTypeFlags(@NonNull Context context, @PackageTypeFlags int packageTypeFlags) {
+        return countPackageByFilterInfoFlags(context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), 0);
     }
 
     /**
-     * Get the number of installed package
-     */
-    public static int countPackageByFilterFlags(
-            @NonNull Context context, @PackageFilterFlags int packageFilterFlags) {
-        return countPackageByFilter(
-                context, new PackageFilterFlagsImpl(context, packageFilterFlags), 0);
-    }
-
-
-    /**
-     * Get the number of installed package
+     * Get the number of installed package by PackageInfoFlags
      *
      * @param packageInfoFlags see {@link PackageInfoFlags}
      */
-    public static int countPackage(@NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
-        return countPackageByFilter(context, null, packageInfoFlags);
+    public static int countPackageByInfoFlags(@NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
+        return countPackageByFilterInfoFlags(context, null, packageInfoFlags);
     }
 
     /**
      * Get the number of installed package
      */
     public static int countPackage(@NonNull Context context) {
-        return countPackageByFilter(context, null, 0);
+        return countPackageByFilterInfoFlags(context, null, 0);
+    }
+
+
+    /* ************************************* getAllPackageVersionCodeMap ***************************************** */
+
+
+    /**
+     * Get the packageName and versionCode of all installed package by PackageFilter and PackageInfoFlags
+     *
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    @SuppressLint("QueryPermissionsNeeded")
+    public static ArrayMap<String, Integer> getAllPackageVersionCodeMapByFilterInfoFlags(
+            @NonNull Context context, @Nullable PackageFilter packageFilter, @PackageInfoFlags int packageInfoFlags) {
+        List<PackageInfo> packageInfoList = context.getPackageManager().getInstalledPackages(packageInfoFlags);
+        ArrayMap<String, Integer> appsSet = new ArrayMap<>(packageInfoList.size());
+        for (PackageInfo packageInfo : packageInfoList) {
+            if (packageFilter == null || packageFilter.accept(packageInfo)) {
+                int versionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                        ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
+                appsSet.put(packageInfo.packageName, versionCode);
+            }
+        }
+        return appsSet;
+    }
+
+
+    /**
+     * Get the packageName and versionCode of all installed package by PackageTypeFlags and PackageInfoFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    public static ArrayMap<String, Integer> getAllPackageVersionCodeMapByTypeInfoFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags, @PackageInfoFlags int packageInfoFlags) {
+        return getAllPackageVersionCodeMapByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), packageInfoFlags);
+    }
+
+    /**
+     * Get the packageName and versionCode of all installed package by PackageFilter
+     */
+    @NonNull
+    public static ArrayMap<String, Integer> getAllPackageVersionCodeMapByFilter(
+            @NonNull Context context, @Nullable PackageFilter packageFilter) {
+        return getAllPackageVersionCodeMapByFilterInfoFlags(context, packageFilter, 0);
+    }
+
+    /**
+     * Get the packageName and versionCode of all installed package by PackageTypeFlags
+     *
+     * @param packageTypeFlags see {@link PackageTypeFlags}
+     */
+    @NonNull
+    public static ArrayMap<String, Integer> getPackageVersionCodeMapByTypeFlags(
+            @NonNull Context context, @PackageTypeFlags int packageTypeFlags) {
+        return getAllPackageVersionCodeMapByFilterInfoFlags(
+                context, new PackageFilterTypeFlagsImpl(context, packageTypeFlags), 0);
+    }
+
+    /**
+     * Get the packageName and versionCode of all installed package by PackageInfoFlags
+     *
+     * @param packageInfoFlags see {@link PackageInfoFlags}
+     */
+    @NonNull
+    public static ArrayMap<String, Integer> getAllPackageVersionCodeMapByInfoFlags(
+            @NonNull Context context, @PackageInfoFlags int packageInfoFlags) {
+        return getAllPackageVersionCodeMapByFilterInfoFlags(context, null, packageInfoFlags);
+    }
+
+    /**
+     * Get the packageName and versionCode of all installed package
+     */
+    @NonNull
+    public static ArrayMap<String, Integer> getAllPackageVersionCodeMap(@NonNull Context context) {
+        return getAllPackageVersionCodeMapByFilterInfoFlags(context, null, 0);
     }
 
 
@@ -1150,5 +987,136 @@ public class Packagex {
         packageInfo.applicationInfo.sourceDir = apkFile.getPath();
         packageInfo.applicationInfo.publicSourceDir = apkFile.getPath();
         return packageInfo.applicationInfo.loadIcon(packageManager);
+    }
+
+
+    /* ************************************* intent ***************************************** */
+
+
+    /**
+     * Create an Intent that opens the specified package install page
+     *
+     * @param apkFileUri APK file uri
+     */
+    @NonNull
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
+    public static Intent createInstallPackageIntent(@NonNull Uri apkFileUri) {
+        return new Intent(Intent.ACTION_VIEW).addCategory(Intent.CATEGORY_DEFAULT)
+                .setDataAndType(apkFileUri, "application/vnd.android.package-archive")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // Prepare for FileProvider on Android N
+    }
+
+    /**
+     * Create an Intent that opens the specified package install page
+     */
+    @NonNull
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
+    public static Intent createInstallPackageIntent(@NonNull Context context, @NonNull File apkFile) {
+        return createInstallPackageIntent(FileProviderx.getShareFileUri(context, apkFile));
+    }
+
+    /**
+     * Create an Intent that opens the specified package uninstall page
+     *
+     * @param packageName package name
+     */
+    @NonNull
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_DELETE_PACKAGES, conditional = true)
+    public static Intent createUninstallPackageIntent(@NonNull String packageName) {
+        return new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", packageName, null));
+    }
+
+    /**
+     * Create an intent that opens the specified package
+     *
+     * @param packageName package name
+     */
+    @Nullable
+    public static Intent createLaunchPackageIntent(@NonNull Context context, @NonNull String packageName) {
+        return context.getPackageManager().getLaunchIntentForPackage(packageName);
+    }
+
+    /**
+     * Create an Intent that opens the specified package details page
+     *
+     * @param packageName package name
+     */
+    @NonNull
+    public static Intent createApplicationDetailsSettingsIntent(@NonNull String packageName) {
+        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                .setData(Uri.fromParts("package", packageName, null));
+    }
+
+
+    /* ************************************* install/uninstall ***************************************** */
+
+
+    /**
+     * Request to install package
+     *
+     * @return false: Request failed
+     */
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
+    public static boolean requestInstallPackage(@NonNull Context context, @NonNull Uri apkFileUri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW).addCategory(Intent.CATEGORY_DEFAULT)
+                .setDataAndType(apkFileUri, "application/vnd.android.package-archive")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        try {
+            context.startActivity(intent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Request to install package
+     *
+     * @return false: Request failed
+     */
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_INSTALL_PACKAGES, conditional = true)
+    public static boolean requestInstallPackage(@NonNull Context context, @NonNull File apkFile) {
+        Intent intent = createInstallPackageIntent(context, apkFile);
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        try {
+            context.startActivity(intent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * Request to uninstall package
+     *
+     * @return false: Request failed
+     */
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(value = Manifest.permission.REQUEST_DELETE_PACKAGES, conditional = true)
+    public static boolean requestUninstallPackage(@NonNull Context context, @NonNull String packageName) {
+        Intent intent = createUninstallPackageIntent(packageName);
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        try {
+            context.startActivity(intent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

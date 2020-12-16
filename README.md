@@ -223,20 +223,32 @@ Dependencies:
 
 ### tools4a-packages
 * Packagex: [Packagex.java] ([Test][PackagexTest.java]) | [Packagex.kt] ([Test][PackagexTest.kt])
-    * isPackageInstalled, isSystemPackage, isSystemPackageOr, isDebuggablePackage,
-    * isDebuggablePackageOr, isJunitTestPackage, isJunitTestPackageOr, createInstallPackageIntent,
-    * createUninstallPackageIntent, createLaunchPackageIntent, createApplicationDetailsSettingsIntent,
-    * requestInstallPackage, requestUninstallPackage, getPackage, getPackageOrNull,
-    * getPackageVersionCode, getPackageVersionCodeOr, getPackageLongVersionCode,
-    * getPackageLongVersionCodeOr, getPackageVersionName, getPackageVersionNameOr,
-    * getPackageVersionNameOrEmpty, getPackageVersionNameOrNull, getFirstPackageByFilter,
-    * getFirstPackageByFilterFlags, getFirstPackage, listPackageInfo, listPackageByFilter,
-    * listPackageByFilterFlags, listPackage, listPackageVersionCodeToMapByFilter,
-    * listPackageVersionCodeToMapByFilterFlags, listPackageVersionCodeToMap, listPackageNameByFilter,
-    * listPackageNameByFilterFlags, listPackageName, countPackageByFilter, countPackageByFilterFlags,
-    * countPackage, getPackageApkFile, getPackageApkFileOrNull, getPackageSignatureBytes,
+    * isPackageInstalledByInfoFlags, isPackageInstalled, isSystemPackageByInfoFlags, isSystemPackage,
+    * isSystemPackageByInfoFlagsOr, isSystemPackageOr, isDebuggablePackageByInfoFlags, isDebuggablePackage,
+    * isDebuggablePackageByInfoFlagsOr, isDebuggablePackageOr, isJunitTestPackageByInfoFlags, isJunitTestPackage,
+    * isJunitTestPackageByInfoFlagsOr, isJunitTestPackageOr, getPackageInfoByInfoFlags, getPackageInfo,
+    * getPackageInfoByInfoFlagsOrNull, getPackageInfoOrNull, getSimplePackageInfoByInfoFlags,
+    * getSimplePackageInfo, getSimplePackageInfoByInfoFlagsOrNull, getSimplePackageInfoOrNull
+    * getPackageVersionCodeByInfoFlags, getPackageVersionCode, getPackageVersionCodeByInfoFlagsOr,
+    * getPackageVersionCodeOr, getPackageLongVersionCodeByInfoFlags, getPackageLongVersionCode,
+    * getPackageLongVersionCodeByInfoFlagsOr, getPackageLongVersionCodeOr, getPackageVersionNameByInfoFlags,
+    * getPackageVersionName, getPackageVersionNameByInfoFlagsOr, getPackageVersionNameOr,
+    * getPackageVersionNameByInfoFlagsOrEmpty, getPackageVersionNameOrEmpty, getPackageVersionNameByInfoFlagsOrNull,
+    * getPackageVersionNameOrNull, listPackageInfoByFilterInfoFlags, listPackageInfoByTypeInfoFlags,
+    * listPackageInfoByFilter, listPackageInfoByTypeFlags, listPackageInfoByInfoFlags, listPackageInfo,
+    * listSimplePackageInfoByFilterInfoFlags, listSimplePackageInfoByTypeInfoFlags, listSimplePackageInfoByFilter,
+    * listSimplePackageInfoByTypeFlags, listSimplePackageInfoByInfoFlags, listSimplePackageInfo,
+    * listPackageNameByFilterInfoFlags, listPackageNameByTypeInfoFlags, listPackageNameByFilter,
+    * listPackageNameByTypeFlags, listPackageNameByInfoFlags, listPackageName, countPackageByFilterInfoFlags,
+    * countPackageByTypeInfoFlags, countPackageByFilter, countPackageByTypeFlags, countPackageByInfoFlags,
+    * countPackage, getAllPackageVersionCodeMapByFilterInfoFlags, getAllPackageVersionCodeMapByTypeInfoFlags,
+    * getAllPackageVersionCodeMapByFilter, getAllPackageVersionCodeMapByTypeFlags,
+    * getAllPackageVersionCodeMapByInfoFlags, getAllPackageVersionCodeMap
+    * getPackageApkFile, getPackageApkFileOrNull, getPackageSignatureBytes,
     * getPackageSignatureBytesOrNull, getPackageIconDrawable, getPackageIconDrawableOrNull,
-    * getApkIconDrawable, getApkIconDrawableOrNull
+    * getApkIconDrawable, getApkIconDrawableOrNull, createInstallPackageIntent,
+    * createUninstallPackageIntent, createLaunchPackageIntent, createApplicationDetailsSettingsIntent,
+    * requestInstallPackage, requestUninstallPackage,
 * PackageInfox: [PackageInfox.java] ([Test][PackageInfoxTest.java]) | [PackageInfox.kt] ([Test][PackageInfoxTest.kt])
     * findActivityInfo, findActivityInfoByName, findServiceInfo, findServiceInfoByName
     * findReceiverInfo, findReceiverInfoByName, findProviderInfo, findProviderInfoByName

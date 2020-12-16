@@ -74,7 +74,6 @@ public class SimplePackageInfo implements Parcelable {
         this.enabled = enabled;
     }
 
-    @SuppressWarnings({"ConstantConditions"})
     protected SimplePackageInfo(Parcel in) {
         name = in.readString();
         packageName = in.readString();
@@ -96,10 +95,8 @@ public class SimplePackageInfo implements Parcelable {
         File packageFile = new File(applicationInfo.sourceDir);
         final String packageName = applicationInfo.packageName;
         final String versionName = packageInfo.versionName;
-        //noinspection deprecation
         int versionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? (int) packageInfo.getLongVersionCode() : packageInfo.versionCode;
         long longVersionCode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.getLongVersionCode() : packageInfo.versionCode;
-        boolean debuggablePackage = (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         return new SimplePackageInfo(
                 label.toString(), packageName != null ? packageName : "",
                 versionCode, longVersionCode, versionName != null ? versionName : "",

@@ -1,3 +1,6 @@
+## new
+* change: Refactor the names of all methods in Packagex
+
 ## v1.0.0-rc01
 
 Upgrade:

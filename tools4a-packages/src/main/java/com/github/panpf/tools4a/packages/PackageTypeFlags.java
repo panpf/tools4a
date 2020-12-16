@@ -22,18 +22,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @IntDef(flag = true, value = {
-        PackageFilterFlags.ONLY_USER,
-        PackageFilterFlags.ONLY_SYSTEM,
-        PackageFilterFlags.ONLY_RELEASE,
-        PackageFilterFlags.ONLY_DEBUGGABLE,
-        PackageFilterFlags.EXCLUDE_USER,
-        PackageFilterFlags.EXCLUDE_SYSTEM,
-        PackageFilterFlags.EXCLUDE_RELEASE,
-        PackageFilterFlags.EXCLUDE_DEBUGGABLE,
-        PackageFilterFlags.EXCLUDE_SELF
+        PackageTypeFlags.ONLY_USER,
+        PackageTypeFlags.ONLY_SYSTEM,
+        PackageTypeFlags.ONLY_RELEASE,
+        PackageTypeFlags.ONLY_DEBUGGABLE,
+        PackageTypeFlags.EXCLUDE_USER,
+        PackageTypeFlags.EXCLUDE_SYSTEM,
+        PackageTypeFlags.EXCLUDE_RELEASE,
+        PackageTypeFlags.EXCLUDE_DEBUGGABLE,
+        PackageTypeFlags.EXCLUDE_SELF
 })
 @Retention(RetentionPolicy.SOURCE)
-public @interface PackageFilterFlags {
+public @interface PackageTypeFlags {
     int ONLY_USER = 1 << 1;
     int ONLY_SYSTEM = 1 << 2;
 

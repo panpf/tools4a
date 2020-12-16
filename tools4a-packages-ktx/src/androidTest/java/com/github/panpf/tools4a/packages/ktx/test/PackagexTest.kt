@@ -17,6 +17,7 @@
 package com.github.panpf.tools4a.packages.ktx.test
 
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,7 +26,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.panpf.tools4a.fileprovider.ktx.getShareFileUri
 import com.github.panpf.tools4a.packages.PackageFilter
-import com.github.panpf.tools4a.packages.PackageFilterFlags
+import com.github.panpf.tools4a.packages.PackageTypeFlags
 import com.github.panpf.tools4a.packages.ktx.*
 import com.github.panpf.tools4j.collections.Collectionx
 import com.github.panpf.tools4j.collections.Mapx
@@ -45,29 +46,29 @@ class PackagexTest {
     fun testIsPackageInstalled() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        Assert.assertTrue(context.isPackageInstalled(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertFalse(context.isPackageInstalled(context.packageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertTrue(context.isPackageInstalledByInfoFlags(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertFalse(context.isPackageInstalledByInfoFlags(context.packageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES))
 
         Assert.assertTrue(context.isPackageInstalled(context.packageName))
-        Assert.assertFalse(context.isPackageInstalled(context.packageName + "_nonono"))
+        Assert.assertFalse(context.isPackageInstalled(context.packageName + "_no_no_no"))
     }
 
     @Test
     fun testIsSystemPackage() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
+        val systemAppPackageName = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first()
         val selfAppPackageName = context.packageName
 
         try {
-            Assert.assertTrue(context.isSystemPackage(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertFalse(context.isSystemPackage(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertTrue(context.isSystemPackageByInfoFlags(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertFalse(context.isSystemPackageByInfoFlags(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
             Assert.fail()
         }
         try {
-            context.isSystemPackage(systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.isSystemPackageByInfoFlags(systemAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
@@ -80,44 +81,44 @@ class PackagexTest {
             Assert.fail()
         }
         try {
-            context.isSystemPackage(systemAppPackageName + "_nonono")
+            context.isSystemPackage(systemAppPackageName + "_no_no_no")
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
 
-        Assert.assertTrue(context.isSystemPackageOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isSystemPackageOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isSystemPackageOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
-        Assert.assertTrue(context.isSystemPackageOr(systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
-        Assert.assertFalse(context.isSystemPackageOr(systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isSystemPackageByInfoFlagsOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isSystemPackageByInfoFlagsOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isSystemPackageByInfoFlagsOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
+        Assert.assertTrue(context.isSystemPackageByInfoFlagsOr(systemAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
+        Assert.assertFalse(context.isSystemPackageByInfoFlagsOr(systemAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
 
         Assert.assertTrue(context.isSystemPackageOr(systemAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isSystemPackageOr(selfAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isSystemPackageOr(selfAppPackageName, defaultValue = true))
-        Assert.assertTrue(context.isSystemPackageOr(systemAppPackageName + "_nonono", defaultValue = true))
-        Assert.assertFalse(context.isSystemPackageOr(systemAppPackageName + "_nonono", defaultValue = false))
+        Assert.assertTrue(context.isSystemPackageOr(systemAppPackageName + "_no_no_no", defaultValue = true))
+        Assert.assertFalse(context.isSystemPackageOr(systemAppPackageName + "_no_no_no", defaultValue = false))
     }
 
     @Test
     fun testIsDebuggablePackage() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
-        val userAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.EXCLUDE_SELF or PackageFilterFlags.EXCLUDE_DEBUGGABLE)).packageName
-        val debuggableAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE)).packageName
+        val systemAppPackageName = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first()
+        val userAppPackageName = context.listPackageNameByTypeFlags(
+                PackageTypeFlags.ONLY_USER or PackageTypeFlags.EXCLUDE_SELF or PackageTypeFlags.EXCLUDE_DEBUGGABLE).first()
+        val debuggableAppPackageName = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_DEBUGGABLE).first()
         val selfAppPackageName = context.packageName
 
         try {
-            Assert.assertFalse(context.isDebuggablePackage(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertFalse(context.isDebuggablePackage(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertTrue(context.isDebuggablePackage(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertTrue(context.isDebuggablePackage(debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertFalse(context.isDebuggablePackageByInfoFlags(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertFalse(context.isDebuggablePackageByInfoFlags(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertTrue(context.isDebuggablePackageByInfoFlags(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertTrue(context.isDebuggablePackageByInfoFlags(debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         } catch (e: PackageManager.NameNotFoundException) {
             Assert.fail()
         }
         try {
-            context.isDebuggablePackage(systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.isDebuggablePackageByInfoFlags(systemAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -132,45 +133,45 @@ class PackagexTest {
             Assert.fail()
         }
         try {
-            context.isDebuggablePackage(systemAppPackageName + "_nonono")
+            context.isDebuggablePackage(systemAppPackageName + "_no_no_no")
             Assert.fail()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
 
-        Assert.assertFalse(context.isDebuggablePackageOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isDebuggablePackageOr(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isDebuggablePackageOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isDebuggablePackageOr(debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isDebuggablePackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isDebuggablePackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
+        Assert.assertFalse(context.isDebuggablePackageByInfoFlagsOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isDebuggablePackageByInfoFlagsOr(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isDebuggablePackageByInfoFlagsOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isDebuggablePackageByInfoFlagsOr(debuggableAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isDebuggablePackageByInfoFlagsOr(selfAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isDebuggablePackageByInfoFlagsOr(selfAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
 
         Assert.assertFalse(context.isDebuggablePackageOr(systemAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isDebuggablePackageOr(userAppPackageName, defaultValue = false))
         Assert.assertTrue(context.isDebuggablePackageOr(selfAppPackageName, defaultValue = false))
         Assert.assertTrue(context.isDebuggablePackageOr(debuggableAppPackageName, defaultValue = false))
-        Assert.assertFalse(context.isDebuggablePackageOr(selfAppPackageName + "_nonono", defaultValue = false))
-        Assert.assertTrue(context.isDebuggablePackageOr(selfAppPackageName + "_nonono", defaultValue = true))
+        Assert.assertFalse(context.isDebuggablePackageOr(selfAppPackageName + "_no_no_no", defaultValue = false))
+        Assert.assertTrue(context.isDebuggablePackageOr(selfAppPackageName + "_no_no_no", defaultValue = true))
     }
 
     @Test
     fun testIsJUnitTestPackage() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val systemAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName
-        val userAppPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
+        val systemAppPackageName = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first()
+        val userAppPackageName = context.listPackageNameByTypeFlags(
+                PackageTypeFlags.ONLY_USER or PackageTypeFlags.ONLY_RELEASE or PackageTypeFlags.EXCLUDE_SELF).first()
         val selfAppPackageName = context.packageName
 
         try {
-            Assert.assertFalse(context.isJunitTestPackage(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertFalse(context.isJunitTestPackage(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertTrue(context.isJunitTestPackage(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertFalse(context.isJunitTestPackageByInfoFlags(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertFalse(context.isJunitTestPackageByInfoFlags(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertTrue(context.isJunitTestPackageByInfoFlags(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         } catch (e: PackageManager.NameNotFoundException) {
             Assert.fail()
         }
         try {
-            context.isJunitTestPackage(systemAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.isJunitTestPackageByInfoFlags(systemAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -184,103 +185,57 @@ class PackagexTest {
             Assert.fail()
         }
         try {
-            context.isJunitTestPackage(systemAppPackageName + "_nonono")
+            context.isJunitTestPackage(systemAppPackageName + "_no_no_no")
             Assert.fail()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
 
-        Assert.assertFalse(context.isJunitTestPackageOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isJunitTestPackageOr(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertFalse(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
-        Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
+        Assert.assertFalse(context.isJunitTestPackageByInfoFlagsOr(systemAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isJunitTestPackageByInfoFlagsOr(userAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isJunitTestPackageByInfoFlagsOr(selfAppPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertFalse(context.isJunitTestPackageByInfoFlagsOr(selfAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, false))
+        Assert.assertTrue(context.isJunitTestPackageByInfoFlagsOr(selfAppPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, true))
 
         Assert.assertFalse(context.isJunitTestPackageOr(systemAppPackageName, defaultValue = false))
         Assert.assertFalse(context.isJunitTestPackageOr(userAppPackageName, defaultValue = false))
         Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName, defaultValue = false))
-        Assert.assertFalse(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", defaultValue = false))
-        Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName + "_nonono", defaultValue = true))
+        Assert.assertFalse(context.isJunitTestPackageOr(selfAppPackageName + "_no_no_no", defaultValue = false))
+        Assert.assertTrue(context.isJunitTestPackageOr(selfAppPackageName + "_no_no_no", defaultValue = true))
     }
 
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
-    fun testCreateInstallPackageIntent() {
+    fun testGetPackageInfo() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val file = context.getPackageApkFile(context.packageName)
+        val selfAppPackage = context.getPackageInfoByInfoFlags(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage.packageName)
 
-        val installAppIntent1 = context.createInstallPackageIntent(context.getShareFileUri(file))
-        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent1.action)
-        Assert.assertEquals(Intent.CATEGORY_DEFAULT, Collectionx.find(installAppIntent1.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_DEFAULT) })
-        Assert.assertEquals(
-                context.getShareFileUri(file).toString(),
-                Premisex.requireNotNull(installAppIntent1.data).toString()
-        )
-        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent1.type)
-        Assert.assertTrue(installAppIntent1.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+        val selfAppPackage1 = context.getPackageInfo(context.packageName)
+        Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage1.packageName)
 
-        val installAppIntent2 = context.createInstallPackageIntent(file)
-        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent2.action)
-        Assert.assertNotNull(Collectionx.find(installAppIntent2.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_DEFAULT) })
-        Assert.assertEquals(
-                context.getShareFileUri(file).toString(),
-                Premisex.requireNotNull(installAppIntent2.data).toString()
-        )
-        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent2.type)
-        Assert.assertTrue(installAppIntent2.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
-    }
+        val systemAppPackage = context.getPackageInfoByInfoFlags(
+                context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first(), PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        Assert.assertTrue(systemAppPackage.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0)
+        Assert.assertFalse(systemAppPackage.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0)
 
-    @Test
-    fun testCreateUninstallPackageIntent() {
-        val context = InstrumentationRegistry.getInstrumentation().context
+        val systemAppPackage1 = context.getPackageInfo(
+                context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first())
+        Assert.assertTrue(systemAppPackage1.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0)
 
-        val uninstallAppIntent = context.createUninstallPackageIntent(context.packageName)
-        Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.action)
-        Assert.assertEquals(
-                Uri.fromParts("package", context.packageName, null).toString(),
-                Premisex.requireNotNull(uninstallAppIntent.data).toString()
-        )
-    }
-
-    @Test
-    fun testCreateLaunchPackageIntent() {
-        val context = InstrumentationRegistry.getInstrumentation().context
-
-        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
-        val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
-        val resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos))
-        val webBrowserPackageName = resolveInfo.activityInfo.packageName
-
-        val launchAppIntent = Premisex.requireNotNull(context.createLaunchPackageIntent(webBrowserPackageName))
-        Assert.assertEquals(Intent.ACTION_MAIN, launchAppIntent.action)
-        Assert.assertNotNull(Collectionx.find(launchAppIntent.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_LAUNCHER) })
-        Assert.assertEquals(webBrowserPackageName, launchAppIntent.getPackage())
-    }
-
-    @Test
-    fun testCreateApplicationDetailsSettingsIntent() {
-        val context = InstrumentationRegistry.getInstrumentation().context
-
-        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
-        val resolveInfos = context.packageManager.queryIntentActivities(webIntent, 0)
-        val resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfos))
-        val webBrowserPackageName = resolveInfo.activityInfo.packageName
-
-        val appDetailInSystemIntent = context.createApplicationDetailsSettingsIntent(webBrowserPackageName)
-        Assert.assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.action)
-        Assert.assertEquals(
-                Uri.fromParts("package", webBrowserPackageName, null).toString(),
-                Premisex.requireNotNull(appDetailInSystemIntent.data).toString()
-        )
+        Assert.assertNotNull(context.getPackageInfoByInfoFlagsOrNull(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNull(context.getPackageInfoByInfoFlagsOrNull(context.packageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNotNull(context.getPackageInfoOrNull(context.packageName))
+        Assert.assertNull(context.getPackageInfoOrNull(context.packageName + "_no_no_no"))
     }
 
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
-    fun testGetPackage() {
+    fun testGetSimplePackageInfo() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val selfAppPackage = Premisex.requireNotNull(context.getPackage(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        val selfAppPackage = Premisex.requireNotNull(context.getSimplePackageInfoByInfoFlags(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage.packageName)
         Assert.assertTrue("name: " + selfAppPackage.name, Stringx.isSafe(selfAppPackage.name))
         Assert.assertNotNull(selfAppPackage.versionName)
@@ -290,8 +245,9 @@ class PackagexTest {
         Assert.assertTrue("packageFileLastModifiedTime: " + selfAppPackage.packageFileLastModifiedTime, selfAppPackage.packageFileLastModifiedTime >= 0)
         Assert.assertFalse(selfAppPackage.isSystemPackage)
         Assert.assertTrue(selfAppPackage.enabled)
+        Assert.assertTrue(selfAppPackage.isDebuggablePackage)
 
-        val selfAppPackage1 = Premisex.requireNotNull(context.getPackage(context.packageName))
+        val selfAppPackage1 = context.getSimplePackageInfo(context.packageName)
         Assert.assertEquals("com.github.panpf.tools4a.packages.ktx.test", selfAppPackage1.packageName)
         Assert.assertTrue("name: " + selfAppPackage1.name, Stringx.isSafe(selfAppPackage1.name))
         Assert.assertNotNull(selfAppPackage1.versionName)
@@ -302,19 +258,20 @@ class PackagexTest {
         Assert.assertFalse(selfAppPackage1.isSystemPackage)
         Assert.assertTrue(selfAppPackage1.enabled)
 
-        val systemAppPackage = Premisex.requireNotNull(context.getPackage(
-                Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        val systemAppPackage = context.getSimplePackageInfoByInfoFlags(
+                context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first(), PackageManager.MATCH_UNINSTALLED_PACKAGES)
         Assert.assertTrue(systemAppPackage.isSystemPackage)
+        Assert.assertFalse(systemAppPackage.isDebuggablePackage)
 
-        val systemAppPackage1 = Premisex.requireNotNull(context.getPackage(
-                Premisex.requireNotNull(context.getFirstPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)).packageName))
+        val systemAppPackage1 = context.getSimplePackageInfo(
+                context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).first())
         Assert.assertTrue(systemAppPackage1.isSystemPackage)
 
-        Assert.assertNotNull(context.getPackageOrNull(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertNull(context.getPackageOrNull(context.packageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNotNull(context.getSimplePackageInfoByInfoFlagsOrNull(context.packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNull(context.getSimplePackageInfoByInfoFlagsOrNull(context.packageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES))
 
-        Assert.assertNotNull(context.getPackageOrNull(context.packageName))
-        Assert.assertNull(context.getPackageOrNull(context.packageName + "_nonono"))
+        Assert.assertNotNull(context.getSimplePackageInfoOrNull(context.packageName))
+        Assert.assertNull(context.getSimplePackageInfoOrNull(context.packageName + "_no_no_no"))
     }
 
     @Test
@@ -322,14 +279,14 @@ class PackagexTest {
     fun testGetVersionCode() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
+        val userPackageName = context.listPackageNameByTypeFlags(
+                PackageTypeFlags.ONLY_USER or PackageTypeFlags.ONLY_RELEASE or PackageTypeFlags.EXCLUDE_SELF).first()
         val selfPackageName = context.packageName
 
-        Assert.assertEquals(0, context.getPackageVersionCode(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES).toLong())
-        Assert.assertNotEquals(0, context.getPackageVersionCode(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES).toLong())
+        Assert.assertEquals(0, context.getPackageVersionCodeByInfoFlags(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES).toLong())
+        Assert.assertNotEquals(0, context.getPackageVersionCodeByInfoFlags(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES).toLong())
         try {
-            context.getPackageVersionCode(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.getPackageVersionCodeByInfoFlags(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
@@ -337,20 +294,20 @@ class PackagexTest {
         Assert.assertEquals(0, context.getPackageVersionCode(selfPackageName).toLong())
         Assert.assertNotEquals(0, context.getPackageVersionCode(userPackageName).toLong())
         try {
-            context.getPackageVersionCode(selfPackageName + "_nonono")
+            context.getPackageVersionCode(selfPackageName + "_no_no_no")
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
 
-        Assert.assertEquals(0, context.getPackageVersionCodeOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
-        Assert.assertNotEquals(0, context.getPackageVersionCodeOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
-        Assert.assertNotEquals(-1, context.getPackageVersionCodeOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
-        Assert.assertEquals(-1, context.getPackageVersionCodeOr(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
+        Assert.assertEquals(0, context.getPackageVersionCodeByInfoFlagsOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
+        Assert.assertNotEquals(0, context.getPackageVersionCodeByInfoFlagsOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
+        Assert.assertNotEquals(-1, context.getPackageVersionCodeByInfoFlagsOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
+        Assert.assertEquals(-1, context.getPackageVersionCodeByInfoFlagsOr(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1).toLong())
 
         Assert.assertEquals(0, context.getPackageVersionCodeOr(selfPackageName, defaultValue = -1).toLong())
         Assert.assertNotEquals(0, context.getPackageVersionCodeOr(userPackageName, defaultValue = -1).toLong())
         Assert.assertNotEquals(-1, context.getPackageVersionCodeOr(userPackageName, defaultValue = -1).toLong())
-        Assert.assertEquals(-1, context.getPackageVersionCodeOr(selfPackageName + "_nonono", defaultValue = -1).toLong())
+        Assert.assertEquals(-1, context.getPackageVersionCodeOr(selfPackageName + "_no_no_no", defaultValue = -1).toLong())
     }
 
     @Test
@@ -358,14 +315,14 @@ class PackagexTest {
     fun testGetLongVersionCode() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
+        val userPackageName = context.listPackageNameByTypeFlags(
+                PackageTypeFlags.ONLY_USER or PackageTypeFlags.ONLY_RELEASE or PackageTypeFlags.EXCLUDE_SELF).first()
         val selfPackageName = context.packageName
 
-        Assert.assertEquals(0L, context.getPackageLongVersionCode(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertNotEquals(0L, context.getPackageLongVersionCode(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertEquals(0L, context.getPackageLongVersionCodeByInfoFlags(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNotEquals(0L, context.getPackageLongVersionCodeByInfoFlags(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         try {
-            context.getPackageLongVersionCode(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.getPackageLongVersionCodeByInfoFlags(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
@@ -373,38 +330,38 @@ class PackagexTest {
         Assert.assertEquals(0L, context.getPackageLongVersionCode(selfPackageName))
         Assert.assertNotEquals(0L, context.getPackageLongVersionCode(userPackageName))
         try {
-            context.getPackageLongVersionCode(selfPackageName + "_nonono")
+            context.getPackageLongVersionCode(selfPackageName + "_no_no_no")
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
 
-        Assert.assertEquals(0L, context.getPackageLongVersionCodeOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
-        Assert.assertNotEquals(0L, context.getPackageLongVersionCodeOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
-        Assert.assertNotEquals(-1L, context.getPackageLongVersionCodeOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
-        Assert.assertEquals(-1L, context.getPackageLongVersionCodeOr(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
+        Assert.assertEquals(0L, context.getPackageLongVersionCodeByInfoFlagsOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
+        Assert.assertNotEquals(0L, context.getPackageLongVersionCodeByInfoFlagsOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
+        Assert.assertNotEquals(-1L, context.getPackageLongVersionCodeByInfoFlagsOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
+        Assert.assertEquals(-1L, context.getPackageLongVersionCodeByInfoFlagsOr(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, -1))
 
         Assert.assertEquals(0L, context.getPackageLongVersionCodeOr(selfPackageName, defaultValue = -1L))
         Assert.assertNotEquals(0L, context.getPackageLongVersionCodeOr(userPackageName, defaultValue = -1L))
         Assert.assertNotEquals(-1L, context.getPackageLongVersionCodeOr(userPackageName, defaultValue = -1L))
-        Assert.assertEquals(-1L, context.getPackageLongVersionCodeOr(selfPackageName + "_nonono", defaultValue = -1L))
+        Assert.assertEquals(-1L, context.getPackageLongVersionCodeOr(selfPackageName + "_no_no_no", defaultValue = -1L))
     }
 
     @Test
     fun testGetVersionName() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val userPackageName = Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_USER or PackageFilterFlags.ONLY_RELEASE or PackageFilterFlags.EXCLUDE_SELF)).packageName
+        val userPackageName = context.listPackageNameByTypeFlags(
+                PackageTypeFlags.ONLY_USER or PackageTypeFlags.ONLY_RELEASE or PackageTypeFlags.EXCLUDE_SELF).first()
         val selfPackageName = context.packageName
 
         try {
-            Assert.assertEquals("", context.getPackageVersionName(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-            Assert.assertNotEquals("", context.getPackageVersionName(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertEquals("", context.getPackageVersionNameByInfoFlags(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+            Assert.assertNotEquals("", context.getPackageVersionNameByInfoFlags(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
         } catch (e: PackageManager.NameNotFoundException) {
             Assert.fail()
         }
         try {
-            context.getPackageVersionName(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+            context.getPackageVersionNameByInfoFlags(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES)
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
@@ -416,73 +373,43 @@ class PackagexTest {
             Assert.fail()
         }
         try {
-            context.getPackageVersionName(selfPackageName + "_nonono")
+            context.getPackageVersionName(selfPackageName + "_no_no_no")
             Assert.fail()
         } catch (ignored: PackageManager.NameNotFoundException) {
         }
 
-        Assert.assertEquals("", context.getPackageVersionNameOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
-        Assert.assertNotEquals("", context.getPackageVersionNameOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
-        Assert.assertEquals("unknown", context.getPackageVersionNameOr(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
+        Assert.assertEquals("", context.getPackageVersionNameByInfoFlagsOr(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
+        Assert.assertNotEquals("", context.getPackageVersionNameByInfoFlagsOr(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
+        Assert.assertEquals("unknown", context.getPackageVersionNameByInfoFlagsOr(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES, "unknown"))
 
         Assert.assertEquals("", context.getPackageVersionNameOr(selfPackageName, defaultValue = "unknown"))
         Assert.assertNotEquals("", context.getPackageVersionNameOr(userPackageName, defaultValue = "unknown"))
-        Assert.assertEquals("unknown", context.getPackageVersionNameOr(selfPackageName + "_nonono", defaultValue = "unknown"))
+        Assert.assertEquals("unknown", context.getPackageVersionNameOr(selfPackageName + "_no_no_no", defaultValue = "unknown"))
 
-        Assert.assertEquals("", context.getPackageVersionNameOrEmpty(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertNotEquals("", context.getPackageVersionNameOrEmpty(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertEquals("", context.getPackageVersionNameOrEmpty(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertEquals("", context.getPackageVersionNameByInfoFlagsOrEmpty(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNotEquals("", context.getPackageVersionNameByInfoFlagsOrEmpty(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertEquals("", context.getPackageVersionNameByInfoFlagsOrEmpty(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES))
 
         Assert.assertEquals("", context.getPackageVersionNameOrEmpty(selfPackageName))
         Assert.assertNotEquals("", context.getPackageVersionNameOrEmpty(userPackageName))
-        Assert.assertEquals("", context.getPackageVersionNameOrEmpty(selfPackageName + "_nonono"))
+        Assert.assertEquals("", context.getPackageVersionNameOrEmpty(selfPackageName + "_no_no_no"))
 
-        Assert.assertNull("", context.getPackageVersionNameOrNull(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertNotEquals("", context.getPackageVersionNameOrNull(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertNull("", context.getPackageVersionNameOrNull(selfPackageName + "_nonono", PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNull("", context.getPackageVersionNameByInfoFlagsOrNull(selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNotEquals("", context.getPackageVersionNameByInfoFlagsOrNull(userPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES))
+        Assert.assertNull("", context.getPackageVersionNameByInfoFlagsOrNull(selfPackageName + "_no_no_no", PackageManager.MATCH_UNINSTALLED_PACKAGES))
 
         Assert.assertNull("", context.getPackageVersionNameOrNull(selfPackageName))
         Assert.assertNotEquals("", context.getPackageVersionNameOrNull(userPackageName))
-        Assert.assertNull("", context.getPackageVersionNameOrNull(selfPackageName + "_nonono"))
+        Assert.assertNull("", context.getPackageVersionNameOrNull(selfPackageName + "_no_no_no"))
     }
 
     @Test
-    fun testGetFirstPackage() {
-        val context = InstrumentationRegistry.getInstrumentation().context
-        val selfPackageName = context.packageName
-        val errorPackageName = selfPackageName + "_nonono"
-        val firstPackageName = context.listPackageName()[0]
-        val firstSystemPackageName = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)[0]
-
-        Assert.assertEquals(selfPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
-                PackageNameFilter(selfPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
-        Assert.assertNull(context.getFirstPackageByFilter(
-                PackageNameFilter(errorPackageName), PackageManager.MATCH_UNINSTALLED_PACKAGES))
-        Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
-                null, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
-
-        Assert.assertEquals(selfPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(
-                PackageNameFilter(selfPackageName))).packageName)
-        Assert.assertNull(context.getFirstPackageByFilter(PackageNameFilter(errorPackageName)))
-        Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackageByFilter(null)).packageName)
-
-        Assert.assertEquals(firstSystemPackageName, Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
-        Assert.assertEquals(firstSystemPackageName, Premisex.requireNotNull(context.getFirstPackageByFilterFlags(
-                PackageFilterFlags.ONLY_SYSTEM)).packageName)
-
-        Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackage(
-                PackageManager.MATCH_UNINSTALLED_PACKAGES)).packageName)
-        Assert.assertEquals(firstPackageName, Premisex.requireNotNull(context.getFirstPackage()).packageName)
-    }
-
-    @Test
-    fun testListPackage() {
+    fun testListPackageInfo() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val allPackagesSize = context.listPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackagesSize = context.listPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackagesSize = context.listPackageByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackagesSize = context.listPackageInfoByFilterInfoFlags(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackagesSize = context.listPackageInfoByFilterInfoFlags(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackagesSize = context.listPackageInfoByFilterInfoFlags(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSize > 0)
         Assert.assertTrue(startsWithPackagesSize > 0)
         Assert.assertTrue(notStartsWithPackagesSize > 0)
@@ -490,9 +417,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackagesSize.toLong(), notStartsWithPackagesSize.toLong())
         Assert.assertEquals(allPackagesSize.toLong(), startsWithPackagesSize + notStartsWithPackagesSize.toLong())
 
-        val allPackagesSize1 = context.listPackageByFilter(null, 0).size
-        val startsWithPackagesSize1 = context.listPackageByFilter(EndsWithPackageFilter("s"), 0).size
-        val notStartsWithPackagesSize1 = context.listPackageByFilter(NotEndsWithPackageFilter("s"), 0).size
+        val allPackagesSize1 = context.listPackageInfoByFilterInfoFlags(null, 0).size
+        val startsWithPackagesSize1 = context.listPackageInfoByFilterInfoFlags(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackagesSize1 = context.listPackageInfoByFilterInfoFlags(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackagesSize1 > 0)
         Assert.assertTrue(startsWithPackagesSize1 > 0)
         Assert.assertNotEquals(startsWithPackagesSize1.toLong(), startsWithPackagesSize.toLong())
@@ -502,9 +429,9 @@ class PackagexTest {
         Assert.assertNotEquals(notStartsWithPackagesSize1.toLong(), notStartsWithPackagesSize.toLong())
         Assert.assertEquals(allPackagesSize1.toLong(), startsWithPackagesSize1 + notStartsWithPackagesSize1.toLong())
 
-        val allPackagesSize2 = context.listPackageByFilter(null).size
-        val startsWithPackagesSize2 = context.listPackageByFilter(EndsWithPackageFilter("t")).size
-        val notStartsWithPackagesSize2 = context.listPackageByFilter(NotEndsWithPackageFilter("t")).size
+        val allPackagesSize2 = context.listPackageInfoByFilter(null).size
+        val startsWithPackagesSize2 = context.listPackageInfoByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackagesSize2 = context.listPackageInfoByFilter(NotEndsWithPackageFilter("t")).size
         Assert.assertTrue(allPackagesSize2 > 0)
         Assert.assertTrue(startsWithPackagesSize2 > 0)
         Assert.assertTrue(notStartsWithPackagesSize2 > 0)
@@ -512,9 +439,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackagesSize2.toLong(), notStartsWithPackagesSize2.toLong())
         Assert.assertEquals(allPackagesSize2.toLong(), startsWithPackagesSize2 + notStartsWithPackagesSize2.toLong())
 
-        val allPackagesSize3 = context.listPackageByFilterFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val userPackagesSize3 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val systemPackagesSize3 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackagesSize3 = context.listPackageInfoByTypeInfoFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val userPackagesSize3 = context.listPackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val systemPackagesSize3 = context.listPackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSize3 > 0)
         Assert.assertTrue(userPackagesSize3 > 0)
         Assert.assertTrue(systemPackagesSize3 > 0)
@@ -522,9 +449,9 @@ class PackagexTest {
         Assert.assertNotEquals(userPackagesSize3.toLong(), systemPackagesSize3.toLong())
         Assert.assertEquals(allPackagesSize3.toLong(), userPackagesSize3 + systemPackagesSize3.toLong())
 
-        val allPackagesSize4 = context.listPackageByFilterFlags(0, 0).size
-        val releasePackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
-        val debuggablePackagesSize4 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
+        val allPackagesSize4 = context.listPackageInfoByTypeInfoFlags(0, 0).size
+        val releasePackagesSize4 = context.listPackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_RELEASE, 0).size
+        val debuggablePackagesSize4 = context.listPackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackagesSize4 > 0)
         Assert.assertTrue(releasePackagesSize4 > 0)
         Assert.assertNotEquals(releasePackagesSize4.toLong(), userPackagesSize3.toLong())
@@ -534,9 +461,9 @@ class PackagexTest {
         Assert.assertNotEquals(debuggablePackagesSize4.toLong(), systemPackagesSize3.toLong())
         Assert.assertEquals(allPackagesSize4.toLong(), releasePackagesSize4 + debuggablePackagesSize4.toLong())
 
-        val allPackagesSize5 = context.listPackageByFilterFlags(0).size
-        val userPackagesSize5 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_USER).size
-        val systemPackagesSize5 = context.listPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM).size
+        val allPackagesSize5 = context.listPackageInfoByTypeFlags(0).size
+        val userPackagesSize5 = context.listPackageInfoByTypeFlags(PackageTypeFlags.ONLY_USER).size
+        val systemPackagesSize5 = context.listPackageInfoByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).size
         Assert.assertTrue(allPackagesSize5 > 0)
         Assert.assertTrue(userPackagesSize5 > 0)
         Assert.assertTrue(systemPackagesSize5 > 0)
@@ -544,13 +471,92 @@ class PackagexTest {
         Assert.assertNotEquals(userPackagesSize5.toLong(), systemPackagesSize5.toLong())
         Assert.assertEquals(allPackagesSize5.toLong(), userPackagesSize5 + systemPackagesSize5.toLong())
 
-        val allPackagesSiz6 = context.listPackage(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackagesSiz6 = context.listPackageInfoByInfoFlags(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSiz6 > 0)
 
-        val allPackagesSize7 = context.listPackage(0).size
+        val allPackagesSize7 = context.listPackageInfoByInfoFlags(0).size
         Assert.assertTrue(allPackagesSize7 > 0)
 
-        val allPackagesSize8 = context.listPackage().size
+        val allPackagesSize8 = context.listPackageInfo().size
+        Assert.assertTrue(allPackagesSize8 > 0)
+        Assert.assertEquals(allPackagesSize7.toLong(), allPackagesSize8.toLong())
+    }
+
+    @Test
+    fun testListSimplePackageInfo() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val allPackagesSize = context.listSimplePackageInfoByFilterInfoFlags(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackagesSize = context.listSimplePackageInfoByFilterInfoFlags(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackagesSize = context.listSimplePackageInfoByFilterInfoFlags(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        Assert.assertTrue(allPackagesSize > 0)
+        Assert.assertTrue(startsWithPackagesSize > 0)
+        Assert.assertTrue(notStartsWithPackagesSize > 0)
+        Assert.assertTrue(startsWithPackagesSize < allPackagesSize)
+        Assert.assertNotEquals(startsWithPackagesSize.toLong(), notStartsWithPackagesSize.toLong())
+        Assert.assertEquals(allPackagesSize.toLong(), startsWithPackagesSize + notStartsWithPackagesSize.toLong())
+
+        val allPackagesSize1 = context.listSimplePackageInfoByFilterInfoFlags(null, 0).size
+        val startsWithPackagesSize1 = context.listSimplePackageInfoByFilterInfoFlags(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackagesSize1 = context.listSimplePackageInfoByFilterInfoFlags(NotEndsWithPackageFilter("s"), 0).size
+        Assert.assertTrue(allPackagesSize1 > 0)
+        Assert.assertTrue(startsWithPackagesSize1 > 0)
+        Assert.assertNotEquals(startsWithPackagesSize1.toLong(), startsWithPackagesSize.toLong())
+        Assert.assertTrue(notStartsWithPackagesSize1 > 0)
+        Assert.assertTrue(startsWithPackagesSize1 < allPackagesSize1)
+        Assert.assertNotEquals(startsWithPackagesSize1.toLong(), notStartsWithPackagesSize1.toLong())
+        Assert.assertNotEquals(notStartsWithPackagesSize1.toLong(), notStartsWithPackagesSize.toLong())
+        Assert.assertEquals(allPackagesSize1.toLong(), startsWithPackagesSize1 + notStartsWithPackagesSize1.toLong())
+
+        val allPackagesSize2 = context.listSimplePackageInfoByFilter(null).size
+        val startsWithPackagesSize2 = context.listSimplePackageInfoByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackagesSize2 = context.listSimplePackageInfoByFilter(NotEndsWithPackageFilter("t")).size
+        Assert.assertTrue(allPackagesSize2 > 0)
+        Assert.assertTrue(startsWithPackagesSize2 > 0)
+        Assert.assertTrue(notStartsWithPackagesSize2 > 0)
+        Assert.assertTrue(startsWithPackagesSize2 < allPackagesSize2)
+        Assert.assertNotEquals(startsWithPackagesSize2.toLong(), notStartsWithPackagesSize2.toLong())
+        Assert.assertEquals(allPackagesSize2.toLong(), startsWithPackagesSize2 + notStartsWithPackagesSize2.toLong())
+
+        val allPackagesSize3 = context.listSimplePackageInfoByTypeInfoFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val userPackagesSize3 = context.listSimplePackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val systemPackagesSize3 = context.listSimplePackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        Assert.assertTrue(allPackagesSize3 > 0)
+        Assert.assertTrue(userPackagesSize3 > 0)
+        Assert.assertTrue(systemPackagesSize3 > 0)
+        Assert.assertTrue(userPackagesSize3 < allPackagesSize3)
+        Assert.assertNotEquals(userPackagesSize3.toLong(), systemPackagesSize3.toLong())
+        Assert.assertEquals(allPackagesSize3.toLong(), userPackagesSize3 + systemPackagesSize3.toLong())
+
+        val allPackagesSize4 = context.listSimplePackageInfoByTypeInfoFlags(0, 0).size
+        val releasePackagesSize4 = context.listSimplePackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_RELEASE, 0).size
+        val debuggablePackagesSize4 = context.listSimplePackageInfoByTypeInfoFlags(PackageTypeFlags.ONLY_DEBUGGABLE, 0).size
+        Assert.assertTrue(allPackagesSize4 > 0)
+        Assert.assertTrue(releasePackagesSize4 > 0)
+        Assert.assertNotEquals(releasePackagesSize4.toLong(), userPackagesSize3.toLong())
+        Assert.assertTrue(debuggablePackagesSize4 > 0)
+        Assert.assertTrue(releasePackagesSize4 < allPackagesSize4)
+        Assert.assertNotEquals(releasePackagesSize4.toLong(), debuggablePackagesSize4.toLong())
+        Assert.assertNotEquals(debuggablePackagesSize4.toLong(), systemPackagesSize3.toLong())
+        Assert.assertEquals(allPackagesSize4.toLong(), releasePackagesSize4 + debuggablePackagesSize4.toLong())
+
+        val allPackagesSize5 = context.listSimplePackageInfoByTypeFlags(0).size
+        val userPackagesSize5 = context.listSimplePackageInfoByTypeFlags(PackageTypeFlags.ONLY_USER).size
+        val systemPackagesSize5 = context.listSimplePackageInfoByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).size
+        Assert.assertTrue(allPackagesSize5 > 0)
+        Assert.assertTrue(userPackagesSize5 > 0)
+        Assert.assertTrue(systemPackagesSize5 > 0)
+        Assert.assertTrue(userPackagesSize5 < allPackagesSize5)
+        Assert.assertNotEquals(userPackagesSize5.toLong(), systemPackagesSize5.toLong())
+        Assert.assertEquals(allPackagesSize5.toLong(), userPackagesSize5 + systemPackagesSize5.toLong())
+
+        val allPackagesSiz6 = context.listSimplePackageInfoByInfoFlags(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        Assert.assertTrue(allPackagesSiz6 > 0)
+
+        val allPackagesSize7 = context.listSimplePackageInfoByInfoFlags(0).size
+        Assert.assertTrue(allPackagesSize7 > 0)
+
+        val allPackagesSize8 = context.listSimplePackageInfo().size
         Assert.assertTrue(allPackagesSize8 > 0)
         Assert.assertEquals(allPackagesSize7.toLong(), allPackagesSize8.toLong())
     }
@@ -559,12 +565,12 @@ class PackagexTest {
     fun testGetVersionCodeMap() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilter(null, 0)) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMapByFilterInfoFlags(null, 0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackageVersionCodeMapSize: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackageVersionCodeMapSize: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackageVersionCodeMapSize: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackageVersionCodeMapSize: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageVersionCodeMapSize > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize > 0)
         Assert.assertTrue(notStartsWithPackageVersionCodeMapSize > 0)
@@ -572,9 +578,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageVersionCodeMapSize.toLong(), notStartsWithPackageVersionCodeMapSize.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize.toLong(), startsWithPackageVersionCodeMapSize + notStartsWithPackageVersionCodeMapSize.toLong())
 
-        val allPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(null, 0).size
-        val startsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("s"), 0).size
-        val notStartsWithPackageVersionCodeMapSize1: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("s"), 0).size
+        val allPackageVersionCodeMapSize1: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(null, 0).size
+        val startsWithPackageVersionCodeMapSize1: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackageVersionCodeMapSize1: Int = context.getAllPackageVersionCodeMapByFilterInfoFlags(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackageVersionCodeMapSize1 > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize1 > 0)
         Assert.assertNotEquals(startsWithPackageVersionCodeMapSize1.toLong(), startsWithPackageVersionCodeMapSize.toLong())
@@ -584,12 +590,12 @@ class PackagexTest {
         Assert.assertNotEquals(notStartsWithPackageVersionCodeMapSize1.toLong(), notStartsWithPackageVersionCodeMapSize.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize1.toLong(), startsWithPackageVersionCodeMapSize1 + notStartsWithPackageVersionCodeMapSize1.toLong())
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilter(null)) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMapByFilter(null)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(null).size
-        val startsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(EndsWithPackageFilter("t")).size
-        val notStartsWithPackageVersionCodeMapSize2: Int = context.listPackageVersionCodeToMapByFilter(NotEndsWithPackageFilter("t")).size
+        val allPackageVersionCodeMapSize2: Int = context.getAllPackageVersionCodeMapByFilter(null).size
+        val startsWithPackageVersionCodeMapSize2: Int = context.getAllPackageVersionCodeMapByFilter(EndsWithPackageFilter("t")).size
+        val notStartsWithPackageVersionCodeMapSize2: Int = context.getAllPackageVersionCodeMapByFilter(NotEndsWithPackageFilter("t")).size
         Assert.assertTrue(allPackageVersionCodeMapSize2 > 0)
         Assert.assertTrue(startsWithPackageVersionCodeMapSize2 > 0)
         Assert.assertTrue(notStartsWithPackageVersionCodeMapSize2 > 0)
@@ -597,12 +603,12 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageVersionCodeMapSize2.toLong(), notStartsWithPackageVersionCodeMapSize2.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize2.toLong(), startsWithPackageVersionCodeMapSize2 + notStartsWithPackageVersionCodeMapSize2.toLong())
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilterFlags(0, 0)) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMapByTypeInfoFlags(0, 0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackageVersionCodeMapSize3: Int = context.listPackageVersionCodeToMapByFilterFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val userPackageVersionCodeMapSize3: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val systemPackageVersionCodeMapSize3: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackageVersionCodeMapSize3: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val userPackageVersionCodeMapSize3: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val systemPackageVersionCodeMapSize3: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageVersionCodeMapSize3 > 0)
         Assert.assertTrue(userPackageVersionCodeMapSize3 > 0)
         Assert.assertTrue(systemPackageVersionCodeMapSize3 > 0)
@@ -610,9 +616,9 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageVersionCodeMapSize3.toLong(), systemPackageVersionCodeMapSize3.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize3.toLong(), userPackageVersionCodeMapSize3 + systemPackageVersionCodeMapSize3.toLong())
 
-        val allPackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(0, 0).size
-        val releasePackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
-        val debuggablePackageVersionCodeMapSize4: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
+        val allPackageVersionCodeMapSize4: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(0, 0).size
+        val releasePackageVersionCodeMapSize4: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(PackageTypeFlags.ONLY_RELEASE, 0).size
+        val debuggablePackageVersionCodeMapSize4: Int = context.getAllPackageVersionCodeMapByTypeInfoFlags(PackageTypeFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackageVersionCodeMapSize4 > 0)
         Assert.assertTrue(releasePackageVersionCodeMapSize4 > 0)
         Assert.assertNotEquals(releasePackageVersionCodeMapSize4.toLong(), userPackageVersionCodeMapSize3.toLong())
@@ -622,12 +628,12 @@ class PackagexTest {
         Assert.assertNotEquals(debuggablePackageVersionCodeMapSize4.toLong(), systemPackageVersionCodeMapSize3.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize4.toLong(), releasePackageVersionCodeMapSize4 + debuggablePackageVersionCodeMapSize4.toLong())
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMapByFilterFlags(0)) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMapByTypeFlags(0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackageVersionCodeMapSize5: Int = context.listPackageVersionCodeToMapByFilterFlags(0).size
-        val userPackageVersionCodeMapSize5: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_USER).size
-        val systemPackageVersionCodeMapSize5: Int = context.listPackageVersionCodeToMapByFilterFlags(PackageFilterFlags.ONLY_SYSTEM).size
+        val allPackageVersionCodeMapSize5: Int = context.getAllPackageVersionCodeMapByTypeFlags(0).size
+        val userPackageVersionCodeMapSize5: Int = context.getAllPackageVersionCodeMapByTypeFlags(PackageTypeFlags.ONLY_USER).size
+        val systemPackageVersionCodeMapSize5: Int = context.getAllPackageVersionCodeMapByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).size
         Assert.assertTrue(allPackageVersionCodeMapSize5 > 0)
         Assert.assertTrue(userPackageVersionCodeMapSize5 > 0)
         Assert.assertTrue(systemPackageVersionCodeMapSize5 > 0)
@@ -635,19 +641,19 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageVersionCodeMapSize5.toLong(), systemPackageVersionCodeMapSize5.toLong())
         Assert.assertEquals(allPackageVersionCodeMapSize5.toLong(), userPackageVersionCodeMapSize5 + systemPackageVersionCodeMapSize5.toLong())
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMap(0)) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMapByInfoFlags(0)) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackagesSiz6: Int = context.listPackageVersionCodeToMap(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackagesSiz6: Int = context.getAllPackageVersionCodeMapByInfoFlags(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSiz6 > 0)
 
-        val allPackageVersionCodeMapSize7: Int = context.listPackageVersionCodeToMap(0).size
+        val allPackageVersionCodeMapSize7: Int = context.getAllPackageVersionCodeMapByInfoFlags(0).size
         Assert.assertTrue(allPackageVersionCodeMapSize7 > 0)
 
-        Assert.assertTrue(Mapx.all(context.listPackageVersionCodeToMap()) { entry: Map.Entry<String?, Int> ->
+        Assert.assertTrue(Mapx.all(context.getAllPackageVersionCodeMap()) { entry: Map.Entry<String?, Int> ->
             context.getPackageVersionCodeOr(entry.key!!, defaultValue = -1) == entry.value
         })
-        val allPackageVersionCodeMapSize8: Int = context.listPackageVersionCodeToMap().size
+        val allPackageVersionCodeMapSize8: Int = context.getAllPackageVersionCodeMap().size
         Assert.assertTrue(allPackageVersionCodeMapSize8 > 0)
         Assert.assertEquals(allPackageVersionCodeMapSize7.toLong(), allPackageVersionCodeMapSize8.toLong())
     }
@@ -656,12 +662,12 @@ class PackagexTest {
     fun testListPackageName() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        Assert.assertTrue(Collectionx.all(context.listPackageNameByFilter(null, 0)) { packageName: String? ->
+        Assert.assertTrue(Collectionx.all(context.listPackageNameByFilterInfoFlags(null, 0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
         })
-        val allPackageNameSize = context.listPackageNameByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val startsWithPackageNameSize = context.listPackageNameByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val notStartsWithPackageNameSize = context.listPackageNameByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackageNameSize = context.listPackageNameByFilterInfoFlags(null, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val startsWithPackageNameSize = context.listPackageNameByFilterInfoFlags(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val notStartsWithPackageNameSize = context.listPackageNameByFilterInfoFlags(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageNameSize > 0)
         Assert.assertTrue(startsWithPackageNameSize > 0)
         Assert.assertTrue(notStartsWithPackageNameSize > 0)
@@ -669,9 +675,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageNameSize.toLong(), notStartsWithPackageNameSize.toLong())
         Assert.assertEquals(allPackageNameSize.toLong(), startsWithPackageNameSize + notStartsWithPackageNameSize.toLong())
 
-        val allPackageNameSize1 = context.listPackageNameByFilter(null, 0).size
-        val startsWithPackageNameSize1 = context.listPackageNameByFilter(EndsWithPackageFilter("s"), 0).size
-        val notStartsWithPackageNameSize1 = context.listPackageNameByFilter(NotEndsWithPackageFilter("s"), 0).size
+        val allPackageNameSize1 = context.listPackageNameByFilterInfoFlags(null, 0).size
+        val startsWithPackageNameSize1 = context.listPackageNameByFilterInfoFlags(EndsWithPackageFilter("s"), 0).size
+        val notStartsWithPackageNameSize1 = context.listPackageNameByFilterInfoFlags(NotEndsWithPackageFilter("s"), 0).size
         Assert.assertTrue(allPackageNameSize1 > 0)
         Assert.assertTrue(startsWithPackageNameSize1 > 0)
         Assert.assertNotEquals(startsWithPackageNameSize1.toLong(), startsWithPackageNameSize.toLong())
@@ -694,12 +700,12 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageNameSize2.toLong(), notStartsWithPackageNameSize2.toLong())
         Assert.assertEquals(allPackageNameSize2.toLong(), startsWithPackageNameSize2 + notStartsWithPackageNameSize2.toLong())
 
-        Assert.assertTrue(Collectionx.all(context.listPackageNameByFilterFlags(0, 0)) { packageName: String? ->
+        Assert.assertTrue(Collectionx.all(context.listPackageNameByTypeInfoFlags(0, 0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
         })
-        val allPackageNameSize3 = context.listPackageNameByFilterFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val userPackageNameSize3 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
-        val systemPackageNameSize3 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackageNameSize3 = context.listPackageNameByTypeInfoFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val userPackageNameSize3 = context.listPackageNameByTypeInfoFlags(PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val systemPackageNameSize3 = context.listPackageNameByTypeInfoFlags(PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackageNameSize3 > 0)
         Assert.assertTrue(userPackageNameSize3 > 0)
         Assert.assertTrue(systemPackageNameSize3 > 0)
@@ -707,9 +713,9 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageNameSize3.toLong(), systemPackageNameSize3.toLong())
         Assert.assertEquals(allPackageNameSize3.toLong(), userPackageNameSize3 + systemPackageNameSize3.toLong())
 
-        val allPackageNameSize4 = context.listPackageNameByFilterFlags(0, 0).size
-        val releasePackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0).size
-        val debuggablePackageNameSize4 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0).size
+        val allPackageNameSize4 = context.listPackageNameByTypeInfoFlags(0, 0).size
+        val releasePackageNameSize4 = context.listPackageNameByTypeInfoFlags(PackageTypeFlags.ONLY_RELEASE, 0).size
+        val debuggablePackageNameSize4 = context.listPackageNameByTypeInfoFlags(PackageTypeFlags.ONLY_DEBUGGABLE, 0).size
         Assert.assertTrue(allPackageNameSize4 > 0)
         Assert.assertTrue(releasePackageNameSize4 > 0)
         Assert.assertNotEquals(releasePackageNameSize4.toLong(), userPackageNameSize3.toLong())
@@ -719,12 +725,12 @@ class PackagexTest {
         Assert.assertNotEquals(debuggablePackageNameSize4.toLong(), systemPackageNameSize3.toLong())
         Assert.assertEquals(allPackageNameSize4.toLong(), releasePackageNameSize4 + debuggablePackageNameSize4.toLong())
 
-        Assert.assertTrue(Collectionx.all(context.listPackageNameByFilterFlags(0)) { packageName: String? ->
+        Assert.assertTrue(Collectionx.all(context.listPackageNameByTypeFlags(0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
         })
-        val allPackageNameSize5 = context.listPackageNameByFilterFlags(0).size
-        val userPackageNameSize5 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_USER).size
-        val systemPackageNameSize5 = context.listPackageNameByFilterFlags(PackageFilterFlags.ONLY_SYSTEM).size
+        val allPackageNameSize5 = context.listPackageNameByTypeFlags(0).size
+        val userPackageNameSize5 = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_USER).size
+        val systemPackageNameSize5 = context.listPackageNameByTypeFlags(PackageTypeFlags.ONLY_SYSTEM).size
         Assert.assertTrue(allPackageNameSize5 > 0)
         Assert.assertTrue(userPackageNameSize5 > 0)
         Assert.assertTrue(systemPackageNameSize5 > 0)
@@ -732,13 +738,13 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageNameSize5.toLong(), systemPackageNameSize5.toLong())
         Assert.assertEquals(allPackageNameSize5.toLong(), userPackageNameSize5 + systemPackageNameSize5.toLong())
 
-        Assert.assertTrue(Collectionx.all(context.listPackageName(0)) { packageName: String? ->
+        Assert.assertTrue(Collectionx.all(context.listPackageNameByInfoFlags(0)) { packageName: String? ->
             context.isPackageInstalled(packageName!!)
         })
-        val allPackagesSiz6 = context.listPackageName(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
+        val allPackagesSiz6 = context.listPackageNameByInfoFlags(PackageManager.MATCH_UNINSTALLED_PACKAGES).size
         Assert.assertTrue(allPackagesSiz6 > 0)
 
-        val allPackageNameSize7 = context.listPackageName(0).size
+        val allPackageNameSize7 = context.listPackageNameByInfoFlags(0).size
         Assert.assertTrue(allPackageNameSize7 > 0)
 
         Assert.assertTrue(Collectionx.all(context.listPackageName()) { packageName: String? ->
@@ -753,9 +759,9 @@ class PackagexTest {
     fun testCountPackage() {
         val context = InstrumentationRegistry.getInstrumentation().context
 
-        val allPackageNameSize = context.countPackageByFilter(null, PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val startsWithPackageNameSize = context.countPackageByFilter(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val notStartsWithPackageNameSize = context.countPackageByFilter(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val allPackageNameSize = context.countPackageByFilterInfoFlags(null, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val startsWithPackageNameSize = context.countPackageByFilterInfoFlags(EndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val notStartsWithPackageNameSize = context.countPackageByFilterInfoFlags(NotEndsWithPackageFilter("t"), PackageManager.MATCH_UNINSTALLED_PACKAGES)
         Assert.assertTrue(allPackageNameSize > 0)
         Assert.assertTrue(startsWithPackageNameSize > 0)
         Assert.assertTrue(notStartsWithPackageNameSize > 0)
@@ -763,9 +769,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageNameSize.toLong(), notStartsWithPackageNameSize.toLong())
         Assert.assertEquals(allPackageNameSize.toLong(), startsWithPackageNameSize + notStartsWithPackageNameSize.toLong())
 
-        val allPackageNameSize1 = context.countPackageByFilter(null, 0)
-        val startsWithPackageNameSize1 = context.countPackageByFilter(EndsWithPackageFilter("s"), 0)
-        val notStartsWithPackageNameSize1 = context.countPackageByFilter(NotEndsWithPackageFilter("s"), 0)
+        val allPackageNameSize1 = context.countPackageByFilterInfoFlags(null, 0)
+        val startsWithPackageNameSize1 = context.countPackageByFilterInfoFlags(EndsWithPackageFilter("s"), 0)
+        val notStartsWithPackageNameSize1 = context.countPackageByFilterInfoFlags(NotEndsWithPackageFilter("s"), 0)
         Assert.assertTrue(allPackageNameSize1 > 0)
         Assert.assertTrue(startsWithPackageNameSize1 > 0)
         Assert.assertNotEquals(startsWithPackageNameSize1.toLong(), startsWithPackageNameSize.toLong())
@@ -785,9 +791,9 @@ class PackagexTest {
         Assert.assertNotEquals(startsWithPackageNameSize2.toLong(), notStartsWithPackageNameSize2.toLong())
         Assert.assertEquals(allPackageNameSize2.toLong(), startsWithPackageNameSize2 + notStartsWithPackageNameSize2.toLong())
 
-        val allPackageNameSize3 = context.countPackageByFilterFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val userPackageNameSize3 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES)
-        val systemPackageNameSize3 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val allPackageNameSize3 = context.countPackageByTypeInfoFlags(0, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val userPackageNameSize3 = context.countPackageByTypeInfoFlags(PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val systemPackageNameSize3 = context.countPackageByTypeInfoFlags(PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         Assert.assertTrue(allPackageNameSize3 > 0)
         Assert.assertTrue(userPackageNameSize3 > 0)
         Assert.assertTrue(systemPackageNameSize3 > 0)
@@ -795,9 +801,9 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageNameSize3.toLong(), systemPackageNameSize3.toLong())
         Assert.assertEquals(allPackageNameSize3.toLong(), userPackageNameSize3 + systemPackageNameSize3.toLong())
 
-        val allPackageNameSize4 = context.countPackageByFilterFlags(0, 0)
-        val releasePackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_RELEASE, 0)
-        val debuggablePackageNameSize4 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_DEBUGGABLE, 0)
+        val allPackageNameSize4 = context.countPackageByTypeInfoFlags(0, 0)
+        val releasePackageNameSize4 = context.countPackageByTypeInfoFlags(PackageTypeFlags.ONLY_RELEASE, 0)
+        val debuggablePackageNameSize4 = context.countPackageByTypeInfoFlags(PackageTypeFlags.ONLY_DEBUGGABLE, 0)
         Assert.assertTrue(allPackageNameSize4 > 0)
         Assert.assertTrue(releasePackageNameSize4 > 0)
         Assert.assertNotEquals(releasePackageNameSize4.toLong(), userPackageNameSize3.toLong())
@@ -807,9 +813,9 @@ class PackagexTest {
         Assert.assertNotEquals(debuggablePackageNameSize4.toLong(), systemPackageNameSize3.toLong())
         Assert.assertEquals(allPackageNameSize4.toLong(), releasePackageNameSize4 + debuggablePackageNameSize4.toLong())
 
-        val allPackageNameSize5 = context.countPackageByFilterFlags(0)
-        val userPackageNameSize5 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_USER)
-        val systemPackageNameSize5 = context.countPackageByFilterFlags(PackageFilterFlags.ONLY_SYSTEM)
+        val allPackageNameSize5 = context.countPackageByTypeFlags(0)
+        val userPackageNameSize5 = context.countPackageByTypeFlags(PackageTypeFlags.ONLY_USER)
+        val systemPackageNameSize5 = context.countPackageByTypeFlags(PackageTypeFlags.ONLY_SYSTEM)
         Assert.assertTrue(allPackageNameSize5 > 0)
         Assert.assertTrue(userPackageNameSize5 > 0)
         Assert.assertTrue(systemPackageNameSize5 > 0)
@@ -817,10 +823,10 @@ class PackagexTest {
         Assert.assertNotEquals(userPackageNameSize5.toLong(), systemPackageNameSize5.toLong())
         Assert.assertEquals(allPackageNameSize5.toLong(), userPackageNameSize5 + systemPackageNameSize5.toLong())
 
-        val allPackagesSiz6 = context.countPackage(PackageManager.MATCH_UNINSTALLED_PACKAGES)
+        val allPackagesSiz6 = context.countPackageByInfoFlags(PackageManager.MATCH_UNINSTALLED_PACKAGES)
         Assert.assertTrue(allPackagesSiz6 > 0)
 
-        val allPackageNameSize7 = context.countPackage(0)
+        val allPackageNameSize7 = context.countPackageByInfoFlags(0)
         Assert.assertTrue(allPackageNameSize7 > 0)
 
         val allPackageNameSize8 = context.countPackage()
@@ -833,7 +839,7 @@ class PackagexTest {
     fun testGetPackageApkFile() {
         val context = InstrumentationRegistry.getInstrumentation().context
         val selfPackageName = context.packageName
-        val errorPackageName = selfPackageName + "_nonono"
+        val errorPackageName = selfPackageName + "_no_no_no"
 
         val packageFile = context.getPackageApkFile(selfPackageName)
         Assert.assertNotNull(packageFile)
@@ -855,7 +861,7 @@ class PackagexTest {
     fun testGetAppSignatureBytes() {
         val context = InstrumentationRegistry.getInstrumentation().context
         val selfPackageName = context.packageName
-        val errorPackageName = selfPackageName + "_nonono"
+        val errorPackageName = selfPackageName + "_no_no_no"
 
         Assert.assertNotNull(context.getPackageSignatureBytes(selfPackageName))
         try {
@@ -872,7 +878,7 @@ class PackagexTest {
     fun testGetPackageIconDrawable() {
         val context = InstrumentationRegistry.getInstrumentation().context
         val selfPackageName = context.packageName
-        val errorPackageName = selfPackageName + "_nonono"
+        val errorPackageName = selfPackageName + "_no_no_no"
 
         try {
             Assert.assertNotNull(context.getPackageIconDrawable(selfPackageName, 0))
@@ -942,10 +948,76 @@ class PackagexTest {
         }
     }
 
-    private class PackageNameFilter(private val packageName: String) : PackageFilter {
-        override fun accept(packageInfo: PackageInfo): Boolean {
-            return packageInfo.packageName == packageName
-        }
+    @Test
+    @Throws(PackageManager.NameNotFoundException::class)
+    fun testCreateInstallPackageIntent() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val file = context.getPackageApkFile(context.packageName)
+
+        val installAppIntent1 = context.createInstallPackageIntent(context.getShareFileUri(file))
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent1.action)
+        Assert.assertEquals(Intent.CATEGORY_DEFAULT, Collectionx.find(installAppIntent1.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_DEFAULT) })
+        Assert.assertEquals(
+                context.getShareFileUri(file).toString(),
+                Premisex.requireNotNull(installAppIntent1.data).toString()
+        )
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent1.type)
+        Assert.assertTrue(installAppIntent1.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+
+        val installAppIntent2 = context.createInstallPackageIntent(file)
+        Assert.assertEquals(Intent.ACTION_VIEW, installAppIntent2.action)
+        Assert.assertNotNull(Collectionx.find(installAppIntent2.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_DEFAULT) })
+        Assert.assertEquals(
+                context.getShareFileUri(file).toString(),
+                Premisex.requireNotNull(installAppIntent2.data).toString()
+        )
+        Assert.assertEquals("application/vnd.android.package-archive", installAppIntent2.type)
+        Assert.assertTrue(installAppIntent2.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+    }
+
+    @Test
+    fun testCreateUninstallPackageIntent() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val uninstallAppIntent = context.createUninstallPackageIntent(context.packageName)
+        Assert.assertEquals(Intent.ACTION_DELETE, uninstallAppIntent.action)
+        Assert.assertEquals(
+                Uri.fromParts("package", context.packageName, null).toString(),
+                Premisex.requireNotNull(uninstallAppIntent.data).toString()
+        )
+    }
+
+    @Test
+    fun testCreateLaunchPackageIntent() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
+        val resolveInfoList = context.packageManager.queryIntentActivities(webIntent, 0)
+        val resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfoList))
+        val webBrowserPackageName = resolveInfo.activityInfo.packageName
+
+        val launchAppIntent = Premisex.requireNotNull(context.createLaunchPackageIntent(webBrowserPackageName))
+        Assert.assertEquals(Intent.ACTION_MAIN, launchAppIntent.action)
+        Assert.assertNotNull(Collectionx.find(launchAppIntent.categories) { s: String? -> Stringx.equals(s, Intent.CATEGORY_LAUNCHER) })
+        Assert.assertEquals(webBrowserPackageName, launchAppIntent.getPackage())
+    }
+
+    @Test
+    fun testCreateApplicationDetailsSettingsIntent() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))
+        val resolveInfoList = context.packageManager.queryIntentActivities(webIntent, 0)
+        val resolveInfo = Premisex.requireNotNull(Collectionx.firstOrNull(resolveInfoList))
+        val webBrowserPackageName = resolveInfo.activityInfo.packageName
+
+        val appDetailInSystemIntent = context.createApplicationDetailsSettingsIntent(webBrowserPackageName)
+        Assert.assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appDetailInSystemIntent.action)
+        Assert.assertEquals(
+                Uri.fromParts("package", webBrowserPackageName, null).toString(),
+                Premisex.requireNotNull(appDetailInSystemIntent.data).toString()
+        )
     }
 
     private class EndsWithPackageFilter(private val endsWith: String) : PackageFilter {
