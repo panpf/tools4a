@@ -173,7 +173,7 @@ Dependencies:
     * getShareFileUri
 
 ### tools4a-fragment
-* Fragmentx: [Fragmentx.java] ([Test][FragmentxTest.java]) | [Fragmentx.kt] ([Test][FragmentxTest.kt])
+* Fragmentx: [Fragmentx.java] ([Test][FragmentxTest.java.kt]) | [Fragmentx.kt] ([Test][FragmentxTest.kt])
     * getApplication, requireApplication, isDestroyed, getImplFromParent, instantiate,
     * findUserVisibleChildFragmentByUserVisibleHint, findUserVisibleChildFragmentByResumed, findFragmentByViewPagerCurrentItem
 
@@ -466,7 +466,7 @@ Please view the [CHANGELOG.md] file
 [FileProviderxTest.kt]: tools4a-fileprovider-ktx/src/androidTest/java/com/github/panpf/tools4a/fileprovider/ktx/test/FileProviderxTest.kt
 
 [Fragmentx.java]: tools4a-fragment/src/main/java/com/github/panpf/tools4a/fragment/Fragmentx.java
-[FragmentxTest.java]: tools4a-fragment/src/androidTest/java/com/github/panpf/tools4a/fragment/test/FragmentxTest.java
+[FragmentxTest.java.kt]: tools4a-fragment/src/androidTest/java/com/github/panpf/tools4a/fragment/test/FragmentxTest.kt
 [Fragmentx.kt]: tools4a-fragment-ktx/src/main/java/com/github/panpf/tools4a/fragment/ktx/Fragmentx.kt
 [FragmentxTest.kt]: tools4a-fragment-ktx/src/androidTest/java/com/github/panpf/tools4a/fragment/ktx/test/FragmentxTest.kt
 

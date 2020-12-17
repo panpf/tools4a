@@ -26,13 +26,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.viewpager.widget.ViewPager
 import com.github.panpf.tools4a.fragment.ktx.*
 import com.github.panpf.tools4a.test.ktx.getFragmentSync
 import com.github.panpf.tools4a.test.ktx.launchActivityWithOnUse
 import com.github.panpf.tools4a.test.ktx.launchFragmentInContainer
 import com.github.panpf.tools4j.test.ktx.assertNoThrow
 import com.github.panpf.tools4j.test.ktx.assertThrow
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -43,16 +44,20 @@ class FragmentxTest {
     fun testGetApplication() {
         val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
-        Assert.assertNotNull(fragment.getApplication())
+
+        assertNotNull(fragment.getApplication())
+
         scenario.moveToState(Lifecycle.State.DESTROYED)
-        Assert.assertNull(fragment.getApplication())
+        assertNull(fragment.getApplication())
     }
 
     @Test
     fun testRequireApplication() {
         val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
+
         assertNoThrow { fragment.requireApplication() }
+
         scenario.moveToState(Lifecycle.State.DESTROYED)
         assertThrow(IllegalStateException::class) { fragment.requireApplication() }
     }
@@ -61,37 +66,40 @@ class FragmentxTest {
     fun testDestroyed() {
         val scenario = Fragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
-        Assert.assertFalse(fragment.isDestroyed())
+
+        assertFalse(fragment.isDestroyed())
+
         scenario.moveToState(Lifecycle.State.DESTROYED)
-        Assert.assertTrue(fragment.isDestroyed())
-        Assert.assertTrue(Fragment().isDestroyed())
+        assertTrue(fragment.isDestroyed())
+
+        assertTrue(Fragment().isDestroyed())
     }
 
     @Test
     fun testGetImplWithParent() {
         val scenario = TestImplSupportFragment::class.launchFragmentInContainer()
         val fragment = scenario.getFragmentSync()
-        Assert.assertEquals(
+        assertEquals(
                 TestImplSupportFragment::class.java,
-                fragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass
-        )
-        Assert.assertEquals(
+                fragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass)
+        assertEquals(
                 TestImplSupportFragment::class.java,
-                fragment.childFragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass
-        )
+                fragment.childFragment.getImplFromParent(ImplTestInterface::class.java)!!.javaClass)
+
         val scenario2 = TestImplSupportFragment2::class.launchFragmentInContainer()
         val fragment2 = scenario2.getFragmentSync()
-        Assert.assertNull(fragment2.getImplFromParent(ImplTestInterface::class.java))
-        Assert.assertNull(TestImplSupportFragment2().getImplFromParent(ImplTestInterface::class.java))
+        assertNull(fragment2.getImplFromParent(ImplTestInterface::class.java))
+        assertNull(TestImplSupportFragment2().getImplFromParent(ImplTestInterface::class.java))
     }
 
     @Test
     fun testInstantiate() {
         val fragment = Fragment::class.java.instantiate(BundleBuilder().putString("key", "testInstantiate").build())
-        Assert.assertEquals(Fragment::class.java.name, fragment.javaClass.name)
-        Assert.assertEquals("testInstantiate", fragment.arguments!!.getString("key"))
+        assertEquals(Fragment::class.java.name, fragment.javaClass.name)
+        assertEquals("testInstantiate", fragment.arguments!!.getString("key"))
+
         val fragment1 = Fragment::class.java.instantiate()
-        Assert.assertEquals(Fragment::class.java.name, fragment1.javaClass.name)
+        assertEquals(Fragment::class.java.name, fragment1.javaClass.name)
     }
 
     @Test
@@ -99,40 +107,46 @@ class FragmentxTest {
     fun testFindUserVisibleChildFragmentByUserVisibleHint() {
         TestFindUserVisibleByUserVisibleHintActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByUserVisibleHintActivity ->
             val fragmentFromActivity = activity.findUserVisibleChildFragmentByUserVisibleHint()!!
-            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
+            assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
+
             val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragmentByUserVisibleHint()!!
-            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromList.javaClass.name)
+            assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromList.javaClass.name)
+
             val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleByUserVisibleHintFragment
             val fragmentFromChildFragment = fragmentFromActivity2.findUserVisibleChildFragmentByUserVisibleHint()!!
-            Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
+            assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
         }
     }
 
     @Test
     fun testFindUserVisibleChildFragmentByResumed() {
-        TestFindUserVisibleByResumedActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByResumedActivity ->
+        TestFindUserVisibleByResumedActivity::class.launchActivityWithOnUse { activity ->
             val fragmentFromActivity = activity.findUserVisibleChildFragmentByResumed()!!
-            Assert.assertEquals(TestFindUserVisibleByResumedFragment::class.java.name, fragmentFromActivity.javaClass.name)
+            assertEquals(TestFindUserVisibleByResumedFragment::class.java.name, fragmentFromActivity.javaClass.name)
+
             val fragmentFromList = activity.supportFragmentManager.fragments.findUserVisibleChildFragmentByResumed()!!
-            Assert.assertEquals(TestFindUserVisibleByResumedFragment::class.java.name, fragmentFromList.javaClass.name)
+            assertEquals(TestFindUserVisibleByResumedFragment::class.java.name, fragmentFromList.javaClass.name)
+
             val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleByResumedFragment
             val fragmentFromChildFragment = fragmentFromActivity2.findUserVisibleChildFragmentByResumed()!!
-            Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
+            assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
         }
     }
 
     @Test
     fun testFindFragmentByViewPagerCurrentItem() {
-        TestFindUserVisibleByUserVisibleHintActivity::class.launchActivityWithOnUse { activity: TestFindUserVisibleByUserVisibleHintActivity ->
+        TestFindUserVisibleByUserVisibleHintActivity::class.launchActivityWithOnUse { activity ->
             val fragmentFromActivity = activity.findFragmentByViewPagerCurrentItem(2)!!
-            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
-            Assert.assertTrue(fragmentFromActivity.tag, fragmentFromActivity.tag.orEmpty().startsWith("android:switcher") && fragmentFromActivity.tag.orEmpty().endsWith(":2"))
+            assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromActivity.javaClass.name)
+            assertTrue(fragmentFromActivity.tag, fragmentFromActivity.tag.orEmpty().startsWith("android:switcher") && fragmentFromActivity.tag.orEmpty().endsWith(":2"))
+
             val fragmentFromList = activity.supportFragmentManager.fragments.findFragmentByViewPagerCurrentItem(2)!!
-            Assert.assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromList.javaClass.name)
-            Assert.assertTrue(fragmentFromList.tag, fragmentFromList.tag.orEmpty().startsWith("android:switcher") && fragmentFromList.tag.orEmpty().endsWith(":2"))
+            assertEquals(TestFindUserVisibleByUserVisibleHintFragment::class.java.name, fragmentFromList.javaClass.name)
+            assertTrue(fragmentFromList.tag, fragmentFromList.tag.orEmpty().startsWith("android:switcher") && fragmentFromList.tag.orEmpty().endsWith(":2"))
+
             val fragmentFromActivity2 = fragmentFromActivity as TestFindUserVisibleByUserVisibleHintFragment
             val fragmentFromChildFragment = fragmentFromActivity2.findFragmentByViewPagerCurrentItem(3)!!
-            Assert.assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
+            assertTrue(fragmentFromChildFragment.tag, fragmentFromChildFragment.tag.orEmpty().startsWith("android:switcher") && fragmentFromChildFragment.tag.orEmpty().endsWith(":3"))
         }
     }
 
@@ -161,20 +175,17 @@ class FragmentxTest {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.at_view_pager)
-
-            val viewPager = findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_SET_USER_VISIBLE_HINT) {
-                override fun getItem(p0: Int): Fragment {
-                    return if (p0 == 2) {
+            findViewById<ViewPager>(R.id.viewPagerAt_viewPager).apply {
+                adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+                    override fun getCount(): Int = 5
+                    override fun getItem(p0: Int) = if (p0 == 2) {
                         TestFindUserVisibleByUserVisibleHintFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
                     } else {
                         TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
                     }
                 }
-
-                override fun getCount(): Int = 5
+                currentItem = 2
             }
-            viewPager.currentItem = 2
         }
     }
 
@@ -182,20 +193,17 @@ class FragmentxTest {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.at_view_pager)
-
-            val viewPager = findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-                override fun getItem(p0: Int): Fragment {
-                    return if (p0 == 2) {
+            findViewById<ViewPager>(R.id.viewPagerAt_viewPager).apply {
+                adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                    override fun getCount(): Int = 5
+                    override fun getItem(p0: Int) = if (p0 == 2) {
                         TestFindUserVisibleByResumedFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
                     } else {
                         TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
                     }
                 }
-
-                override fun getCount(): Int = 5
+                currentItem = 2
             }
-            viewPager.currentItem = 2
         }
     }
 
@@ -207,15 +215,14 @@ class FragmentxTest {
         @Suppress("DEPRECATION")
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-
-            val viewPager = view.findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_SET_USER_VISIBLE_HINT) {
-                override fun getItem(p0: Int): Fragment =
-                        TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
-
-                override fun getCount(): Int = 5
+            view.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).apply {
+                adapter = object : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+                    override fun getCount(): Int = 5
+                    override fun getItem(p0: Int): Fragment =
+                            TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
+                }
+                currentItem = 3
             }
-            viewPager.currentItem = 3
         }
     }
 
@@ -226,26 +233,24 @@ class FragmentxTest {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-
-            val viewPager = view.findViewById<androidx.viewpager.widget.ViewPager>(R.id.viewPagerAt_viewPager)
-            viewPager.adapter = object : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-                override fun getItem(p0: Int): Fragment =
-                        TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
-
-                override fun getCount(): Int = 5
+            view.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).apply {
+                adapter = object : FragmentPagerAdapter(childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                    override fun getCount(): Int = 5
+                    override fun getItem(p0: Int): Fragment =
+                            TextFragment::class.java.instantiate(BundleBuilder().putString("position", p0.toString()).build())
+                }
+                currentItem = 3
             }
-            viewPager.currentItem = 3
         }
     }
 
     class TextFragment : Fragment() {
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             return TextView(context)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-
             (view as TextView).text = "position: ${arguments?.getString("position")}"
         }
     }
