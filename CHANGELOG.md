@@ -3,6 +3,7 @@
 * change: Fragmentx added isUserVisibleHintWithParent, isResumedWithParent, findUserVisibleFragmentRecursivelyByUserVisibleHint, findUserVisibleFragmentRecursivelyByResumed method
 * change: Fragmentx's findUserVisibleFragmentByUserVisibleHint, findUserVisibleFragmentByResumed methods no longer traverse grandchildren Fragment
 * new: Added FragmentInsider class, which contains getMaxState, getMaxStateWithParent methods
+* fix: Fix the bug of extra parameters of KClass<T>.launchFragment(KClass<T>) function of Testx.kt 
 
 ## v1.0.0-rc01
 

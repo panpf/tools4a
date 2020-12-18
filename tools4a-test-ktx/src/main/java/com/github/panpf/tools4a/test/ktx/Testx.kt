@@ -92,7 +92,7 @@ inline fun <T : Activity> ActivityScenario<T>?.getActivityOrNullSync(): T? =
         Testx.getActivityOrNullSync(this)
 
 
-inline fun <T : Fragment> KClass<T>.launchFragment(fragmentClass: KClass<T>): FragmentScenario<T> =
+inline fun <T : Fragment> KClass<T>.launchFragment(): FragmentScenario<T> =
         Testx.launchFragment(this.java)
 
 inline fun <T : Fragment> KClass<T>.launchFragment(
