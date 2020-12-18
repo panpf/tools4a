@@ -167,6 +167,33 @@ public class Testx {
         return (T) activityArray[0];
     }
 
+    public static <T extends Activity> void onActivitySleep(@NonNull ActivityScenario<T> scenario, long sleepTime, @NonNull final ActivityScenario.ActivityAction<T> action){
+        scenario.onActivity(action);
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T extends Activity> void onActivitySleep100ms(@NonNull ActivityScenario<T> scenario, @NonNull final ActivityScenario.ActivityAction<T> action){
+        scenario.onActivity(action);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T extends Activity> void onActivityAndSleep200ms(@NonNull ActivityScenario<T> scenario, @NonNull final ActivityScenario.ActivityAction<T> action){
+        scenario.onActivity(action);
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @NonNull
     public static <T extends Fragment> FragmentScenario<T> launchFragment(@NonNull Class<T> fragmentClass) {
@@ -300,5 +327,33 @@ public class Testx {
             throw new RuntimeException("Fragment is destroyed");
         }
         return t;
+    }
+
+
+    public static <T extends Fragment> void onFragmentSleep(@NonNull FragmentScenario<T> scenario, long sleepTime, @NonNull final FragmentScenario.FragmentAction<T> action){
+        scenario.onFragment(action);
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T extends Fragment> void onFragmentSleep100ms(@NonNull FragmentScenario<T> scenario, @NonNull final FragmentScenario.FragmentAction<T> action){
+        scenario.onFragment(action);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T extends Fragment> void onFragmentAndSleep200ms(@NonNull FragmentScenario<T> scenario, @NonNull final FragmentScenario.FragmentAction<T> action){
+        scenario.onFragment(action);
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

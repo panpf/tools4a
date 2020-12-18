@@ -28,10 +28,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.viewpager.widget.ViewPager
 import com.github.panpf.tools4a.fragment.Fragmentx
-import com.github.panpf.tools4a.test.ktx.getActivitySync
-import com.github.panpf.tools4a.test.ktx.getFragmentSync
-import com.github.panpf.tools4a.test.ktx.launchActivityWithUse
-import com.github.panpf.tools4a.test.ktx.launchFragmentInContainer
+import com.github.panpf.tools4a.test.ktx.*
 import com.github.panpf.tools4j.test.ktx.assertNoThrow
 import com.github.panpf.tools4j.test.ktx.assertThrow
 import org.junit.Assert.*
@@ -115,17 +112,15 @@ class FragmentxTest {
             var userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(activity) as UserVisibleHintChildViewPagerFragment
             assertEquals(0, userVisibleChildViewPagerFragment.tabIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(activity) as UserVisibleHintChildViewPagerFragment
             assertEquals(1, userVisibleChildViewPagerFragment.tabIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
             userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(activity) as UserVisibleHintChildViewPagerFragment
             assertEquals(2, userVisibleChildViewPagerFragment.tabIndex)
         }
@@ -139,17 +134,15 @@ class FragmentxTest {
         var userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(fragment) as UserVisibleHintChildViewPagerFragment
         assertEquals(0, userVisibleChildViewPagerFragment.tabIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(fragment) as UserVisibleHintChildViewPagerFragment
         assertEquals(1, userVisibleChildViewPagerFragment.tabIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByUserVisibleHint(fragment) as UserVisibleHintChildViewPagerFragment
         assertEquals(2, userVisibleChildViewPagerFragment.tabIndex)
 
@@ -162,17 +155,15 @@ class FragmentxTest {
         var userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByUserVisibleHint(fragment1.childFragmentManager.fragments) as UserVisibleHintChildViewPagerFragment
         assertEquals(0, userVisibleChildViewPagerFragment1.tabIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByUserVisibleHint(fragment1.childFragmentManager.fragments) as UserVisibleHintChildViewPagerFragment
         assertEquals(1, userVisibleChildViewPagerFragment1.tabIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByUserVisibleHint(fragment1.childFragmentManager.fragments) as UserVisibleHintChildViewPagerFragment
         assertEquals(2, userVisibleChildViewPagerFragment1.tabIndex)
     }
@@ -190,26 +181,23 @@ class FragmentxTest {
             assertEquals(0, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(activity) as TextFragment
             assertEquals(1, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(activity) as TextFragment
             assertEquals(2, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 userVisibleChildTextFragment.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(activity) as TextFragment
             assertEquals(2, userVisibleChildTextFragment.tabIndex)
             assertEquals(1, userVisibleChildTextFragment.pageIndex)
@@ -225,26 +213,23 @@ class FragmentxTest {
         assertEquals(0, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(fragment) as TextFragment
         assertEquals(1, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(fragment) as TextFragment
         assertEquals(2, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             userVisibleChildTextFragment.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByUserVisibleHint(fragment) as TextFragment
         assertEquals(2, userVisibleChildTextFragment.tabIndex)
         assertEquals(1, userVisibleChildTextFragment.pageIndex)
@@ -259,26 +244,23 @@ class FragmentxTest {
         assertEquals(0, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByUserVisibleHint(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(1, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByUserVisibleHint(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(2, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             userVisibleChildTextFragment1.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByUserVisibleHint(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(2, userVisibleChildTextFragment1.tabIndex)
         assertEquals(1, userVisibleChildTextFragment1.pageIndex)
@@ -296,17 +278,15 @@ class FragmentxTest {
             var userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(activity) as ResumeOnlyCurrentChildViewPagerFragment
             assertEquals(0, userVisibleChildViewPagerFragment.tabIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(activity) as ResumeOnlyCurrentChildViewPagerFragment
             assertEquals(1, userVisibleChildViewPagerFragment.tabIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
             userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(activity) as ResumeOnlyCurrentChildViewPagerFragment
             assertEquals(2, userVisibleChildViewPagerFragment.tabIndex)
         }
@@ -320,17 +300,15 @@ class FragmentxTest {
         var userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(fragment) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(0, userVisibleChildViewPagerFragment.tabIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(fragment) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(1, userVisibleChildViewPagerFragment.tabIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment = Fragmentx.findUserVisibleChildFragmentByResumed(fragment) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(2, userVisibleChildViewPagerFragment.tabIndex)
 
@@ -343,17 +321,15 @@ class FragmentxTest {
         var userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByResumed(fragment1.childFragmentManager.fragments) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(0, userVisibleChildViewPagerFragment1.tabIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByResumed(fragment1.childFragmentManager.fragments) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(1, userVisibleChildViewPagerFragment1.tabIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildViewPagerFragment1 = Fragmentx.findUserVisibleFragmentByResumed(fragment1.childFragmentManager.fragments) as ResumeOnlyCurrentChildViewPagerFragment
         assertEquals(2, userVisibleChildViewPagerFragment1.tabIndex)
     }
@@ -371,26 +347,23 @@ class FragmentxTest {
             assertEquals(0, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(activity) as TextFragment
             assertEquals(1, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 it.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(activity) as TextFragment
             assertEquals(2, userVisibleChildTextFragment.tabIndex)
             assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 userVisibleChildTextFragment.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
             userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(activity) as TextFragment
             assertEquals(2, userVisibleChildTextFragment.tabIndex)
             assertEquals(1, userVisibleChildTextFragment.pageIndex)
@@ -406,26 +379,23 @@ class FragmentxTest {
         assertEquals(0, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(fragment) as TextFragment
         assertEquals(1, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(fragment) as TextFragment
         assertEquals(2, userVisibleChildTextFragment.tabIndex)
         assertEquals(0, userVisibleChildTextFragment.pageIndex)
 
-        fragmentScenario.onFragment {
+        fragmentScenario.onFragmentSleep100ms {
             userVisibleChildTextFragment.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment = Fragmentx.findUserVisibleChildFragmentRecursivelyByResumed(fragment) as TextFragment
         assertEquals(2, userVisibleChildTextFragment.tabIndex)
         assertEquals(1, userVisibleChildTextFragment.pageIndex)
@@ -440,26 +410,23 @@ class FragmentxTest {
         assertEquals(0, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByResumed(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(1, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             it.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByResumed(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(2, userVisibleChildTextFragment1.tabIndex)
         assertEquals(0, userVisibleChildTextFragment1.pageIndex)
 
-        fragmentScenario1.onFragment {
+        fragmentScenario1.onFragmentSleep100ms {
             userVisibleChildTextFragment1.parentFragment!!.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
         }
-        Thread.sleep(200)
         userVisibleChildTextFragment1 = Fragmentx.findUserVisibleFragmentRecursivelyByResumed(fragment1.childFragmentManager.fragments) as TextFragment
         assertEquals(2, userVisibleChildTextFragment1.tabIndex)
         assertEquals(1, userVisibleChildTextFragment1.pageIndex)
@@ -479,10 +446,9 @@ class FragmentxTest {
             var childFragmentIndex2 = Fragmentx.findFragmentByViewPagerCurrentItem(activity, 2) as ResumeOnlyCurrentChildViewPagerFragment?
             assertNull(childFragmentIndex2)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 activity.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             childFragmentIndex0 = Fragmentx.findFragmentByViewPagerCurrentItem(activity, 0) as ResumeOnlyCurrentChildViewPagerFragment?
             assertEquals(0, childFragmentIndex0!!.tabIndex)
@@ -493,10 +459,9 @@ class FragmentxTest {
             childFragmentIndex2 = Fragmentx.findFragmentByViewPagerCurrentItem(activity, 2) as ResumeOnlyCurrentChildViewPagerFragment?
             assertEquals(2, childFragmentIndex2!!.tabIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 activity.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
 
             childFragmentIndex0 = Fragmentx.findFragmentByViewPagerCurrentItem(activity.supportFragmentManager.fragments, 0) as ResumeOnlyCurrentChildViewPagerFragment?
             assertNull(childFragmentIndex0)
@@ -518,10 +483,9 @@ class FragmentxTest {
             var childTextFragment2 = Fragmentx.findFragmentByViewPagerCurrentItem(childFragmentIndex2, 2) as TextFragment?
             assertNull(childTextFragment2)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 childFragmentIndex2.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             childTextFragment0 = Fragmentx.findFragmentByViewPagerCurrentItem(childFragmentIndex2, 0) as TextFragment?
             assertEquals(2, childTextFragment0!!.tabIndex)
@@ -535,10 +499,9 @@ class FragmentxTest {
             assertEquals(2, childTextFragment2!!.tabIndex)
             assertEquals(2, childTextFragment2.pageIndex)
 
-            activityScenario.onActivity {
+            activityScenario.onActivitySleep100ms {
                 childFragmentIndex2.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 2
             }
-            Thread.sleep(200)
 
             childTextFragment0 = Fragmentx.findFragmentByViewPagerCurrentItem(childFragmentIndex2, 0) as TextFragment?
             assertNull(childTextFragment0)
@@ -594,10 +557,9 @@ class FragmentxTest {
             assertFalse(grandsonFragment11.isResumed && grandsonFragment11.userVisibleHint)
             assertFalse(Fragmentx.isUserVisibleHintWithParent(grandsonFragment11))
 
-            fragmentScenario.onFragment {
+            fragmentScenario.onFragmentSleep100ms {
                 fragment.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             assertFalse(childFragment0.isResumed && childFragment0.userVisibleHint)
             assertFalse(Fragmentx.isUserVisibleHintWithParent(childFragment0))
@@ -658,10 +620,9 @@ class FragmentxTest {
             assertFalse(grandsonFragment11.isResumed && grandsonFragment11.userVisibleHint)
             assertFalse(Fragmentx.isUserVisibleHintWithParent(grandsonFragment11))
 
-            fragmentScenario.onFragment {
+            fragmentScenario.onFragmentSleep100ms {
                 fragment.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             assertFalse(childFragment0.isResumed && childFragment0.userVisibleHint)
             assertFalse(Fragmentx.isUserVisibleHintWithParent(childFragment0))
@@ -725,10 +686,9 @@ class FragmentxTest {
             assertFalse(grandsonFragment11.isResumed)
             assertFalse(Fragmentx.isResumedWithParent(grandsonFragment11))
 
-            fragmentScenario.onFragment {
+            fragmentScenario.onFragmentSleep100ms {
                 fragment.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             assertFalse(childFragment0.isResumed)
             assertFalse(Fragmentx.isResumedWithParent(childFragment0))
@@ -789,10 +749,9 @@ class FragmentxTest {
             assertTrue(grandsonFragment11.isResumed)
             assertTrue(Fragmentx.isResumedWithParent(grandsonFragment11))
 
-            fragmentScenario.onFragment {
+            fragmentScenario.onFragmentSleep100ms {
                 fragment.view!!.findViewById<ViewPager>(R.id.viewPagerAt_viewPager).currentItem = 1
             }
-            Thread.sleep(200)
 
             assertTrue(childFragment0.isResumed)
             assertTrue(Fragmentx.isResumedWithParent(childFragment0))

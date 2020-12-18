@@ -340,8 +340,9 @@ Dependencies:
 ### tools4a-test
 * Testx: [Testx.java] | [Testx.kt]
     * launchActivity, launchActivityWithOn, launchActivityWithOnUse, launchActivityWithUse,
-    * getActivitySync, getActivityOrNullSync, launchFragment, launchFragmentInContainer,
-    * launchFragmentWithOn, launchFragmentInContainerWithOn, getFragmentSync
+    * getActivitySync, getActivityOrNullSync, onActivitySleep, onActivitySleep100ms, onActivitySleep200ms, 
+    * launchFragment, launchFragmentInContainer, launchFragmentWithOn, launchFragmentInContainerWithOn, 
+    * getFragmentSync, onFragmentSleep, onFragmentSleep100ms, onFragmentSleep200ms
 
 ### tools4a-utils
 * LifecycleBroadcastReceiver: [LifecycleBroadcastReceiver.java] ([Test][LifecycleBroadcastReceiverTest.java])

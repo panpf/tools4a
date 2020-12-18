@@ -92,6 +92,13 @@ inline fun <T : Activity> ActivityScenario<T>?.getActivityOrNullSync(): T? =
         Testx.getActivityOrNullSync(this)
 
 
+inline fun <T : Activity?> ActivityScenario<T>.onActivitySleep(sleepTime: Long, action: ActivityAction<T>) = Testx.onActivitySleep(this, sleepTime, action)
+
+inline fun <T : Activity?> ActivityScenario<T>.onActivitySleep100ms(action: ActivityAction<T>) = Testx.onActivitySleep100ms(this, action)
+
+inline fun <T : Activity?> ActivityScenario<T>.onActivityAndSleep200ms(action: ActivityAction<T>) = Testx.onActivityAndSleep200ms(this, action)
+
+
 inline fun <T : Fragment> KClass<T>.launchFragment(): FragmentScenario<T> =
         Testx.launchFragment(this.java)
 
@@ -155,3 +162,10 @@ inline fun <T : Fragment> KClass<T>.launchFragmentInContainerWithOn(
 
 inline fun <T : Fragment> FragmentScenario<T>.getFragmentSync(): T =
         Testx.getFragmentSync(this)
+
+
+inline fun <T : Fragment?> FragmentScenario<T>.onFragmentSleep(sleepTime: Long, action: FragmentAction<T>) = Testx.onFragmentSleep(this, sleepTime, action)
+
+inline fun <T : Fragment?> FragmentScenario<T>.onFragmentSleep100ms(action: FragmentAction<T>) = Testx.onFragmentSleep100ms(this, action)
+
+inline fun <T : Fragment?> FragmentScenario<T>.onFragmentAndSleep200ms(action: FragmentAction<T>) = Testx.onFragmentAndSleep200ms(this, action)
