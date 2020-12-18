@@ -5,6 +5,7 @@
 * new: Added FragmentInsider class, which contains getMaxState, getMaxStateWithParent methods
 * fix: Fix the bug of extra parameters of KClass<T>.launchFragment(KClass<T>) function of Testx.kt
 * new: Testx added onFragmentSleep, onFragmentSleep100ms, onFragmentSleep200ms, onActivitySleep, onActivitySleep100ms, onActivitySleep200ms methods
+* upgrade: Upgrade kotlin to 1.4.20
 
 ## v1.0.0-rc01
 
