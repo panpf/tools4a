@@ -180,6 +180,8 @@ Dependencies:
     * findUserVisibleFragmentByResumed, findUserVisibleChildFragmentByResumed,
     * findUserVisibleFragmentRecursivelyByResumed, findUserVisibleChildFragmentRecursivelyByResumed,
     * findFragmentByViewPagerCurrentItem, isUserVisibleHintWithParent, isResumedWithParent
+* FragmentInsider: [FragmentInsider.java] ([Test][FragmentInsiderTest.java.kt]) | [FragmentInsider.kt] ([Test][FragmentInsiderTest.kt])
+    * getMaxState, getMaxStateWithParent
 
 ### tools4a-graphics
 * Drawablex: [Drawablex.java] ([Test][DrawablexTest.java]) | [Drawablex.kt] ([Test][DrawablexTest.kt])
@@ -473,6 +475,11 @@ Please view the [CHANGELOG.md] file
 [FragmentxTest.java.kt]: tools4a-fragment/src/androidTest/java/com/github/panpf/tools4a/fragment/test/FragmentxTest.kt
 [Fragmentx.kt]: tools4a-fragment-ktx/src/main/java/com/github/panpf/tools4a/fragment/ktx/Fragmentx.kt
 [FragmentxTest.kt]: tools4a-fragment-ktx/src/androidTest/java/com/github/panpf/tools4a/fragment/ktx/test/FragmentxTest.kt
+
+[FragmentInsider.java]: tools4a-fragment/src/main/java/androidx/fragment/app/FragmentInsider.java
+[FragmentInsiderTest.java.kt]: tools4a-fragment/src/androidTest/java/androidx/fragment/app/test/FragmentInsiderTest.kt
+[FragmentInsider.kt]: tools4a-fragment-ktx/src/main/java/androidx/fragment/app/ktx/FragmentInsider.kt
+[FragmentInsiderTest.kt]: tools4a-fragment-ktx/src/androidTest/java/androidx/fragment/app/ktx/test/FragmentInsiderTest.kt
 
 [Bitmapx.java]: tools4a-graphics/src/main/java/com/github/panpf/tools4a/graphics/Bitmapx.java
 [BitmapxTest.java]: tools4a-graphics/src/androidTest/java/com/github/panpf/tools4a/graphics/test/BitmapxTest.java

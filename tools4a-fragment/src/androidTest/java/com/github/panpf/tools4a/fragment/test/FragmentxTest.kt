@@ -95,7 +95,7 @@ class FragmentxTest {
 
     @Test
     fun testInstantiate() {
-        val fragment = Fragmentx.instantiate(Fragment::class.java, BundleBuilder().putString("key", "testInstantiate").build())
+        val fragment = Fragmentx.instantiate(Fragment::class.java, bundleOf("key" to "testInstantiate"))
         assertEquals(Fragment::class.java.name, fragment.javaClass.name)
         assertEquals("testInstantiate", fragment.arguments!!.getString("key"))
 
