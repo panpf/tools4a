@@ -175,7 +175,11 @@ Dependencies:
 ### tools4a-fragment
 * Fragmentx: [Fragmentx.java] ([Test][FragmentxTest.java.kt]) | [Fragmentx.kt] ([Test][FragmentxTest.kt])
     * getApplication, requireApplication, isDestroyed, getImplFromParent, instantiate,
-    * findUserVisibleChildFragmentByUserVisibleHint, findUserVisibleChildFragmentByResumed, findFragmentByViewPagerCurrentItem
+    * findUserVisibleFragmentByUserVisibleHint, findUserVisibleChildFragmentByUserVisibleHint,
+    * findUserVisibleFragmentRecursivelyByUserVisibleHint, findUserVisibleChildFragmentRecursivelyByUserVisibleHint,
+    * findUserVisibleFragmentByResumed, findUserVisibleChildFragmentByResumed,
+    * findUserVisibleFragmentRecursivelyByResumed, findUserVisibleChildFragmentRecursivelyByResumed,
+    * findFragmentByViewPagerCurrentItem, isUserVisibleHintWithParent, isResumedWithParent
 
 ### tools4a-graphics
 * Drawablex: [Drawablex.java] ([Test][DrawablexTest.java]) | [Drawablex.kt] ([Test][DrawablexTest.kt])

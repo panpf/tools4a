@@ -2,7 +2,7 @@
     package="com.github.panpf.tools4a.fragment.ktx.test">
 
     <application>
-        <activity android:name=".FragmentxTest$TestFindUserVisibleByUserVisibleHintActivity" />
-        <activity android:name=".FragmentxTest$TestFindUserVisibleByResumedActivity" />
+        <activity android:name=".FragmentxTest$ResumeOnlyCurrentParentViewPagerActivity" />
+        <activity android:name=".FragmentxTest$UserVisibleHintParentViewPagerActivity" />
     </application>
 </manifest>

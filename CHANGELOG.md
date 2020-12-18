@@ -1,5 +1,7 @@
 ## new
 * change: Refactor the names of all methods in Packagex
+* change: Fragmentx added isUserVisibleHintWithParent, isResumedWithParent, findUserVisibleFragmentRecursivelyByUserVisibleHint, findUserVisibleFragmentRecursivelyByResumed method
+* change: Fragmentx's findUserVisibleFragmentByUserVisibleHint, findUserVisibleFragmentByResumed methods no longer traverse grandchildren Fragment
 
 ## v1.0.0-rc01
 

@@ -118,30 +118,22 @@ public class Fragmentx {
     /**
      * Find the user visible fragment by UserVisibleHint from the FragmentActivity
      *
-     * @deprecated Please use findUserVisibleChildFragmentByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
+     * @deprecated Please use findUserVisibleFragmentByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
      */
     @Nullable
     @Deprecated
-    public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable List<Fragment> fragmentList) {
-        Fragment userVisibleFragment = null;
+    public static Fragment findUserVisibleFragmentByUserVisibleHint(@Nullable List<Fragment> fragmentList) {
         if (fragmentList != null) {
             for (Fragment childFragment : fragmentList) {
                 if (childFragment != null) {
                     //noinspection deprecation
                     if (childFragment.isResumed() && childFragment.getUserVisibleHint()) {
-                        userVisibleFragment = childFragment;
-                    } else {
-                        List<Fragment> childFragmentList = childFragment.getChildFragmentManager().getFragments();
-                        //noinspection deprecation
-                        userVisibleFragment = findUserVisibleChildFragmentByUserVisibleHint(childFragmentList);
-                    }
-                    if (userVisibleFragment != null) {
-                        break;
+                        return childFragment;
                     }
                 }
             }
         }
-        return userVisibleFragment;
+        return null;
     }
 
     /**
@@ -153,7 +145,7 @@ public class Fragmentx {
     @Deprecated
     public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable FragmentActivity fragmentActivity) {
         //noinspection deprecation
-        return findUserVisibleChildFragmentByUserVisibleHint(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+        return findUserVisibleFragmentByUserVisibleHint(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
     }
 
     /**
@@ -165,31 +157,71 @@ public class Fragmentx {
     @Deprecated
     public static Fragment findUserVisibleChildFragmentByUserVisibleHint(@Nullable Fragment fragment) {
         //noinspection deprecation
-        return findUserVisibleChildFragmentByUserVisibleHint(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+        return findUserVisibleFragmentByUserVisibleHint(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+    }
+
+    /**
+     * Recursively find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleFragmentRecursivelyByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
+     */
+    @Nullable
+    @Deprecated
+    public static Fragment findUserVisibleFragmentRecursivelyByUserVisibleHint(@Nullable List<Fragment> fragmentList) {
+        if (fragmentList != null) {
+            for (Fragment childFragment : fragmentList) {
+                if (childFragment != null) {
+                    //noinspection deprecation
+                    if (childFragment.isResumed() && childFragment.getUserVisibleHint()) {
+                        //noinspection deprecation
+                        Fragment visibleChildFragment = findUserVisibleFragmentRecursivelyByUserVisibleHint(childFragment.getChildFragmentManager().getFragments());
+                        return visibleChildFragment != null ? visibleChildFragment : childFragment;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Recursively find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleChildFragmentRecursivelyByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
+     */
+    @Nullable
+    @Deprecated
+    public static Fragment findUserVisibleChildFragmentRecursivelyByUserVisibleHint(@Nullable FragmentActivity fragmentActivity) {
+        //noinspection deprecation
+        return findUserVisibleFragmentRecursivelyByUserVisibleHint(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+    }
+
+    /**
+     * Recursively find the user visible fragment by UserVisibleHint from the FragmentActivity
+     *
+     * @deprecated Please use findUserVisibleChildFragmentRecursivelyByResumed() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
+     */
+    @Nullable
+    @Deprecated
+    public static Fragment findUserVisibleChildFragmentRecursivelyByUserVisibleHint(@Nullable Fragment fragment) {
+        //noinspection deprecation
+        return findUserVisibleFragmentRecursivelyByUserVisibleHint(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
     }
 
     /**
      * Find the user visible fragment by resumed from the FragmentActivity
      */
     @Nullable
-    public static Fragment findUserVisibleChildFragmentByResumed(@Nullable List<Fragment> fragmentList) {
-        Fragment userVisibleFragment = null;
+    public static Fragment findUserVisibleFragmentByResumed(@Nullable List<Fragment> fragmentList) {
         if (fragmentList != null) {
             for (Fragment childFragment : fragmentList) {
                 if (childFragment != null) {
                     if (childFragment.isResumed()) {
-                        userVisibleFragment = childFragment;
-                    } else {
-                        List<Fragment> childFragmentList = childFragment.getChildFragmentManager().getFragments();
-                        userVisibleFragment = findUserVisibleChildFragmentByResumed(childFragmentList);
-                    }
-                    if (userVisibleFragment != null) {
-                        break;
+                        return childFragment;
                     }
                 }
             }
         }
-        return userVisibleFragment;
+        return null;
     }
 
     /**
@@ -197,7 +229,7 @@ public class Fragmentx {
      */
     @Nullable
     public static Fragment findUserVisibleChildFragmentByResumed(@Nullable FragmentActivity fragmentActivity) {
-        return findUserVisibleChildFragmentByResumed(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+        return findUserVisibleFragmentByResumed(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
     }
 
     /**
@@ -205,7 +237,41 @@ public class Fragmentx {
      */
     @Nullable
     public static Fragment findUserVisibleChildFragmentByResumed(@Nullable Fragment fragment) {
-        return findUserVisibleChildFragmentByResumed(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+        return findUserVisibleFragmentByResumed(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
+    }
+
+    /**
+     * Recursively find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleFragmentRecursivelyByResumed(@Nullable List<Fragment> fragmentList) {
+        if (fragmentList != null) {
+            for (Fragment childFragment : fragmentList) {
+                if (childFragment != null) {
+                    if (childFragment.isResumed()) {
+                        Fragment visibleChildFragment = findUserVisibleFragmentRecursivelyByResumed(childFragment.getChildFragmentManager().getFragments());
+                        return visibleChildFragment != null ? visibleChildFragment : childFragment;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Recursively find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleChildFragmentRecursivelyByResumed(@Nullable FragmentActivity fragmentActivity) {
+        return findUserVisibleFragmentRecursivelyByResumed(fragmentActivity != null ? fragmentActivity.getSupportFragmentManager().getFragments() : null);
+    }
+
+    /**
+     * Recursively find the user visible fragment by resumed from the FragmentActivity
+     */
+    @Nullable
+    public static Fragment findUserVisibleChildFragmentRecursivelyByResumed(@Nullable Fragment fragment) {
+        return findUserVisibleFragmentRecursivelyByResumed(fragment != null ? fragment.getChildFragmentManager().getFragments() : null);
     }
 
     /**
@@ -243,5 +309,38 @@ public class Fragmentx {
     @Nullable
     public static Fragment findFragmentByViewPagerCurrentItem(@Nullable Fragment fragment, int viewPagerCurrentItem) {
         return findFragmentByViewPagerCurrentItem(fragment != null ? fragment.getChildFragmentManager().getFragments() : null, viewPagerCurrentItem);
+    }
+
+
+    /**
+     * If the specified Fragment and all its parent Fragment isResumed and getUserVisibleHint are all true, return true, otherwise return false
+     *
+     * @deprecated Please use isResumedWithParent() method instead. Fragment getUserVisibleHint() method is obsolete, please use FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT and isResumed methods instead
+     */
+    @Deprecated
+    public static boolean isUserVisibleHintWithParent(@Nullable Fragment fragment) {
+        if (fragment == null) return false;
+        Fragment currentFragment = fragment;
+        boolean result = true;
+        while (currentFragment != null && result) {
+            //noinspection deprecation
+            result = currentFragment.isResumed() && currentFragment.getUserVisibleHint();
+            currentFragment = currentFragment.getParentFragment();
+        }
+        return result;
+    }
+
+    /**
+     * If the specified Fragment and all its parent Fragment isResumed are all true, return true, otherwise return false
+     */
+    public static boolean isResumedWithParent(@Nullable Fragment fragment) {
+        if (fragment == null) return false;
+        Fragment currentFragment = fragment;
+        boolean result = true;
+        while (currentFragment != null && result) {
+            result = currentFragment.isResumed();
+            currentFragment = currentFragment.getParentFragment();
+        }
+        return result;
     }
 }
