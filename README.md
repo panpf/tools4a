@@ -222,10 +222,6 @@ Dependencies:
     * connectivity, activeNetwork, networkCapabilitiesCompat, isConnected, isWifiConnected,
     * isCellularConnected, isNotMetered, isMetered, isNotRoaming, isRoaming, getTransportNames,
     * getCapabilityNames, getWifiState, isWifiEnabled, setWifiEnabled, getWifiGateway, getDNS1, getDNS2
-* NetworkState: [NetworkState.java] ([Test][NetworkStateTest.java])
-    * isActivated, isWifiActivated, isNoMeteredWifiActivated, isMobileActivated,
-    * isBluetoothActivated, getType, isVPNActivated, isMetered, isRoaming, isFailover,
-    * getTypeName, getSubtypeName, getExtraInfo, getNetworkInfo, getConnectivity
 
 ### tools4a-packages
 * Packagex: [Packagex.java] ([Test][PackagexTest.java]) | [Packagex.kt] ([Test][PackagexTest.kt])
@@ -529,9 +525,6 @@ Please view the [CHANGELOG.md] file
 [IntentxTest.java]: tools4a-intent/src/androidTest/java/com/github/panpf/tools4a/intent/test/IntentxTest.java
 [Intentx.kt]: tools4a-intent-ktx/src/main/java/com/github/panpf/tools4a/intent/ktx/Intentx.kt
 [IntentxTest.kt]: tools4a-intent-ktx/src/androidTest/java/com/github/panpf/tools4a/intent/ktx/test/IntentxTest.kt
-
-[NetworkState.java]: tools4a-network/src/main/java/com/github/panpf/tools4a/network/NetworkState.java
-[NetworkStateTest.java]: tools4a-network/src/androidTest/java/com/github/panpf/tools4a/network/test/NetworkStateTest.java
 
 [Networkx.java]: tools4a-network/src/main/java/com/github/panpf/tools4a/network/Networkx.java
 [NetworkxTest.java]: tools4a-network/src/androidTest/java/com/github/panpf/tools4a/network/test/NetworkxTest.java
