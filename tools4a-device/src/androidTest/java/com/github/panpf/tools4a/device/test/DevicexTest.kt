@@ -13,231 +13,257 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.panpf.tools4a.device.test
 
-package com.github.panpf.tools4a.device.test;
+import android.Manifest
+import android.content.Context
+import android.os.Build
+import android.telephony.TelephonyManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.github.panpf.tools4a.device.Devicex
+import com.github.panpf.tools4a.permission.ktx.isGrantPermissions
+import com.github.panpf.tools4a.systemproperties.SystemPropertiesx
+import com.github.panpf.tools4j.lang.ktx.isSafe
+import com.github.panpf.tools4j.test.Assertx.assertThrow
+import org.junit.Assert.*
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.regex.Pattern
 
-import android.Manifest;
-import android.content.Context;
-import android.os.Build;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import com.github.panpf.tools4a.device.Devicex;
-import com.github.panpf.tools4a.permission.Permissionx;
-import com.github.panpf.tools4j.lang.Stringx;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.regex.Pattern;
-
-@RunWith(AndroidJUnit4.class)
-public class DevicexTest {
-
+@RunWith(AndroidJUnit4::class)
+class DevicexTest {
     @Test
-    public final void testModel() {
-        Assert.assertTrue(Stringx.isSafe(Devicex.getModel()));
+    fun testIsEmulator() {
+        assertEquals("1" == SystemPropertiesx.get("ro.kernel.qemu"), Devicex.isEmulator())
     }
 
     @Test
-    public final void testName() {
-        Assert.assertTrue(Stringx.isSafe(Devicex.getDevice()));
+    fun testGetProduct() {
+        assertTrue(Devicex.getProduct().isSafe())
     }
 
     @Test
-    public final void testHardware() {
-        Assert.assertTrue(Stringx.isSafe(Devicex.getHardware()));
+    fun testGetBrand() {
+        assertTrue(Devicex.getBrand().isSafe())
     }
 
     @Test
-    public final void testProduct() {
-        Assert.assertTrue(Stringx.isSafe(Devicex.getProduct()));
+    fun testGetModel() {
+        assertTrue(Devicex.getModel().isSafe())
     }
 
     @Test
-    public final void testBrand() {
-        Assert.assertTrue(Stringx.isSafe(Devicex.getBrand()));
+    fun testGetDevice() {
+        assertTrue(Devicex.getDevice().isSafe())
     }
 
     @Test
-    public final void testSupportedAbis() {
-        Assert.assertTrue(Devicex.getSupportedAbis().length != 0);
+    fun testGetHardware() {
+        assertTrue(Devicex.getHardware().isSafe())
     }
 
     @Test
-    public final void testPhoneNumber() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        Assert.assertNotNull(Devicex.getPhoneNumberOr(context, "defaultValue"));
+    fun testGetSupportedAbis() {
+        assertTrue(Devicex.getSupportedAbis().isNotEmpty())
     }
 
     @Test
-    public final void testAndroidId() {
-        String androidId = Devicex.getAndroidIdOr(InstrumentationRegistry.getInstrumentation().getContext(), "defaultValue");
-        Assert.assertTrue("androidId: " + androidId, Stringx.isSafe(androidId));
-    }
-
-    @Test
-    public final void testDeviceId() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String deviceId = Devicex.getDeviceIdOr(context, "defaultValue");
-            Assert.assertEquals("deviceId: " + deviceId, "defaultValue", deviceId);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String deviceId = Devicex.getDeviceIdOr(context, "defaultValue");
-                Assert.assertTrue("deviceId: " + deviceId,
-                        Stringx.isSafe(deviceId) && !deviceId.equals("defaultValue")
-                );
-            } else {
-                String deviceId = Devicex.getDeviceIdOr(context, "defaultValue");
-                Assert.assertEquals("deviceId: " + deviceId, "defaultValue", deviceId);
-            }
+    fun testGetPhoneNumber() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        var cause: Exception? = null
+        val phoneNumber = try {
+            val manager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            manager.line1Number
+        } catch (e: Exception) {
+            cause = e
+            e.printStackTrace()
+            null
+        }
+        if (phoneNumber != null && phoneNumber.isNotEmpty() && !"unknown".equals(phoneNumber, ignoreCase = true)) {
+            assertEquals(phoneNumber, Devicex.getPhoneNumberOr(context, "defaultValue"))
+            assertEquals(phoneNumber, Devicex.getPhoneNumberOrThrow(context))
+            assertEquals(phoneNumber, Devicex.getPhoneNumberOrNull(context))
         } else {
-            String deviceId = Devicex.getDeviceIdOr(context, "defaultValue");
-            Assert.assertTrue("deviceId: " + deviceId,
-                    Stringx.isSafe(deviceId) && !deviceId.equals("defaultValue")
-            );
+            assertEquals("defaultValue", Devicex.getPhoneNumberOr(context, "defaultValue"))
+            if (cause != null && cause is SecurityException) {
+                assertThrow(SecurityException::class.java) { Devicex.getPhoneNumberOrThrow(context) }
+            } else {
+                assertThrow(IllegalStateException::class.java) { Devicex.getPhoneNumberOrThrow(context) }
+            }
+            assertNull(Devicex.getPhoneNumberOrNull(context))
         }
     }
 
     @Test
-    public final void testSubscriberId() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetDeviceId() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String subscriberId = Devicex.getSubscriberIdOr(context, "defaultValue");
-            Assert.assertEquals("subscriberId: " + subscriberId, "defaultValue", subscriberId);
+            assertEquals("defaultValue", Devicex.getDeviceIdOr(context, "defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getDeviceIdOrThrow(context) }
+            assertNull(Devicex.getDeviceIdOrNull(context))
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String subscriberId = Devicex.getSubscriberIdOr(context, "defaultValue");
-                Assert.assertTrue("subscriberId: " + subscriberId,
-                        Stringx.isSafe(subscriberId) && !subscriberId.equals("defaultValue")
-                );
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getDeviceIdOr(context, "defaultValue") != "defaultValue")
+                assertTrue(Devicex.getDeviceIdOrThrow(context).isSafe())
+                assertTrue(Devicex.getDeviceIdOrNull(context).isSafe())
             } else {
-                String subscriberId = Devicex.getSubscriberIdOr(context, "defaultValue");
-                Assert.assertEquals("subscriberId: " + subscriberId, "defaultValue", subscriberId);
+                assertEquals("defaultValue", Devicex.getDeviceIdOr(context, "defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getDeviceIdOrThrow(context) }
+                assertNull(Devicex.getDeviceIdOrNull(context))
             }
         } else {
-            String subscriberId = Devicex.getSubscriberIdOr(context, "defaultValue");
-            Assert.assertTrue("subscriberId: " + subscriberId,
-                    Stringx.isSafe(subscriberId) && !subscriberId.equals("defaultValue")
-            );
+            assertTrue(Devicex.getDeviceIdOr(context, "defaultValue") != "defaultValue")
+            assertTrue(Devicex.getDeviceIdOrThrow(context).isSafe())
+            assertTrue(Devicex.getDeviceIdOrNull(context).isSafe())
         }
     }
 
     @Test
-    public final void testSimSerialNumber() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetAndroidId() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        assertTrue(Devicex.getAndroidIdOr(context, "defaultValue").isSafe())
+        assertTrue(Devicex.getAndroidIdOrThrow(context).isSafe())
+        assertTrue(Devicex.getAndroidIdOrNull(context).isSafe())
+    }
+
+    @Test
+    fun testGetSubscriberId() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String simSerialNumber = Devicex.getSimSerialNumberOr(context, "defaultValue");
-            Assert.assertEquals("simSerialNumber: " + simSerialNumber, "defaultValue", simSerialNumber);
+            assertEquals("defaultValue", Devicex.getSubscriberIdOr(context, "defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getSubscriberIdOrThrow(context) }
+            assertNull(Devicex.getSubscriberIdOrNull(context))
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String simSerialNumber = Devicex.getSimSerialNumberOr(context, "defaultValue");
-                Assert.assertTrue("simSerialNumber: " + simSerialNumber,
-                        Stringx.isSafe(simSerialNumber) && !simSerialNumber.equals("defaultValue"));
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getSubscriberIdOr(context, "defaultValue") != "defaultValue")
+                assertTrue(Devicex.getSubscriberIdOrThrow(context).isSafe())
+                assertTrue(Devicex.getSubscriberIdOrThrow(context).isSafe())
             } else {
-                String simSerialNumber = Devicex.getSimSerialNumberOr(context, "defaultValue");
-                Assert.assertEquals("simSerialNumber: " + simSerialNumber, "defaultValue", simSerialNumber);
+                assertEquals("defaultValue", Devicex.getSubscriberIdOr(context, "defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getSubscriberIdOrThrow(context) }
+                assertNull(Devicex.getSubscriberIdOrNull(context))
             }
         } else {
-            String simSerialNumber = Devicex.getSimSerialNumberOr(context, "defaultValue");
-            Assert.assertTrue("simSerialNumber: " + simSerialNumber,
-                    Stringx.isSafe(simSerialNumber) && !simSerialNumber.equals("defaultValue")
-            );
+            assertTrue(Devicex.getSubscriberIdOr(context, "defaultValue") != "defaultValue")
+            assertTrue(Devicex.getSubscriberIdOrThrow(context).isSafe())
+            assertTrue(Devicex.getSubscriberIdOrThrow(context).isSafe())
         }
     }
 
     @Test
-    public final void testSerial() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetSimSerialNumber() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String serial = Devicex.getSerialOr("defaultValue");
-            Assert.assertEquals("serial: " + serial, "defaultValue", serial);
+            assertEquals("defaultValue", Devicex.getSimSerialNumberOr(context, "defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getSimSerialNumberOrThrow(context) }
+            assertNull(Devicex.getSimSerialNumberOrNull(context))
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getSimSerialNumberOr(context, "defaultValue") != "defaultValue")
+                assertTrue(Devicex.getSimSerialNumberOrThrow(context).isSafe())
+                assertTrue(Devicex.getSimSerialNumberOrNull(context).isSafe())
+            } else {
+                assertEquals("defaultValue", Devicex.getSimSerialNumberOr(context, "defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getSimSerialNumberOrThrow(context) }
+                assertNull(Devicex.getSimSerialNumberOrNull(context))
+            }
+        } else {
+            assertTrue(Devicex.getSimSerialNumberOr(context, "defaultValue") != "defaultValue")
+            assertTrue(Devicex.getSimSerialNumberOrThrow(context).isSafe())
+            assertTrue(Devicex.getSimSerialNumberOrNull(context).isSafe())
+        }
+    }
+
+    @Test
+    fun testGetSerial() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            assertEquals("defaultValue", Devicex.getSerialOr("defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getSerialOrThrow() }
+            assertNull(Devicex.getSerialOrNull())
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String serial = Devicex.getSerialOr("defaultValue");
-                Assert.assertTrue("serial: " + serial,
-                        Stringx.isSafe(serial) && !serial.equals("defaultValue")
-                );
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getSerialOr("defaultValue") != "defaultValue")
+                assertTrue(Devicex.getSerialOrThrow().isSafe())
+                assertTrue(Devicex.getSerialOrNull().isSafe())
             } else {
-                String serial = Devicex.getSerialOr("defaultValue");
-                Assert.assertEquals("serial: " + serial, "defaultValue", serial);
+                assertEquals("defaultValue", Devicex.getSerialOr("defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getSerialOrThrow() }
+                assertNull(Devicex.getSerialOrNull())
             }
         } else {
-            String serial = Devicex.getSerialOr("defaultValue");
-            Assert.assertTrue("serial: " + serial,
-                    Stringx.isSafe(serial) && !serial.equals("defaultValue")
-            );
+            assertTrue(Devicex.getSerialOr("defaultValue") != "defaultValue")
+            assertTrue(Devicex.getSerialOrThrow().isSafe())
+            assertTrue(Devicex.getSerialOrNull().isSafe())
         }
     }
 
     @Test
-    public final void testIMEI() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetIMEI() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String imei = Devicex.getIMEIOr(context, "defaultValue");
-            Assert.assertEquals("imei: " + imei, "defaultValue", imei);
+            assertEquals("defaultValue", Devicex.getIMEIOr(context, "defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getIMEIOrThrow(context) }
+            assertNull(Devicex.getIMEIOrNull(context))
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String imei = Devicex.getIMEIOr(context, "defaultValue");
-                Assert.assertTrue("imei: " + imei,
-                        Stringx.isSafe(imei) && !imei.equals("defaultValue")
-                );
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getIMEIOr(context, "defaultValue") != "defaultValue")
+                assertTrue(Devicex.getIMEIOrThrow(context).isSafe())
+                assertTrue(Devicex.getIMEIOrNull(context).isSafe())
             } else {
-                String imei = Devicex.getIMEIOr(context, "defaultValue");
-                Assert.assertEquals("imei: " + imei, "defaultValue", imei);
+                assertEquals("defaultValue", Devicex.getIMEIOr(context, "defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getIMEIOrThrow(context) }
+                assertNull(Devicex.getIMEIOrNull(context))
             }
         } else {
-            String imei = Devicex.getIMEIOr(context, "defaultValue");
-            Assert.assertTrue("imei: " + imei,
-                    Stringx.isSafe(imei) && !imei.equals("defaultValue")
-            );
+            assertTrue(Devicex.getIMEIOr(context, "defaultValue") != "defaultValue")
+            assertTrue(Devicex.getIMEIOrThrow(context).isSafe())
+            assertTrue(Devicex.getIMEIOrNull(context).isSafe())
         }
     }
 
     @Test
-    public final void testIMSI() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetIMSI() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            String imsi = Devicex.getIMSIOr(context, "defaultValue");
-            Assert.assertEquals("imsi: " + imsi, "defaultValue", imsi);
+            assertEquals("defaultValue", Devicex.getIMSIOr(context, "defaultValue"))
+            assertThrow(SecurityException::class.java) { Devicex.getIMSIOrThrow(context) }
+            assertNull(Devicex.getIMSIOrNull(context))
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.READ_PHONE_STATE)) {
-                String imsi = Devicex.getIMSIOr(context, "defaultValue");
-                Assert.assertTrue("imsi: " + imsi,
-                        Stringx.isSafe(imsi) && !imsi.equals("defaultValue")
-                );
+            if (context.isGrantPermissions(Manifest.permission.READ_PHONE_STATE)) {
+                assertTrue(Devicex.getIMSIOr(context, "defaultValue") != "defaultValue")
+                assertTrue(Devicex.getIMSIOrThrow(context).isSafe())
+                assertTrue(Devicex.getIMSIOrThrow(context).isSafe())
             } else {
-                String imsi = Devicex.getIMSIOr(context, "defaultValue");
-                Assert.assertEquals("imsi: " + imsi, "defaultValue", imsi);
+                assertEquals("defaultValue", Devicex.getIMSIOr(context, "defaultValue"))
+                assertThrow(SecurityException::class.java) { Devicex.getIMSIOrThrow(context) }
+                assertNull(Devicex.getIMSIOrNull(context))
             }
         } else {
-            String imsi = Devicex.getIMSIOr(context, "defaultValue");
-            Assert.assertTrue("imsi: " + imsi,
-                    Stringx.isSafe(imsi) && !imsi.equals("defaultValue")
-            );
+            assertTrue(Devicex.getIMSIOr(context, "defaultValue") != "defaultValue")
+            assertTrue(Devicex.getIMSIOrThrow(context).isSafe())
+            assertTrue(Devicex.getIMSIOrThrow(context).isSafe())
         }
     }
 
     @Test
-    public final void testMacAddress() {
-        Pattern macAddressPattern = Pattern.compile("([A-Fa-f0-9]{2}(-[A-Fa-f0-9]{2}){5})|([A-Fa-f0-9]{2}(:[A-Fa-f0-9]{2}){5})");
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    fun testGetMacAddress() {
+        val macAddressPattern = Pattern.compile("([A-Fa-f0-9]{2}(-[A-Fa-f0-9]{2}){5})|([A-Fa-f0-9]{2}(:[A-Fa-f0-9]{2}){5})")
+        val context = InstrumentationRegistry.getInstrumentation().context
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Permissionx.isGrantPermissions(context, Manifest.permission.ACCESS_WIFI_STATE)) {
-                String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
-                Assert.assertTrue("maxAddress: " + maxAddress, macAddressPattern.matcher(maxAddress).matches());
+            if (context.isGrantPermissions(Manifest.permission.ACCESS_WIFI_STATE)) {
+                val maxAddress = Devicex.getMacAddressOr(context, "defaultValue")
+                assertTrue("maxAddress: $maxAddress", maxAddress == "defaultValue" || macAddressPattern.matcher(maxAddress).matches())
             } else {
-                String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
-                String maxAddressNoDefault = Devicex.getMacAddress(context);
-                Assert.assertEquals("maxAddressNoDefault: " + maxAddressNoDefault, "02:00:00:00:00:00", maxAddressNoDefault);
-                Assert.assertEquals("maxAddress: " + maxAddress, "defaultValue", maxAddress);
+                val maxAddress = Devicex.getMacAddressOr(context, "defaultValue")
+                val maxAddressNoDefault = Devicex.getMacAddress(context)
+                assertEquals("maxAddressNoDefault: $maxAddressNoDefault", "02:00:00:00:00:00", maxAddressNoDefault)
+                assertEquals("maxAddress: $maxAddress", "defaultValue", maxAddress)
             }
         } else {
-            String maxAddress = Devicex.getMacAddressOr(context, "defaultValue");
-            Assert.assertTrue("maxAddress: " + maxAddress, macAddressPattern.matcher(maxAddress).matches());
+            val maxAddress = Devicex.getMacAddressOr(context, "defaultValue")
+            assertTrue("maxAddress: $maxAddress", macAddressPattern.matcher(maxAddress).matches())
         }
     }
 }

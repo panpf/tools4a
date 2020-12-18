@@ -143,7 +143,7 @@ Dependencies:
     * systemServiceOnUiThread, systemServiceOrNullOnUiThread, \*Manager
 
 ### tools4a-device
-* Devicex: [Devicex.java] ([Test][DevicexTest.java]) | [Devicex.kt] ([Test][DevicexTest.kt])
+* Devicex: [Devicex.java] ([Test][DevicexTest.java.kt]) | [Devicex.kt] ([Test][DevicexTest.kt])
     * isEmulator, getProduct, getBrand, getModel, getDevice, getHardware, getSupportedAbis,
     * getPhoneNumberOr, getPhoneNumberOrThrow, getPhoneNumberOrNull, getDeviceIdOr,
     * getDeviceIdOrThrow, getDeviceIdOrNull, getAndroidIdOr, getAndroidIdOrThrow,
@@ -448,7 +448,7 @@ Please view the [CHANGELOG.md] file
 [ContextxTest.kt]: tools4a-context-ktx/src/androidTest/java/com/github/panpf/tools4a/context/ktx/test/ContextxTest.kt
 
 [Devicex.java]: tools4a-device/src/main/java/com/github/panpf/tools4a/device/Devicex.java
-[DevicexTest.java]: tools4a-device/src/androidTest/java/com/github/panpf/tools4a/device/test/DevicexTest.java
+[DevicexTest.java.kt]: tools4a-device/src/androidTest/java/com/github/panpf/tools4a/device/test/DevicexTest.kt
 [Devicex.kt]: tools4a-device-ktx/src/main/java/com/github/panpf/tools4a/device/ktx/Devicex.kt
 [DevicexTest.kt]: tools4a-device-ktx/src/androidTest/java/com/github/panpf/tools4a/device/ktx/test/DevicexTest.kt
 

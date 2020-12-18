@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("kotlin-android")
     id("jacoco")
 }
 
@@ -37,13 +38,15 @@ dependencies {
     api("androidx.annotation:annotation:${property("ANDROIDX_ANNOTATION")}")
     api(project(":tools4a-systemproperties"))
 
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${property("KOTLIN_VERSION")}")
     testImplementation("junit:junit:${property("JUNIT")}")
     androidTestImplementation("androidx.test:runner:${property("ANDROIDX_TEST_RUNNER")}")
     androidTestImplementation("androidx.test:rules:${property("ANDROIDX_TEST_RULES")}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${property("ANDROIDX_TEST_ESPRESSO")}")
     androidTestImplementation("androidx.test.ext:junit:${property("ANDROIDX_TEST_EXT_JUNIT")}")
-    androidTestImplementation("com.github.panpf.tools4j:tools4j-lang:${property("TOOLS4J")}")
-    androidTestImplementation(project(":tools4a-permission"))
+    androidTestImplementation("com.github.panpf.tools4j:tools4j-lang-ktx:${property("TOOLS4J")}")
+    androidTestImplementation("com.github.panpf.tools4j:tools4j-test-ktx:${property("TOOLS4J")}")
+    androidTestImplementation(project(":tools4a-permission-ktx"))
 }
 
 /*

@@ -117,7 +117,6 @@ public class Devicex {
     @NonNull
     @SuppressLint({"HardwareIds", "InlinedApi"})
     @RequiresPermission(anyOf = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_NUMBERS})
-    // todo Test the \*orThrow and \*orNull methods
     public static String getPhoneNumberOrThrow(@NonNull Context context) {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String value = manager != null ? manager.getLine1Number() : null;
