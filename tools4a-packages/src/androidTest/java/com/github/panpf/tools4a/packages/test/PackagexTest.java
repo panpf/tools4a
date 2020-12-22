@@ -73,7 +73,7 @@ public class PackagexTest {
     public void testIsSystemPackage() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
-        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0);
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0);
         String selfAppPackageName = context.getPackageName();
 
         try {
@@ -119,10 +119,10 @@ public class PackagexTest {
     public void testIsDebuggablePackage() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
-        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0);
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0);
         String userAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context,
-                PackageTypeFlags.ONLY_USER | PackageTypeFlags.EXCLUDE_SELF | PackageTypeFlags.EXCLUDE_DEBUGGABLE)).get(0);
-        String debuggableAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE)).get(0);
+                PackageTypeFlags.USER | PackageTypeFlags.EXCLUDE_SELF | PackageTypeFlags.EXCLUDE_DEBUGGABLE)).get(0);
+        String debuggableAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.DEBUGGABLE)).get(0);
         String selfAppPackageName = context.getPackageName();
 
         try {
@@ -174,9 +174,9 @@ public class PackagexTest {
     public void testIsJUnitTestPackage() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
-        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0);
+        String systemAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0);
         String userAppPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context,
-                PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
+                PackageTypeFlags.USER | PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
         String selfAppPackageName = context.getPackageName();
 
         try {
@@ -231,12 +231,12 @@ public class PackagexTest {
         assertEquals("com.github.panpf.tools4a.packages.test", selfAppPackage1.packageName);
 
         PackageInfo systemAppPackage = Premisex.requireNotNull(Packagex.getPackageInfoByInfoFlags(context,
-                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0), PackageManager.MATCH_UNINSTALLED_PACKAGES));
         assertTrue((systemAppPackage.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
         assertFalse((systemAppPackage.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
 
         PackageInfo systemAppPackage1 = Premisex.requireNotNull(Packagex.getPackageInfo(context,
-                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0)));
+                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0)));
         assertTrue((systemAppPackage1.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
 
         assertNotNull(Packagex.getPackageInfoByInfoFlagsOrNull(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -274,12 +274,12 @@ public class PackagexTest {
         assertTrue(selfAppPackage1.enabled);
 
         SimplePackageInfo systemAppPackage = Premisex.requireNotNull(Packagex.getSimplePackageInfoByInfoFlags(context,
-                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0), PackageManager.MATCH_UNINSTALLED_PACKAGES));
+                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0), PackageManager.MATCH_UNINSTALLED_PACKAGES));
         assertTrue(systemAppPackage.isSystemPackage());
         assertFalse(systemAppPackage.isDebuggablePackage());
 
         SimplePackageInfo systemAppPackage1 = Premisex.requireNotNull(Packagex.getSimplePackageInfo(context,
-                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM)).get(0)));
+                Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM)).get(0)));
         assertTrue(systemAppPackage1.isSystemPackage());
 
         assertNotNull(Packagex.getSimplePackageInfoByInfoFlagsOrNull(context, context.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -294,7 +294,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context,
-                PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
+                PackageTypeFlags.USER | PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
         String selfPackageName = context.getPackageName();
 
         assertEquals(0, Packagex.getPackageVersionCodeByInfoFlags(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -329,7 +329,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context,
-                PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
+                PackageTypeFlags.USER | PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
         String selfPackageName = context.getPackageName();
 
         assertEquals(0L, Packagex.getPackageLongVersionCodeByInfoFlags(context, selfPackageName, PackageManager.MATCH_UNINSTALLED_PACKAGES));
@@ -364,7 +364,7 @@ public class PackagexTest {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         String userPackageName = Premisex.requireNotNull(Packagex.listPackageNameByTypeFlags(context,
-                PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
+                PackageTypeFlags.USER | PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_SELF)).get(0);
         String selfPackageName = context.getPackageName();
 
         try {
@@ -454,8 +454,8 @@ public class PackagexTest {
 
 
         int allPackagesSize3 = Packagex.listPackageInfoByTypeInfoFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int userPackagesSize3 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int systemPackagesSize3 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackagesSize3 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackagesSize3 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackagesSize3 > 0);
         assertTrue(userPackagesSize3 > 0);
         assertTrue(systemPackagesSize3 > 0);
@@ -464,8 +464,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize3, userPackagesSize3 + systemPackagesSize3);
 
         int allPackagesSize4 = Packagex.listPackageInfoByTypeInfoFlags(context, 0, 0).size();
-        int releasePackagesSize4 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_RELEASE, 0).size();
-        int debuggablePackagesSize4 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE, 0).size();
+        int releasePackagesSize4 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.RELEASE, 0).size();
+        int debuggablePackagesSize4 = Packagex.listPackageInfoByTypeInfoFlags(context, PackageTypeFlags.DEBUGGABLE, 0).size();
         assertTrue(allPackagesSize4 > 0);
         assertTrue(releasePackagesSize4 > 0);
         assertNotEquals(releasePackagesSize4, userPackagesSize3);
@@ -476,8 +476,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize4, releasePackagesSize4 + debuggablePackagesSize4);
 
         int allPackagesSize5 = Packagex.listPackageInfoByTypeFlags(context, 0).size();
-        int userPackagesSize5 = Packagex.listPackageInfoByTypeFlags(context, PackageTypeFlags.ONLY_USER).size();
-        int systemPackagesSize5 = Packagex.listPackageInfoByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM).size();
+        int userPackagesSize5 = Packagex.listPackageInfoByTypeFlags(context, PackageTypeFlags.USER).size();
+        int systemPackagesSize5 = Packagex.listPackageInfoByTypeFlags(context, PackageTypeFlags.SYSTEM).size();
         assertTrue(allPackagesSize5 > 0);
         assertTrue(userPackagesSize5 > 0);
         assertTrue(systemPackagesSize5 > 0);
@@ -535,8 +535,8 @@ public class PackagexTest {
 
 
         int allPackagesSize3 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int userPackagesSize3 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int systemPackagesSize3 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackagesSize3 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackagesSize3 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackagesSize3 > 0);
         assertTrue(userPackagesSize3 > 0);
         assertTrue(systemPackagesSize3 > 0);
@@ -545,8 +545,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize3, userPackagesSize3 + systemPackagesSize3);
 
         int allPackagesSize4 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, 0, 0).size();
-        int releasePackagesSize4 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_RELEASE, 0).size();
-        int debuggablePackagesSize4 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE, 0).size();
+        int releasePackagesSize4 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.RELEASE, 0).size();
+        int debuggablePackagesSize4 = Packagex.listSimplePackageInfoByTypeInfoFlags(context, PackageTypeFlags.DEBUGGABLE, 0).size();
         assertTrue(allPackagesSize4 > 0);
         assertTrue(releasePackagesSize4 > 0);
         assertNotEquals(releasePackagesSize4, userPackagesSize3);
@@ -557,8 +557,8 @@ public class PackagexTest {
         assertEquals(allPackagesSize4, releasePackagesSize4 + debuggablePackagesSize4);
 
         int allPackagesSize5 = Packagex.listSimplePackageInfoByTypeFlags(context, 0).size();
-        int userPackagesSize5 = Packagex.listSimplePackageInfoByTypeFlags(context, PackageTypeFlags.ONLY_USER).size();
-        int systemPackagesSize5 = Packagex.listSimplePackageInfoByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM).size();
+        int userPackagesSize5 = Packagex.listSimplePackageInfoByTypeFlags(context, PackageTypeFlags.USER).size();
+        int systemPackagesSize5 = Packagex.listSimplePackageInfoByTypeFlags(context, PackageTypeFlags.SYSTEM).size();
         assertTrue(allPackagesSize5 > 0);
         assertTrue(userPackagesSize5 > 0);
         assertTrue(systemPackagesSize5 > 0);
@@ -625,8 +625,8 @@ public class PackagexTest {
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
         ));
         int allPackageVersionCodeMapSize3 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int userPackageVersionCodeMapSize3 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int systemPackageVersionCodeMapSize3 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackageVersionCodeMapSize3 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackageVersionCodeMapSize3 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackageVersionCodeMapSize3 > 0);
         assertTrue(userPackageVersionCodeMapSize3 > 0);
         assertTrue(systemPackageVersionCodeMapSize3 > 0);
@@ -635,8 +635,8 @@ public class PackagexTest {
         assertEquals(allPackageVersionCodeMapSize3, userPackageVersionCodeMapSize3 + systemPackageVersionCodeMapSize3);
 
         int allPackageVersionCodeMapSize4 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, 0, 0).size();
-        int releasePackageVersionCodeMapSize4 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.ONLY_RELEASE, 0).size();
-        int debuggablePackageVersionCodeMapSize4 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE, 0).size();
+        int releasePackageVersionCodeMapSize4 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.RELEASE, 0).size();
+        int debuggablePackageVersionCodeMapSize4 = Packagex.getAllPackageVersionCodeMapByTypeInfoFlags(context, PackageTypeFlags.DEBUGGABLE, 0).size();
         assertTrue(allPackageVersionCodeMapSize4 > 0);
         assertTrue(releasePackageVersionCodeMapSize4 > 0);
         assertNotEquals(releasePackageVersionCodeMapSize4, userPackageVersionCodeMapSize3);
@@ -650,8 +650,8 @@ public class PackagexTest {
                 Packagex.getPackageVersionCodeOr(context, entry.getKey(), -1) == entry.getValue()
         ));
         int allPackageVersionCodeMapSize5 = Packagex.getPackageVersionCodeMapByTypeFlags(context, 0).size();
-        int userPackageVersionCodeMapSize5 = Packagex.getPackageVersionCodeMapByTypeFlags(context, PackageTypeFlags.ONLY_USER).size();
-        int systemPackageVersionCodeMapSize5 = Packagex.getPackageVersionCodeMapByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM).size();
+        int userPackageVersionCodeMapSize5 = Packagex.getPackageVersionCodeMapByTypeFlags(context, PackageTypeFlags.USER).size();
+        int systemPackageVersionCodeMapSize5 = Packagex.getPackageVersionCodeMapByTypeFlags(context, PackageTypeFlags.SYSTEM).size();
         assertTrue(allPackageVersionCodeMapSize5 > 0);
         assertTrue(userPackageVersionCodeMapSize5 > 0);
         assertTrue(systemPackageVersionCodeMapSize5 > 0);
@@ -724,8 +724,8 @@ public class PackagexTest {
                 Packagex.isPackageInstalled(context, packageName)
         ));
         int allPackageNameSize3 = Packagex.listPackageNameByTypeInfoFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int userPackageNameSize3 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
-        int systemPackageNameSize3 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int userPackageNameSize3 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.USER, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
+        int systemPackageNameSize3 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES).size();
         assertTrue(allPackageNameSize3 > 0);
         assertTrue(userPackageNameSize3 > 0);
         assertTrue(systemPackageNameSize3 > 0);
@@ -734,8 +734,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
 
         int allPackageNameSize4 = Packagex.listPackageNameByTypeInfoFlags(context, 0, 0).size();
-        int releasePackageNameSize4 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.ONLY_RELEASE, 0).size();
-        int debuggablePackageNameSize4 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE, 0).size();
+        int releasePackageNameSize4 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.RELEASE, 0).size();
+        int debuggablePackageNameSize4 = Packagex.listPackageNameByTypeInfoFlags(context, PackageTypeFlags.DEBUGGABLE, 0).size();
         assertTrue(allPackageNameSize4 > 0);
         assertTrue(releasePackageNameSize4 > 0);
         assertNotEquals(releasePackageNameSize4, userPackageNameSize3);
@@ -749,8 +749,8 @@ public class PackagexTest {
                 Packagex.isPackageInstalled(context, packageName)
         ));
         int allPackageNameSize5 = Packagex.listPackageNameByTypeFlags(context, 0).size();
-        int userPackageNameSize5 = Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_USER).size();
-        int systemPackageNameSize5 = Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM).size();
+        int userPackageNameSize5 = Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.USER).size();
+        int systemPackageNameSize5 = Packagex.listPackageNameByTypeFlags(context, PackageTypeFlags.SYSTEM).size();
         assertTrue(allPackageNameSize5 > 0);
         assertTrue(userPackageNameSize5 > 0);
         assertTrue(systemPackageNameSize5 > 0);
@@ -814,8 +814,8 @@ public class PackagexTest {
 
 
         int allPackageNameSize3 = Packagex.countPackageByTypeInfoFlags(context, 0, PackageManager.MATCH_UNINSTALLED_PACKAGES);
-        int userPackageNameSize3 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.ONLY_USER, PackageManager.MATCH_UNINSTALLED_PACKAGES);
-        int systemPackageNameSize3 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.ONLY_SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int userPackageNameSize3 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.USER, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        int systemPackageNameSize3 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.SYSTEM, PackageManager.MATCH_UNINSTALLED_PACKAGES);
         assertTrue(allPackageNameSize3 > 0);
         assertTrue(userPackageNameSize3 > 0);
         assertTrue(systemPackageNameSize3 > 0);
@@ -824,8 +824,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize3, userPackageNameSize3 + systemPackageNameSize3);
 
         int allPackageNameSize4 = Packagex.countPackageByTypeInfoFlags(context, 0, 0);
-        int releasePackageNameSize4 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.ONLY_RELEASE, 0);
-        int debuggablePackageNameSize4 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.ONLY_DEBUGGABLE, 0);
+        int releasePackageNameSize4 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.RELEASE, 0);
+        int debuggablePackageNameSize4 = Packagex.countPackageByTypeInfoFlags(context, PackageTypeFlags.DEBUGGABLE, 0);
         assertTrue(allPackageNameSize4 > 0);
         assertTrue(releasePackageNameSize4 > 0);
         assertNotEquals(releasePackageNameSize4, userPackageNameSize3);
@@ -836,8 +836,8 @@ public class PackagexTest {
         assertEquals(allPackageNameSize4, releasePackageNameSize4 + debuggablePackageNameSize4);
 
         int allPackageNameSize5 = Packagex.countPackageByTypeFlags(context, 0);
-        int userPackageNameSize5 = Packagex.countPackageByTypeFlags(context, PackageTypeFlags.ONLY_USER);
-        int systemPackageNameSize5 = Packagex.countPackageByTypeFlags(context, PackageTypeFlags.ONLY_SYSTEM);
+        int userPackageNameSize5 = Packagex.countPackageByTypeFlags(context, PackageTypeFlags.USER);
+        int systemPackageNameSize5 = Packagex.countPackageByTypeFlags(context, PackageTypeFlags.SYSTEM);
         assertTrue(allPackageNameSize5 > 0);
         assertTrue(userPackageNameSize5 > 0);
         assertTrue(systemPackageNameSize5 > 0);

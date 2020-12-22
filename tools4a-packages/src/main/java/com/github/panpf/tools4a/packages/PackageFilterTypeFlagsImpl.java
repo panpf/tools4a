@@ -33,38 +33,38 @@ public class PackageFilterTypeFlagsImpl implements PackageFilter {
         this.packageFilterFlags = packageFilterFlags;
         this.selfPackageName = context.getPackageName();
 
-        if (matchFlag(PackageTypeFlags.ONLY_USER) && matchFlag(PackageTypeFlags.ONLY_SYSTEM)) {
+        if (matchFlag(PackageTypeFlags.USER) && matchFlag(PackageTypeFlags.SYSTEM)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.ONLY_SYSTEM' at the same time");
+                    "'PackageTypeFlags.USER' and 'PackageTypeFlags.SYSTEM' at the same time");
         }
-        if (matchFlag(PackageTypeFlags.ONLY_USER) && matchFlag(PackageTypeFlags.EXCLUDE_USER)) {
+        if (matchFlag(PackageTypeFlags.USER) && matchFlag(PackageTypeFlags.EXCLUDE_USER)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_USER' and 'PackageFilterFlags.EXCLUDE_USER' at the same time");
+                    "'PackageTypeFlags.USER' and 'PackageTypeFlags.EXCLUDE_USER' at the same time");
         }
-        if (matchFlag(PackageTypeFlags.ONLY_SYSTEM) && matchFlag(PackageTypeFlags.EXCLUDE_SYSTEM)) {
+        if (matchFlag(PackageTypeFlags.SYSTEM) && matchFlag(PackageTypeFlags.EXCLUDE_SYSTEM)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_SYSTEM' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
+                    "'PackageTypeFlags.SYSTEM' and 'PackageTypeFlags.EXCLUDE_SYSTEM' at the same time");
         }
         if (matchFlag(PackageTypeFlags.EXCLUDE_USER) && matchFlag(PackageTypeFlags.EXCLUDE_SYSTEM)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.EXCLUDE_USER' and 'PackageFilterFlags.EXCLUDE_SYSTEM' at the same time");
+                    "'PackageTypeFlags.EXCLUDE_USER' and 'PackageTypeFlags.EXCLUDE_SYSTEM' at the same time");
         }
 
-        if (matchFlag(PackageTypeFlags.ONLY_RELEASE) && matchFlag(PackageTypeFlags.ONLY_DEBUGGABLE)) {
+        if (matchFlag(PackageTypeFlags.RELEASE) && matchFlag(PackageTypeFlags.DEBUGGABLE)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.ONLY_DEBUGGABLE' at the same time");
+                    "'PackageTypeFlags.RELEASE' and 'PackageTypeFlags.DEBUGGABLE' at the same time");
         }
-        if (matchFlag(PackageTypeFlags.ONLY_RELEASE) && matchFlag(PackageTypeFlags.EXCLUDE_RELEASE)) {
+        if (matchFlag(PackageTypeFlags.RELEASE) && matchFlag(PackageTypeFlags.EXCLUDE_RELEASE)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_RELEASE' and 'PackageFilterFlags.EXCLUDE_RELEASE' at the same time");
+                    "'PackageTypeFlags.RELEASE' and 'PackageTypeFlags.EXCLUDE_RELEASE' at the same time");
         }
-        if (matchFlag(PackageTypeFlags.ONLY_DEBUGGABLE) && matchFlag(PackageTypeFlags.EXCLUDE_DEBUGGABLE)) {
+        if (matchFlag(PackageTypeFlags.DEBUGGABLE) && matchFlag(PackageTypeFlags.EXCLUDE_DEBUGGABLE)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.ONLY_DEBUGGABLE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
+                    "'PackageTypeFlags.DEBUGGABLE' and 'PackageTypeFlags.EXCLUDE_DEBUGGABLE' at the same time");
         }
         if (matchFlag(PackageTypeFlags.EXCLUDE_RELEASE) && matchFlag(PackageTypeFlags.EXCLUDE_DEBUGGABLE)) {
             throw new IllegalArgumentException("packageFilterFlags param cannot set " +
-                    "'PackageFilterFlags.EXCLUDE_RELEASE' and 'PackageFilterFlags.EXCLUDE_DEBUGGABLE' at the same time");
+                    "'PackageTypeFlags.EXCLUDE_RELEASE' and 'PackageTypeFlags.EXCLUDE_DEBUGGABLE' at the same time");
         }
     }
 
@@ -74,21 +74,21 @@ public class PackageFilterTypeFlagsImpl implements PackageFilter {
 
     @Override
     public boolean accept(@NonNull PackageInfo packageInfo) {
-        if (matchFlag(PackageTypeFlags.ONLY_USER) || matchFlag(PackageTypeFlags.EXCLUDE_SYSTEM)) {
+        if (matchFlag(PackageTypeFlags.USER) || matchFlag(PackageTypeFlags.EXCLUDE_SYSTEM)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                 return false;
             }
-        } else if (matchFlag(PackageTypeFlags.ONLY_SYSTEM) || matchFlag(PackageTypeFlags.EXCLUDE_USER)) {
+        } else if (matchFlag(PackageTypeFlags.SYSTEM) || matchFlag(PackageTypeFlags.EXCLUDE_USER)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                 return false;
             }
         }
 
-        if (matchFlag(PackageTypeFlags.ONLY_RELEASE) || matchFlag(PackageTypeFlags.EXCLUDE_DEBUGGABLE)) {
+        if (matchFlag(PackageTypeFlags.RELEASE) || matchFlag(PackageTypeFlags.EXCLUDE_DEBUGGABLE)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
                 return false;
             }
-        } else if (matchFlag(PackageTypeFlags.ONLY_DEBUGGABLE) || matchFlag(PackageTypeFlags.EXCLUDE_RELEASE)) {
+        } else if (matchFlag(PackageTypeFlags.DEBUGGABLE) || matchFlag(PackageTypeFlags.EXCLUDE_RELEASE)) {
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == 0) {
                 return false;
             }

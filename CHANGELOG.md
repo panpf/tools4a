@@ -1,10 +1,19 @@
 ## new
+
+Fix bugs:
+* fix: Fix the bug of extra parameters of KClass<T>.launchFragment(KClass<T>) function of Testx.kt
+
+Change:
 * change: Refactor the names of all methods in Packagex
 * change: Fragmentx added isUserVisibleHintWithParent, isResumedWithParent, findUserVisibleFragmentRecursivelyByUserVisibleHint, findUserVisibleFragmentRecursivelyByResumed method
 * change: Fragmentx's findUserVisibleFragmentByUserVisibleHint, findUserVisibleFragmentByResumed methods no longer traverse grandchildren Fragment
+* change: PackageFilterFlags rename to PackageTypeFlags and ONLY_USER rename to USER, ONLY_RELEASE rename to RELEASE...
+
+New:
 * new: Added FragmentInsider class, which contains getMaxState, getMaxStateWithParent methods
-* fix: Fix the bug of extra parameters of KClass<T>.launchFragment(KClass<T>) function of Testx.kt
 * new: Testx added onFragmentSleep, onFragmentSleep100ms, onFragmentSleep200ms, onActivitySleep, onActivitySleep100ms, onActivitySleep200ms methods
+
+Upgrade:
 * upgrade: Upgrade kotlin to 1.4.20
 
 ## v1.0.0-rc01

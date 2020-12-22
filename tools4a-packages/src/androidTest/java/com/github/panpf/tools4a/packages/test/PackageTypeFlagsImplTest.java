@@ -39,17 +39,17 @@ public class PackageTypeFlagsImplTest {
         final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_SYSTEM);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER | PackageTypeFlags.SYSTEM);
             Assert.fail();
         } catch (Exception ignored) {
         }
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER | PackageTypeFlags.EXCLUDE_USER);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER | PackageTypeFlags.EXCLUDE_USER);
             Assert.fail();
         } catch (Exception ignored) {
         }
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM | PackageTypeFlags.EXCLUDE_SYSTEM);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM | PackageTypeFlags.EXCLUDE_SYSTEM);
             Assert.fail();
         } catch (Exception ignored) {
         }
@@ -60,17 +60,17 @@ public class PackageTypeFlagsImplTest {
         }
 
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.ONLY_DEBUGGABLE);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE | PackageTypeFlags.DEBUGGABLE);
             Assert.fail();
         } catch (Exception ignored) {
         }
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_RELEASE);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_RELEASE);
             Assert.fail();
         } catch (Exception ignored) {
         }
         try {
-            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_DEBUGGABLE | PackageTypeFlags.EXCLUDE_DEBUGGABLE);
+            new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.DEBUGGABLE | PackageTypeFlags.EXCLUDE_DEBUGGABLE);
             Assert.fail();
         } catch (Exception ignored) {
         }
@@ -81,11 +81,11 @@ public class PackageTypeFlagsImplTest {
         }
 
 
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER);
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM);
 
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE);
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_DEBUGGABLE);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.DEBUGGABLE);
 
         new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_USER);
         new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_SYSTEM);
@@ -96,31 +96,31 @@ public class PackageTypeFlagsImplTest {
         new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_SELF);
 
 
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER | PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_SELF);
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM | PackageTypeFlags.ONLY_DEBUGGABLE | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER | PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM | PackageTypeFlags.DEBUGGABLE | PackageTypeFlags.EXCLUDE_SELF);
 
         new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_USER | PackageTypeFlags.EXCLUDE_RELEASE | PackageTypeFlags.EXCLUDE_SELF);
         new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_SYSTEM | PackageTypeFlags.EXCLUDE_DEBUGGABLE | PackageTypeFlags.EXCLUDE_SELF);
 
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER | PackageTypeFlags.EXCLUDE_RELEASE | PackageTypeFlags.EXCLUDE_SELF);
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE | PackageTypeFlags.EXCLUDE_USER | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER | PackageTypeFlags.EXCLUDE_RELEASE | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE | PackageTypeFlags.EXCLUDE_USER | PackageTypeFlags.EXCLUDE_SELF);
 
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM | PackageTypeFlags.EXCLUDE_DEBUGGABLE | PackageTypeFlags.EXCLUDE_SELF);
-        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_DEBUGGABLE | PackageTypeFlags.EXCLUDE_SYSTEM | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM | PackageTypeFlags.EXCLUDE_DEBUGGABLE | PackageTypeFlags.EXCLUDE_SELF);
+        new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.DEBUGGABLE | PackageTypeFlags.EXCLUDE_SYSTEM | PackageTypeFlags.EXCLUDE_SELF);
     }
 
     @Test
     public void testFlags() {
         final Context context = InstrumentationRegistry.getInstrumentation().getContext();
 
-        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER)
+        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER)
                 .accept(newPackageInfoByFlag(0)));
-        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_USER)
+        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.USER)
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_SYSTEM)));
 
-        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM)
+        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM)
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_SYSTEM)));
-        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_SYSTEM)
+        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.SYSTEM)
                 .accept(newPackageInfoByFlag(0)));
 
         Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_USER)
@@ -134,14 +134,14 @@ public class PackageTypeFlagsImplTest {
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_SYSTEM)));
 
 
-        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE)
+        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE)
                 .accept(newPackageInfoByFlag(0)));
-        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_RELEASE)
+        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.RELEASE)
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_DEBUGGABLE)));
 
-        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_DEBUGGABLE)
+        Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.DEBUGGABLE)
                 .accept(newPackageInfoByFlag(ApplicationInfo.FLAG_DEBUGGABLE)));
-        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.ONLY_DEBUGGABLE)
+        Assert.assertFalse(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.DEBUGGABLE)
                 .accept(newPackageInfoByFlag(0)));
 
         Assert.assertTrue(new PackageFilterTypeFlagsImpl(context, PackageTypeFlags.EXCLUDE_RELEASE)

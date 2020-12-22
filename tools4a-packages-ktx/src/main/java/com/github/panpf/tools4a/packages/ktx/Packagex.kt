@@ -394,7 +394,7 @@ inline fun Context.listPackageInfoByFilterInfoFlags(
 /**
  * List PackageInfo for all installed package by PackageTypeFlags and PackageInfoFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  * @param packageInfoFlags   see {@link PackageInfoFlags}
  */
 inline fun Context.listPackageInfoByTypeInfoFlags(
@@ -440,7 +440,7 @@ inline fun Context.listSimplePackageInfoByFilterInfoFlags(
 /**
  * List SimplePackageInfo for all installed package by PackageTypeFlags and PackageInfoFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  * @param packageInfoFlags   see {@link PackageInfoFlags}
  */
 inline fun Context.listSimplePackageInfoByTypeInfoFlags(
@@ -489,7 +489,7 @@ inline fun Context.listPackageNameByFilterInfoFlags(
 /**
  * List the packageName of all installed package by PackageTypeFlags and PackageInfoFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  * @param packageInfoFlags see {@link PackageInfoFlags}
  */
 inline fun Context.listPackageNameByTypeInfoFlags(
@@ -506,7 +506,7 @@ inline fun Context.listPackageNameByFilter(
 /**
  * List the packageName of all installed package by PackageTypeFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  */
 inline fun Context.listPackageNameByTypeFlags(
         @PackageTypeFlags packageTypeFlags: Int
@@ -541,7 +541,7 @@ inline fun Context.countPackageByFilterInfoFlags(
 /**
  * Get the number of installed package by PackageTypeFlags and PackageInfoFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  * @param packageInfoFlags see {@link PackageInfoFlags}
  */
 inline fun Context.countPackageByTypeInfoFlags(
@@ -558,7 +558,7 @@ inline fun Context.countPackageByFilter(
 /**
  * Get the number of installed package by PackageTypeFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  */
 inline fun Context.countPackageByTypeFlags(
         @PackageTypeFlags packageTypeFlags: Int
@@ -593,7 +593,7 @@ inline fun Context.getAllPackageVersionCodeMapByFilterInfoFlags(
 /**
  * Get the packageName and versionCode of all installed package by PackageTypeFlags and PackageInfoFlags
  *
- * @param packageTypeFlags see {@link PackageFilterFlags}
+ * @param packageTypeFlags see {@link PackageTypeFlags}
  * @param packageInfoFlags see {@link PackageInfoFlags}
  */
 inline fun Context.getAllPackageVersionCodeMapByTypeInfoFlags(
