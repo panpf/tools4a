@@ -1,4 +1,4 @@
-## new
+## v1.0.0-rc02
 
 Fix bugs:
 * fix: Fix the bug of extra parameters of KClass<T>.launchFragment(KClass<T>) function of Testx.kt
