@@ -57,4 +57,7 @@ dependencies {
         bintrayUser = localProperties.getProperty("bintray.user")
         bintrayKey = localProperties.getProperty("bintray.apiKey")
     }
+    tasks.withType<GenerateModuleMetadata> {
+        enabled = false
+    }
 }
