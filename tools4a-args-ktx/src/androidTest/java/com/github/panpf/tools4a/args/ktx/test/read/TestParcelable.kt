@@ -17,7 +17,7 @@
 package com.github.panpf.tools4a.args.ktx.test.read
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TestParcelable(val tag: String) : Parcelable
