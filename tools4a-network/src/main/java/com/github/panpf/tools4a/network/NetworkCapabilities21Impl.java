@@ -48,7 +48,7 @@ public class NetworkCapabilities21Impl implements NetworkCapabilitiesCompat {
 
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public NetworkCapabilities21Impl(@NonNull ConnectivityManager connectivity, @Nullable Network network) {
-        this(connectivity, network, connectivity.getNetworkCapabilities(network));
+        this(connectivity, network, network != null ? connectivity.getNetworkCapabilities(network) : null);
     }
 
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)

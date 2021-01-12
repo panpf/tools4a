@@ -18,6 +18,7 @@ package com.github.panpf.tools4a.network.test;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.github.panpf.tools4a.network.NetCapability;
 import com.github.panpf.tools4a.network.NetworkCapabilities1Impl;
 import com.github.panpf.tools4a.network.NetworkCapabilities21Impl;
 import com.github.panpf.tools4a.network.NetworkCapabilitiesCompat;
+import com.github.panpf.tools4a.network.Networkx;
 import com.github.panpf.tools4a.network.Transport;
 
 import org.junit.Assert;
@@ -55,7 +57,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                 Assert.assertTrue(isConnected);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("INTERNET"));
@@ -115,7 +118,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                     Assert.assertTrue(isWifiConnected);
@@ -160,7 +164,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                     Assert.assertTrue(isCellularConnected);
@@ -207,7 +212,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                 Assert.assertTrue(hasCellularTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("CELLULAR"));
@@ -242,7 +248,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                 Assert.assertTrue(hasWifiTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("WIFI"));
@@ -274,7 +281,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)) {
                 Assert.assertTrue(hasBluetoothTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("BLUETOOTH"));
@@ -305,7 +313,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
                 Assert.assertTrue(hasEthernetTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("ETHERNET"));
@@ -336,7 +345,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
                 Assert.assertTrue(hasVPNTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("VPN"));
@@ -367,7 +377,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)) {
                 Assert.assertTrue(hasWifiAwareTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("WIFI_AWARE"));
@@ -391,7 +402,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN)) {
                 Assert.assertTrue(hasLowPanTransport);
                 Assert.assertTrue(transportNames != null && transportNames.contains("LOWPAN"));
@@ -429,7 +441,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_MMS)) {
                 Assert.assertTrue(hasMMSCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("MMS"));
@@ -460,7 +473,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_SUPL)) {
                 Assert.assertTrue(hasSUPLCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("SUPL"));
@@ -491,7 +505,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_DUN)) {
                 Assert.assertTrue(hasDUNCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("DUN"));
@@ -522,7 +537,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_FOTA)) {
                 Assert.assertTrue(hasFOTACapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("FOTA"));
@@ -553,7 +569,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_IMS)) {
                 Assert.assertTrue(hasIMSCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("IMS"));
@@ -584,7 +601,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_CBS)) {
                 Assert.assertTrue(hasCBSCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("CBS"));
@@ -615,7 +633,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_WIFI_P2P)) {
                 Assert.assertTrue(hasWifiP2PCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("WIFI_P2P"));
@@ -646,7 +665,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_IA)) {
                 Assert.assertTrue(hasIACapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("IA"));
@@ -677,7 +697,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_RCS)) {
                 Assert.assertTrue(hasRCSCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("RCS"));
@@ -702,7 +723,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_XCAP)) {
                 Assert.assertTrue(hasXCAPCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("XCAP"));
@@ -727,7 +749,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_EIMS)) {
                 Assert.assertTrue(hasEIMSCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("EIMS"));
@@ -758,7 +781,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)) {
                 Assert.assertTrue(hasNotMeteredCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("NOT_METERED"));
@@ -802,7 +826,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                 Assert.assertTrue(hasInternetCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("INTERNET"));
@@ -833,7 +858,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)) {
                 Assert.assertTrue(hasNotRestrictedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("NOT_RESTRICTED"));
@@ -858,7 +884,8 @@ public class NetworkCapabilitiesCompatTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)) {
                 Assert.assertTrue(hasTrustedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("TRUSTED"));
@@ -883,7 +910,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
                 Assert.assertTrue(hasValidatedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("VALIDATED"));
@@ -892,7 +920,8 @@ public class NetworkCapabilitiesCompatTest {
                 Assert.assertFalse(capabilityNames != null && capabilityNames.contains("VALIDATED"));
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                 Assert.assertTrue(hasValidatedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("VALIDATED"));
@@ -923,7 +952,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL)) {
                 Assert.assertTrue(hasCaptivePortalCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("CAPTIVE_PORTAL"));
@@ -948,7 +978,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)) {
                 Assert.assertTrue(hasNotRoamingCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("NOT_ROAMING"));
@@ -992,7 +1023,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetCapability.NET_CAPABILITY_FOREGROUND)) {
                 Assert.assertTrue(hasForegroundCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("FOREGROUND"));
@@ -1017,7 +1049,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetCapability.NET_CAPABILITY_NOT_CONGESTED)) {
                 Assert.assertTrue(hasNotCongestedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("NOT_CONGESTED"));
@@ -1042,7 +1075,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities == null || networkCapabilities.hasCapability(NetCapability.NET_CAPABILITY_NOT_SUSPENDED)) {
                 Assert.assertTrue(hasNotSuspendedCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("NOT_SUSPENDED"));
@@ -1067,7 +1101,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetCapability.NET_CAPABILITY_MCX)) {
                 Assert.assertTrue(hasMcxCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("MCX"));
@@ -1092,7 +1127,8 @@ public class NetworkCapabilitiesCompatTest {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            Network networkInfo = Networkx.activeNetwork(connectivityManager);
+            NetworkCapabilities networkCapabilities = networkInfo != null ? connectivityManager.getNetworkCapabilities(networkInfo) : null;
             if (networkCapabilities != null && networkCapabilities.hasCapability(NetCapability.NET_CAPABILITY_TEMPORARILY_NOT_METERED)) {
                 Assert.assertTrue(hasTemporarilyNotMeteredCapability);
                 Assert.assertTrue(capabilityNames != null && capabilityNames.contains("TEMPORARILY_NOT_METERED"));
