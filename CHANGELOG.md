@@ -1,4 +1,4 @@
-## new
+## v1.0.0-rc03
 
 Fix bugs:
 * fix: Fix Netxworkx.networkCapabilitiesCompat method crash when there is no network connection on api 21 bug
