@@ -4,102 +4,101 @@
 [![Platform][platform_kotlin_icon]][platform_kotlin_link]
 [![API][min_api_icon]][min_api_link]
 [![TargetSdk][android_targetsdk_icon]][android_targetsdk_link]
+[![Download][version_icon]][version_link]
 [![License][license_icon]][license_link]
 
 Extensions to the Android standard library and support libraries and some basic tools
 
 ## Getting Started
 
-This library has been published to `jcenter` and private repositories `https://dl.bintray.com/panpf/maven/`, you can freely choose where to download it
-
-Add the following dependencies to your module `build.gradle` file ：
+This library has been published to `mavenCentral`. Add the following dependencies to your module `build.gradle` file: 
 
 ```grovvy
-implementation "com.github.panpf.tools4a:tools4a:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-ktx:$LAST_VERSION" // Kotlin extension, not required
 ```
 
-Please replace `$LAST_VERSION` with the latest version: [![Download][version_java_icon]][version_java_link]
+`${LAST_VERSION}`: [![Download][version_icon]][version_link] (No include 'v')
 
-The `com.github.panpf.tools4a:tools4a:$LAST_VERSION` dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
+The `io.github.panpf.tools4a:tools4a:$LAST_VERSION` dependency will add all the modules included in tools4a to your project (Except for 'tools4a-test'). If you only need of one of the modules, you can just add it to your project, all supported modules as follows:
 ```groovy
-implementation "com.github.panpf.tools4a:tools4a-activity:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-activity-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-activity:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-activity-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-args:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-args-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-args:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-args-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-build:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-build:$LAST_VERSION"
 
-implementation "com.github.panpf.tools4a:tools4a-clipboard:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-clipboard-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-clipboard:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-clipboard-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-content:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-content-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-content:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-content-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-device:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-device-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-device:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-device-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-dialog:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-dialog-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-dialog:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-dialog-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-dimen:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-dimen-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-dimen:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-dimen-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-display:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-display-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-display:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-display-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-fileprovider:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-fileprovider-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-fileprovider:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-fileprovider-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-fragment:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-fragment-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-fragment:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-fragment-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-graphics:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-graphics-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-graphics:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-graphics-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-inputmethod:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-inputmethod-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-inputmethod:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-inputmethod-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-network:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-network-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-network:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-network-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-packages:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-packages-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-packages:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-packages-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-permission:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-permission-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-permission:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-permission-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-prefsdelegate:$LAST_VERSION"   // All written by Kotlin
+implementation "io.github.panpf.tools4a:tools4a-prefsdelegate:$LAST_VERSION"   // All written by Kotlin
 
-implementation "com.github.panpf.tools4a:tools4a-rom:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-rom:$LAST_VERSION"
 
-implementation "com.github.panpf.tools4a:tools4a-root:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-root:$LAST_VERSION"
 
-implementation "com.github.panpf.tools4a:tools4a-run:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-run-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-run:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-run-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-service:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-service-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-service:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-service-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-settings:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-settings-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-settings:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-settings-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-storage:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-storage-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-storage:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-storage-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-systemproperties:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-systemproperties:$LAST_VERSION"
 
-implementation "com.github.panpf.tools4a:tools4a-test:$LAST_VERSION"    // Not included in 'com.github.panpf.tools4a:tools4a'
-implementation "com.github.panpf.tools4a:tools4a-test-ktx:$LAST_VERSION" // Kotlin extension, not required, Not included in 'com.github.panpf.tools4a:tools4a'
+implementation "io.github.panpf.tools4a:tools4a-test:$LAST_VERSION"    // Not included in 'io.github.panpf.tools4a:tools4a'
+implementation "io.github.panpf.tools4a:tools4a-test-ktx:$LAST_VERSION" // Kotlin extension, not required, Not included in 'io.github.panpf.tools4a:tools4a'
 
-implementation "com.github.panpf.tools4a:tools4a-toast:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-toast-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-toast:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-toast-ktx:$LAST_VERSION" // Kotlin extension, not required
 
-implementation "com.github.panpf.tools4a:tools4a-utils:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-utils:$LAST_VERSION"
 
-implementation "com.github.panpf.tools4a:tools4a-view:$LAST_VERSION"
-implementation "com.github.panpf.tools4a:tools4a-view-ktx:$LAST_VERSION" // Kotlin extension, not required
+implementation "io.github.panpf.tools4a:tools4a-view:$LAST_VERSION"
+implementation "io.github.panpf.tools4a:tools4a-view-ktx:$LAST_VERSION" // Kotlin extension, not required
 ```
 
 Dependencies:
@@ -403,10 +402,8 @@ Please view the [CHANGELOG.md] file
 [min_api_link]: https://developer.android.com/about/dashboards/
 [license_icon]: https://img.shields.io/badge/License-Apache%202-blue.svg
 [license_link]: https://www.apache.org/licenses/LICENSE-2.0
-[version_java_icon]: https://api.bintray.com/packages/panpf/maven/tools4a/images/download.svg
-[version_java_link]: https://bintray.com/panpf/maven/tools4a/_latestVersion
-[version_kotlin_icon]: https://api.bintray.com/packages/panpf/maven/tools4a-ktx/images/download.svg
-[version_kotlin_link]: https://bintray.com/panpf/maven/tools4a-ktx/_latestVersion
+[version_icon]: https://img.shields.io/maven-central/v/io.github.panpf.tools4a/tools4a
+[version_link]: https://repo1.maven.org/maven2/io/github/panpf/tools4a/
 [kotlin_stdlib]: https://kotlinlang.org/
 [kotlin_versions]: https://blog.jetbrains.com/kotlin/
 [fragment_versions]: https://developer.android.google.cn/jetpack/androidx/releases/fragment

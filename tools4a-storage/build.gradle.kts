@@ -45,27 +45,21 @@ dependencies {
     androidTestImplementation("com.github.panpf.tools4j:tools4j-collections:${property("TOOLS4J")}")
 }
 
-/*
- * publish to bintray
+/**
+ * publish config
  */
-`java.util`.Properties().apply {
-    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
-    project.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
-}.takeIf {
-    it.getProperty("bintray.user") != null && it.getProperty("bintray.userOrg") != null && it.getProperty("bintray.apiKey") != null
-}?.let { localProperties ->
-    apply { plugin("com.github.panpf.bintray-publish") }
-    configure<com.github.panpf.bintray.publish.PublishExtension> {
-        groupId = "com.github.panpf.tools4a"
-        artifactId = "tools4a-storage"
-        publishVersion = property("VERSION_NAME").toString()
-        desc = "Android, Tools, Storage"
-        website = "https://github.com/panpf/tools4a"
-        userOrg = localProperties.getProperty("bintray.userOrg")
-        bintrayUser = localProperties.getProperty("bintray.user")
-        bintrayKey = localProperties.getProperty("bintray.apiKey")
-    }
-    tasks.withType<GenerateModuleMetadata> {
-        enabled = false
+if (hasProperty("signing.keyId")    // configured in the ~/.gradle/gradle.properties file
+    && hasProperty("signing.password")    // configured in the ~/.gradle/gradle.properties file
+    && hasProperty("signing.secretKeyRingFile")    // configured in the ~/.gradle/gradle.properties file
+    && hasProperty("mavenCentralUsername")    // configured in the ~/.gradle/gradle.properties file
+    && hasProperty("mavenCentralPassword")    // configured in the ~/.gradle/gradle.properties file
+    && hasProperty("GROUP")    // configured in the rootProject/gradle.properties file
+    && hasProperty("POM_ARTIFACT_ID")    // configured in the project/gradle.properties file
+) {
+    apply { plugin("com.vanniktech.maven.publish") }
+
+    configure<com.vanniktech.maven.publish.MavenPublishPluginExtension> {
+        sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
+        //        disableAndroidJavaDocsAddReferencesLinks = true
     }
 }

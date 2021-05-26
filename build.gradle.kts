@@ -3,24 +3,25 @@
 buildscript {
     repositories {
         maven { setUrl("https://mirrors.huaweicloud.com/repository/maven/") }
+        mavenCentral()
         google()
         jcenter()
-        mavenLocal()
+//        mavenLocal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:${property("ANDROID_BUILD_GRADLE")}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("KOTLIN_VERSION")}")
-        classpath("com.github.panpf.bintray-publish:bintray-publish:${property("BINTRAY_PUBLISH")}")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.15.1")
+//        classpath("com.vanniktech:gradle-maven-publish-plugin:0.16.0-SNAPSHOT-china")
     }
 }
 
 allprojects {
     repositories {
         maven { setUrl("https://mirrors.huaweicloud.com/repository/maven/") }
+        mavenCentral()
         google()
         jcenter()
-        maven { setUrl("https://dl.bintray.com/panpf/maven/") }
-        mavenLocal()
     }
 }
 
