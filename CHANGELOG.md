@@ -1,3 +1,8 @@
+## v1.0.0
+
+First release stable version
+
+
 ## v1.0.0-rc03
 
 Fix bugs:
