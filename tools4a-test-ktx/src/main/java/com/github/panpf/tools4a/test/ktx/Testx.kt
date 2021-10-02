@@ -164,8 +164,8 @@ inline fun <T : Fragment> FragmentScenario<T>.getFragmentSync(): T =
         Testx.getFragmentSync(this)
 
 
-inline fun <T : Fragment?> FragmentScenario<T>.onFragmentSleep(sleepTime: Long, action: FragmentAction<T>) = Testx.onFragmentSleep(this, sleepTime, action)
+inline fun <T : Fragment> FragmentScenario<T>.onFragmentSleep(sleepTime: Long, action: FragmentAction<T>) = Testx.onFragmentSleep(this, sleepTime, action)
 
-inline fun <T : Fragment?> FragmentScenario<T>.onFragmentSleep100ms(action: FragmentAction<T>) = Testx.onFragmentSleep100ms(this, action)
+inline fun <T : Fragment> FragmentScenario<T>.onFragmentSleep100ms(action: FragmentAction<T>) = Testx.onFragmentSleep100ms(this, action)
 
-inline fun <T : Fragment?> FragmentScenario<T>.onFragmentAndSleep200ms(action: FragmentAction<T>) = Testx.onFragmentAndSleep200ms(this, action)
+inline fun <T : Fragment> FragmentScenario<T>.onFragmentAndSleep200ms(action: FragmentAction<T>) = Testx.onFragmentAndSleep200ms(this, action)
